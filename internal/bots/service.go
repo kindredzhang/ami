@@ -13,17 +13,17 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/acl"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/job"
-	"github.com/felinics/memoh/internal/runtimefence"
-	tzutil "github.com/felinics/memoh/internal/timezone"
-	"github.com/felinics/memoh/internal/workspace"
+	"github.com/kindredzhang/ami/internal/acl"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/job"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	tzutil "github.com/kindredzhang/ami/internal/timezone"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 // Service provides bot CRUD and membership management.
@@ -472,6 +472,38 @@ func (s *Service) resolveName(ctx context.Context, rawName, displayName, exclude
 			return candidate, nil
 		}
 	}
+}
+
+// DefaultBotName is the stable slug of the starter expert every new account
+// receives. It is a valid bot name (see name.go) so it needs no slugging.
+const DefaultBotName = "assistant"
+
+// DefaultBotDisplayName is what a new account sees first.
+const DefaultBotDisplayName = "助手"
+
+// EnsureDefaultBot gives a freshly created account its starter expert.
+//
+// It is idempotent: calling it again for an owner who already has this expert
+// returns nil. Concurrent provisions are serialized by the bots name unique
+// index — the loser sees ErrBotNameTaken and treats the existing row as done.
+func (s *Service) EnsureDefaultBot(ctx context.Context, ownerUserID string) error {
+	owner := strings.TrimSpace(ownerUserID)
+	if owner == "" {
+		return errors.New("owner user id is required")
+	}
+	_, err := s.Create(ctx, owner, CreateBotRequest{
+		Name:        DefaultBotName,
+		DisplayName: DefaultBotDisplayName,
+		DeferWake:   true,
+	})
+	if err == nil {
+		return nil
+	}
+	// Already provisioned (or someone claimed the name) — not a failure.
+	if errors.Is(err, ErrBotNameTaken) {
+		return nil
+	}
+	return err
 }
 
 // ListByOwner returns bots owned by the given user.

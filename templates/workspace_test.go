@@ -6,7 +6,7 @@ import (
 )
 
 // The workspace template tree mixes visible markdown files with hidden
-// dotfile directories (.memoh). A plain //go:embed pattern silently drops
+// dotfile directories (.ami). A plain //go:embed pattern silently drops
 // dotfiles, so assert the full expected layout survives embedding.
 func TestWorkspaceFSContainsBootstrapFiles(t *testing.T) {
 	t.Parallel()
@@ -15,11 +15,11 @@ func TestWorkspaceFSContainsBootstrapFiles(t *testing.T) {
 		"AGENTS.md",
 		"MEMORY.md",
 		"PROFILES.md",
-		".memoh/hooks.json",
-		".memoh/skills/.gitkeep",
-		".memoh/skills/skill-creator/SKILL.md",
-		".memoh/skills/hooks-setup/SKILL.md",
-		".memoh/skills/memoh-help/SKILL.md",
+		".ami/hooks.json",
+		".ami/skills/.gitkeep",
+		".ami/skills/skill-creator/SKILL.md",
+		".ami/skills/hooks-setup/SKILL.md",
+		".ami/skills/ami-help/SKILL.md",
 	}
 	fsys := WorkspaceFS()
 	for _, name := range wantFiles {
@@ -40,7 +40,7 @@ func TestWorkspaceFSHasNoUnexpectedRoots(t *testing.T) {
 		"AGENTS.md":   false,
 		"MEMORY.md":   false,
 		"PROFILES.md": false,
-		".memoh":      true,
+		".ami":      true,
 	}
 	for _, entry := range entries {
 		isDir, ok := want[entry.Name()]
