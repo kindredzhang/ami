@@ -2,9 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEventListener, usePreferredReducedMotion } from '@vueuse/core'
-import { X } from 'lucide-vue-next'
-import { Button, TextButton, toast } from '@felinic/ui'
-import { useChatExamplesUi } from '@/components/chat-examples/use-chat-examples-ui'
+import { TextButton, toast } from '@felinic/ui'
 import { useStarterPromptsQuery } from '@/composables/api/useStarterPrompts'
 import { useComposerPrefill } from '@/composables/useComposerPrefill'
 import { COMPOSER_PREVIEW_LANDING_MS, type ComposerPreview } from '../composables/useComposerPreview'
@@ -38,7 +36,6 @@ const props = defineProps<{
 const preview = defineModel<ComposerPreview | null>('preview', { default: null })
 
 const { t } = useI18n()
-const { welcomeDismissed } = useChatExamplesUi()
 const { prefillComposer } = useComposerPrefill()
 const reducedMotion = usePreferredReducedMotion()
 
@@ -58,7 +55,8 @@ const rows = computed<StarterPromptRow[] | null>(() => {
 /** Whether the composer is currently showing the preview. */
 const previewShown = computed(() => props.composerReplaceable && preview.value !== null)
 
-const visible = computed(() => !welcomeDismissed.value && (rows.value === null || rows.value.length > 0))
+// 建议模块固定展示，不提供关闭入口（产品要求：不可关闭）。
+const visible = computed(() => rows.value === null || rows.value.length > 0)
 
 async function refresh() {
   preview.value = null
@@ -128,17 +126,6 @@ async function select(row: StarterPromptRow) {
         >
           {{ $t('chatExamples.refresh') }}
         </TextButton>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          shape="circle"
-          class="-mr-2 text-muted-foreground"
-          :aria-label="$t('chatExamples.dismiss')"
-          @click="welcomeDismissed = true"
-        >
-          <X class="size-4" />
-        </Button>
       </div>
     </div>
     <StarterPromptList

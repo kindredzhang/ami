@@ -82,7 +82,7 @@
               </div>
 
               <!-- Cold-open placeholder while a session's first page is on the
-                   wire — Arkloop's ChatSkeleton shape, re-derived on Memoh
+                   wire — Arkloop's ChatSkeleton shape, re-derived on Ami
                    geometry: chat text is 16px at --chat-leading 1.48 ≈ 24px
                    line pitch, so a real one-line user bubble is py-3 + 24px =
                    48px tall and ~10 CJK chars + px-4 ≈ 192px wide; each reply
@@ -1056,16 +1056,16 @@
                     >
                       <DropdownMenuLabel>{{ $t('chat.agent') }}</DropdownMenuLabel>
                       <DropdownMenuItem
-                        @mouseenter="hoveredAgentChoice = 'memoh'"
+                        @mouseenter="hoveredAgentChoice = 'ami'"
                         @mouseleave="hoveredAgentChoice = ''"
-                        @select="selectMemohAgent"
+                        @select="selectAmiAgent"
                       >
                         <component
-                          :is="!activeUsesExternalAgentComposer || hoveredAgentChoice === 'memoh' ? MemohColor : MemohIcon"
+                          :is="!activeUsesExternalAgentComposer || hoveredAgentChoice === 'ami' ? AmiColor : AmiIcon"
                           class="size-4 shrink-0 text-muted-foreground"
                           aria-hidden="true"
                         />
-                        <span class="min-w-0 flex-1 truncate">{{ $t('chat.agentMemoh') }}</span>
+                        <span class="min-w-0 flex-1 truncate">{{ $t('chat.agentAmi') }}</span>
                         <Check
                           v-if="!activeUsesExternalAgentComposer"
                           class="ml-auto"
@@ -1233,20 +1233,6 @@
                   </Button>
                 </div>
 
-                <!-- Brings back the hidden welcome suggestions. It lives on this
-                     row so it lines up with the other session controls, in
-                     the slot the context ring takes once a chat starts. -->
-                <Button
-                  v-if="isWelcome && welcomeDismissed && voiceInputState === 'idle'"
-                  type="button"
-                  variant="quiet"
-                  size="sm"
-                  class="ml-auto shrink-0 gap-1.5 px-1.5 font-normal max-md:h-11"
-                  @click="welcomeDismissed = false"
-                >
-                  <Lightbulb class="size-3.5 shrink-0" />
-                  <span class="text-label">{{ $t('chatExamples.tryThese') }}</span>
-                </Button>
                 <SessionInfoRing
                   v-if="showSessionInfoRing && voiceInputState === 'idle'"
                   class="ml-auto shrink-0"
@@ -1284,8 +1270,8 @@
 </template>
 
 <script setup lang="ts">
-import { Memoh as MemohIcon, MemohColor } from '@memohai/icon'
-import { AddIcon, UploadIcon } from '@memohai/icon/ui'
+import { Ami as AmiIcon, AmiColor } from '@ami/icon'
+import { AddIcon, UploadIcon } from '@ami/icon/ui'
 
 import { EXTERNAL_AGENT_DEFAULT_PROJECT_PATH, normalizeAgentID } from '@/utils/external-agent'
 import { ref, reactive, shallowReactive, computed, onBeforeUnmount, useTemplateRef, watch, onWatcherCleanup, nextTick, onActivated, onDeactivated } from 'vue'
@@ -1315,8 +1301,8 @@ import { useRuntimeControls } from '@/composables/useRuntimeControls'
 import { useCodexUsage } from '@/composables/useCodexUsage'
 import { codexUsageNotice, codexUsageNoticeKey, codexUsageResetTime, codexUsageWindowLabel } from '@/utils/codex-usage'
 import { useQuery } from '@pinia/colada'
-import { deleteBotsByBotIdSessionsBySessionIdAcpRuntimeNativeSession, getAcpProfiles, getBotsByBotIdSettings, getBotsByBotIdWorkspaceTargets, postTranscriptionModelsByIdTest } from '@memohai/sdk'
-import type { AcpprofilePublicProfile, BotagentsBotAgent, WorkspaceWorkspaceTarget } from '@memohai/sdk'
+import { deleteBotsByBotIdSessionsBySessionIdAcpRuntimeNativeSession, getAcpProfiles, getBotsByBotIdSettings, getBotsByBotIdWorkspaceTargets, postTranscriptionModelsByIdTest } from '@ami/sdk'
+import type { AcpprofilePublicProfile, BotagentsBotAgent, WorkspaceWorkspaceTarget } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { CHAT_ROUTE_NAMES } from '@/constants/chat-routes'
@@ -1356,7 +1342,6 @@ import { useMediaGallery } from '../composables/useMediaGallery'
 import { ATTACHMENT_ANIM_MS, attachmentToFile, fileToAttachment, useComposerAttachments } from '../composables/useComposerAttachments'
 import { useComposerDrafts } from '../composables/useComposerDrafts'
 import ChatExampleSuggestions from './chat-example-suggestions.vue'
-import { useChatExamplesUi } from '@/components/chat-examples/use-chat-examples-ui'
 import { useComposerPrefillConsumer } from '../composables/useComposerPrefillConsumer'
 import { useComposerPreviewBox, type ComposerPreview } from '../composables/useComposerPreview'
 import { useAsyncConfirm } from '@/composables/useAsyncConfirm'
@@ -1379,7 +1364,7 @@ import { useAgentModelCatalog } from '@/composables/useAgentModelCatalog'
 import { isACPAgentConfigured } from '@/utils/acp'
 import { BOT_AGENT_RUNTIME_ACP, BOT_AGENT_RUNTIME_CODEX, botAgentIcon, botAgentName, botAgentProvider, isDirectBotAgentConfigured, isDirectBotAgentRuntime, normalizeBotAgentRuntime, sessionAgentProvider } from '@/utils/bot-agent'
 import { useBotAgentsQuery } from '@/composables/api/useBotAgents'
-import { UserFacingError, isApiErrorCode, parseMemohError, resolveApiErrorMessage } from '@/utils/api-error'
+import { UserFacingError, isApiErrorCode, parseAmiError, resolveApiErrorMessage } from '@/utils/api-error'
 import { hasBotPermission } from '@/utils/bot-permissions'
 import { workspaceTargetAvailable } from '@/utils/workspace-target'
 import { modelAccepts } from '@/utils/model-capabilities'
@@ -1451,7 +1436,6 @@ const {
 } = storeToRefs(chatStore)
 
 const isActive = computed(() => props.active !== false)
-const { welcomeDismissed } = useChatExamplesUi()
 const isVisible = computed(() => props.visible !== false)
 const paneTarget = computed(() => ({
   botId: currentBotId.value?.trim() ?? '',
@@ -1591,8 +1575,8 @@ const WELCOME_GREETING_KEYS = [
 ] as const
 
 // Arkloop ChatSkeleton's width sequence, verbatim — percentages of the column,
-// so they scale with Memoh's layout; heights/pitches above are derived from
-// Memoh's own chat metrics, not copied.
+// so they scale with Ami's layout; heights/pitches above are derived from
+// Ami's own chat metrics, not copied.
 const CHAT_SKELETON_BAR_WIDTHS = ['85%', '65%', '90%', '55%', '75%', '60%', '80%', '50%', '70%', '40%'] as const
 // Loading shorter than this never shows the placeholder at all.
 const CHAT_SKELETON_REVEAL_DELAY_MS = 200
@@ -1648,7 +1632,7 @@ function isForkableTurn(message: ChatMessage): boolean {
 }
 
 // Retry/edit rewrite persisted history and replay it, which only runtimes
-// whose context Memoh itself assembles can honor.
+// whose context Ami itself assembles can honor.
 const activeSupportsTurnReplacement = computed(() => activeChatTarget.value.runtimeType === 'model')
 
 // The turn id, not a message id: a turn carries it from admission, so the
@@ -1724,7 +1708,7 @@ const { data: botSettings, isLoading: botSettingsLoading, status: botSettingsSta
       path: { bot_id: currentBotId.value! },
       throwOnError: true,
     })
-    return data as import('@memohai/sdk').SettingsSettings | undefined
+    return data as import('@ami/sdk').SettingsSettings | undefined
   },
   enabled: () => !!currentBotId.value,
 })
@@ -2024,7 +2008,7 @@ const activeDirectRuntime = computed(() => {
   return isDirectBotAgentRuntime(runtime) ? runtime : ''
 })
 const activeUsesDirectRuntime = computed(() => activeDirectRuntime.value !== '')
-// For external agents Memoh only sees the part of the context it injects, so
+// For external agents Ami only sees the part of the context it injects, so
 // a reading built from that would understate the real window; they get no
 // entry until a runtime reports its own current context usage.
 const showSessionInfoRing = computed(() => !isWelcome.value && !!activeSession.value && !activeUsesExternalAgentComposer.value)
@@ -2042,10 +2026,10 @@ const composerAgent = computed(() => {
     metadata: { provider: activeDirectRuntime.value || activeACPAgentId.value },
   }
 })
-const composerAgentIcon = computed(() => composerAgent.value ? botAgentIcon(composerAgent.value) : MemohIcon)
+const composerAgentIcon = computed(() => composerAgent.value ? botAgentIcon(composerAgent.value) : AmiIcon)
 const composerAgentName = computed(() => composerAgent.value
   ? botAgentName(composerAgent.value)
-  : t('chat.agentMemoh'))
+  : t('chat.agentAmi'))
 const activeACPProjectPath = computed(() => String(activeSessionMetadata.value.project_path ?? '').trim())
 const acpOperationScope = computed(() => JSON.stringify([
   paneTarget.value.botId,
@@ -2260,7 +2244,7 @@ watch(streaming, (now, was) => {
   else codexUsageTurnAgentId.value = codexUsageAgentId.value
 })
 // Dismissal holds until the window resets: a new reset time is a new key.
-const dismissedCodexUsageNotices = useLocalStorage<Record<string, string>>('memoh:codex-usage-dismissed', {})
+const dismissedCodexUsageNotices = useLocalStorage<Record<string, string>>('ami:codex-usage-dismissed', {})
 const codexUsageNoticeState = computed(() => {
   const notice = codexUsageNotice(codexUsage.data.value)
   return notice ? { notice, key: codexUsageNoticeKey(codexUsageAgentId.value, notice) } : null
@@ -2437,7 +2421,7 @@ async function runPendingPermission(text: string) {
       },
     })
   } catch (error) {
-    complete({ type: 'command_error', terminal: true, code: parseMemohError(error)?.code || 'runtime_control.failed', message: resolveApiErrorMessage(error, t('chat.modeSwitchFailed')) })
+    complete({ type: 'command_error', terminal: true, code: parseAmiError(error)?.code || 'runtime_control.failed', message: resolveApiErrorMessage(error, t('chat.modeSwitchFailed')) })
   }
 }
 
@@ -3219,7 +3203,7 @@ async function selectBotAgent(agent: BotagentsBotAgent) {
   }
 }
 
-function selectMemohAgent() {
+function selectAmiAgent() {
   if (agentChanging.value || !canChangeAgent.value) return
   agentPopoverOpen.value = false
   chatStore.resetToEmptyComposer({ explicitSelection: true }, paneTarget.value)
@@ -4289,7 +4273,7 @@ async function executeRuntimeComposerCommand(runtimeCommand: RuntimeCommand) {
       result: { kind: 'runtime_command', title, ...(Object.keys(result).length ? result : { text: runtimeCommand.completed_text, text_key: 'common.toast.success' }) },
     })
   } catch (error) {
-    complete({ type: 'command_error', terminal: true, code: parseMemohError(error)?.code || 'runtime_control.failed', message: resolveApiErrorMessage(error, t('errors.runtime_control.failed')) })
+    complete({ type: 'command_error', terminal: true, code: parseAmiError(error)?.code || 'runtime_control.failed', message: resolveApiErrorMessage(error, t('errors.runtime_control.failed')) })
   }
   return
 }
