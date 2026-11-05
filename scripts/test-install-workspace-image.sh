@@ -137,53 +137,53 @@ EOF
 FRESH_HOME="$TMPDIR/fresh"
 AMI_INSTALL_MODE=fresh run_installer "$FRESH_HOME" v0.19.0 "$TMPDIR/fresh.out"
 fresh_image=$(read_workspace_image "$FRESH_HOME/ami/config.toml" container)
-[ "$fresh_image" = "amiai/workspace:0.19.0-debian" ] || {
+[ "$fresh_image" = "memohai/workspace:0.19.0-debian" ] || {
   echo "fresh install workspace image = $fresh_image" >&2
   cat "$TMPDIR/fresh.out" >&2
   exit 1
 }
-grep -q "amiai/server:0.19.0" "$FRESH_HOME/ami/docker-compose.yml"
-grep -q "AMI_INSTALLER_WORKSPACE_IMAGE='amiai/workspace:0.19.0-debian'" "$FRESH_HOME/ami/.env"
+grep -q "memohai/server:0.19.0" "$FRESH_HOME/ami/docker-compose.yml"
+grep -q "AMI_INSTALLER_WORKSPACE_IMAGE='memohai/workspace:0.19.0-debian'" "$FRESH_HOME/ami/.env"
 
 FALLBACK_HOME="$TMPDIR/fallback"
 AMI_INSTALL_MODE=fresh run_installer "$FALLBACK_HOME" "" "$TMPDIR/fallback.out"
 fallback_image=$(read_workspace_image "$FALLBACK_HOME/ami/config.toml" container)
-[ "$fallback_image" = "amiai/workspace:debian-latest" ] || {
+[ "$fallback_image" = "memohai/workspace:debian-latest" ] || {
   echo "fallback workspace image = $fallback_image" >&2
   cat "$TMPDIR/fallback.out" >&2
   exit 1
 }
-grep -q "amiai/server:latest" "$FALLBACK_HOME/ami/docker-compose.yml"
+grep -q "memohai/server:latest" "$FALLBACK_HOME/ami/docker-compose.yml"
 
 MANAGED_HOME="$TMPDIR/managed"
-prepare_upgrade "$MANAGED_HOME" "amiai/workspace:debian"
+prepare_upgrade "$MANAGED_HOME" "memohai/workspace:debian"
 AMI_INSTALL_MODE=upgrade run_installer "$MANAGED_HOME" v0.19.0 "$TMPDIR/managed-19.out"
 AMI_INSTALL_MODE=upgrade run_installer "$MANAGED_HOME" v0.20.0 "$TMPDIR/managed-20.out"
 managed_image=$(read_workspace_image "$MANAGED_HOME/ami/config.toml" container)
-[ "$managed_image" = "amiai/workspace:0.20.0-debian" ] || {
+[ "$managed_image" = "memohai/workspace:0.20.0-debian" ] || {
   echo "managed upgrade workspace image = $managed_image" >&2
   cat "$TMPDIR/managed-20.out" >&2
   exit 1
 }
-grep -q "AMI_INSTALLER_WORKSPACE_IMAGE='amiai/workspace:0.20.0-debian'" "$MANAGED_HOME/ami/.env"
+grep -q "AMI_INSTALLER_WORKSPACE_IMAGE='memohai/workspace:0.20.0-debian'" "$MANAGED_HOME/ami/.env"
 
 MISSING_HOME="$TMPDIR/missing"
-prepare_upgrade "$MISSING_HOME" "amiai/workspace:debian"
+prepare_upgrade "$MISSING_HOME" "memohai/workspace:debian"
 sed -i.bak '/^[[:space:]]*default_image[[:space:]]*=/d' "$MISSING_HOME/ami/config.toml"
 rm "$MISSING_HOME/ami/config.toml.bak"
 AMI_INSTALL_MODE=upgrade run_installer "$MISSING_HOME" v0.20.0 "$TMPDIR/missing.out"
 missing_image=$(read_workspace_image "$MISSING_HOME/ami/config.toml" container)
-[ "$missing_image" = "amiai/workspace:0.20.0-debian" ] || {
+[ "$missing_image" = "memohai/workspace:0.20.0-debian" ] || {
   echo "missing default workspace image = $missing_image" >&2
   cat "$TMPDIR/missing.out" >&2
   exit 1
 }
 
 LEGACY_HOME="$TMPDIR/legacy"
-prepare_legacy_upgrade "$LEGACY_HOME" "amiai/workspace:debian"
+prepare_legacy_upgrade "$LEGACY_HOME" "memohai/workspace:debian"
 AMI_INSTALL_MODE=upgrade run_installer "$LEGACY_HOME" v0.20.0 "$TMPDIR/legacy.out"
 legacy_image=$(read_workspace_image "$LEGACY_HOME/ami/config.toml" workspace)
-[ "$legacy_image" = "amiai/workspace:0.20.0-debian" ] || {
+[ "$legacy_image" = "memohai/workspace:0.20.0-debian" ] || {
   echo "legacy workspace image = $legacy_image" >&2
   cat "$TMPDIR/legacy.out" >&2
   exit 1
@@ -196,7 +196,7 @@ fi
 
 CUSTOM_HOME="$TMPDIR/custom"
 prepare_upgrade "$CUSTOM_HOME" "registry.example/workspace:gold"
-printf "AMI_INSTALLER_WORKSPACE_IMAGE='amiai/workspace:0.19.0-debian'\n" > "$CUSTOM_HOME/ami/.env"
+printf "AMI_INSTALLER_WORKSPACE_IMAGE='memohai/workspace:0.19.0-debian'\n" > "$CUSTOM_HOME/ami/.env"
 AMI_INSTALL_MODE=upgrade run_installer "$CUSTOM_HOME" v0.20.0 "$TMPDIR/custom.out"
 custom_image=$(read_workspace_image "$CUSTOM_HOME/ami/config.toml" container)
 [ "$custom_image" = "registry.example/workspace:gold" ] || {

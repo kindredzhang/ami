@@ -343,7 +343,7 @@ func TestStartWithImageDoesNotRecreateExistingContainer(t *testing.T) {
 		created: true,
 		container: ctr.ContainerInfo{
 			ID:    ContainerPrefix + botID,
-			Image: "docker.io/amiai/workspace:debian",
+			Image: "docker.io/memohai/workspace:debian",
 		},
 	}
 	m := newLegacyRouteTestManager(t, svc, config.WorkspaceConfig{

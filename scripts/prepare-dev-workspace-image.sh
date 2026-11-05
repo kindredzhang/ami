@@ -13,7 +13,7 @@ set -eu
 # upstream packages pulled by apt.
 
 repo_root="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
-image="${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
+image="${AMI_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
 cache_dir="${AMI_DEV_WORKSPACE_CACHE_DIR:-$repo_root/.cache/ami}"
 archive="$cache_dir/workspace-debian.tar"
 stamp="$cache_dir/workspace-debian.stamp"

@@ -138,7 +138,7 @@ services:
       TZ: "${AMI_DEV_TZ:-UTC}"
       # Entrypoint only: which ref the workspace archive carries, so it can tell
       # whether containerd already holds it and skip the ~1GB re-import.
-      AMI_DEV_WORKSPACE_IMAGE: "${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
+      AMI_DEV_WORKSPACE_IMAGE: "${AMI_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
       AMI_CONNECT_IT_BASE_URL: "${AMI_CONNECT_IT_BASE_URL:-}"
       AMI_CONNECT_IT_API_TOKEN: "${AMI_CONNECT_IT_API_TOKEN:-}"
       # Tracing is off unless you point this at a collector, e.g.

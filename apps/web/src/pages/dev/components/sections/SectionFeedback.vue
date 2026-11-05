@@ -238,7 +238,7 @@ const rawChatError = 'Upstream 429: rate limit exceeded for organization org_7Hq
           <Button
             variant="outline"
             size="sm"
-            @click="toast.error('not found: readdir: open /Users/qqqqqf/.amiai/workspaces/1/documents/项目: no such file or directory')"
+            @click="toast.error('not found: readdir: open /Users/qqqqqf/.memohai/workspaces/1/documents/项目: no such file or directory')"
           >
             Raw backend error
           </Button>
@@ -252,7 +252,7 @@ const rawChatError = 'Upstream 429: rate limit exceeded for organization org_7Hq
           <Button
             variant="outline"
             size="sm"
-            @click="toast.error('Upload failed', { description: 'Could not write /Users/qqqqqf/.amiai/workspaces/1/documents/项目/long-unbreakable-filename-without-spaces-1234567890.bin — the destination directory does not exist.' })"
+            @click="toast.error('Upload failed', { description: 'Could not write /Users/qqqqqf/.memohai/workspaces/1/documents/项目/long-unbreakable-filename-without-spaces-1234567890.bin — the destination directory does not exist.' })"
           >
             Long title + desc
           </Button>

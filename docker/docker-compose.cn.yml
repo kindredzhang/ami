@@ -4,8 +4,8 @@ services:
   pgvector:
     image: ami.cn/pgvector/pgvector:pg18
   migrate:
-    image: ami.cn/amiai/server:latest
+    image: ami.cn/memohai/server:latest
   server:
-    image: ami.cn/amiai/server:latest
+    image: ami.cn/memohai/server:latest
   web:
-    image: ami.cn/amiai/web:latest
+    image: ami.cn/memohai/web:latest

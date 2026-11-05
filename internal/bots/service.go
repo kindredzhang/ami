@@ -474,12 +474,29 @@ func (s *Service) resolveName(ctx context.Context, rawName, displayName, exclude
 	}
 }
 
-// DefaultBotName is the stable slug of the starter expert every new account
-// receives. It is a valid bot name (see name.go) so it needs no slugging.
-const DefaultBotName = "assistant"
+// DefaultBotSlugPrefix prefixes every starter expert's name slug. Bot names are
+// unique per team (idx_bots_name is UNIQUE (team_id, name)), not per owner, so
+// a fixed name would let the first account claim it and silently starve every
+// later account. The owner id keeps each starter expert distinct while the
+// display name stays identical for people.
+const DefaultBotSlugPrefix = "assistant"
 
 // DefaultBotDisplayName is what a new account sees first.
-const DefaultBotDisplayName = "助手"
+const DefaultBotDisplayName = "东风小助手"
+
+// defaultBotNameFor derives a collision-free slug for one owner's starter
+// expert, e.g. "assistant-3bc32e90". Ids are uuid text, so this stays a valid
+// bot name (lowercase alphanumerics and dashes, <= 63 chars).
+func defaultBotNameFor(ownerUserID string) string {
+	suffix := strings.ReplaceAll(strings.ToLower(strings.TrimSpace(ownerUserID)), "-", "")
+	if len(suffix) > 12 {
+		suffix = suffix[:12]
+	}
+	if suffix == "" {
+		return DefaultBotSlugPrefix
+	}
+	return DefaultBotSlugPrefix + "-" + suffix
+}
 
 // EnsureDefaultBot gives a freshly created account its starter expert.
 //
@@ -492,7 +509,7 @@ func (s *Service) EnsureDefaultBot(ctx context.Context, ownerUserID string) erro
 		return errors.New("owner user id is required")
 	}
 	_, err := s.Create(ctx, owner, CreateBotRequest{
-		Name:        DefaultBotName,
+		Name:        defaultBotNameFor(owner),
 		DisplayName: DefaultBotDisplayName,
 		DeferWake:   true,
 	})

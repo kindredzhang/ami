@@ -239,12 +239,16 @@ func (s *Service) CreateHuman(ctx context.Context, userID string, req CreateAcco
 			return Account{}, errors.New("create user: invalid id")
 		}
 		userID = userRow.ID
-		// A brand-new human gets their starter expert. Best-effort: a failure
-		// here must not roll back an account that was already created, because
-		// the user can still make experts by hand.
-		s.ensureDefaultBot(ctx, userID)
 	}
-	return s.Create(ctx, userID, req)
+	account, err := s.Create(ctx, userID, req)
+	if err != nil {
+		return Account{}, err
+	}
+	// Provision the starter expert only after the account row exists — expert
+	// creation validates that the owner is a real account. Best-effort: a
+	// failure here must not fail a registration that already succeeded.
+	s.ensureDefaultBot(ctx, userID)
+	return account, nil
 }
 
 // ensureDefaultBot provisions the starter expert, logging rather than failing.

@@ -179,7 +179,7 @@ func startServer(lc fx.Lifecycle, logger *slog.Logger, srv *server.Server, agent
 
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			if err := coremodule.EnsureAdminUser(ctx, logger, accountStore, cfg); err != nil {
+			if err := coremodule.EnsureAdminUser(ctx, logger, accountStore, cfg, botService); err != nil {
 				return err
 			}
 			botService.SetContainerReachability(func(ctx context.Context, botID string) error {

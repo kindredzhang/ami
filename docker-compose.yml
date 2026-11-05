@@ -43,7 +43,7 @@ services:
       - ami-network
 
   migrate:
-    image: amiai/server:latest
+    image: memohai/server:latest
     container_name: ami-migrate
     entrypoint: ["/app/ami-server", "migrate", "up"]
     volumes:
@@ -58,7 +58,7 @@ services:
 
   server:
     stop_grace_period: 45s
-    image: amiai/server:latest
+    image: memohai/server:latest
     container_name: ami-server
     privileged: true
     pid: host
@@ -111,7 +111,7 @@ services:
       - ami-network
 
   channel:
-    image: amiai/server:latest
+    image: memohai/server:latest
     container_name: ami-channel
     entrypoint: ["/app/ami-channel", "serve"]
     extra_hosts:
@@ -206,7 +206,7 @@ services:
       - ami-network
 
   web:
-    image: amiai/web:latest
+    image: memohai/web:latest
     container_name: ami-web
     environment:
       AMI_SERVER_UPSTREAM: ${AMI_SERVER_UPSTREAM:-ami-server:8080}

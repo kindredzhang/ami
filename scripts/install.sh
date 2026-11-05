@@ -527,9 +527,9 @@ load_existing_settings() {
 
 select_workspace_image() {
   if [ "$AMI_DOCKER_VERSION" = "latest" ]; then
-    release_workspace_image="amiai/workspace:debian-latest"
+    release_workspace_image="memohai/workspace:debian-latest"
   else
-    release_workspace_image="amiai/workspace:${AMI_DOCKER_VERSION}-debian"
+    release_workspace_image="memohai/workspace:${AMI_DOCKER_VERSION}-debian"
   fi
 
   WORKSPACE_IMAGE="$release_workspace_image"
@@ -541,7 +541,7 @@ select_workspace_image() {
   WORKSPACE_IMAGE_SECTION="$EXISTING_WORKSPACE_IMAGE_SECTION"
 
   case "$EXISTING_WORKSPACE_IMAGE" in
-    ""|amiai/workspace:debian|docker.io/amiai/workspace:debian|amiai/workspace:debian-latest|docker.io/amiai/workspace:debian-latest)
+    ""|memohai/workspace:debian|docker.io/memohai/workspace:debian|memohai/workspace:debian-latest|docker.io/memohai/workspace:debian-latest)
       return
       ;;
   esac
@@ -930,13 +930,13 @@ fi
 
 # Pin Docker image versions in the selected compose file.
 if [ "$AMI_DOCKER_VERSION" != "latest" ]; then
-    sed -i.bak "s|amiai/server:latest|amiai/server:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
+    sed -i.bak "s|memohai/server:latest|memohai/server:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
     sed -i.bak "s|amiai/agent:latest|amiai/agent:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
-    sed -i.bak "s|amiai/web:latest|amiai/web:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
+    sed -i.bak "s|memohai/web:latest|memohai/web:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
     rm -f "${COMPOSE_FILE_NAME}.bak"
     if [ "$USE_CN_MIRROR" = true ]; then
-      sed -i.bak "s|ami.cn/amiai/server:latest|ami.cn/amiai/server:${AMI_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
-      sed -i.bak "s|ami.cn/amiai/web:latest|ami.cn/amiai/web:${AMI_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
+      sed -i.bak "s|ami.cn/memohai/server:latest|ami.cn/memohai/server:${AMI_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
+      sed -i.bak "s|ami.cn/memohai/web:latest|ami.cn/memohai/web:${AMI_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
       rm -f "${CN_COMPOSE_FILE_NAME}.bak"
     fi
     echo "${GREEN}✓ Docker images pinned to ${AMI_DOCKER_VERSION}${NC}"

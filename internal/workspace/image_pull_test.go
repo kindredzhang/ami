@@ -96,8 +96,8 @@ func TestPrepareImageForCreateDelegatesWhenImageServiceUnsupported(t *testing.T)
 }
 
 func TestPrepareImageForCreateFallsBackToWorkspaceMirror(t *testing.T) {
-	primary := "docker.io/amiai/workspace:debian-latest"
-	fallback := "ami.cn/amiai/workspace:debian-latest"
+	primary := "docker.io/memohai/workspace:debian-latest"
+	fallback := "ami.cn/memohai/workspace:debian-latest"
 	svc := &legacyRouteTestService{
 		getImageErr: ctr.ErrNotFound,
 		pullErrs: map[string]error{
@@ -108,7 +108,7 @@ func TestPrepareImageForCreateFallsBackToWorkspaceMirror(t *testing.T) {
 		ImagePullPolicy: config.ImagePullPolicyIfNotPresent,
 	})
 
-	result, err := m.PrepareImageForCreate(context.Background(), "amiai/workspace:debian-latest", nil)
+	result, err := m.PrepareImageForCreate(context.Background(), "memohai/workspace:debian-latest", nil)
 	if err != nil {
 		t.Fatalf("PrepareImageForCreate returned error: %v", err)
 	}
@@ -124,8 +124,8 @@ func TestPrepareImageForCreateFallsBackToWorkspaceMirror(t *testing.T) {
 }
 
 func TestPrepareImageForCreateSkipsExistingWorkspaceMirror(t *testing.T) {
-	primary := "docker.io/amiai/workspace:debian-latest"
-	fallback := "ami.cn/amiai/workspace:debian-latest"
+	primary := "docker.io/memohai/workspace:debian-latest"
+	fallback := "ami.cn/memohai/workspace:debian-latest"
 	svc := &legacyRouteTestService{
 		getImageErrs: map[string]error{
 			primary: ctr.ErrNotFound,
@@ -135,7 +135,7 @@ func TestPrepareImageForCreateSkipsExistingWorkspaceMirror(t *testing.T) {
 		ImagePullPolicy: config.ImagePullPolicyIfNotPresent,
 	})
 
-	result, err := m.PrepareImageForCreate(context.Background(), "amiai/workspace:debian-latest", nil)
+	result, err := m.PrepareImageForCreate(context.Background(), "memohai/workspace:debian-latest", nil)
 	if err != nil {
 		t.Fatalf("PrepareImageForCreate returned error: %v", err)
 	}

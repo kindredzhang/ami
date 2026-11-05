@@ -35,7 +35,7 @@ driver = "postgres"
 
 [container]
 backend = "containerd"
-default_image = "amiai/workspace:debian"
+default_image = "memohai/workspace:debian"
 image_pull_policy = "if_not_present"
 snapshotter = "overlayfs"
 data_root = "/opt/ami/data"

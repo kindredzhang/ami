@@ -33,7 +33,7 @@ uses this image-level check; it validates a dependency at its point of use.
    and managed dependency state.
 2. Pin `[container].default_image` and any per-workspace image choices to the old
    image digest. For example, use
-   `amiai/workspace@sha256:<recorded-old-image-digest>`. Changing the default
+   `memohai/workspace@sha256:<recorded-old-image-digest>`. Changing the default
    does not replace an existing workspace's image. Do not rely on
    `debian`, `debian-dev`, `debian-latest`, `latest`, or a partial version tag:
    these can move independently of the running Server. `if_not_present` is a

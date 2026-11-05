@@ -1306,7 +1306,13 @@ func startContainerReconciliation(lc fx.Lifecycle, manager *workspace.Manager, _
 
 // EnsureAdminUser bootstraps the admin account on first start. Exported
 // for the composing commands that host the HTTP server.
-func EnsureAdminUser(ctx context.Context, log *slog.Logger, accountStore dbstore.AccountStore, cfg config.Config) error {
+// DefaultExpertProvisioner is the narrow port EnsureAdminUser needs; the bots
+// service satisfies it.
+type DefaultExpertProvisioner interface {
+	EnsureDefaultBot(ctx context.Context, ownerUserID string) error
+}
+
+func EnsureAdminUser(ctx context.Context, log *slog.Logger, accountStore dbstore.AccountStore, cfg config.Config, botProvisioner DefaultExpertProvisioner) error {
 	if accountStore == nil {
 		return errors.New("account store not configured")
 	}
@@ -1355,6 +1361,15 @@ func EnsureAdminUser(ctx context.Context, log *slog.Logger, accountStore dbstore
 		return err
 	}
 	log.InfoContext(ctx, "Admin user created", slog.String("username", username))
+
+	// The bootstrap admin is a real person's account too, so it gets the same
+	// starter expert every other account receives.
+	if botProvisioner != nil {
+		if err := botProvisioner.EnsureDefaultBot(ctx, user.ID); err != nil {
+			log.WarnContext(ctx, "failed to provision admin default expert",
+				slog.String("user_id", user.ID), slog.Any("error", err))
+		}
+	}
 	return nil
 }
 

@@ -46,9 +46,9 @@ const (
 	DefaultPGVectorSSLMode       = "disable"
 	DefaultRuntimeDir            = "/opt/ami/runtime"
 	DefaultBridgePath            = DefaultRuntimeDir + "/bridge"
-	DefaultWorkspaceImage        = "amiai/workspace:debian-latest"
+	DefaultWorkspaceImage        = "memohai/workspace:debian-latest"
 	DefaultBaseImage             = DefaultWorkspaceImage
-	DefaultWorkspaceMirrorImage  = "ami.cn/amiai/workspace:debian-latest"
+	DefaultWorkspaceMirrorImage  = "ami.cn/memohai/workspace:debian-latest"
 	DefaultTimezone              = "UTC"
 	DefaultAgentToolOutputBytes  = 32 * 1024
 	DefaultAgentToolOutputLines  = 2000

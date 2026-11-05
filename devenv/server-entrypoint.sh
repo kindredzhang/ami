@@ -61,7 +61,7 @@ if [ ! -r "$workspace_image_archive" ]; then
 fi
 
 containerd_namespace="${AMI_CONTAINERD_NAMESPACE:-default}"
-workspace_image_ref="${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
+workspace_image_ref="${AMI_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
 # Importing the ~1GB archive takes far longer than the rest of this entrypoint,
 # and it happens on every container start. The stamp records which archive the
 # store already holds; it lives inside /var/lib/containerd so it is wiped by the

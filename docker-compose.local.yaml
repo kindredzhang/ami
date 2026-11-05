@@ -1,19 +1,17 @@
-# 本地构建镜像的覆盖文件：让 compose 使用你自己编译的 ami 代码，
-# 而不是上游预置镜像。
+# 本地构建镜像的覆盖文件：让 compose 使用你自己编译的 ami 代码。
 #
 #   docker compose --env-file .env.runtime -f docker-compose.yml -f docker-compose.local.yaml up -d
 #
-# 用本地镜像时，容器内的二进制名为 ami-server / ami-channel，
-# 与镜像内路径一致，无需 AMI_* 兼容变量。
+# 注意：不要覆盖 entrypoint。镜像里的 /entrypoint.sh 负责启动嵌套
+# containerd、准备 cgroup 委派等，直接指定二进制会跳过这些步骤，
+# 导致工作区永远起不来（表现为 bot 卡在 creating/failed）。
 services:
   migrate:
     image: ami/server:local
+    # migrate 是一次性任务，不需要 workspace 运行时，直接调二进制。
     entrypoint: ["/app/ami-server", "migrate", "up"]
   server:
     image: ami/server:local
-    # 本地镜像的二进制叫 ami-server；上游镜像的 entrypoint 已被覆盖，
-    # 这里显式指定，避免继承旧镜像的 entrypoint。
-    entrypoint: ["/app/ami-server", "serve"]
   channel:
     image: ami/server:local
     entrypoint: ["/app/ami-channel", "serve"]

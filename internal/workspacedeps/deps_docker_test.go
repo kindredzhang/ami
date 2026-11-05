@@ -27,7 +27,7 @@ import (
 // in use (the re-install case: `current` must be valid afterwards
 // and no .previous-*/.staging-* residue may remain) → remove.
 //
-// It needs a Docker daemon with the workspace image (amiai/workspace:debian
+// It needs a Docker daemon with the workspace image (memohai/workspace:debian
 // by default, AMI_DEPS_TEST_IMAGE overrides it) and network access, and it
 // takes several minutes per npm-based dependency:
 //
@@ -118,7 +118,7 @@ func TestDockerRemoveImageDependencies(t *testing.T) {
 }
 
 const (
-	dockerTestDefaultImage = "amiai/workspace:debian"
+	dockerTestDefaultImage = "memohai/workspace:debian"
 	// dockerTestDepsRoot is where the per-dependency volume is mounted inside
 	// the container. It plays the role of DepsRoot(dataRoot), so the home is
 	// /tmp/deps/<id>, the shim dir /tmp/deps/bin, and the lock directory

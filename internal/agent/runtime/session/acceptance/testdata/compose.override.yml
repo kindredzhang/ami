@@ -41,7 +41,7 @@ services:
       CONFIG_PATH: /workspace/devenv/app.dev.toml
       GOFLAGS: -buildvcs=false
       TZ: "${AMI_DEV_TZ:-UTC}"
-      AMI_DEV_WORKSPACE_IMAGE: "${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
+      AMI_DEV_WORKSPACE_IMAGE: "${AMI_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
       NO_PROXY: "127.0.0.1,localhost,host.docker.internal,postgres,pgvector,server,server_b"
       no_proxy: "127.0.0.1,localhost,host.docker.internal,postgres,pgvector,server,server_b"
     volumes:
