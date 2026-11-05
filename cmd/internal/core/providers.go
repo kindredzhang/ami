@@ -908,7 +908,7 @@ func provideContainerdHandler(log *slog.Logger, manager *workspace.Manager, cfg 
 // provideWorkspaceDependencyCatalog constructs the remote catalog without
 // blocking startup on a network request. Maintenance refreshes its durable cache.
 func provideWorkspaceDependencyCatalog(cfg config.Config, queries dbstore.Queries, log *slog.Logger) (*workspacedeps.RemoteCatalog, error) {
-	provider, err := workspacedeps.NewRemoteCatalog(cfg.Supermarket.GetBaseURL(), workspacedeps.NewPostgresCatalogStore(queries), nil, log)
+	provider, err := workspacedeps.NewRemoteCatalog(cfg.Supermarket.GetCatalogBaseURL(), workspacedeps.NewPostgresCatalogStore(queries), nil, log)
 	if err != nil {
 		return nil, err
 	}

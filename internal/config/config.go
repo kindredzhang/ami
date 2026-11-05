@@ -787,6 +787,17 @@ const (
 
 type SupermarketConfig struct {
 	BaseURL string `toml:"base_url"`
+	// CatalogBaseURL points the workspace dependency catalog at its own source.
+	// Market content (skills and SaaS apps) and installable dependencies are
+	// separate concerns: a site usually curates its own runtime/tool packages
+	// long before it has an internal market, and vice versa. Empty inherits
+	// BaseURL so existing single-source deployments keep working unchanged.
+	CatalogBaseURL string `toml:"catalog_base_url"`
+	// Disabled stops the market from proxying at all: every listing answers an
+	// empty result and nothing leaves the network. Use it where the upstream
+	// market is unreachable or not licensed — an intranet deployment should not
+	// emit a failed request every time a user opens the page.
+	Disabled bool `toml:"disabled"`
 }
 
 func (c SupermarketConfig) GetBaseURL() string {
@@ -794,6 +805,16 @@ func (c SupermarketConfig) GetBaseURL() string {
 		return c.BaseURL
 	}
 	return DefaultSupermarketBaseURL
+}
+
+// GetCatalogBaseURL is the source the workspace dependency catalog reads from.
+// It defaults to the market base URL: one configured source serves both until
+// an operator splits them.
+func (c SupermarketConfig) GetCatalogBaseURL() string {
+	if v := strings.TrimSpace(c.CatalogBaseURL); v != "" {
+		return v
+	}
+	return c.GetBaseURL()
 }
 
 type OAuthClientsConfig struct {

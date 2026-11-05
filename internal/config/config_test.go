@@ -697,3 +697,55 @@ func TestTelemetryInsecureComesFromTheEnvironment(t *testing.T) {
 		})
 	}
 }
+
+// The dependency catalog and the market are separate concerns: a site curates
+// its own runtime packages long before it has an internal market. An operator
+// must be able to point the catalog at its own source without moving the
+// market, and neither setting may disturb the existing single-source default.
+func TestSupermarketCatalogBaseURL(t *testing.T) {
+	tests := []struct {
+		name     string
+		market   string
+		catalog  string
+		wantBase string
+		wantCat  string
+	}{
+		{
+			name:     "both empty falls back to the built-in default",
+			wantBase: DefaultSupermarketBaseURL,
+			wantCat:  DefaultSupermarketBaseURL,
+		},
+		{
+			name:     "catalog inherits the market when unset",
+			market:   "https://market.internal",
+			wantBase: "https://market.internal",
+			wantCat:  "https://market.internal",
+		},
+		{
+			name:     "catalog splits from the market",
+			market:   "https://market.internal",
+			catalog:  "https://catalog.internal",
+			wantBase: "https://market.internal",
+			wantCat:  "https://catalog.internal",
+		},
+		{
+			name:     "whitespace-only catalog still inherits the market",
+			market:   "https://market.internal",
+			catalog:  "   ",
+			wantBase: "https://market.internal",
+			wantCat:  "https://market.internal",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			cfg := SupermarketConfig{BaseURL: tc.market, CatalogBaseURL: tc.catalog}
+			if got := cfg.GetBaseURL(); got != tc.wantBase {
+				t.Errorf("GetBaseURL() = %q, want %q", got, tc.wantBase)
+			}
+			if got := cfg.GetCatalogBaseURL(); got != tc.wantCat {
+				t.Errorf("GetCatalogBaseURL() = %q, want %q", got, tc.wantCat)
+			}
+		})
+	}
+}

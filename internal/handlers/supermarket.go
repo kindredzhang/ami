@@ -18,12 +18,17 @@ import (
 type SupermarketHandler struct {
 	upstream *supermarketclient.Client
 	logger   *slog.Logger
+	// disabled answers every listing with an empty result instead of proxying.
+	// An intranet deployment points this at a curated internal source or turns
+	// the market off entirely; either way it must never look broken.
+	disabled bool
 }
 
 func NewSupermarketHandler(log *slog.Logger, cfg config.Config) *SupermarketHandler {
 	return &SupermarketHandler{
 		upstream: supermarketclient.NewClient(cfg.Supermarket.GetBaseURL(), nil),
 		logger:   log.With(slog.String("handler", "supermarket")),
+		disabled: cfg.Supermarket.Disabled,
 	}
 }
 
@@ -40,8 +45,27 @@ func (h *SupermarketHandler) Register(e *echo.Echo) {
 	g.GET("/artifacts/icon/:digest", h.GetRegistrySkillIcon)
 }
 
+// emptyListings maps a listing endpoint to the empty envelope the market's
+// protocol defines, so a disabled market renders "nothing published yet"
+// rather than an error dialog. Paths absent from this table are real lookups
+// (one app, one release) and stay 404s.
+var emptyListings = map[string]string{
+	"/api/skills":             `{"total":0,"page":1,"limit":0,"data":[]}`,
+	"/api/apps":               `{"total":0,"page":1,"limit":0,"data":[]}`,
+	"/api/categories":         `{"data":[]}`,
+	"/api/registries":         `{"data":[]}`,
+	"/api/dependency-catalog": `{"total":0,"page":1,"limit":0,"data":[]}`,
+}
+
 // proxy forwards a GET request to the supermarket and streams the JSON response back.
 func (h *SupermarketHandler) proxy(c echo.Context, upstreamPath string) error {
+	if h.disabled {
+		if body, ok := emptyListings[upstreamPath]; ok {
+			return c.JSONBlob(http.StatusOK, []byte(body))
+		}
+		return apperror.Wrap(apperror.CodeSupermarketNotFound,
+			errs.New("supermarket is disabled", slog.String("path", upstreamPath)), nil)
+	}
 	requestPath := upstreamPath
 	if qs := c.QueryString(); qs != "" {
 		requestPath += "?" + qs

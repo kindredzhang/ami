@@ -83,8 +83,15 @@ sslmode = "disable"
 [registry]
 providers_dir = "conf/providers"
 
+# Market content (skills, SaaS apps) and workspace dependency packages are
+# separate sources. Point catalog_base_url at an internal catalog when you
+# curate your own runtimes/tools; leave it empty to reuse base_url.
+# Set disabled = true where the market is unreachable or not wanted: listings
+# then answer empty instead of failing on every page load.
 [supermarket]
 base_url = "https://supermarket.memoh.ai"
+# catalog_base_url = "https://skillhub.internal"
+# disabled = false
 
 [oauth_clients]
 config_path = "conf/oauth-clients.toml"
