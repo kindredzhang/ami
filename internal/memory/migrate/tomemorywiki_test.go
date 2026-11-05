@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	storefs "github.com/felinics/memoh/internal/memory/storefs"
+	storefs "github.com/kindredzhang/ami/internal/memory/storefs"
 )
 
 func TestPlanClassifiesLayersAndEdges(t *testing.T) {

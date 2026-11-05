@@ -9,10 +9,10 @@ import type { BotCreateStreamEvent } from './useBotCreateStream'
 
 describe('botCreateTerminal', () => {
   it('pushes a running pulling line carrying the image', () => {
-    const lines = appendBotCreateTerminalLine([], { type: 'pulling', image: 'ghcr.io/memoh:latest' })
+    const lines = appendBotCreateTerminalLine([], { type: 'pulling', image: 'ghcr.io/ami:latest' })
 
     expect(lines).toHaveLength(1)
-    expect(lines[0]).toMatchObject({ kind: 'pulling', status: 'running', image: 'ghcr.io/memoh:latest' })
+    expect(lines[0]).toMatchObject({ kind: 'pulling', status: 'running', image: 'ghcr.io/ami:latest' })
   })
 
   it('updates the trailing pulling line percent in place on pull_progress', () => {

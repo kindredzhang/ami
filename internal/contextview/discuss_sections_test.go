@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 func discussSectionsInputFixture() DiscussContextInput {

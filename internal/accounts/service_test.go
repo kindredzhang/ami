@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 type testAccountStore struct {

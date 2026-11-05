@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 // A live run must publish the turn position admission drew for it. Without it a

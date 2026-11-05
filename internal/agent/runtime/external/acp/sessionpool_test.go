@@ -20,20 +20,20 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/agentstate"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/agentstate"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 func newFakeScriptPool(t *testing.T) *SessionPool {
@@ -95,9 +95,9 @@ func TestDriverRestoresNativeSession(t *testing.T) {
 		{name: "auth failure keeps the stored session", resume: "-32000", metadata: stored("saved", "thread-1"), calls: "resume:saved", wantErr: true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME", tt.resume)
+			t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME", tt.resume)
 			sessionLog := filepath.Join(t.TempDir(), "sessions")
-			t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG", sessionLog)
+			t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG", sessionLog)
 			pool := newFakeScriptPool(t)
 			pool.store = fakeSessionGetter{session: SessionDescriptor{BotID: "bot-1", IsACP: true, AgentID: acpprofile.AgentACPID, ProjectPath: "/data/project", RuntimeMetadata: tt.metadata}}
 			if tt.ensureFirst {
@@ -141,11 +141,11 @@ func TestDriverRestoresNativeSession(t *testing.T) {
 }
 
 func TestSessionPoolPromptAppliesModelThenReasoningAndSkipsMatchingValues(t *testing.T) {
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_REASONING", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODEL_RESETS_REASONING", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_REASONING", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODEL_RESETS_REASONING", "1")
 	configLog := filepath.Join(t.TempDir(), "config.log")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_LOG", configLog)
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_LOG", configLog)
 	pool := newFakeScriptPool(t)
 
 	input := PromptInput{
@@ -351,9 +351,9 @@ func (s *sessionPoolExecStream) Recv() (*pb.ExecInput, error) {
 		return input, err
 	}
 	s.first = true
-	input.Command = strings.ReplaceAll(input.Command, "/opt/memoh/toolkit/bin", s.binDir)
+	input.Command = strings.ReplaceAll(input.Command, "/opt/ami/toolkit/bin", s.binDir)
 	for index, item := range input.Env {
-		input.Env[index] = strings.ReplaceAll(item, "/opt/memoh/toolkit/bin", s.binDir)
+		input.Env[index] = strings.ReplaceAll(item, "/opt/ami/toolkit/bin", s.binDir)
 	}
 	return input, nil
 }
@@ -361,7 +361,7 @@ func (s *sessionPoolExecStream) Recv() (*pb.ExecInput, error) {
 func writeSessionPoolFakeAgentScript(t *testing.T, dir, name string) string {
 	t.Helper()
 	path := filepath.Join(dir, name)
-	script := fmt.Sprintf("#!/bin/sh\nif [ -n \"${MEMOH_ACP_START_LOG:-}\" ]; then printf 'start\\n' >> \"$MEMOH_ACP_START_LOG\"; fi\nMEMOH_ACP_SESSION_POOL_FAKE_AGENT=1 exec %s -test.run '^TestSessionPoolFakeAgentHelper$' --\n", sessionPoolShellArg(os.Args[0]))
+	script := fmt.Sprintf("#!/bin/sh\nif [ -n \"${AMI_ACP_START_LOG:-}\" ]; then printf 'start\\n' >> \"$AMI_ACP_START_LOG\"; fi\nAMI_ACP_SESSION_POOL_FAKE_AGENT=1 exec %s -test.run '^TestSessionPoolFakeAgentHelper$' --\n", sessionPoolShellArg(os.Args[0]))
 	if err := os.WriteFile(path, []byte(script), 0o700); err != nil { //nolint:gosec // test helper must be executable.
 		t.Fatal(err)
 	}
@@ -369,7 +369,7 @@ func writeSessionPoolFakeAgentScript(t *testing.T, dir, name string) string {
 }
 
 func TestSessionPoolFakeAgentHelper(_ *testing.T) {
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT") != "1" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT") != "1" {
 		return
 	}
 	agent := &sessionPoolFakeAgent{}
@@ -396,16 +396,16 @@ func (*sessionPoolFakeAgent) Logout(context.Context, acp.LogoutRequest) (acp.Log
 }
 
 func (*sessionPoolFakeAgent) Initialize(context.Context, acp.InitializeRequest) (acp.InitializeResponse, error) {
-	if path := os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_STARTED"); path != "" {
+	if path := os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_STARTED"); path != "" {
 		if err := os.WriteFile(path, []byte("started"), 0o600); err != nil { //nolint:gosec // the test names a path under t.TempDir.
 			return acp.InitializeResponse{}, err
 		}
 	}
 	capabilities := acp.AgentCapabilities{LoadSession: false}
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME") != "" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME") != "" {
 		capabilities.SessionCapabilities.Resume = &acp.SessionResumeCapabilities{}
 	}
-	if mode := os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CLOSE"); mode == "1" || mode == "slow" || mode == "never" {
+	if mode := os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CLOSE"); mode == "1" || mode == "slow" || mode == "never" {
 		capabilities.SessionCapabilities.Close = &acp.SessionCloseCapabilities{}
 	}
 	return acp.InitializeResponse{
@@ -417,10 +417,10 @@ func (*sessionPoolFakeAgent) Initialize(context.Context, acp.InitializeRequest) 
 func (*sessionPoolFakeAgent) Cancel(context.Context, acp.CancelNotification) error { return nil }
 
 func (*sessionPoolFakeAgent) CloseSession(_ context.Context, p acp.CloseSessionRequest) (acp.CloseSessionResponse, error) {
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CLOSE") == "never" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CLOSE") == "never" {
 		select {}
 	}
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CLOSE") == "slow" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CLOSE") == "slow" {
 		_ = logPoolSessionCall("close-start:" + string(p.SessionId))
 		time.Sleep(300 * time.Millisecond)
 		return acp.CloseSessionResponse{}, logPoolSessionCall("close-end:" + string(p.SessionId))
@@ -442,10 +442,10 @@ func (a *sessionPoolFakeAgent) NewSession(context.Context, acp.NewSessionRequest
 		id += "-" + strconv.Itoa(a.sessions)
 	}
 	resp := acp.NewSessionResponse{SessionId: acp.SessionId(id)}
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODELS") == "1" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODELS") == "1" {
 		a.modelID = "gpt-5.1-codex"
 	}
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_REASONING") == "1" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_REASONING") == "1" {
 		a.reasoningEffort = "high"
 	}
 	resp.ConfigOptions = a.configOptions()
@@ -461,20 +461,20 @@ func (a *sessionPoolFakeAgent) Prompt(ctx context.Context, p acp.PromptRequest) 
 	return acp.PromptResponse{StopReason: acp.StopReasonEndTurn}, nil
 }
 
-// ResumeSession answers with MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME: "1"
+// ResumeSession answers with AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME: "1"
 // restores the session, a number is the JSON-RPC error code to refuse with.
 func (*sessionPoolFakeAgent) ResumeSession(_ context.Context, p acp.ResumeSessionRequest) (acp.ResumeSessionResponse, error) {
 	if err := logPoolSessionCall("resume:" + string(p.SessionId)); err != nil {
 		return acp.ResumeSessionResponse{}, err
 	}
-	if code, err := strconv.Atoi(os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME")); err == nil && code != 1 {
+	if code, err := strconv.Atoi(os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME")); err == nil && code != 1 {
 		return acp.ResumeSessionResponse{}, &acp.RequestError{Code: code, Message: "injected resume failure"}
 	}
 	return acp.ResumeSessionResponse{}, nil
 }
 
 func logPoolSessionCall(call string) error {
-	path := os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG")
+	path := os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG")
 	if path == "" {
 		return nil
 	}
@@ -492,7 +492,7 @@ func (a *sessionPoolFakeAgent) SetSessionConfigOption(_ context.Context, p acp.S
 		return acp.SetSessionConfigOptionResponse{}, errors.New("unexpected config request")
 	}
 	value := string(p.ValueId.Value)
-	if strings.TrimSpace(os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_FAIL")) == string(p.ValueId.ConfigId) {
+	if strings.TrimSpace(os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_FAIL")) == string(p.ValueId.ConfigId) {
 		return acp.SetSessionConfigOptionResponse{}, errors.New("injected config transport failure")
 	}
 	switch string(p.ValueId.ConfigId) {
@@ -501,7 +501,7 @@ func (a *sessionPoolFakeAgent) SetSessionConfigOption(_ context.Context, p acp.S
 			return acp.SetSessionConfigOptionResponse{}, errors.New("unsupported model")
 		}
 		a.modelID = value
-		if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODEL_RESETS_REASONING") == "1" {
+		if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODEL_RESETS_REASONING") == "1" {
 			a.reasoningEffort = "low"
 		}
 	case "thinking":
@@ -513,7 +513,7 @@ func (a *sessionPoolFakeAgent) SetSessionConfigOption(_ context.Context, p acp.S
 		return acp.SetSessionConfigOptionResponse{}, errors.New("unexpected config id")
 	}
 	a.appendConfigLog(fmt.Sprintf("config:%s=%s", p.ValueId.ConfigId, value))
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_ANSWER_LATE") == "1" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_ANSWER_LATE") == "1" {
 		// Applied, but answered after the caller gave up.
 		time.Sleep(time.Second)
 	}
@@ -521,7 +521,7 @@ func (a *sessionPoolFakeAgent) SetSessionConfigOption(_ context.Context, p acp.S
 }
 
 func (*sessionPoolFakeAgent) appendConfigLog(line string) {
-	path := strings.TrimSpace(os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_LOG"))
+	path := strings.TrimSpace(os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_LOG"))
 	if path == "" {
 		return
 	}
@@ -552,7 +552,7 @@ func (a *sessionPoolFakeAgent) reasoningConfigOptions() []acp.SessionConfigOptio
 
 func (a *sessionPoolFakeAgent) configOptions() []acp.SessionConfigOption {
 	var options []acp.SessionConfigOption
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODELS") == "1" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODELS") == "1" {
 		category := acp.SessionConfigOptionCategoryModel
 		description := "Highest reasoning"
 		models := acp.SessionConfigSelectOptionsUngrouped{
@@ -568,7 +568,7 @@ func (a *sessionPoolFakeAgent) configOptions() []acp.SessionConfigOption {
 			Options:      acp.SessionConfigSelectOptions{Ungrouped: &models},
 		}})
 	}
-	if os.Getenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_REASONING") == "1" {
+	if os.Getenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_REASONING") == "1" {
 		options = append(options, a.reasoningConfigOptions()...)
 	}
 	return options
@@ -677,12 +677,12 @@ func TestSessionPoolFreshTurnRunsOnAThrowawaySession(t *testing.T) {
 // A dropped session is gone before the conversation restores it: a
 // session/close still on its way would end the session just restored.
 func TestADroppedSessionClosesBeforeItIsRestored(t *testing.T) {
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CLOSE", "slow")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_ANSWER_LATE", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CLOSE", "slow")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_ANSWER_LATE", "1")
 	sessionLog := filepath.Join(t.TempDir(), "sessions")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG", sessionLog)
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG", sessionLog)
 	pool := newFakeScriptPool(t)
 	store := &memorySessionStore{sessions: map[string]SessionDescriptor{
 		"session-1": {BotID: "bot-1", IsACP: true, AgentID: acpprofile.AgentACPID, ProjectPath: "/data/project", RuntimeOwnerAccountID: "user-1"},
@@ -715,10 +715,10 @@ func TestADroppedSessionClosesBeforeItIsRestored(t *testing.T) {
 // process has exited: its native session is restored on another process,
 // after the old one ended.
 func TestAnUnconfirmedCloseRestoresOnlyAfterTheProcessEnded(t *testing.T) {
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CLOSE", "never")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_ANSWER_LATE", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CLOSE", "never")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CONFIG_ANSWER_LATE", "1")
 	pool := newFakeScriptPool(t)
 	store := &memorySessionStore{sessions: map[string]SessionDescriptor{
 		"session-1": {BotID: "bot-1", IsACP: true, AgentID: acpprofile.AgentACPID, ProjectPath: "/data/project", RuntimeOwnerAccountID: "user-1"},
@@ -842,10 +842,10 @@ func TestSessionPoolNeverReplacesASessionAtWork(t *testing.T) {
 // old process before the new one restores it, so it is never continued on
 // two processes at once.
 func TestSessionPoolHandsAConversationOverToANewProcess(t *testing.T) {
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_RESUME", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_CLOSE", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_RESUME", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_CLOSE", "1")
 	sessionLog := filepath.Join(t.TempDir(), "sessions")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG", sessionLog)
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_SESSION_LOG", sessionLog)
 	pool := newFakeScriptPool(t)
 	store := &memorySessionStore{sessions: map[string]SessionDescriptor{
 		"session-1": {BotID: "bot-1", IsACP: true, AgentID: acpprofile.AgentACPID, ProjectPath: "/data/project", RuntimeOwnerAccountID: "user-1"},
@@ -951,7 +951,7 @@ func (s *fixedEpochStore) RuntimeConfigEpoch(context.Context, string, string) (a
 // configuration: it must not run the agent at all.
 func TestAStartQueuedBehindAResetNeverRunsTheOldConfiguration(t *testing.T) {
 	started := filepath.Join(t.TempDir(), "started")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_STARTED", started)
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_STARTED", started)
 	pool := newFakeScriptPool(t)
 	epochs := &fixedEpochStore{epoch: 1}
 	pool.stateStore = epochs
@@ -989,8 +989,8 @@ func TestAStartQueuedBehindAResetNeverRunsTheOldConfiguration(t *testing.T) {
 }
 
 // Custom adapters rarely advertise mcpCapabilities.http; they still get
-// Memoh's tools over HTTP MCP.
-func TestACustomAgentTakesMemohToolsWithoutAdvertisingHTTPMCP(t *testing.T) {
+// Ami's tools over HTTP MCP.
+func TestACustomAgentTakesAmiToolsWithoutAdvertisingHTTPMCP(t *testing.T) {
 	pool := newFakeScriptPool(t)
 	input := sessionInput("s", "hi")
 	if _, err := pool.Ensure(t.Context(), input); err != nil {
@@ -1001,7 +1001,7 @@ func TestACustomAgentTakesMemohToolsWithoutAdvertisingHTTPMCP(t *testing.T) {
 		t.Fatal("the fake agent advertises HTTP MCP; the test needs one that does not")
 	}
 	if !b.rt.takesHTTPMCP() {
-		t.Fatal("a custom agent that does not advertise HTTP MCP is offered no Memoh tools")
+		t.Fatal("a custom agent that does not advertise HTTP MCP is offered no Ami tools")
 	}
 }
 

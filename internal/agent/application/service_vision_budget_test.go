@@ -8,8 +8,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func countingStickerService(t *testing.T, opens *int) *Service {

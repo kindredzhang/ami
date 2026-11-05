@@ -13,8 +13,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 // The path this covers is the reason the middleware exists: an identifier the

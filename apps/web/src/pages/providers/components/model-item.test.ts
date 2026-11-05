@@ -31,7 +31,7 @@ vi.mock('@felinic/ui', () => ({
   toast: { error: vi.fn() },
 }))
 
-// @memohai/icon builds its icons with lucide's createLucideIcon, so keep
+// @ami/icon builds its icons with lucide's createLucideIcon, so keep
 // the real module and stub only the icons this test renders.
 vi.mock('lucide-vue-next', async importOriginal => ({
   ...await importOriginal<typeof import('lucide-vue-next')>(),
@@ -45,7 +45,7 @@ vi.mock('@/components/model-description-tooltip/index.vue', () => ({
   default: SlotComponent('ModelDescriptionTooltip'),
 }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   postModelsByIdTest: mocks.postTest,
   putModelsById: vi.fn(),
 }))

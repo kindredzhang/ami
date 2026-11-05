@@ -5,7 +5,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 const defaultListLimit = 12

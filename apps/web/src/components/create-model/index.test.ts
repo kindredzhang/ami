@@ -4,13 +4,13 @@ import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
 import { PiniaColada } from '@pinia/colada'
 import { afterEach, expect, it, vi } from 'vitest'
-import type { ModelsAddRequest } from '@memohai/sdk'
+import type { ModelsAddRequest } from '@ami/sdk'
 import CreateModel from './index.vue'
 import en from '@/i18n/locales/en.json'
 
 const postModels = vi.fn(async (_options: { body: ModelsAddRequest }) => ({ data: { id: 'model-1' } }))
-vi.mock('@memohai/sdk', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('@memohai/sdk')>()),
+vi.mock('@ami/sdk', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@ami/sdk')>()),
   postModels: (options: { body: ModelsAddRequest }) => postModels(options),
 }))
 

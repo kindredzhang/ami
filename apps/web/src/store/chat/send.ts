@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { parseMemohError, resolveApiErrorMessage } from '@/utils/api-error'
+import { parseAmiError, resolveApiErrorMessage } from '@/utils/api-error'
 import type {
   ChatAttachment,
   RequestedSkillSelection,
@@ -402,7 +402,7 @@ export function createChatSend(deps: ChatSendDeps) {
       const stopWaited = sendInvocationId ? deps.takeStopRequest(sendInvocationId) : false
       const isCommandError = failure instanceof CommandStreamError
       const reason = resolveApiErrorMessage(error, failure.message || deps.sendFailedMessage())
-      const errorCode = parseMemohError(error)?.code
+      const errorCode = parseAmiError(error)?.code
       // A first send the server never confirmed showed nothing: the pane is
       // still on welcome with the input in the composer. Once revealed it is an
       // ordinary session, and its failure stays in the history.
@@ -560,7 +560,7 @@ export function createChatSend(deps: ChatSendDeps) {
     } catch (error) {
       const failure = error instanceof Error ? error : new Error('Unknown error')
       const reason = resolveApiErrorMessage(error, failure.message || deps.sendFailedMessage())
-      const errorCode = parseMemohError(error)?.code
+      const errorCode = parseAmiError(error)?.code
       const stage: SendMessageStage = failure instanceof StreamFailureError
         ? failure.stage
         : failureStage(assistantTurn, true, deps.hasVisibleAssistantBlocks(assistantTurn))
@@ -651,7 +651,7 @@ export function createChatSend(deps: ChatSendDeps) {
     } catch (error) {
       const failure = error instanceof Error ? error : new Error('Unknown error')
       const reason = resolveApiErrorMessage(error, failure.message || deps.sendFailedMessage())
-      const errorCode = parseMemohError(error)?.code
+      const errorCode = parseAmiError(error)?.code
       const stage: SendMessageStage = failure instanceof StreamFailureError
         ? failure.stage
         : failureStage(assistantTurn, true, deps.hasVisibleAssistantBlocks(assistantTurn))

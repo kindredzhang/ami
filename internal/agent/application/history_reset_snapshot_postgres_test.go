@@ -14,14 +14,14 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/apperror"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimefence"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/apperror"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // After a history clear the run a client sees must be gone: from the live
@@ -252,12 +252,12 @@ func TestPostgresHistoryResetClearsRuntimeSnapshot(t *testing.T) {
 }
 
 func TestPostgresRedisHistoryResetClearsRuntimeSnapshot(t *testing.T) {
-	redisURL := os.Getenv("MEMOH_TEST_REDIS_URL")
+	redisURL := os.Getenv("AMI_TEST_REDIS_URL")
 	if redisURL == "" {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("MEMOH_TEST_REDIS_URL required")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("AMI_TEST_REDIS_URL required")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL")
+		t.Skip("set AMI_TEST_REDIS_URL")
 	}
 	for _, mode := range []wsStepHistoryModel{wsStepHistorySuccess, wsStepHistoryAuthFailure} {
 		for _, scope := range []historyResetScope{historyResetSession, historyResetBot} {

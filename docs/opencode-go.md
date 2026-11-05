@@ -1,6 +1,6 @@
 # OpenCode Go integration
 
-Memoh supports OpenCode Go as the `opencode-go` client type. Select **OpenCode Go**
+Ami supports OpenCode Go as the `opencode-go` client type. Select **OpenCode Go**
 under Settings → Providers, enter a Go API key, enable the provider, and import
 and enable the desired models. The default base URL is
 `https://opencode.ai/zen/go/v1`.
@@ -14,17 +14,17 @@ of models documented on Responses or Anthropic Messages. Unlisted models use
 the Completions fallback; new protocol exceptions still require an SDK update.
 Its Go provider also adapts requests to how
 Go's routes behave, such as padding `reasoning_content` on replayed tool calls,
-so Memoh sends every request through it. Memoh reads the routed protocol from
+so Ami sends every request through it. Ami reads the routed protocol from
 `ProtocolForModel` for prompt caching and media handling. Reasoning policy keeps
 the Go provider identity and uses each model's catalog-declared controls. The
 Go adapter applies those controls before sending, preserving native tiers such
 as `max` and explicit thinking switches without inferring Claude's adaptive mode.
 
-Memoh owns `x-opencode-session`: native turns use the owning Thread ID, including
+Ami owns `x-opencode-session`: native turns use the owning Thread ID, including
 subagent turns; title generation and compaction use that same conversation ID.
 Standalone jobs and model probes receive independent job IDs. Request contexts
 carry the session without changing shared provider headers. Requests identify
-the application with Memoh's normal User-Agent.
+the application with Ami's normal User-Agent.
 
 ## Catalog and migration
 

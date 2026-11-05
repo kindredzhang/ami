@@ -45,7 +45,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { TriangleAlert } from 'lucide-vue-next'
-import { UpdateIcon } from '@memohai/icon/ui'
+import { UpdateIcon } from '@ami/icon/ui'
 import type { DesktopUpdateStatus } from '@/lib/desktop-shell'
 import { useDesktopUpdates } from '@/composables/useDesktopUpdates'
 

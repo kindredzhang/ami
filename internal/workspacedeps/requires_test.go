@@ -8,8 +8,8 @@ import (
 	"testing"
 	"testing/fstest"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func requiresManifest(id, requires, platforms string, scripts bool) string {

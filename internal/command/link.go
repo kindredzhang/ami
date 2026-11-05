@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channelaccess"
+	"github.com/kindredzhang/ami/internal/channelaccess"
 )
 
 // LinkConsumer binds the calling channel identity to the web user that owns a
@@ -20,11 +20,11 @@ func (h *Handler) SetLinkConsumer(c LinkConsumer) {
 }
 
 func (h *Handler) buildLinkGroup() *CommandGroup {
-	g := newCommandGroup("link", "Link this account to your Memoh user")
+	g := newCommandGroup("link", "Link this account to your Ami user")
 	g.DefaultAction = "consume"
 	g.Register(SubCommand{
 		Name:  "consume",
-		Usage: "link <code> - connect this account to your Memoh user",
+		Usage: "link <code> - connect this account to your Ami user",
 		Handler: func(cc CommandContext) (string, error) {
 			if h.linkConsumer == nil {
 				return cc.T("cmd.link.unavailable"), nil

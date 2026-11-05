@@ -3,7 +3,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND dependency_id = $2
 LIMIT 1;
@@ -13,7 +13,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
 ORDER BY dependency_id;
 
@@ -22,7 +22,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND status = $1
 ORDER BY bot_id, dependency_id;
 
@@ -31,7 +31,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND status IN ('installing', 'updating', 'removing')
   AND updated_at < now() - make_interval(secs => sqlc.arg(older_than_seconds)::double precision)
 ORDER BY updated_at, id;
@@ -63,7 +63,7 @@ SET status = sqlc.arg(status),
     last_error = '',
     last_error_code = sqlc.arg(last_error_code),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND dependency_id = sqlc.arg(dependency_id)
   AND operation_id = ''
@@ -84,7 +84,7 @@ SET source = COALESCE(sqlc.narg(source)::text, source),
     registry_id = COALESCE(sqlc.narg(registry_id)::text, registry_id),
     definition_revision = COALESCE(sqlc.narg(definition_revision)::text, definition_revision),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND dependency_id = sqlc.arg(dependency_id)
   AND operation_id = ''
@@ -94,7 +94,7 @@ RETURNING id, team_id, bot_id, dependency_id, source, status,
 
 -- name: DeleteBotDependencyInstallation :execrows
 DELETE FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND dependency_id = $2
   AND operation_id = '';
@@ -131,7 +131,7 @@ SET source = sqlc.arg(source),
     definition_revision = sqlc.arg(definition_revision),
     operation_id = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND dependency_id = sqlc.arg(dependency_id)
   AND operation_id = sqlc.arg(operation_id) AND operation_id <> ''
@@ -141,7 +141,7 @@ RETURNING id, team_id, bot_id, dependency_id, source, status,
 
 -- name: DeleteBotDependencyOperation :one
 DELETE FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND dependency_id = sqlc.arg(dependency_id)
   AND operation_id = sqlc.arg(operation_id) AND operation_id <> ''

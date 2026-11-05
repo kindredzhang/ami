@@ -9,7 +9,7 @@ import {
   type Ref,
 } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getBotsByBotIdConnectors, getConnectorsCatalog } from '@memohai/sdk'
+import { getBotsByBotIdConnectors, getConnectorsCatalog } from '@ami/sdk'
 import { useCapabilitiesStore } from '@/store/capabilities'
 import { preloadProviderIcons } from '@/components/provider-icon/preload'
 import type { ChatViewTarget } from '@/store/chat-list'

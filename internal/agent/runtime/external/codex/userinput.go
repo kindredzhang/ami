@@ -1,4 +1,4 @@
-// Bridges codex `tool/requestUserInput` to Memoh's ask_user decision flow:
+// Bridges codex `tool/requestUserInput` to Ami's ask_user decision flow:
 // codex questions render as ask_user cards, the answers map back to the
 // question ids codex asked with, and a canceled or timed-out card degrades to
 // the empty answer set codex treats as "proceed with defaults".
@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"strings"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
 )
 
 // UserInputService is the ask_user decision flow the driver routes

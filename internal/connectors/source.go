@@ -15,8 +15,8 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/auth"
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	mcpgw "github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/toolcontext"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 const (
@@ -238,7 +238,7 @@ func (s *Source) connect(ctx context.Context, botID string) (*sdkmcp.ClientSessi
 	}
 	handler := s.authHandler(botID, connections)
 	mcpClient := sdkmcp.NewClient(&sdkmcp.Implementation{
-		Name:    "memoh-connectors",
+		Name:    "ami-connectors",
 		Version: "1.0.0",
 	}, nil)
 	clientSession, err := mcpClient.Connect(ctx, &sdkmcp.StreamableClientTransport{

@@ -11,10 +11,10 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpcore "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/grok/grokcfg"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpcore "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/grok/grokcfg"
 )
 
 // fakeGrok answers what the driver asks Grok and records it.

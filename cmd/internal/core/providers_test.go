@@ -11,19 +11,19 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	claudecoderuntime "github.com/felinics/memoh/internal/agent/runtime/external/claudecode"
-	codexruntime "github.com/felinics/memoh/internal/agent/runtime/external/codex"
-	grokruntime "github.com/felinics/memoh/internal/agent/runtime/external/grok"
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	membuiltin "github.com/felinics/memoh/internal/memory/adapters/builtin"
-	modelspkg "github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/settings"
-	depcatalog "github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	claudecoderuntime "github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode"
+	codexruntime "github.com/kindredzhang/ami/internal/agent/runtime/external/codex"
+	grokruntime "github.com/kindredzhang/ami/internal/agent/runtime/external/grok"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	membuiltin "github.com/kindredzhang/ami/internal/memory/adapters/builtin"
+	modelspkg "github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/settings"
+	depcatalog "github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func TestACPToolProvidersIncludeAskUser(t *testing.T) {

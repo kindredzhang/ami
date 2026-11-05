@@ -11,15 +11,15 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/agent/application"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // SessionQueueHandler exposes the live steer and follow-up queues. It owns

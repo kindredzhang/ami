@@ -6,9 +6,9 @@ import (
 
 	"github.com/google/uuid"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // Internal image feedback must not split one admitted run into new user turns.

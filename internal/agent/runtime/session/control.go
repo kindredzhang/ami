@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 func (m *Manager) localControl(runID string) *runControl {

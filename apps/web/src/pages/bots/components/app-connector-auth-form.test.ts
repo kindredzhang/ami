@@ -134,7 +134,7 @@ describe('App connector authorization form', () => {
 
   describe('when Connect-It has no OAuth App for the connector', () => {
     const missingOAuthApp = {
-      type: 'urn:memoh:error:connector.oauth_client_not_configured', code: 'connector.oauth_client_not_configured',
+      type: 'urn:ami:error:connector.oauth_client_not_configured', code: 'connector.oauth_client_not_configured',
       status: 503, fault: 'dependency', detail: 'Connect-It has no OAuth App configured for this connector.', args: {},
     }
     it.each([

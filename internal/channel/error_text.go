@@ -4,9 +4,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // ErrorText is the channel copy for a public error: errors.<code> from the

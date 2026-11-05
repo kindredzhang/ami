@@ -10,8 +10,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // fakeWorkdirStore is the slice of dbstore.BotWorkdirStore restoreWorkdirs

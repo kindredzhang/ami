@@ -13,8 +13,8 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/jsonschema-go/jsonschema"
 
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // End to end through the real chat-completions provider: a model turn whose

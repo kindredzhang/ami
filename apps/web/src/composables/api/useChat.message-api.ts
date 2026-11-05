@@ -4,8 +4,8 @@ import {
   getBotsByBotIdSessionsEvents,
   getBotsByBotIdSkillsCatalog,
   postBotsByBotIdQuickActionsExecute,
-} from '@memohai/sdk'
-import type { ConversationUiTurn } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { ConversationUiTurn } from '@ami/sdk'
 import type {
   BotSessionActivityEvent,
   CommandEventResponse,

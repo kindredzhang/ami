@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // removalScript includes workspace-owned copies in the prepared script, so
@@ -16,10 +16,10 @@ import (
 func removalScript(dep catalog.Dependency, script, toolkitRoot string) string {
 	var b strings.Builder
 	b.WriteString("(\n" + script + "\n)\n")
-	b.WriteString("rm -rf -- \"$MEMOH_DEP_HOME\"\n")
+	b.WriteString("rm -rf -- \"$AMI_DEP_HOME\"\n")
 	// Remote targets own their software layout through the reviewed recipe.
 	// Only a native workspace has an isolated, writable image filesystem.
-	fmt.Fprintf(&b, "if [ \"${MEMOH_DEP_WORKSPACE_TARGET:-}\" = %s ]; then\n", shellQuote("native"))
+	fmt.Fprintf(&b, "if [ \"${AMI_DEP_WORKSPACE_TARGET:-}\" = %s ]; then\n", shellQuote("native"))
 	// Never follow a replaced ancestor into a different tree. rm removes
 	// individual symlinks themselves, not their targets.
 	fmt.Fprintf(&b, "  [ ! -L %s ] && [ ! -L %s ] || exit 1\n", shellQuote(toolkitRoot), shellQuote(path.Join(toolkitRoot, "bin")))
@@ -59,12 +59,12 @@ func removalScript(dep catalog.Dependency, script, toolkitRoot string) string {
 // package-owned files behind its back. Never autoremove unrelated packages.
 // This runs only inside the native workspace branch above, and is included
 // in the script available through the optional script viewer.
-const removeSystemPython = `  if [ "${MEMOH_DEP_OS:-}" = linux ] && command -v dpkg-query >/dev/null 2>&1 && command -v apt-get >/dev/null 2>&1; then
-    memoh_python_packages=$(dpkg-query -W -f='${binary:Package}\t${Status}\n' 'python3*' 2>/dev/null | awk '$2 == "install" && $3 == "ok" && $4 == "installed" && $1 ~ /^python3([.][0-9]+)?(-minimal)?(:[a-z0-9]+)?$/ { print $1 }')
-    if [ -n "$memoh_python_packages" ]; then
+const removeSystemPython = `  if [ "${AMI_DEP_OS:-}" = linux ] && command -v dpkg-query >/dev/null 2>&1 && command -v apt-get >/dev/null 2>&1; then
+    ami_python_packages=$(dpkg-query -W -f='${binary:Package}\t${Status}\n' 'python3*' 2>/dev/null | awk '$2 == "install" && $3 == "ok" && $4 == "installed" && $1 ~ /^python3([.][0-9]+)?(-minimal)?(:[a-z0-9]+)?$/ { print $1 }')
+    if [ -n "$ami_python_packages" ]; then
       # Package names are restricted to interpreter packages by the pattern.
       # shellcheck disable=SC2086
-      apt-get remove -y --no-auto-remove $memoh_python_packages
+      apt-get remove -y --no-auto-remove $ami_python_packages
     fi
   fi
 `

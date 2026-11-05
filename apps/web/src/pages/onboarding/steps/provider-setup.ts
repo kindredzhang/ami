@@ -1,4 +1,4 @@
-import type { ModelsGetResponse } from '@memohai/sdk'
+import type { ModelsGetResponse } from '@ami/sdk'
 import type { ProviderPreset } from '@/constants/provider-presets'
 import { findModelSource, TEMPLATE_SOURCES, type ModelSource } from '@/constants/model-sources'
 

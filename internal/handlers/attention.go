@@ -10,11 +10,11 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/chat/attention"
-	messageevent "github.com/felinics/memoh/internal/chat/event"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/chat/attention"
+	messageevent "github.com/kindredzhang/ami/internal/chat/event"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // attentionService is the unread state the handlers read and move.

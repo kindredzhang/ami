@@ -1,10 +1,10 @@
 import type { ElectronAPI } from '@electron-toolkit/preload'
-import type { MemohApi } from './index'
+import type { AmiApi } from './index'
 
 declare global {
   interface Window {
     electron: ElectronAPI
-    api: MemohApi
+    api: AmiApi
   }
 }
 

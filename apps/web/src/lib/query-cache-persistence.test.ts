@@ -69,7 +69,7 @@ describe('persistableQueryFilter', () => {
 
 describe('QUERY_CACHE_STORAGE_KEY', () => {
   it('is the contract auth-session.ts clears on auth changes', () => {
-    expect(QUERY_CACHE_STORAGE_KEY).toBe('memoh:query-cache')
+    expect(QUERY_CACHE_STORAGE_KEY).toBe('ami:query-cache')
   })
 })
 

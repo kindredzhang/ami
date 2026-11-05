@@ -19,7 +19,7 @@ import { is } from '@electron-toolkit/utils'
 //
 // 已知不一致(待菜单栏展开样式改版时同步):runningDetail 指引用户去点
 // 菜单栏托盘图标的退出项,但托盘退出项在 index.ts buildTrayMenu 里
-// 硬编码为英文 "Quit Memoh",zh/ja 文案给出的本地化名称与界面实际不符
+// 硬编码为英文 "Quit Ami",zh/ja 文案给出的本地化名称与界面实际不符
 // (en 恰好与硬编码一致)。改版引入快捷 Memo 等新面板项后,这里要按真实
 // 退出项文案重新对齐。
 type SelfInstallLocale = 'en' | 'zh' | 'ja'
@@ -36,45 +36,45 @@ interface SelfInstallStrings {
 
 const SELF_INSTALL_STRINGS: Record<SelfInstallLocale, SelfInstallStrings> = {
   en: {
-    runningTitle: 'Quit Memoh to Install',
+    runningTitle: 'Quit Ami to Install',
     runningDetail:
-      'You are installing Memoh, but Memoh is still\n' +
-      'running in the background. Quit Memoh to\n' +
+      'You are installing Ami, but Ami is still\n' +
+      'running in the background. Quit Ami to\n' +
       'continue the installation.\n\n' +
-      'Closing the window does not quit Memoh. Click the\n' +
-      'Memoh menu bar icon and choose "Quit Memoh",\n' +
+      'Closing the window does not quit Ami. Click the\n' +
+      'Ami menu bar icon and choose "Quit Ami",\n' +
       'then open this installer again.',
-    conflictTitle: 'Memoh is already installed',
+    conflictTitle: 'Ami is already installed',
     conflictDetail:
-      'A version of Memoh already exists in your Applications folder. Replace it with this one?',
+      'A version of Ami already exists in your Applications folder. Replace it with this one?',
     replace: 'Replace',
     keepBoth: 'Keep Both / Run Here',
     ok: 'OK',
   },
   zh: {
-    runningTitle: '安装前请先退出 Memoh',
+    runningTitle: '安装前请先退出 Ami',
     runningDetail:
-      '你正在安装 Memoh，但 Memoh 仍在后台运行。\n' +
-      '请先退出 Memoh，再继续安装。\n\n' +
-      '仅关闭窗口不会退出 Memoh。请点击菜单栏的\n' +
-      'Memoh 图标，选择「退出 Memoh」，然后重新打开本安装包。',
-    conflictTitle: '已安装 Memoh',
-    conflictDetail: '「应用程序」文件夹中已存在一个 Memoh，要用当前版本替换它吗？',
+      '你正在安装 Ami，但 Ami 仍在后台运行。\n' +
+      '请先退出 Ami，再继续安装。\n\n' +
+      '仅关闭窗口不会退出 Ami。请点击菜单栏的\n' +
+      'Ami 图标，选择「退出 Ami」，然后重新打开本安装包。',
+    conflictTitle: '已安装 Ami',
+    conflictDetail: '「应用程序」文件夹中已存在一个 Ami，要用当前版本替换它吗？',
     replace: '替换',
     keepBoth: '保留两者 / 原地运行',
     ok: '好',
   },
   ja: {
-    runningTitle: 'インストールの前に Memoh を終了',
+    runningTitle: 'インストールの前に Ami を終了',
     runningDetail:
-      'Memoh をインストールしようとしていますが、\n' +
-      'Memoh はバックグラウンドで実行中です。\n' +
-      'Memoh を終了してからインストールを続けてください。\n\n' +
+      'Ami をインストールしようとしていますが、\n' +
+      'Ami はバックグラウンドで実行中です。\n' +
+      'Ami を終了してからインストールを続けてください。\n\n' +
       'ウインドウを閉じるだけでは終了しません。\n' +
-      'メニューバーの Memoh アイコンから「Memoh を終了」を選び、\n' +
+      'メニューバーの Ami アイコンから「Ami を終了」を選び、\n' +
       'このインストーラーをもう一度開いてください。',
-    conflictTitle: 'Memoh はすでにインストールされています',
-    conflictDetail: 'アプリケーションフォルダにすでに Memoh があります。このバージョンで置き換えますか?',
+    conflictTitle: 'Ami はすでにインストールされています',
+    conflictDetail: 'アプリケーションフォルダにすでに Ami があります。このバージョンで置き換えますか?',
     replace: '置き換える',
     keepBoth: '両方を残す / このまま実行',
     ok: 'OK',

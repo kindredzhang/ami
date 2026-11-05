@@ -9,12 +9,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/testutil/sessionledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/testutil/sessionledger"
 )
 
 type abortAlignmentProvider struct {

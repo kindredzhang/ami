@@ -52,7 +52,7 @@ export const useSettingsStore = defineStore('settings', () => {
   // frame already has the right background. Keep the keys and stored values
   // in step with it.
   const theme = useStorage<ThemePreference>('theme', 'system')
-  const colorScheme = useStorage<ColorSchemeId>('color-scheme', 'memoh')
+  const colorScheme = useStorage<ColorSchemeId>('color-scheme', 'ami')
   const uiFontFamily = useStorage<string>('ui-font-family', '')
   const codeFontFamily = useStorage<string>('code-font-family', '')
   const uiFontSizePx = useStorage<number>('ui-font-size-px', DEFAULT_UI_FONT_SIZE_PX)
@@ -95,7 +95,7 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   if (!isColorSchemeId(colorScheme.value)) {
-    colorScheme.value = 'memoh'
+    colorScheme.value = 'ami'
   }
   shikiThemeLight.value = normalizeShikiTheme(shikiThemeLight.value, 'light')
   shikiThemeDark.value = normalizeShikiTheme(shikiThemeDark.value, 'dark')
@@ -121,7 +121,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   watch(colorScheme, (value) => {
     if (!isColorSchemeId(value)) {
-      colorScheme.value = 'memoh'
+      colorScheme.value = 'ami'
       return
     }
     applyColorScheme(value)

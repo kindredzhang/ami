@@ -33,7 +33,7 @@ PR #791引入的多租户数据面（team GUC连接绑定、RLS、`TeamIDResolve
 - 跨进程传输选型与实现（gRPC／消息队列）——留给下一份spec。
 - 水平扩容、连接所有权选主、多副本Channel。
 - Agent侧Run Journal、Turn状态机、可恢复性（RFC第6节）的完整落地——本spec只定义契约形状，不实现持久化Run生命周期。
-- `cmd/agent`改名`cmd/memoh`（涉及Docker与发布流程，单独处理）。
+- `cmd/agent`改名`cmd/ami`（涉及Docker与发布流程，单独处理）。
 - 顶层`api/`目录、Go module拆分、通用Worker。
 - `ask_user`／tool approval的跨进程恢复（`decision.Waiter`仍为进程内机制，属Agent侧RFC 6.4工作）。
 
@@ -60,7 +60,7 @@ PR #791引入的多租户数据面（team GUC连接绑定、RLS、`TeamIDResolve
 ## 4. 目标目录结构
 
 ```
-Memoh/
+Ami/
 ├── cmd/
 │   ├── agent/                    # all-in-one入口（保留，改为组合共享装配模块）
 │   ├── channel/                  # 新增：Channel单实例验证二进制

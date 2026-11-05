@@ -8,9 +8,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/step"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 type reasoningTimingTestClock struct {

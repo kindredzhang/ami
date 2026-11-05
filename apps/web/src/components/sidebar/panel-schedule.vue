@@ -123,8 +123,8 @@ import { ConfirmDeleteDialog, toast } from '@felinic/ui'
 import {
   Button, ScrollArea, Spinner,
 } from '@felinic/ui'
-import { getBotsByBotIdSchedule, deleteBotsByBotIdScheduleById, putBotsByBotIdScheduleById } from '@memohai/sdk'
-import type { ScheduleSchedule } from '@memohai/sdk'
+import { getBotsByBotIdSchedule, deleteBotsByBotIdScheduleById, putBotsByBotIdScheduleById } from '@ami/sdk'
+import type { ScheduleSchedule } from '@ami/sdk'
 import { useChatStore } from '@/store/chat-list'
 import { useWorkspaceTabsStore } from '@/store/workspace-tabs'
 import { resolveApiErrorMessage } from '@/utils/api-error'

@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/jsonschema-go/jsonschema"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // canonicalizeProviderToolSchemas mirrors Twilight's buildConfig schema

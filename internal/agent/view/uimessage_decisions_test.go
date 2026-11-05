@@ -3,8 +3,8 @@ package view
 import (
 	"testing"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
 )
 
 func TestApplyToolApprovalsUsesCanApproveFunction(t *testing.T) {

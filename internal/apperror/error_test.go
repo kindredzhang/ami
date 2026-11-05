@@ -10,7 +10,7 @@ import (
 )
 
 func TestErrorKeepsStableCodeAndPrivateCause(t *testing.T) {
-	cause := errors.New("dial unix /run/memoh/bridge.sock: connection refused")
+	cause := errors.New("dial unix /run/ami/bridge.sock: connection refused")
 	err := fmt.Errorf("start workspace: %w", Wrap(CodeWorkspaceUnreachable, cause, nil))
 
 	if got := CodeOf(err); got != CodeWorkspaceUnreachable {

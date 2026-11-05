@@ -16,9 +16,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // handleVerifyRequest answers WeChat's URL verification. The protocol body is

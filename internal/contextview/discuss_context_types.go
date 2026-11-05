@@ -3,8 +3,8 @@ package contextview
 import (
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 // DiscussContextInput carries the authoritative timeline composition and

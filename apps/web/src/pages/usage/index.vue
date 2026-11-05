@@ -351,12 +351,12 @@ import {
   TableHeader,
   TableRow,
 } from '@felinic/ui'
-import { getBotsQuery } from '@memohai/sdk/colada'
-import { getBotsByBotIdTokenUsage, getBotsByBotIdTokenUsageRecords } from '@memohai/sdk'
+import { getBotsQuery } from '@ami/sdk/colada'
+import { getBotsByBotIdTokenUsage, getBotsByBotIdTokenUsageRecords } from '@ami/sdk'
 import { MetricReadout, PageShell, SectionGroup, SettingsSection } from '@felinic/ui'
 import BotSelect from '@/components/bot-select/index.vue'
 import { useChatSelectionStore } from '@/store/chat-selection'
-import type { HandlersDailyTokenUsage, HandlersModelTokenUsage, HandlersTokenUsageRecord } from '@memohai/sdk'
+import type { HandlersDailyTokenUsage, HandlersModelTokenUsage, HandlersTokenUsageRecord } from '@ami/sdk'
 import { useSyncedQueryParam } from '@/composables/useSyncedQueryParam'
 import { formatDateTimeShort } from '@/utils/date-time'
 import { externalAgentDisplayName } from '@/utils/external-agent'
@@ -573,7 +573,7 @@ function setRecordsPage(page: number) {
 
 function harnessLabel(type: string | undefined): string {
   switch (type) {
-    case 'model': return 'Memoh'
+    case 'model': return 'Ami'
     case 'acp_agent': return 'ACP'
     default: return externalAgentDisplayName(type, t('usage.unknown'))
   }

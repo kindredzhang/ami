@@ -9,8 +9,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
 )
 
 func TestLifecycleHolderKeepsDurableContentLightBudgetAudit(t *testing.T) {

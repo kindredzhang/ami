@@ -10,7 +10,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestLimitToolOutputPrunesLargeStringLeaves(t *testing.T) {
@@ -33,7 +33,7 @@ func TestLimitToolOutputPrunesLargeStringLeaves(t *testing.T) {
 	if len(content) >= len(large) {
 		t.Fatalf("content was not pruned: got %d bytes, original %d", len(content), len(large))
 	}
-	if !strings.Contains(content, "[memoh pruned]") {
+	if !strings.Contains(content, "[ami pruned]") {
 		t.Fatalf("content missing prune marker:\n%s", content)
 	}
 	if !strings.Contains(content, "HEAD") || !strings.Contains(content, "TAIL") {
@@ -61,7 +61,7 @@ func TestLimitToolOutputFallsBackWhenStructuredJSONStillExceedsLimit(t *testing.
 		t.Fatalf("result JSON bytes = %d, want <= 512\n%s", len(raw), raw)
 	}
 	structured, ok := result.(map[string]any)
-	if !ok || structured["_memoh_truncated"] != true {
+	if !ok || structured["_ami_truncated"] != true {
 		t.Fatalf("result = %#v, want fallback truncation marker", result)
 	}
 }
@@ -120,7 +120,7 @@ func TestWrapToolOutputLimitsPrunesErrors(t *testing.T) {
 	if len(err.Error()) >= len("HEAD\n"+strings.Repeat("error detail ", 300)+"\nTAIL") {
 		t.Fatalf("error was not pruned: %d bytes", len(err.Error()))
 	}
-	if !strings.Contains(err.Error(), "[memoh pruned]") {
+	if !strings.Contains(err.Error(), "[ami pruned]") {
 		t.Fatalf("limited error missing prune marker:\n%s", err.Error())
 	}
 	if !strings.Contains(err.Error(), "HEAD") || !strings.Contains(err.Error(), "TAIL") {

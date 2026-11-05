@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 func TestLoadRejectsLegacyMCPSection(t *testing.T) {
@@ -70,7 +70,7 @@ func TestLoadReadsWorkspaceFieldsFromContainerSection(t *testing.T) {
 backend = "docker"
 default_image = "alpine:3.22"
 image_pull_policy = "always"
-bridge_path = "/opt/memoh/runtime/bridge"
+bridge_path = "/opt/ami/runtime/bridge"
 `)
 	if err := os.WriteFile(configPath, data, 0o600); err != nil {
 		t.Fatalf("write config: %v", err)
@@ -92,7 +92,7 @@ bridge_path = "/opt/memoh/runtime/bridge"
 	if cfg.Workspace.ImagePullPolicy != "always" {
 		t.Fatalf("workspace image_pull_policy = %q", cfg.Workspace.ImagePullPolicy)
 	}
-	if cfg.Workspace.BridgePath != "/opt/memoh/runtime/bridge" {
+	if cfg.Workspace.BridgePath != "/opt/ami/runtime/bridge" {
 		t.Fatalf("workspace bridge_path = %q", cfg.Workspace.BridgePath)
 	}
 }
@@ -129,12 +129,12 @@ func TestLoadReadsBackendSpecificConfigs(t *testing.T) {
 	data := []byte(`
 [containerd]
 socket_path = "/tmp/containerd.sock"
-namespace = "memoh-test"
+namespace = "ami-test"
 
 [docker]
 host = "unix:///var/run/docker.sock"
-network = "memoh-workspace"
-server_container = "memoh-server"
+network = "ami-workspace"
+server_container = "ami-server"
 
 [apple]
 socket_path = "/tmp/socktainer.sock"
@@ -151,16 +151,16 @@ binary_path = "/opt/homebrew/bin/socktainer"
 	if cfg.Containerd.SocketPath != "/tmp/containerd.sock" {
 		t.Fatalf("containerd socket path = %q", cfg.Containerd.SocketPath)
 	}
-	if cfg.Containerd.Namespace != "memoh-test" {
+	if cfg.Containerd.Namespace != "ami-test" {
 		t.Fatalf("containerd namespace = %q", cfg.Containerd.Namespace)
 	}
-	if cfg.Docker.ServerContainer != "memoh-server" {
+	if cfg.Docker.ServerContainer != "ami-server" {
 		t.Fatalf("docker server container = %q", cfg.Docker.ServerContainer)
 	}
 	if cfg.Docker.Host != "unix:///var/run/docker.sock" {
 		t.Fatalf("docker host = %q", cfg.Docker.Host)
 	}
-	if cfg.Docker.Network != "memoh-workspace" {
+	if cfg.Docker.Network != "ami-workspace" {
 		t.Fatalf("docker network = %q", cfg.Docker.Network)
 	}
 	if cfg.Apple.SocketPath != "/tmp/socktainer.sock" {
@@ -172,11 +172,11 @@ binary_path = "/opt/homebrew/bin/socktainer"
 }
 
 func TestLoadAppliesBridgeTLSEnvOverrides(t *testing.T) {
-	t.Setenv("MEMOH_INSTANCE_ID", "instance-1")
-	t.Setenv("MEMOH_BRIDGE_TLS_MODE", BridgeTLSModeStrict)
-	t.Setenv("MEMOH_BRIDGE_TLS_SERVER_DIR", "/server")
-	t.Setenv("MEMOH_BRIDGE_TLS_BRIDGE_DIR", "/bridge")
-	t.Setenv("MEMOH_BRIDGE_TLS_SERVER_NAME", "bridge.internal")
+	t.Setenv("AMI_INSTANCE_ID", "instance-1")
+	t.Setenv("AMI_BRIDGE_TLS_MODE", BridgeTLSModeStrict)
+	t.Setenv("AMI_BRIDGE_TLS_SERVER_DIR", "/server")
+	t.Setenv("AMI_BRIDGE_TLS_BRIDGE_DIR", "/bridge")
+	t.Setenv("AMI_BRIDGE_TLS_SERVER_NAME", "bridge.internal")
 
 	cfg, err := Load(filepath.Join(t.TempDir(), "missing.toml"))
 	if err != nil {
@@ -194,20 +194,20 @@ func TestLoadAppliesBridgeTLSEnvOverrides(t *testing.T) {
 }
 
 func TestLoadAppliesWebhookTunnelEnvOverrides(t *testing.T) {
-	t.Setenv("MEMOH_WEBHOOK_TUNNEL_MODE", WebhookTunnelModeExternal)
-	t.Setenv("MEMOH_WEBHOOK_PUBLIC_BASE_URL", "https://memoh.example.com")
-	t.Setenv("MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR", ":18732")
-	t.Setenv("MEMOH_CLOUDFLARED_BIN", "/usr/local/bin/cloudflared")
-	t.Setenv("MEMOH_WEBHOOK_TUNNEL_TARGET_URL", "http://127.0.0.1:18732")
-	t.Setenv("MEMOH_WEBHOOK_TUNNEL_METRICS_ADDR", "127.0.0.1:18733")
-	t.Setenv("MEMOH_WEBHOOK_TUNNEL_METRICS_URL", "http://webhook-tunnel:18733")
+	t.Setenv("AMI_WEBHOOK_TUNNEL_MODE", WebhookTunnelModeExternal)
+	t.Setenv("AMI_WEBHOOK_PUBLIC_BASE_URL", "https://ami.example.com")
+	t.Setenv("AMI_WEBHOOK_TUNNEL_LISTEN_ADDR", ":18732")
+	t.Setenv("AMI_CLOUDFLARED_BIN", "/usr/local/bin/cloudflared")
+	t.Setenv("AMI_WEBHOOK_TUNNEL_TARGET_URL", "http://127.0.0.1:18732")
+	t.Setenv("AMI_WEBHOOK_TUNNEL_METRICS_ADDR", "127.0.0.1:18733")
+	t.Setenv("AMI_WEBHOOK_TUNNEL_METRICS_URL", "http://webhook-tunnel:18733")
 
 	cfg, err := Load(filepath.Join(t.TempDir(), "missing.toml"))
 	if err != nil {
 		t.Fatalf("load config: %v", err)
 	}
 	if cfg.WebhookTunnel.Mode != WebhookTunnelModeExternal ||
-		cfg.WebhookTunnel.PublicBaseURL != "https://memoh.example.com" ||
+		cfg.WebhookTunnel.PublicBaseURL != "https://ami.example.com" ||
 		cfg.WebhookTunnel.ListenAddr != ":18732" ||
 		cfg.WebhookTunnel.CloudflaredPath != "/usr/local/bin/cloudflared" ||
 		cfg.WebhookTunnel.TargetURL != "http://127.0.0.1:18732" ||
@@ -218,8 +218,8 @@ func TestLoadAppliesWebhookTunnelEnvOverrides(t *testing.T) {
 }
 
 func TestLoadAppliesConnectItEnvOverrides(t *testing.T) {
-	t.Setenv("MEMOH_CONNECT_IT_BASE_URL", "http://connect-it:8421")
-	t.Setenv("MEMOH_CONNECT_IT_API_TOKEN", "test-token")
+	t.Setenv("AMI_CONNECT_IT_BASE_URL", "http://connect-it:8421")
+	t.Setenv("AMI_CONNECT_IT_API_TOKEN", "test-token")
 
 	cfg, err := Load(filepath.Join(t.TempDir(), "missing.toml"))
 	if err != nil {
@@ -278,7 +278,7 @@ func TestRuntimeValidationRequiresInternalRPCSecret(t *testing.T) {
 		t.Fatalf("channel validation error = %v", err)
 	}
 
-	t.Setenv("MEMOH_INTERNAL_RPC_SHARED_SECRET", "test-only-secret")
+	t.Setenv("AMI_INTERNAL_RPC_SHARED_SECRET", "test-only-secret")
 	cfg, err = Load(filepath.Join(t.TempDir(), "missing.toml"))
 	if err != nil {
 		t.Fatalf("load config with secret: %v", err)
@@ -309,7 +309,7 @@ func TestLoadRejectsInvalidWebhookTunnelMode(t *testing.T) {
 }
 
 func TestLoadRejectsInvalidWebhookTunnelModeFromEnv(t *testing.T) {
-	t.Setenv("MEMOH_WEBHOOK_TUNNEL_MODE", "managd")
+	t.Setenv("AMI_WEBHOOK_TUNNEL_MODE", "managd")
 
 	_, err := Load(filepath.Join(t.TempDir(), "missing.toml"))
 	if err == nil {
@@ -608,15 +608,15 @@ func TestWorkspaceImagePullPolicyDefaultsAndNormalizes(t *testing.T) {
 
 func TestWorkspaceImageRefDefaultsToPackagedWorkspace(t *testing.T) {
 	got := (WorkspaceConfig{}).ImageRef()
-	want := "docker.io/memohai/workspace:debian-latest"
+	want := "docker.io/amiai/workspace:debian-latest"
 	if got != want {
 		t.Fatalf("default image ref = %q, want %q", got, want)
 	}
 }
 
 func TestWorkspaceImagePullCandidatesAddsWorkspaceMirror(t *testing.T) {
-	got := WorkspaceImagePullCandidates("memohai/workspace:debian-latest")
-	want := []string{"docker.io/memohai/workspace:debian-latest", "memoh.cn/memohai/workspace:debian-latest"}
+	got := WorkspaceImagePullCandidates("amiai/workspace:debian-latest")
+	want := []string{"docker.io/amiai/workspace:debian-latest", "ami.cn/amiai/workspace:debian-latest"}
 	if len(got) != len(want) {
 		t.Fatalf("candidate count = %d, want %d (%v)", len(got), len(want), got)
 	}

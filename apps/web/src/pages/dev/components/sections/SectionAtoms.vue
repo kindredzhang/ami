@@ -32,7 +32,7 @@ import {
   Trash2,
   Underline,
 } from 'lucide-vue-next'
-import { SettingsIcon as Settings } from '@memohai/icon/ui'
+import { SettingsIcon as Settings } from '@ami/icon/ui'
 import SectionShell from '../components/SectionShell.vue'
 import Specimen from '../components/Specimen.vue'
 import VariantMatrix from '../components/VariantMatrix.vue'

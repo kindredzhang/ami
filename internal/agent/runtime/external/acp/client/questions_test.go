@@ -8,7 +8,7 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
 )
 
 // answeringUserInput submits every question with the answers it holds.
@@ -32,7 +32,7 @@ func (f *answeringUserInput) WaitForRegisteredResponse(context.Context, string) 
 
 func (*answeringUserInput) RegisterWaiter(string) func() { return func() {} }
 
-func TestAgentQuestionRequestIsAnsweredThroughMemohsQuestionCard(t *testing.T) {
+func TestAgentQuestionRequestIsAnsweredThroughAmisQuestionCard(t *testing.T) {
 	t.Parallel()
 
 	userInput := &answeringUserInput{answers: []any{

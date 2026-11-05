@@ -17,11 +17,11 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	readability "github.com/go-shiori/go-readability"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/fetchproviders"
-	"github.com/felinics/memoh/internal/redact"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/fetchproviders"
+	"github.com/kindredzhang/ami/internal/redact"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 const (

@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // A runtime control failure is answered with the copy for its code, and one

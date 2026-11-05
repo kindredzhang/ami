@@ -5,9 +5,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // The terminal messages of a deferred step carry the pending decision on the

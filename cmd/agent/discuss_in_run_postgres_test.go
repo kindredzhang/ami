@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 // A clean Discuss run's answer is what proves its batch consumed: the steps

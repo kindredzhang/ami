@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // WorkspaceState describes the bot's isolated workspace without starting it.

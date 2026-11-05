@@ -1,8 +1,8 @@
 package native
 
 import (
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/models"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // GenerationLimits resolves the turn's output allowance from the model the

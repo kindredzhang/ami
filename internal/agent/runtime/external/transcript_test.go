@@ -5,9 +5,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // Some agents deliver the reply only as final text. A command receipt earlier

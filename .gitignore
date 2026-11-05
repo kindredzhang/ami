@@ -93,7 +93,7 @@ Thumbs.db
 tmp/
 
 # compiled files
-/memoh
+/ami
 /agent
 /bridge
 /channel
@@ -123,7 +123,7 @@ conf/oauth-clients.toml
 data
 _main-ref/
 .toolkit/
-.cache/memoh/
+.cache/ami/
 /scripts/vendor
 design-env/
 GEMINI.md

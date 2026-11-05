@@ -4,7 +4,7 @@
 INSERT INTO bot_history_message_compacts (bot_id, session_id, team_id)
 SELECT session.bot_id, session.id, session.team_id
 FROM bot_sessions session
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = sqlc.arg(session_id)
   AND session.bot_id = sqlc.arg(bot_id)
 RETURNING *;
@@ -21,7 +21,7 @@ SET status = sqlc.arg(status),
     usage = sqlc.arg(usage),
     model_id = sqlc.arg(model_id),
     completed_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND status = 'pending'
 RETURNING *;
@@ -38,10 +38,10 @@ SELECT fork.bot_id, fork.id, fork.team_id, 'ok', sqlc.arg(summary)::text, source
   source.model_id, source.started_at, source.completed_at
 FROM bot_history_message_compacts source
 JOIN bot_sessions fork
-  ON fork.team_id = public.memoh_current_team_id()
+  ON fork.team_id = public.ami_current_team_id()
  AND fork.id = sqlc.arg(session_id)
  AND fork.bot_id = source.bot_id
-WHERE source.team_id = public.memoh_current_team_id()
+WHERE source.team_id = public.ami_current_team_id()
   AND source.id = sqlc.arg(source_compact_id)
   AND source.status = 'ok'
 RETURNING id;
@@ -49,12 +49,12 @@ RETURNING id;
 -- name: ListCompactionLogsByBot :many
 SELECT *
 FROM bot_history_message_compacts
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY started_at DESC
 LIMIT $2 OFFSET $3;
 
 -- name: CountCompactionLogsByBot :one
-SELECT count(*) FROM bot_history_message_compacts WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+SELECT count(*) FROM bot_history_message_compacts WHERE team_id = public.ami_current_team_id() AND bot_id = $1;
 
 -- name: ReleasePendingCompactionLogsBySession :exec
 -- A new runtime owner settles the passes its predecessors left pending: their
@@ -63,7 +63,7 @@ UPDATE bot_history_message_compacts
 SET status = 'error',
     error_message = 'claimant lost runtime ownership',
     completed_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
   AND status = 'pending';

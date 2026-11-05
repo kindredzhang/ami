@@ -11,10 +11,10 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/jsonschema-go/jsonschema"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/agent/step"
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestAgentGenerateLimitsToolOutputBeforeNextModelCall(t *testing.T) {
@@ -49,7 +49,7 @@ func TestAgentGenerateLimitsToolOutputBeforeNextModelCall(t *testing.T) {
 				if len(content) >= len(large) {
 					t.Fatalf("tool output was not pruned: got %d bytes, original %d", len(content), len(large))
 				}
-				if !strings.Contains(content, "[memoh pruned]") {
+				if !strings.Contains(content, "[ami pruned]") {
 					t.Fatalf("tool output missing prune marker:\n%s", content)
 				}
 				return sdk.ModelResult{
@@ -129,7 +129,7 @@ func TestAgentExecuteToolLimitsToolError(t *testing.T) {
 	if !ok {
 		t.Fatalf("ExecuteTool() Result = %#v, want string", result.Result)
 	}
-	if len(text) >= len(largeErr) || !strings.Contains(text, "[memoh pruned]") {
+	if len(text) >= len(largeErr) || !strings.Contains(text, "[ami pruned]") {
 		t.Fatalf("tool error was not pruned:\n%s", text)
 	}
 }
@@ -212,7 +212,7 @@ func TestAgentGenerateBoundsExecOutputOnceAtTheDefaultLimit(t *testing.T) {
 	}
 	output, _ := toolexec.OutputValue(stored[0].Result).(map[string]any)
 	stdout, _ := output["stdout"].(string)
-	if strings.Count(stdout, "[memoh pruned]") != 1 || !strings.HasPrefix(stdout, "[memoh pruned]") ||
+	if strings.Count(stdout, "[ami pruned]") != 1 || !strings.HasPrefix(stdout, "[ami pruned]") ||
 		!strings.Contains(stdout, "HEAD") || !strings.HasSuffix(stdout, "TAIL") {
 		t.Fatalf("stdout = %d bytes, want its head and tail under one marker", len(stdout))
 	}

@@ -2,7 +2,7 @@
 set -eu
 
 script_dir="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
-test_dir="$(mktemp -d "${TMPDIR:-/tmp}/memoh-toolkit-wrappers.XXXXXX")"
+test_dir="$(mktemp -d "${TMPDIR:-/tmp}/ami-toolkit-wrappers.XXXXXX")"
 trap 'rm -rf "$test_dir"' EXIT
 trap 'exit 1' HUP INT TERM
 

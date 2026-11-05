@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // StreamError is the error event of a stream that is already open: an SSE

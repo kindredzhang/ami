@@ -55,7 +55,7 @@ type capabilities struct {
 	Direct bool
 	// DisplayName is the product name users see for a direct runtime. The
 	// other kinds leave it empty: an ACP agent is named by its profile, and the
-	// model runtime is Memoh's own.
+	// model runtime is Ami's own.
 	DisplayName string
 	// DecisionWaiter: tool approvals and user inputs are answered by waking
 	// an in-process waiter blocked inside the running turn. The model
@@ -67,7 +67,7 @@ type capabilities struct {
 	// workspace_exec permission.
 	WorkspaceExec bool
 	// AgentModel: the agent resolves its own model. Schedules and sessions
-	// carry the agent-side model id (acp_model_id) instead of a Memoh model
+	// carry the agent-side model id (acp_model_id) instead of a Ami model
 	// row, and reasoning efforts use the agent's own vocabulary.
 	AgentModel bool
 	// SessionModes this runtime can host.
@@ -175,7 +175,7 @@ func RequiresWorkspaceExec(raw string) bool {
 }
 
 // ResolvesOwnModel reports a runtime whose model selection lives inside the
-// agent rather than in Memoh model rows.
+// agent rather than in Ami model rows.
 func ResolvesOwnModel(raw string) bool {
 	caps, ok := capabilitiesFor(raw)
 	return ok && caps.AgentModel

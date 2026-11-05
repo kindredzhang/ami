@@ -6,7 +6,7 @@ RETURNING *;
 -- name: GetConnectorByConnectionID :one
 SELECT *
 FROM connectors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND connection_id = $2
 LIMIT 1;
@@ -14,7 +14,7 @@ LIMIT 1;
 -- name: ListConnectorsByBotID :many
 SELECT *
 FROM connectors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
 ORDER BY connection_id ASC;
 
@@ -22,7 +22,7 @@ ORDER BY connection_id ASC;
 UPDATE connectors
 SET enabled = $3,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND connection_id = $2;
 
@@ -31,7 +31,7 @@ WHERE team_id = public.memoh_current_team_id()
 -- Any failure rolls back the entire statement, leaving a retryable binding.
 WITH target AS MATERIALIZED (
     SELECT c.team_id, c.bot_id, c.connection_id FROM connectors c
-    WHERE c.team_id = public.memoh_current_team_id()
+    WHERE c.team_id = public.ami_current_team_id()
       AND c.bot_id = $1 AND c.connection_id = $2
 ), unlinked AS (
     UPDATE bot_app_connector_refs r

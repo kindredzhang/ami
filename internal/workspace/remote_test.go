@@ -14,14 +14,14 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/settings"
-	"github.com/felinics/memoh/internal/userruntime"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/settings"
+	"github.com/kindredzhang/ami/internal/userruntime"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const (
@@ -375,10 +375,10 @@ func TestRemoteWorkspaceClientUsesHostFilesystemCapability(t *testing.T) {
 		t.Fatalf("Stat: %v", err)
 	}
 	md := <-captured
-	if got := md.Get("x-memoh-workspace-id"); len(got) != 0 {
+	if got := md.Get("x-ami-workspace-id"); len(got) != 0 {
 		t.Fatalf("obsolete workspace id metadata = %v", got)
 	}
-	if got := md.Get("x-memoh-workspace-path-bin"); len(got) != 0 {
+	if got := md.Get("x-ami-workspace-path-bin"); len(got) != 0 {
 		t.Fatalf("obsolete workspace path metadata = %v", got)
 	}
 }

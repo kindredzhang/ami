@@ -1,8 +1,8 @@
 import { computed, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useQuery } from '@pinia/colada'
-import { getBotsByBotIdSessionsBySessionIdContextLifecycle } from '@memohai/sdk'
-import type { HandlersContextLifecycleResponse } from '@memohai/sdk'
+import { getBotsByBotIdSessionsBySessionIdContextLifecycle } from '@ami/sdk'
+import type { HandlersContextLifecycleResponse } from '@ami/sdk'
 import { useChatStore } from '@/store/chat-list'
 import { useChatViewTarget } from './useChatViewContext'
 

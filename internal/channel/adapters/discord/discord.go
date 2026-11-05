@@ -14,9 +14,9 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 const (

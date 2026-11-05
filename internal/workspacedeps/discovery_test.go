@@ -11,7 +11,7 @@ import (
 	"testing/fstest"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 const discoveryToolAYAML = `id: tool-a
@@ -45,7 +45,7 @@ scripts:
 
 // versionScript probes the candidate with a custom flag instead of
 // --version, which is exactly what scripts.version exists for.
-const versionScript = `dep_result "{\"version\":\"$("$MEMOH_DEP_CANDIDATE" --probe)\"}"
+const versionScript = `dep_result "{\"version\":\"$("$AMI_DEP_CANDIDATE" --probe)\"}"
 `
 
 func discoveryCatalog(t *testing.T) *catalog.Catalog {
@@ -325,19 +325,19 @@ func TestDiscoverEmptyListIsNoop(t *testing.T) {
 func TestParseDiscoveryOutputToolkitPrecedence(t *testing.T) {
 	dep := catalog.Dependency{ID: "codex", Provides: []string{"codex"}}
 	stdout := strings.Join([]string{
-		"__MEMOH_DEP__\tcodex",
-		"__MEMOH_LOCK__\tcodex",
-		"__MEMOH_TOOLKIT__\tcodex\t/opt/memoh/toolkit/bin/codex",
-		"__MEMOH_VERSION_BEGIN__\t/opt/memoh/toolkit/bin/codex",
+		"__AMI_DEP__\tcodex",
+		"__AMI_LOCK__\tcodex",
+		"__AMI_TOOLKIT__\tcodex\t/opt/ami/toolkit/bin/codex",
+		"__AMI_VERSION_BEGIN__\t/opt/ami/toolkit/bin/codex",
 		"codex-cli 0.150.0",
 		"",
-		"__MEMOH_VERSION_END__",
-		"__MEMOH_PATH__\tcodex\t/usr/local/bin/codex",
-		"__MEMOH_VERSION_BEGIN__\t/usr/local/bin/codex",
+		"__AMI_VERSION_END__",
+		"__AMI_PATH__\tcodex\t/usr/local/bin/codex",
+		"__AMI_VERSION_BEGIN__\t/usr/local/bin/codex",
 		"codex-cli 0.151.0-rc.1",
 		"",
-		"__MEMOH_VERSION_END__",
-		"__MEMOH_END__",
+		"__AMI_VERSION_END__",
+		"__AMI_END__",
 		"",
 	}, "\n")
 	probes, complete := parseDiscoveryOutput(stdout)
@@ -345,7 +345,7 @@ func TestParseDiscoveryOutputToolkitPrecedence(t *testing.T) {
 		t.Fatal("end marker not detected")
 	}
 	obs := resolveObserved(dep, probes["codex"])
-	if obs.Source != SourceToolkit || obs.Command != "/opt/memoh/toolkit/bin/codex" || obs.Version != "0.150.0" {
+	if obs.Source != SourceToolkit || obs.Command != "/opt/ami/toolkit/bin/codex" || obs.Version != "0.150.0" {
 		t.Errorf("Observed = %+v, want the toolkit copy at 0.150.0 to win", obs)
 	}
 	if len(obs.Candidates) != 2 || obs.Candidates[1].Source != SourcePath || obs.Candidates[1].Version != "0.151.0-rc.1" {
@@ -357,7 +357,7 @@ func TestParseDiscoveryOutputToolkitPrecedence(t *testing.T) {
 
 	// The toolkit bin being first on PATH is the usual case: same path, one
 	// candidate.
-	same := strings.ReplaceAll(stdout, "/usr/local/bin/codex", "/opt/memoh/toolkit/bin/codex")
+	same := strings.ReplaceAll(stdout, "/usr/local/bin/codex", "/opt/ami/toolkit/bin/codex")
 	probes, _ = parseDiscoveryOutput(same)
 	if obs := resolveObserved(dep, probes["codex"]); len(obs.Candidates) != 1 || obs.Source != SourceToolkit {
 		t.Errorf("Observed = %+v, want one toolkit candidate", obs)
@@ -365,7 +365,7 @@ func TestParseDiscoveryOutputToolkitPrecedence(t *testing.T) {
 }
 
 func TestParseDiscoveryOutputIncompleteWithoutEndMarker(t *testing.T) {
-	if _, complete := parseDiscoveryOutput("__MEMOH_DEP__\tx\n"); complete {
+	if _, complete := parseDiscoveryOutput("__AMI_DEP__\tx\n"); complete {
 		t.Error("output without end marker reported complete")
 	}
 }

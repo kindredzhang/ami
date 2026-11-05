@@ -83,7 +83,7 @@ func TestParsePlatformOutputRejectsShortOutput(t *testing.T) {
 
 func TestPlatformEnv(t *testing.T) {
 	env := strings.Join(Platform{OS: "linux", Arch: "arm64", Libc: "musl"}.env(), ",")
-	if env != "MEMOH_DEP_OS=linux,MEMOH_DEP_ARCH=arm64,MEMOH_DEP_LIBC=musl" {
+	if env != "AMI_DEP_OS=linux,AMI_DEP_ARCH=arm64,AMI_DEP_LIBC=musl" {
 		t.Errorf("env = %q", env)
 	}
 }

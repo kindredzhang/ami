@@ -14,8 +14,8 @@ import (
 	"google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 
-	"github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 // A trace that stops at a process boundary is the failure this guards. Both

@@ -1,5 +1,5 @@
 /**
- * Normalizes the HTTP/WebSocket spellings of the same Memoh server endpoint.
+ * Normalizes the HTTP/WebSocket spellings of the same Ami server endpoint.
  */
 export function normalizeRuntimeServerUrl(serverUrl: string): string {
   const url = new URL(serverUrl.trim())

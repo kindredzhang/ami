@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/media"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func TestHistoryRendersArchivedMarkdownFromLazyMetadata(t *testing.T) {

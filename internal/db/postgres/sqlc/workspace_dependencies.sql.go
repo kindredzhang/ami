@@ -81,7 +81,7 @@ func (q *Queries) ClaimBotDependencyOperation(ctx context.Context, arg ClaimBotD
 
 const deleteBotDependencyInstallation = `-- name: DeleteBotDependencyInstallation :execrows
 DELETE FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND dependency_id = $2
   AND operation_id = ''
@@ -102,7 +102,7 @@ func (q *Queries) DeleteBotDependencyInstallation(ctx context.Context, arg Delet
 
 const deleteBotDependencyOperation = `-- name: DeleteBotDependencyOperation :one
 DELETE FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND dependency_id = $2
   AND operation_id = $3 AND operation_id <> ''
@@ -158,7 +158,7 @@ SET source = $1,
     definition_revision = $10,
     operation_id = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $11
   AND dependency_id = $12
   AND operation_id = $13 AND operation_id <> ''
@@ -228,7 +228,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND dependency_id = $2
 LIMIT 1
@@ -270,7 +270,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
 ORDER BY dependency_id
 `
@@ -319,7 +319,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND status = $1
 ORDER BY bot_id, dependency_id
 `
@@ -368,7 +368,7 @@ SELECT id, team_id, bot_id, dependency_id, source, status,
        installed_version, latest_version, last_checked_at, last_error, last_error_code,
        manifest_digest, source_url, registry_id, definition_revision, operation_id, created_at, updated_at
 FROM bot_dependency_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND status IN ('installing', 'updating', 'removing')
   AND updated_at < now() - make_interval(secs => $1::double precision)
 ORDER BY updated_at, id
@@ -426,7 +426,7 @@ SET source = COALESCE($1::text, source),
     registry_id = COALESCE($9::text, registry_id),
     definition_revision = COALESCE($10::text, definition_revision),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $11
   AND dependency_id = $12
   AND operation_id = ''
@@ -495,7 +495,7 @@ SET status = $1,
     last_error = '',
     last_error_code = $2,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $3
   AND dependency_id = $4
   AND operation_id = ''

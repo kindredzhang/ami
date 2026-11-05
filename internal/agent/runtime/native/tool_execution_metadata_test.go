@@ -8,9 +8,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestToolExecutionMetadataRegistryAnnotatesToolCall(t *testing.T) {

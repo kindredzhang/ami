@@ -80,7 +80,7 @@
     "deleteSuccess": "删除成功",
     "enterContent": "请输入内容...",
     "noData": "暂无数据",
-    "of": " / ",
+    "of": "/",
     "showing": "显示",
     "goto": "前往",
     "secretId": "密钥 ID",
@@ -96,12 +96,12 @@
     "preview": "预览"
   },
   "computerAccess": {
-    "emptyBots": "还没有 Bot",
+    "emptyBots": "还没有专家",
     "yourComputer": "你的电脑",
     "notConnected": "未连接",
     "updateFailed": "更新访问权失败",
     "done": "完成",
-    "subtitleRuntime": "哪些 Bot 可以使用它？",
+    "subtitleRuntime": "哪些专家可以使用它？",
     "subtitleBot": "它可以使用哪些电脑？"
   },
   "computerConnect": {
@@ -109,7 +109,7 @@
     "replaceAction": "覆盖这台电脑已保存的连接",
     "replaceDescription": "终端提示已有其他连接时开启，再重新复制命令运行",
     "restore": "恢复连接",
-    "existingDescription": "在「{name}」上运行命令，沿用原凭证恢复后台连接。电脑记录和 Bot 权限会保留。",
+    "existingDescription": "在「{name}」上运行命令，沿用原凭证恢复后台连接。电脑记录和专家权限会保留。",
     "commandLabel": "连接命令",
     "platformLabel": "操作系统",
     "commandDescription": "在要连接的电脑上安装 Node.js 20+，然后在终端运行下方命令",
@@ -136,8 +136,8 @@
       "runtime_not_found": "这个 Agent 运行实例已失效，将重新启动"
     },
     "acp_agent_auth_invalid": "外部 Agent 认证无效。请更新 Agent 配置后重试。",
-    "acp_agent_not_configured": "该 Bot 的外部 Agent 配置尚未完成",
-    "acp_agent_not_enabled": "该 Bot 已停用选中的外部 Agent",
+    "acp_agent_not_configured": "该专家的外部 Agent 配置尚未完成",
+    "acp_agent_not_enabled": "该专家已停用选中的外部 Agent",
     "acp_agent_not_found": "选中的外部 Agent 不可用",
     "acp_attachment_invalid": "附件无效，请重新添加",
     "acp_attachment_unavailable": "无法让外部 Agent 访问该附件，请重新添加",
@@ -150,7 +150,7 @@
     "acp_runtime_owner_missing": "这个外部 Agent 会话没有运行时所有者。请重新开始一个会话。",
     "acp_runtime_start_failed": "外部 Agent 运行时启动失败",
     "agent": {
-      "chat_model_not_configured": "尚未选择对话模型。请在 Bot 设置 → 通用中设置默认对话模型，然后重试。",
+      "chat_model_not_configured": "尚未选择对话模型。请在专家设置 → 通用中设置默认对话模型，然后重试。",
       "provider_auth_failed": "模型服务拒绝了当前凭据，请检查该服务商的 API Key",
       "provider_overloaded": "模型服务暂时不可用或过载，请稍后重试",
       "provider_permission_denied": "模型服务商拒绝访问该模型或资源，请确认该账号有权使用此模型",
@@ -167,7 +167,7 @@
       "expired": "授权已过期，请重新连接账号",
       "failed": "账号授权失败，请重试",
       "limit": "请关闭其他待完成的授权，然后重试",
-      "not_ready": "请先完成账号连接，再创建 Bot"
+      "not_ready": "请先完成账号连接，再创建专家"
     },
     "agent_credential": {
       "encryption_unavailable": "此服务器尚未配置 Agent 账号存储",
@@ -181,7 +181,7 @@
       "runtime_busy": "请等待当前回复结束后再切换 Agent 账号",
       "usage_unavailable": "暂时无法获取额度，请稍后再试"
     },
-    "agent_dependency_missing": "{dep_id} 尚未安装在此工作区。请在 Bot 的「依赖」中安装，或等待正在进行的安装完成，然后重新发送消息。",
+    "agent_dependency_missing": "{dep_id} 尚未安装在此工作区。请在专家的「依赖」中安装，或等待正在进行的安装完成，然后重新发送消息。",
     "app": {
       "busy": "该应用的另一个操作正在进行中",
       "dependencies_unavailable": "此服务器未启用工作区依赖服务，应用无法管理依赖。请联系管理员。",
@@ -193,7 +193,7 @@
     "bot": {
       "name_invalid": "名称需为 2-63 个小写字母、数字或连字符，并以字母或数字开头；部分名称为保留名",
       "name_taken": "该名称已被占用",
-      "not_found": "这个 Bot 已不存在，请返回 Bot 列表重新选择"
+      "not_found": "这个专家已不存在，请返回专家列表重新选择"
     },
     "bot_access": {
       "grant_not_found": "这条访问授权已不存在，请刷新成员列表后重试"
@@ -202,7 +202,7 @@
       "default_in_use": "请先选择其他默认 Agent，再停用或删除这个 Agent",
       "invalid_metadata": "Agent 配置无效",
       "invalid_runtime": "暂不支持这个 Agent 运行时",
-      "name_taken": "这个 Bot 中已存在同名 Agent",
+      "name_taken": "这个专家中已存在同名 Agent",
       "not_found": "这个 Agent 已不存在",
       "provider_direct_runtime": "该服务商以直连运行时方式运行，请改用 {runtime} 运行时创建 Agent",
       "unavailable": "这个 Agent 已不能用于新对话"
@@ -210,13 +210,13 @@
     "bot_backup": {
       "bundle_invalid": "备份文件已损坏，或版本不受支持"
     },
-    "bot_ready_update_failed": "工作区已创建，但未能加载 Bot，请刷新页面",
+    "bot_ready_update_failed": "工作区已创建，但未能加载专家，请刷新页面",
     "browser": {
       "session_not_found": "这个浏览器会话已过期或被关闭，请重新打开一个"
     },
     "canceled": "请求已取消",
     "capability": {
-      "access_denied": "需要此 Bot 的管理权限才能管理其能力",
+      "access_denied": "需要此专家的管理权限才能管理其能力",
       "approval_required": "请先批准此能力变更请求",
       "not_found": "找不到请求的能力，请刷新后重试",
       "operation_failed": "能力管理操作失败，请检查当前状态后重试",
@@ -224,7 +224,7 @@
     },
     "channel": {
       "binding_required": "接收方尚未绑定该渠道",
-      "config_not_found": "这个 Bot 还没有配置该渠道，请先完成配置再重试",
+      "config_not_found": "这个专家还没有配置该渠道，请先完成配置再重试",
       "enable_failed": "渠道启用失败，请检查凭据后重试",
       "identity_config_not_found": "你还没有配置该渠道，请先完成配置再重试",
       "runtime_unavailable": "暂时无法连接 Channel 服务，请稍后重试",
@@ -266,8 +266,8 @@
     },
     "elicitation_declined": "工具请求的交互未能展示，此次请求已拒绝",
     "external_agent": {
-      "account_unbound": "你的 IM 账号还没关联到 Memoh 账号，暂时无法使用该 Bot 的工作区。如果你是它的所有者，请在 Memoh 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
-      "container_workspace_required": "该 Agent 运行时需要容器工作区。请先把 Bot 切换到容器工作区，再重试。",
+      "account_unbound": "你的 IM 账号还没关联到 Ami 账号，暂时无法使用该专家的工作区。如果你是它的所有者，请在 Ami 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
+      "container_workspace_required": "该 Agent 运行时需要容器工作区。请先把专家切换到容器工作区，再重试。",
       "turn_replacement_unsupported": "外部 Agent 会话不支持重试或编辑，请改为发送一条新消息"
     },
     "external_runtime": {
@@ -284,7 +284,7 @@
       "usage_limited": "外部 Agent 账号的使用额度已用完。请等额度重置后再试，或检查该账号的套餐与账单。"
     },
     "fetch_provider": {
-      "native_managed": "内置抓取服务由 Memoh 管理，无法这样修改",
+      "native_managed": "内置抓取服务由 Ami 管理，无法这样修改",
       "not_found": "这个抓取服务已不存在，请刷新列表后重新选择"
     },
     "group_chat_acp_unsupported": "群聊不能创建对话模式的外部 Agent 会话。请使用 /new <Agent 名称> 或 /new discuss <Agent 名称>。",
@@ -326,7 +326,7 @@
       "reference_unavailable": "文件未能分享，请让 Agent 重新生成或再次分享"
     },
     "memory": {
-      "compact_unsupported": "当前记忆提供方不支持记忆压缩，请在 Bot 的记忆设置中换用支持压缩的提供方"
+      "compact_unsupported": "当前记忆提供方不支持记忆压缩，请在专家的记忆设置中换用支持压缩的提供方"
     },
     "message": {
       "not_found": "这条消息已不存在，请刷新会话后重试"
@@ -336,9 +336,9 @@
     },
     "native_history_lost": "Agent 无法恢复此前的对话上下文，已重新开始。上方消息仅保留作历史记录；继续前，请重新提供所需信息。",
     "network": {
-      "provider_not_configured": "请先为此 Bot 选择网络服务"
+      "provider_not_configured": "请先为此专家选择网络服务"
     },
-    "no_workspace_exec": "你没有执行该 Bot 工作区命令的权限",
+    "no_workspace_exec": "你没有执行该专家工作区命令的权限",
     "oauth": {
       "state_invalid": "本次授权已过期或已失效，请重新发起授权"
     },
@@ -445,7 +445,7 @@
       "reasoning_options_unavailable": "暂时无法解析对话模型的推理选项，请稍后重试"
     },
     "skill": {
-      "builtin_read_only": "Memoh 自带 Skill 由系统管理，无法编辑或删除",
+      "builtin_read_only": "Ami 自带 Skill 由系统管理，无法编辑或删除",
       "directory_shared": "该 Skill 的文件夹中还包含其他 Skill，无法在这里重命名或删除。请在文件中删除它的 SKILL.md。",
       "name_invalid": "Skill 的 YAML frontmatter 中需要有效的名称",
       "name_taken": "已存在同名 Skill，请换一个名称",
@@ -458,10 +458,10 @@
       "permission_denied": "你没有使用此命令的权限",
       "requires_websocket": "激活 Skill 需要实时对话连接，请重新连接后再试",
       "reserved_metadata": "消息中带有保留的 Skill 元数据，客户端不能提交这类数据",
-      "skill_activation_unsupported": "只有使用 Bot 自身模型的对话会话才能激活 Skill，请切换到这类会话后再试",
-      "skill_ambiguous": "有多个 Skill 使用这个名称，请在 Bot 的 Skill 中重命名或停用其中一个后再试",
+      "skill_activation_unsupported": "只有使用专家自身模型的对话会话才能激活 Skill，请切换到这类会话后再试",
+      "skill_ambiguous": "有多个 Skill 使用这个名称，请在专家的 Skill 中重命名或停用其中一个后再试",
       "skill_context_too_large": "所选 Skill 内容过多，一条消息放不下，请减少 Skill 后再试",
-      "skill_disabled": "该 Skill 已停用，请在 Bot 的 Skill 中启用后再试",
+      "skill_disabled": "该 Skill 已停用，请在专家的 Skill 中启用后再试",
       "skill_not_found": "没有这个名称的 Skill，请检查名称后再试",
       "skill_not_usable": "该 Skill 不能在对话中使用",
       "skill_syntax_invalid": "请用 /<skill-name> [prompt] 激活 Skill",
@@ -480,12 +480,12 @@
       "operation_failed": "审批响应处理失败",
       "request_invalid": "审批响应格式无效，请刷新后重试"
     },
-    "tools_unavailable": "此会话的 Memoh 工具不可用，请新建会话后重试",
+    "tools_unavailable": "此会话的 Ami 工具不可用，请新建会话后重试",
     "transcription_model": {
       "not_found": "这个语音转写模型已不存在，请刷新列表后重新选择"
     },
     "tts": {
-      "model_not_configured": "此 Bot 尚未配置语音合成模型，请先在 Bot 设置中选择",
+      "model_not_configured": "此专家尚未配置语音合成模型，请先在专家设置中选择",
       "text_too_long": "文本过长，最多 {max} 个字符"
     },
     "tts_model": {
@@ -530,7 +530,7 @@
       "display_prepare_failed": "显示环境准备失败，请稍后重试",
       "image_not_found": "工作区镜像不存在、需要镜像仓库凭据，或名称无效，请检查镜像名称后重试",
       "image_registry_unavailable": "暂时无法连接镜像仓库，请稍后重试",
-      "teardown_failed": "移除工作区失败。请重试删除 bot。",
+      "teardown_failed": "移除工作区失败。请重试删除专家。",
       "template_bootstrap_failed": "工作区文件初始化失败，请尝试重建工作区",
       "unreachable": "暂时无法连接工作区，请稍后重试"
     },
@@ -563,14 +563,14 @@
     "workspace_load_failed": "加载工作区信息失败，请重试",
     "workspace_manager_unavailable": "服务器未配置工作区管理",
     "workspace_metrics_load_failed": "加载资源状态失败，请重试",
-    "workspace_not_found": "该 Bot 还没有工作区",
+    "workspace_not_found": "该专家还没有工作区",
     "workspace_preserved_data_not_found": "没有找到保留的工作区数据",
     "workspace_resource_limits_invalid": "资源限制无效，限制值不能为负数",
     "workspace_resource_limits_required": "请填写资源限制",
     "workspace_resource_limits_save_failed": "保存资源限制失败，请重试",
     "workspace_restore_failed": "恢复工作区数据失败，请重试",
     "workspace_setup_failed": "创建工作区时出错",
-    "workspace_setup_timeout": "工作区仍在创建中，请到 Bot 的工作区页面查看",
+    "workspace_setup_timeout": "工作区仍在创建中，请到专家的工作区页面查看",
     "workspace_snapshot_chain_not_found": "找不到工作区的快照历史",
     "workspace_snapshot_create_failed": "创建快照失败，请重试",
     "workspace_snapshot_manager_unavailable": "服务器未配置快照功能",
@@ -590,7 +590,7 @@
   "auth": {
     "welcome": "欢迎回来",
     "pageTitle": "登录",
-    "pageSubtitle": "开始用 Memoh 构建",
+    "pageSubtitle": "开始用 Ami 构建",
     "continue": "继续",
     "username": "用户名",
     "password": "密码",
@@ -605,12 +605,12 @@
     "retryHint": "请检查凭据后重试"
   },
   "desktopConnection": {
-    "title": "连接到 Memoh",
-    "subtitle": "输入你的 Memoh 服务器地址",
-    "fullInstallLead": "想运行完整的 Memoh？",
-    "fullInstallAction": "使用 Docker 安装 Memoh",
-    "fullInstallHint": "Desktop 仅用于连接已有的 Memoh Server",
-    "placeholder": "https://memoh.example.com",
+    "title": "连接到 Ami",
+    "subtitle": "输入你的 Ami 服务器地址",
+    "fullInstallLead": "想运行完整的 Ami？",
+    "fullInstallAction": "使用 Docker 安装 Ami",
+    "fullInstallHint": "Desktop 仅用于连接已有的 Ami Server",
+    "placeholder": "https://ami.example.com",
     "connect": "连接",
     "failed": "无法连接",
     "errors": {
@@ -620,7 +620,7 @@
       "timeout": "服务器响应超时",
       "unreachable": "无法访问该服务器",
       "http": "服务器返回了 HTTP {status}",
-      "invalid-response": "该地址没有返回 Memoh 服务器响应"
+      "invalid-response": "该地址没有返回 Ami 服务器响应"
     }
   },
   "sidebar": {
@@ -631,7 +631,7 @@
     },
     "session": "会话列表",
     "chat": "对话",
-    "bots": "Bot",
+    "bots": "专家",
     "runtimes": "电脑",
     "providers": "服务商",
     "settings": "设置",
@@ -655,8 +655,8 @@
     "supermarket": "应用市场",
     "about": "关于",
     "userMenu": "账号菜单",
-    "switchBot": "切换 Bot",
-    "manageBots": "管理 Bot"
+    "switchBot": "切换专家",
+    "manageBots": "管理专家"
   },
   "runtimes": {
     "title": "电脑",
@@ -668,9 +668,9 @@
     "loadFailedDescription": "请检查服务器连接后重试",
     "retry": "重试",
     "emptyTitle": "还没有连接电脑",
-    "emptyDescription": "创建连接命令，然后在你希望 Memoh 使用的电脑上运行它",
+    "emptyDescription": "创建连接命令，然后在你希望 Ami 使用的电脑上运行它",
     "emptyOtherTitle": "还没有连接其他电脑",
-    "emptyOtherDescription": "如果希望 Bot 使用其他设备，可以再连接一台电脑",
+    "emptyOtherDescription": "如果希望专家使用其他设备，可以再连接一台电脑",
     "copyCommand": "复制连接命令",
     "revoke": "断开连接",
     "revokeTitle": "断开这台电脑的连接？",
@@ -686,19 +686,19 @@
     },
     "thisComputer": {
       "title": "这台电脑",
-      "allow": "允许 Bot 使用这台电脑",
-      "description": "打开后需要给这台电脑命名并建立连接，然后才能将它添加给各个 Bot",
-      "enabledDescription": "只有你允许的 Bot 才能访问你的主目录，并以你的身份执行命令",
-      "pausedDescription": "已暂停。Bot 暂时无法使用这台电脑，已授予的访问权会保留。",
-      "fallbackName": "Memoh Desktop",
+      "allow": "允许专家使用这台电脑",
+      "description": "打开后需要给这台电脑命名并建立连接，然后才能将它添加给各个专家",
+      "enabledDescription": "只有你允许的专家才能访问你的主目录，并以你的身份执行命令",
+      "pausedDescription": "已暂停。专家暂时无法使用这台电脑，已授予的访问权会保留。",
+      "fallbackName": "Ami Desktop",
       "dialogTitle": "允许使用这台电脑",
-      "dialogDescription": "这个名称会显示在 Bot 设置、审批和聊天记录中",
+      "dialogDescription": "这个名称会显示在专家设置、审批和聊天记录中",
       "confirm": "允许使用",
       "loading": "正在读取这台电脑...",
       "loadFailed": "无法读取这台电脑的连接状态",
-      "loadFailedDescription": "请重启 Memoh Desktop 后重试",
+      "loadFailedDescription": "请重启 Ami Desktop 后重试",
       "invalidCredential": "服务器没有返回可用的连接信息",
-      "enableFailed": "无法允许 Bot 使用这台电脑",
+      "enableFailed": "无法允许专家使用这台电脑",
       "disableFailed": "无法关闭这台电脑的使用权限",
       "status": {
         "disabled": "已关闭",
@@ -716,10 +716,10 @@
       "nameRequired": "请输入电脑名称",
       "createFailed": "无法创建连接"
     },
-    "botAccess": "{count}/{total} 个 Bot",
-    "noBotAccess": "无 Bot",
-    "manageAccess": "管理 Bot 访问权",
-    "revokeAccessWarning": "将同时解除 {count} 个 Bot 的访问权",
+    "botAccess": "{count}/{total} 个专家",
+    "noBotAccess": "无专家",
+    "manageAccess": "管理专家访问权",
+    "revokeAccessWarning": "将同时解除 {count} 个专家的访问权",
     "computerOnline": "{name} 已上线"
   },
   "breadcrumb": {
@@ -732,11 +732,11 @@
     "userProfile": "个人资料",
     "connectedAccounts": {
       "title": "关联账号",
-      "subtitle": "关联后，Bot 才能在 IM 里认出你是所有者，你就能在聊天里直接管理它",
+      "subtitle": "关联后，专家才能在 IM 里认出你是所有者，你就能在聊天里直接管理它",
       "connect": "获取关联码",
       "empty": "暂无关联账号",
       "linkAnother": "关联另一个账号",
-      "codeInstruction": "复制这行，在 IM 里发给你的 Bot；关联成功后这里会自动更新",
+      "codeInstruction": "复制这行，在 IM 里发给你的专家；关联成功后这里会自动更新",
       "linked": "账号已关联",
       "copy": "复制",
       "copied": "已复制",
@@ -747,9 +747,9 @@
       "disconnectFailed": "断开失败",
       "expiresIn": "{time} 后过期",
       "expired": "关联码已过期 —— 请重新获取",
-      "noImBotTitle": "还没有接入 IM 的 Bot",
-      "noImBotHint": "先把 Bot 接入 IM 渠道，才能关联账号",
-      "goToBots": "前往 Bot"
+      "noImBotTitle": "还没有接入 IM 的专家",
+      "noImBotHint": "先把专家接入 IM 渠道，才能关联账号",
+      "goToBots": "前往专家"
     },
     "userID": "用户 ID",
     "displayName": "显示名称",
@@ -757,7 +757,7 @@
     "timezone": "时区",
     "timezonePlaceholder": "例如 Asia/Shanghai",
     "titleModel": "标题模型",
-    "titleModelDescription": "使用此模型为你名下所有 Bot 的会话生成标题",
+    "titleModelDescription": "使用此模型为你名下所有专家的会话生成标题",
     "titleModelPlaceholder": "未启用（使用首条消息）",
     "saveProfile": "保存更改",
     "profileUpdated": "个人资料已更新",
@@ -789,7 +789,7 @@
       "interfaceDescription": "这些设置将立即生效并保存在本地设备上",
       "colorScheme": "配色方案",
       "showExamplesEntry": "侧边栏示例入口",
-      "showExamplesEntryDescription": "在侧边栏左下角显示「看看 Memoh 能做什么」",
+      "showExamplesEntryDescription": "在侧边栏左下角显示「看看 Ami 能做什么」",
       "colorSchemeDescription": "为品牌、状态和 UI 元素选择一套调色盘",
       "typography": "字体与字号",
       "uiFontFamily": "界面字体",
@@ -804,14 +804,14 @@
       "shikiThemeSearch": "搜索主题…",
       "shikiThemeEmpty": "未找到主题",
       "colorSchemes": {
-        "memoh": "Memoh",
+        "ami": "Ami",
         "ocean": "海洋",
         "forest": "森林",
         "rose": "玫瑰",
         "amber": "琥珀"
       },
       "colorSchemeDescriptions": {
-        "memoh": "经典的紫色调方案",
+        "ami": "经典的紫色调方案",
         "ocean": "冷静的蓝色，高辨识度状态显示",
         "forest": "沉静的绿色调方案",
         "rose": "温暖的玫瑰色，柔和的视觉对比",
@@ -915,7 +915,17 @@
     "changeEmail": "修改邮箱",
     "emailRequired": "请填写邮箱",
     "emailUpdated": "邮箱已更新",
-    "emailUpdateFailed": "邮箱更新失败"
+    "emailUpdateFailed": "邮箱更新失败",
+    "userMemory": {
+      "title": "记忆",
+      "description": "写给所有专家看的背景。这里的内容会作为默认前提，带进你和每一位专家的对话。",
+      "placeholder": "例如：我是产品负责人，正在做一个私有化部署的 AI 平台；回答用中文，尽量简短，先给结论。",
+      "appliesTo": "作用于你的所有专家",
+      "save": "保存",
+      "saving": "保存中…",
+      "saved": "记忆已保存",
+      "saveFailed": "保存记忆失败"
+    }
   },
   "people": {
     "title": "成员",
@@ -960,7 +970,7 @@
     "updateReadyPaused": "更新已就绪。自动安装已关闭，重启以安装。",
     "preparingUpdate": "正在准备更新…",
     "installingUpdate": "正在重启…",
-    "autoUpdateDescription": "后台下载，退出 Memoh 时自动安装",
+    "autoUpdateDescription": "后台下载，退出 Ami 时自动安装",
     "autoUpdate": "自动更新",
     "tagline": "开源多智能体平台",
     "description": "多个 AI Agent，各自拥有独立的电脑与长期记忆",
@@ -981,7 +991,7 @@
     "desktopUpdatesUnavailable": "自动更新不可用",
     "desktopUpdatesUnavailableDesc": "当前构建未配置更新源",
     "downloadingUpdate": "正在下载… {progress}%",
-    "desktopUpdateDownloadedDesc": "更新已就绪。可以立即重启，或在退出 Memoh 时自动安装。",
+    "desktopUpdateDownloadedDesc": "更新已就绪。可以立即重启，或在退出 Ami 时自动安装。",
     "restartToUpdate": "重启并更新",
     "retryUpdate": "重试更新",
     "desktopUpdateFailed": "Desktop 更新失败",
@@ -991,12 +1001,12 @@
     "advanced": "高级设置",
     "advancedDescription": "Desktop 连接及其他不常修改的设置",
     "serverConnection": "服务器连接",
-    "serverConnectionDescription": "将 Desktop 连接到另一台 Memoh 服务器",
+    "serverConnectionDescription": "将 Desktop 连接到另一台 Ami 服务器",
     "configureServer": "设置",
     "license": "AGPLv3 · © 2026 MemohAI"
   },
   "chat": {
-    "workspaceLinkUnavailable": "此处无法打开工作区链接，请在有工作区访问权限的 Memoh 对话中打开",
+    "workspaceLinkUnavailable": "此处无法打开工作区链接，请在有工作区访问权限的 Ami 对话中打开",
     "runtimeStatus": {
       "compacting": "正在压缩上下文…",
       "api_retry": "{seconds} 秒后重试（{attempt}/{max_retries}）…"
@@ -1018,8 +1028,8 @@
       "g12": "先从哪件事开始？"
     },
     "emptySystemSession": "系统会话暂无记录",
-    "selectBot": "选择一个 Bot",
-    "selectBotHint": "从侧边栏选择一个 Bot 开始对话",
+    "selectBot": "选择一个专家",
+    "selectBotHint": "从侧边栏选择一个专家开始对话",
     "thinking": "正在思考如何处理",
     "thinkingInProgress": "正在思考如何处理",
     "thinkingDone": "思考完成",
@@ -1102,10 +1112,10 @@
       },
       "fragmentSeparator": "、"
     },
-    "currentBot": "当前 Bot",
+    "currentBot": "当前专家",
     "stopResponse": "停止生成回复",
     "composer": {
-      "selectBot": "请选择 Bot 后发送消息",
+      "selectBot": "请选择专家后发送消息",
       "selectModel": "请选择模型后发送消息",
       "modeChanging": "正在保存模式，请稍后发送"
     },
@@ -1169,7 +1179,7 @@
       "choose": "选择项目",
       "clear": "不在项目中工作",
       "none": "未选择项目",
-      "workspace": "Memoh 工作区",
+      "workspace": "Ami 工作区",
       "empty": "请先在侧边栏添加文件夹，再选择项目"
     },
     "folderDetachDraft": "不放入文件夹",
@@ -1196,7 +1206,7 @@
     },
     "unknownSession": "未知会话",
     "startChat": "开始聊天",
-    "noBot": "暂无可用 Bot，请先创建 Bot",
+    "noBot": "暂无可用专家，请先创建专家",
     "newChat": "新会话",
     "history": "历史对话",
     "historyParticipant": "对话",
@@ -1431,7 +1441,7 @@
       "userInputExpired": "已过期",
       "userInputPlaceholder": "输入回答",
       "userInputCustomOption": "其他",
-      "userInputTellMore": "告诉 Bot 更多",
+      "userInputTellMore": "告诉专家更多",
       "submitUserInput": "提交",
       "cancelUserInput": "取消",
       "userInputConnectionLost": "连接已断开，请重连后重试",
@@ -1490,7 +1500,7 @@
     "reasoningXHigh": "极高",
     "reasoningMax": "最大",
     "sessions": "会话",
-    "newSession": "新会话",
+    "newSession": "新任务",
     "deleteSession": "删除会话",
     "deleteSessionConfirm": "确定要删除此会话吗？",
     "selectSessions": "多选",
@@ -1510,15 +1520,15 @@
     "recents": "最近",
     "quickActions": "快捷操作",
     "scheduledJobs": "定时任务",
-    "botSettings": "Bot 设置",
+    "botSettings": "专家设置",
     "manageSchedule": "管理",
-    "noBotSelected": "未选择 Bot",
+    "noBotSelected": "未选择专家",
     "sessionTypeSchedule": "定时任务",
     "sessionTypeSubagent": "子智能体",
     "sessionTypeDiscuss": "讨论",
     "sessionTypeChat": "对话",
     "sessionTypeACPAgent": "Agent",
-    "agentMemoh": "Memoh",
+    "agentAmi": "Ami",
     "agentCodex": "Codex",
     "agentSwitchFailed": "切换 Agent 失败",
     "modelSwitchFailed": "切换模型失败",
@@ -1539,15 +1549,15 @@
     "defaultAgentDisabled": "已启用默认 Agent，但选中的 Agent 已停用",
     "defaultAgentNotConfigured": "已启用默认 Agent，但选中的 Agent 尚未配置完成",
     "externalAgent": {
-      "agentNotConfigured": "该 Bot 的外部 Agent 配置尚未完成",
+      "agentNotConfigured": "该专家的外部 Agent 配置尚未完成",
       "agentCommandStale": "Agent 已不再提供该命令。请重新打开命令面板后重试。",
       "agentNotFound": "选中的外部 Agent 不可用",
-      "agentNotEnabled": "该 Bot 已停用选中的外部 Agent",
-      "codexOAuthIncomplete": "该 Bot 工作区尚未完成 Codex ChatGPT 登录",
-      "codexAuthTokenMissing": "该 Bot 工作区的 Codex 认证缺失或不完整",
+      "agentNotEnabled": "该专家已停用选中的外部 Agent",
+      "codexOAuthIncomplete": "该专家工作区尚未完成 Codex ChatGPT 登录",
+      "codexAuthTokenMissing": "该专家工作区的 Codex 认证缺失或不完整",
       "agentAuthInvalid": "外部 Agent 认证无效。请更新 Agent 配置后重试。",
-      "noWorkspaceExec": "你没有执行该 Bot 工作区命令的权限",
-      "accountUnbound": "你的 IM 账号还没关联到 Memoh 账号，暂时无法使用该 Bot 的工作区。如果你是它的所有者，请在 Memoh 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
+      "noWorkspaceExec": "你没有执行该专家工作区命令的权限",
+      "accountUnbound": "你的 IM 账号还没关联到 Ami 账号，暂时无法使用该专家的工作区。如果你是它的所有者，请在 Ami 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
       "runtimeOwnerMissing": "这个外部 Agent 会话没有运行时所有者。请重新开始一个会话。",
       "discussUnsupported": "这个外部 Agent 无法在讨论模式中运行",
       "groupChatUnsupported": "群聊不能创建对话模式的外部 Agent 会话。请使用 /new <Agent 名称> 或 /new discuss <Agent 名称>。",
@@ -1563,7 +1573,7 @@
       "dependencyMissing": "{dep_id} 尚未安装在此工作区，正在后台安装。完成后请重发这条消息。",
       "dependencyMissingProgress": "正在后台安装…",
       "dependencyMissingDone": "安装完成，可以重发消息了",
-      "dependencyMissingFailed": "后台安装失败，请到 Bot 设置的「依赖」中重试",
+      "dependencyMissingFailed": "后台安装失败，请到专家设置的「依赖」中重试",
       "dependencyOpen": "查看依赖",
       "resetSession": "新开 Agent 会话",
       "resetSessionDone": "下一条消息会开始新的 Agent 会话，它不会记得上面的对话",
@@ -1664,7 +1674,7 @@
     },
     "mobileNav": {
       "title": "导航",
-      "description": "切换 Bot、对话、文件、日程和设置"
+      "description": "切换专家、对话、文件、日程和设置"
     },
     "activityBar": {
       "sessions": "对话",
@@ -1836,8 +1846,8 @@
     }
   },
   "chatExamples": {
-    "noBot": "请先创建一个 Bot 再试试",
-    "createBot": "创建 Bot",
+    "noBot": "请先创建一个专家再试试",
+    "createBot": "创建专家",
     "tryThese": "试试这些",
     "needs": "需要{capability}",
     "capability": {
@@ -1849,12 +1859,12 @@
       "schedule": "定时任务",
       "channel": "渠道"
     },
-    "sidebarEntry": "看看 Memoh 能做什么",
+    "sidebarEntry": "看看 Ami 能做什么",
     "hideSidebarEntry": "隐藏此入口",
     "sidebarEntryHidden": "已隐藏，可在外观设置中恢复",
     "undoHideSidebarEntry": "撤销",
     "sidebarEntrySaveFailed": "没能保存，请稍后再试",
-    "galleryTitle": "看看 Memoh 能做什么",
+    "galleryTitle": "看看 Ami 能做什么",
     "galleryDescription": "选一个示例填进输入框，发送前可以修改",
     "refresh": "换一批",
     "refreshFailed": "没能换一批，请稍后再试",
@@ -1866,7 +1876,7 @@
       "confirm": "替换"
     },
     "share": {
-      "prompt": "你用 Memoh 做过什么？带上 #Memoh，把你的使用案例分享到 X。",
+      "prompt": "你用 Ami 做过什么？带上 #Ami，把你的使用案例分享到 X。",
       "action": "分享到 X"
     }
   },
@@ -1936,7 +1946,7 @@
       "rejected": "拒绝"
     },
     "reasoningDefault": "默认推理",
-    "reasoningDefaultHint": "默认推理与默认强度在首次选择该模型时使用，之后以对话或 Bot 的设置为准",
+    "reasoningDefaultHint": "默认推理与默认强度在首次选择该模型时使用，之后以对话或专家的设置为准",
     "reasoningDefaultEffort": "默认强度",
     "reasoningBudget": "推理预算范围",
     "reasoningBudgetMin": "最小 Token",
@@ -2005,7 +2015,7 @@
     "deleteConfirm": "确定要删除这个服务商吗？",
     "saveChanges": "保存修改",
     "emptyTitle": "暂无服务商",
-    "emptyDescription": "添加服务商以接入模型服务，供 Bot 使用",
+    "emptyDescription": "添加服务商以接入模型服务，供专家使用",
     "testConnection": "测试连接",
     "reachable": "可连接",
     "unreachable": "不可连接",
@@ -2062,7 +2072,7 @@
   },
   "providerConnect": {
     "title": "添加 Provider",
-    "description": "第三方服务想将以下 Provider 添加到你的 Memoh，确认后才会保存",
+    "description": "第三方服务想将以下 Provider 添加到你的 Ami，确认后才会保存",
     "name": "名称",
     "baseUrl": "Base URL",
     "clientType": "API 格式",
@@ -2106,7 +2116,7 @@
     "addHeader": "添加 Header",
     "selectHint": "请选择或新建一个搜索提供方",
     "unsupportedProvider": "该提供方暂未实现配置面板",
-    "nativeManaged": "Native 由 Memoh 管理，并始终保持启用",
+    "nativeManaged": "Native 由 Ami 管理，并始终保持启用",
     "saveSuccess": "搜索提供方配置已保存",
     "deleteSuccess": "搜索提供方配置已删除",
     "deleteFailed": "删除搜索提供方配置失败",
@@ -2155,7 +2165,7 @@
     "provider": "接入方式",
     "searchPlaceholder": "搜索…",
     "emptyTitle": "暂无网络配置",
-    "emptyDescription": "为 Bot 配置网络能力，包括在现有网络之上使用 SD-WAN 式覆盖组网",
+    "emptyDescription": "为专家配置网络能力，包括在现有网络之上使用 SD-WAN 式覆盖组网",
     "saveSuccess": "网络配置已保存",
     "deleteSuccess": "网络配置已删除",
     "deleteFailed": "删除网络配置失败",
@@ -2167,7 +2177,7 @@
   "voice": {
     "title": "语音",
     "speakTitle": "语音合成",
-    "speakHint": "将 Bot 的回复转为语音发送",
+    "speakHint": "将专家的回复转为语音发送",
     "listenTitle": "语音识别",
     "listenHint": "将收到的语音消息转写为文字",
     "empty": "暂无可用后端，添加具备语音能力的服务商即可"
@@ -2190,7 +2200,7 @@
     "providerType": "提供方类型",
     "searchPlaceholder": "搜索语音合成…",
     "emptyTitle": "暂无语音合成提供方",
-    "emptyDescription": "添加语音合成提供方以为 Bot 启用文字转语音功能",
+    "emptyDescription": "添加语音合成提供方以为专家启用文字转语音功能",
     "deleteConfirm": "确定要删除此语音合成提供方吗？此操作不可撤销。",
     "models": "模型",
     "importModels": "导入模型",
@@ -2231,7 +2241,7 @@
   "transcription": {
     "title": "语音转写",
     "emptyTitle": "暂无转写提供方",
-    "emptyDescription": "添加转写提供方以为 Bot 启用语音转文字功能",
+    "emptyDescription": "添加转写提供方以为专家启用语音转文字功能",
     "models": "语音识别模型",
     "noModels": "暂无语音识别模型，可导入可用模型，或保留默认模板模型",
     "importModels": "导入模型",
@@ -2254,7 +2264,7 @@
     "addDescription": "配置 MCP 服务器连接",
     "searchPlaceholder": "搜索 MCP 服务器…",
     "emptyTitle": "暂无 MCP 服务器",
-    "emptyDescription": "添加 MCP 服务器以扩展 Bot 的能力",
+    "emptyDescription": "添加 MCP 服务器以扩展专家的能力",
     "command": "命令",
     "commandPlaceholder": "npx -y {'@'}modelcontextprotocol/server-everything",
     "cwd": "工作目录",
@@ -2405,7 +2415,7 @@
   "bots": {
     "toolApproval": {
       "title": "工具调用审核",
-      "intro": "分别设置这个 Bot 在工作区和每台已连接电脑上可以执行的操作。这些规则只约束 Memoh 提供的工具；Claude Code、Codex 与 Grok Build 的内置工具遵循各自的权限模式，它们发来的询问会以卡片展示，由持有对应工作区权限的用户决定。",
+      "intro": "分别设置这个专家在工作区和每台已连接电脑上可以执行的操作。这些规则只约束 Ami 提供的工具；Claude Code、Codex 与 Grok Build 的内置工具遵循各自的权限模式，它们发来的询问会以卡片展示，由持有对应工作区权限的用户决定。",
       "loading": "正在加载审核规则...",
       "loadFailed": "无法加载工具审核",
       "loadFailedDescription": "请检查服务器连接后重试",
@@ -2508,18 +2518,18 @@
       "testFailed": "Hook 测试失败",
       "entryTitle": "事件触发器"
     },
-    "title": "Bots",
-    "searchPlaceholder": "搜索 Bot…",
-    "notFound": "找不到这个 Bot",
+    "title": "专家",
+    "searchPlaceholder": "搜索专家…",
+    "notFound": "找不到这个专家",
     "notFoundDescription": "它可能已被删除，或链接有误",
-    "loadFailed": "无法加载这个 Bot",
-    "createBot": "新建 Bot",
+    "loadFailed": "无法加载这个专家",
+    "createBot": "新建专家",
     "createBotWaitHint": "首次创建可能需要拉取基础镜像，请耐心等待",
-    "createBotSuccess": "Bot 创建成功",
-    "createBotSignInFirst": "Bot 已创建。先登录账号，Agent 才能开始回复。",
+    "createBotSuccess": "专家创建成功",
+    "createBotSignInFirst": "专家已创建。先登录账号，Agent 才能开始回复。",
     "createBotSettingUp": "正在准备...",
-    "createBotSetupTitle": "正在准备 Bot",
-    "createBotSetupDesc": "正在创建 Bot 及其工作区。工作区准备完成后会自动打开这个 Bot。",
+    "createBotSetupTitle": "正在准备专家",
+    "createBotSetupDesc": "正在创建专家及其工作区。工作区准备完成后会自动打开这个专家。",
     "steps": {
       "basicInfo": "基本信息",
       "basicInfoDesc": "名称和头像",
@@ -2535,46 +2545,46 @@
     "agentCreate": {
       "prepare": "准备 Agent",
       "prepareDescription": "检查工作空间并安装运行这个 Agent 所需的依赖",
-      "authorizeAfterCreate": "创建 Bot 后继续为这个 Agent 授权",
+      "authorizeAfterCreate": "创建专家后继续为这个 Agent 授权",
       "typeAriaLabel": "Agent 类型",
-      "oauthSettingsHint": "授权在创建后进行，可随时在 Bot 设置中完成",
+      "oauthSettingsHint": "授权在创建后进行，可随时在专家设置中完成",
       "requiredError": "请填写「{field}」",
-      "directSetupHint": "Codex 和 Claude Code 无需在此配置——创建后在 Bot 设置页完成登录或 API Key"
+      "directSetupHint": "Codex 和 Claude Code 无需在此配置——创建后在专家设置页完成登录或 API Key"
     },
-    "createBotLocalHint": "Local Bot 会使用这台电脑上的文件夹，且不提供沙箱隔离",
+    "createBotLocalHint": "Local 专家会使用这台电脑上的文件夹，且不提供沙箱隔离",
     "create": {
       "terminalTitle": "正在准备 {name}",
-      "terminalSubtitle": "正在创建工作区。准备完成后会自动打开这个 Bot。",
+      "terminalSubtitle": "正在创建工作区。准备完成后会自动打开这个专家。",
       "failedSubtitle": "准备工作区时出现问题",
       "failedTitle": "准备失败",
       "retry": "重试",
       "back": "返回表单",
       "retryWorkspace": "重试工作区",
       "continueLater": "稍后处理",
-      "openExisting": "查看已有 Bot",
-      "stillProvisioning": "工作区仍在创建中。可以到 Bot 的工作区页面继续等待，或现在重试。",
+      "openExisting": "查看已有专家",
+      "stillProvisioning": "工作区仍在创建中。可以到专家的工作区页面继续等待，或现在重试。",
       "line": {
-        "command": "正在创建 Bot「{name}」",
-        "botCreated": "已创建 Bot 记录",
+        "command": "正在创建专家「{name}」",
+        "botCreated": "已创建专家记录",
         "pulling": "正在拉取基础镜像",
         "creating": "正在创建工作区",
         "restoring": "正在恢复记忆与数据",
-        "ready": "Bot 已就绪",
+        "ready": "专家已就绪",
         "applyingSettings": "正在应用模型与记忆设置",
         "installingAgent": "正在安装 {name}"
       }
     },
-    "editBot": "编辑 Bot",
-    "renameSuccess": "Bot 名称已更新",
-    "renameFailed": "更新 Bot 名称失败",
-    "deleteSuccess": "Bot 已删除",
-    "emptyTitle": "暂无 Bot",
-    "emptyDescription": "点击右上角按钮创建你的第一个 Bot",
+    "editBot": "编辑专家",
+    "renameSuccess": "专家名称已更新",
+    "renameFailed": "更新专家名称失败",
+    "deleteSuccess": "专家已删除",
+    "emptyTitle": "暂无专家",
+    "emptyDescription": "点击右上角按钮创建你的第一个专家",
     "displayName": "名称",
-    "displayNamePlaceholder": "给你的 Bot 起个名字",
+    "displayNamePlaceholder": "给你的专家起个名字",
     "name": "URL 名称",
     "namePlaceholder": "例如 my-assistant",
-    "nameHint": "小写字母、数字和连字符，用于 Bot 的 URL",
+    "nameHint": "小写字母、数字和连字符，用于专家的 URL",
     "nameStatus": {
       "checking": "正在检测可用性…",
       "available": "名称可用",
@@ -2610,16 +2620,16 @@
       },
       "denyAll": {
         "title": "全部拒绝",
-        "description": "默认拒绝且不添加规则。创建后需在访问控制中添加允许的成员或群聊，Bot 才会在 IM 中回复。"
+        "description": "默认拒绝且不添加规则。创建后需在访问控制中添加允许的成员或群聊，专家才会在 IM 中回复。"
       }
     },
     "editAvatar": "编辑头像",
-    "editAvatarDescription": "设置 Bot 头像图片的链接地址",
+    "editAvatarDescription": "设置专家头像图片的链接地址",
     "editTimezone": "编辑时区",
-    "editTimezoneDescription": "为这个 Bot 设置独立时区",
+    "editTimezoneDescription": "为这个专家设置独立时区",
     "avatarUpdateSuccess": "头像已更新",
     "avatarUpdateFailed": "更新头像失败",
-    "typePlaceholder": "选择 Bot 类型",
+    "typePlaceholder": "选择专家类型",
     "active": "运行中",
     "inactive": "未启用",
     "lifecycle": {
@@ -2629,19 +2639,19 @@
       "deleteFailed": "删除失败"
     },
     "backup": {
-      "exportBot": "导出 Bot",
-      "importBot": "导入 Bot",
-      "cardTitle": "Bot 备份",
-      "cardSubtitle": "将整个 Bot 导出或导入为可迁移的 .memoh.zip 备份包",
-      "createMode": "新建 Bot",
+      "exportBot": "导出专家",
+      "importBot": "导入专家",
+      "cardTitle": "专家备份",
+      "cardSubtitle": "将整个专家导出或导入为可迁移的 .ami.zip 备份包",
+      "createMode": "新建专家",
       "importMode": "从备份导入",
       "dropzoneTitle": "点击选择或拖拽备份文件到此处",
-      "dropzoneHint": "支持 .memoh.zip 备份文件",
+      "dropzoneHint": "支持 .ami.zip 备份文件",
       "removeFile": "移除文件",
-      "exportTitle": "导出 Bot",
-      "exportDescription": "导出 Bot 配置、历史记录、附件和工作区文件，可用于恢复、换设备或分享。设置口令可对整个备份加密；不设置时密钥为明文保存，请妥善保管。",
-      "importTitle": "导入 Bot",
-      "importDescription": "上传 .memoh.zip 备份文件，先预览内容，再选择创建副本或覆盖当前 Bot",
+      "exportTitle": "导出专家",
+      "exportDescription": "导出专家配置、历史记录、附件和工作区文件，可用于恢复、换设备或分享。设置口令可对整个备份加密；不设置时密钥为明文保存，请妥善保管。",
+      "importTitle": "导入专家",
+      "importDescription": "上传 .ami.zip 备份文件，先预览内容，再选择创建副本或覆盖当前专家",
       "reading": "正在读取备份…",
       "passphraseLabel": "口令（可选）",
       "passphrasePlaceholder": "留空则不加密",
@@ -2658,10 +2668,10 @@
       "importWarnings": "{count} 项被跳过 — 详见警告",
       "selectSections": "选择要导入的内容",
       "selectSectionsExport": "选择要导出的内容",
-      "modeCreate": "创建新 Bot",
-      "modeOverwrite": "覆盖当前 Bot",
+      "modeCreate": "创建新专家",
+      "modeOverwrite": "覆盖当前专家",
       "overwriteProfile": "同时覆盖名称与头像",
-      "profileHint": "Bot 身份(名称与头像)",
+      "profileHint": "专家身份(名称与头像)",
       "overwriteProfileHint": "覆盖名称与头像",
       "conflict": "冲突",
       "notInBackup": "备份中无此项",
@@ -2687,11 +2697,11 @@
         "workspace": "工作区文件"
       },
       "previewSchema": "备份格式版本：{version}",
-      "exportSuccess": "Bot 备份已导出",
-      "exportFailed": "导出 Bot 备份失败",
+      "exportSuccess": "专家备份已导出",
+      "exportFailed": "导出专家备份失败",
       "previewFailed": "预览备份失败",
-      "importSuccess": "Bot 备份已导入",
-      "importFailed": "导入 Bot 备份失败"
+      "importSuccess": "专家备份已导入",
+      "importFailed": "导入专家备份失败"
     },
     "checks": {
       "status": {
@@ -2715,7 +2725,7 @@
         "containerRecord": "工作区运行记录",
         "containerTask": "工作区运行任务",
         "containerDataPath": "工作区数据路径",
-        "botDelete": "Bot 删除",
+        "botDelete": "专家删除",
         "mcpConnection": "MCP 连接",
         "channelConnection": "平台连接"
       },
@@ -2724,14 +2734,14 @@
         "containerRecord": "工作区运行记录",
         "containerTask": "工作区运行任务",
         "containerDataPath": "工作区数据路径",
-        "botDelete": "Bot 删除"
+        "botDelete": "专家删除"
       }
     },
     "overview": {
       "issueHint": "查看诊断",
       "platformsTitle": "平台",
       "platformsEmpty": "还没连接任何平台",
-      "platformsEmptyHint": "连接一个平台，开始和这个 Bot 对话",
+      "platformsEmptyHint": "连接一个平台，开始和这个专家对话",
       "connectAction": "去连接",
       "configTitle": "配置",
       "modelLabel": "模型",
@@ -2754,12 +2764,12 @@
       "runtimeNoMetrics": "暂时无法获取资源占用",
       "remindersTitle": "待处理",
       "reminderModelTitle": "选择一个模型",
-      "reminderModelHint": "这个 Bot 需要先设置模型才能回复",
+      "reminderModelHint": "这个专家需要先设置模型才能回复",
       "reminderAction": "去设置"
     },
     "tabs": {
       "advanced": "高级",
-      "overviewSubtitle": "这个 bot 此刻活在哪、怎么配的",
+      "overviewSubtitle": "这个专家此刻活在哪、怎么配的",
       "overview": "概览",
       "general": "通用",
       "desktop": "桌面",
@@ -2793,7 +2803,7 @@
       "namePlaceholder": "输入 Agent 名称",
       "nameRequired": "请输入 Agent 名称",
       "emptyTitle": "还没有外部 Agent",
-      "emptyDescription": "默认使用 Memoh 内置运行时。添加外部 Agent 后，这个 Bot 就可以使用 Codex、Claude Code、Grok Build 或自定义 ACP Agent。",
+      "emptyDescription": "默认使用 Ami 内置运行时。添加外部 Agent 后，这个专家就可以使用 Codex、Claude Code、Grok Build 或自定义 ACP Agent。",
       "statusNeedsConfig": "需要配置",
       "statusOff": "已停用",
       "deleteTitle": "删除外部 Agent？",
@@ -2807,9 +2817,9 @@
       "authWorkspace": "工作区已有凭据",
       "authOAuthToken": "OAuth Token",
       "authChatGPTDescription": "使用 ChatGPT 订阅账号授权 Codex",
-      "authWorkspaceDescription": "使用这个 Bot 工作区中已经保存的 Claude Code 登录状态",
+      "authWorkspaceDescription": "使用这个专家工作区中已经保存的 Claude Code 登录状态",
       "authOAuthTokenDescription": "使用 Claude Code setup-token 生成的 OAuth Token",
-      "authApiKeyDescription": "使用由 Memoh 保存并注入运行时的 API Key",
+      "authApiKeyDescription": "使用由 Ami 保存并注入运行时的 API Key",
       "apiKey": "API Key",
       "apiKeyDescription": "API Key 会加密保存，仅在运行时提供给此 Agent",
       "oauthToken": "OAuth Token",
@@ -2825,17 +2835,17 @@
       "enableToSignIn": "请先启用此 Agent，再检查或连接账号",
       "signInCheckFailed": "无法检查登录状态",
       "reconnect": "重新连接",
-      "codexDeviceHint": "打开验证页面并输入这个一次性代码。只在页面显示的 OpenAI 验证地址输入此代码。Memoh 会自动完成授权。",
+      "codexDeviceHint": "打开验证页面并输入这个一次性代码。只在页面显示的 OpenAI 验证地址输入此代码。Ami 会自动完成授权。",
       "codexLoginSuccess": "Codex 已连接 ChatGPT 账号",
       "codexLoginFailed": "Codex 账号授权失败，请重试",
       "authGrokAccountDescription": "使用 Grok 账号登录 Grok Build",
       "grokAccount": "Grok 账号",
       "grokAccountDescription": "Grok 在此 Agent 的工作区里登录，并自己保存登录状态",
       "grokAccountConnectedDescription": "Grok 已在此 Agent 的工作区里登录",
-      "grokDeviceHint": "打开验证页面并确认这个一次性代码。只在页面显示的 accounts.x.ai 地址上确认。Memoh 会自动完成授权。",
+      "grokDeviceHint": "打开验证页面并确认这个一次性代码。只在页面显示的 accounts.x.ai 地址上确认。Ami 会自动完成授权。",
       "grokLoginSuccess": "Grok Build 已连接 Grok 账号",
       "grokLoginFailed": "Grok 账号登录失败，请重试",
-      "signInAfterCreate": "Bot 创建完成后在 Agent 设置里登录：账号在 Agent 自己的工作区内完成登录",
+      "signInAfterCreate": "专家创建完成后在 Agent 设置里登录：账号在 Agent 自己的工作区内完成登录",
       "usage": {
         "window": {
           "weekly": "每周额度",
@@ -2860,11 +2870,11 @@
       "authorizationCodePlaceholder": "粘贴完整授权码",
       "completeAuthorization": "完成授权",
       "defaultPermissionMode": "默认权限模式",
-      "defaultPermissionModeDescription": "新会话使用此模式，会话内的选择会覆盖默认值。该模式只管 Agent 的内置工具；Memoh 提供的工具始终按「工具调用审核」规则执行。"
+      "defaultPermissionModeDescription": "新会话使用此模式，会话内的选择会覆盖默认值。该模式只管 Agent 的内置工具；Ami 提供的工具始终按「工具调用审核」规则执行。"
     },
     "dependencies": {
       "title": "工作区依赖",
-      "intro": "这个 Bot 工作区里已安装的命令行工具与运行时。新的依赖从应用市场添加。",
+      "intro": "这个专家工作区里已安装的命令行工具与运行时。新的依赖从应用市场添加。",
       "checkUpdates": "检查更新",
       "checkUpdatesDone": "已检查更新",
       "lastChecked": "上次检查：{time}",
@@ -3026,7 +3036,7 @@
       "primarySaveFailed": "无法切换默认位置",
       "defaultBadge": "默认",
       "nativeWorkspace": "云端电脑",
-      "serverDescription": "此 Bot 的内置工作区，由 Memoh 托管",
+      "serverDescription": "此专家的内置工作区，由 Ami 托管",
       "thisComputerOff": "使用这台电脑",
       "thisComputerOffDescription": "请先在「电脑」页面允许这台电脑，再在这里开启访问",
       "openComputerSettings": "打开电脑设置",
@@ -3134,8 +3144,8 @@
     },
     "container": {
       "title": "工作区",
-      "subtitle": "这个 Bot 编辑文件、执行命令的隔离运行环境",
-      "botNotReady": "Bot 状态正在变更，暂时无法操作工作区",
+      "subtitle": "这个专家编辑文件、执行命令的隔离运行环境",
+      "botNotReady": "专家状态正在变更，暂时无法操作工作区",
       "empty": "尚未创建工作区。创建后即可使用文件、命令和运行工具。",
       "legacyWarning": "旧版架构。建议重建以获得完整兼容性（数据将自动保留）。",
       "legacyRecreate": "重建",
@@ -3224,7 +3234,7 @@
       },
       "resourceLimits": {
         "title": "资源限制",
-        "subtitle": "设置这个 Bot 工作区的 CPU、内存和存储限制。留空或 0 表示不限制。",
+        "subtitle": "设置这个专家工作区的 CPU、内存和存储限制。留空或 0 表示不限制。",
         "cpuLabel": "CPU 核心数",
         "memoryLabel": "内存（GiB）",
         "storageLabel": "存储（GiB）",
@@ -3247,7 +3257,7 @@
         "storageSoftExceeded": "当前存储使用量已超过配置的软限制",
         "recreatePrompt": "已保存。CPU 或内存硬限制需要重建工作区后生效。/data 会被保留，但正在运行的进程和 Shell 会话会中断。",
         "recreateConfirmTitle": "重建工作区",
-        "recreateConfirm": "现在重建工作区吗？Memoh 会保留 /data，应用新的限制，然后恢复 /data。",
+        "recreateConfirm": "现在重建工作区吗？Ami 会保留 /data，应用新的限制，然后恢复 /data。",
         "recreateNow": "重建并应用",
         "saveForLater": "稍后再说",
         "save": "保存限制",
@@ -3329,7 +3339,7 @@
         "deleteKeepLabel": "保留数据以便恢复",
         "deleteKeepDesc": "删除前先备份 /data，新建工作区时可恢复",
         "emptyTitle": "尚未创建工作区",
-        "emptyDescription": "创建后即可为这个 Bot 启用运行环境"
+        "emptyDescription": "创建后即可为这个专家启用运行环境"
       }
     },
     "settings": {
@@ -3343,7 +3353,7 @@
       "defaultAgent": "默认 Agent",
       "defaultAgentDescription": "仅用于新建本地聊天，已有会话继续使用原来的 Agent",
       "defaultAgentUnavailable": "Agent 不可用",
-      "defaultAgentUnavailableDescription": "当前默认 Agent 不可用。保存前请选择 Memoh 或其他可用的 Agent。",
+      "defaultAgentUnavailableDescription": "当前默认 Agent 不可用。保存前请选择 Ami 或其他可用的 Agent。",
       "searchProvider": "搜索提供方",
       "searchProviderPlaceholder": "选择搜索提供方",
       "fetchProvider": "网页抓取提供方",
@@ -3366,7 +3376,7 @@
       "displayEnabled": "启用工作区显示器",
       "displayEnabledDescription": "在工作区中启动 Xvnc 服务。保存并重启工作区后生效。",
       "desktopEnabled": "桌面",
-      "desktopEnabledDescription": "为这个 Bot 提供一块可以看到、可以操作的屏幕，用于浏览网页和使用桌面应用。你可以实时观看，并随时接管。",
+      "desktopEnabledDescription": "为这个专家提供一块可以看到、可以操作的屏幕，用于浏览网页和使用桌面应用。你可以实时观看，并随时接管。",
       "toolApproval": "工具调用审核",
       "toolApprovalDescription": "拦截并人工审核 read、write、exec 三类操作。你可以配置免审核的白名单路径或命令。",
       "acpLaunchSection": "启动配置",
@@ -3380,7 +3390,7 @@
       "toolApprovalMustReview": "必须审核",
       "networkPageTitle": "网络",
       "networkSDWANSectionTitle": "私有网络",
-      "networkSDWANSectionHint": "把这个 Bot 接入你的私有网络，让你能用一个稳定的地址访问它；也可以选择让它的流量从某个位置出网",
+      "networkSDWANSectionHint": "把这个专家接入你的私有网络，让你能用一个稳定的地址访问它；也可以选择让它的流量从某个位置出网",
       "overlayProviderFieldLabel": "服务商",
       "overlayProviderPlaceholder": "选择服务商",
       "overlayProviderRequired": "启用前请先选择服务商",
@@ -3395,7 +3405,7 @@
       },
       "networkDetailsTitle": "连接详情",
       "networkDetailsWorkspaceGroup": "工作区",
-      "networkLogoutConfirm": "退出该网络？Bot 将断开连接，直到重新登录。",
+      "networkLogoutConfirm": "退出该网络？专家将断开连接，直到重新登录。",
       "networkStatusPendingSave": "有未保存的更改——保存后生效并显示实时状态",
       "networkWorkspaceStateLabel": "状态",
       "networkWorkspaceContainerID": "工作区运行 ID",
@@ -3428,20 +3438,20 @@
       "networkLogoutFailed": "退出失败",
       "networkExitNode": "出口位置",
       "networkExitNodePlaceholder": "选择出口位置",
-      "networkExitNodeDescription": "让这个 Bot 的出站流量从某个可用位置出网",
+      "networkExitNodeDescription": "让这个专家的出站流量从某个可用位置出网",
       "networkNodesPendingSave": "刷新前请先保存网络配置",
       "networkNodesEmpty": "暂无可用节点。请确保网络已连通。",
       "networkNodesRefreshFailed": "刷新节点列表失败",
       "allowGuest": "ACL 默认行为",
-      "allowGuestPersonalHint": "ACL 规则将应用于所有类型的 Bot",
+      "allowGuestPersonalHint": "ACL 规则将应用于所有类型的专家",
       "loopDetectionTitle": "自动检测并阻止模型循环输出",
       "searchModel": "搜索模型…",
       "noModel": "暂无可选模型",
       "saveSuccess": "设置已保存",
       "save": "保存设置",
       "dangerZone": "危险操作",
-      "deleteBotDescription": "此操作不可逆。删除后 Bot 将无法恢复。",
-      "deleteBot": "删除 Bot",
+      "deleteBotDescription": "此操作不可逆。删除后专家将无法恢复。",
+      "deleteBot": "删除专家",
       "deleteBotConfirmLabel": "请在下方输入“{name}”以确认",
       "agentCredentialSecret": "API Key",
       "agentCredentialSecretPlaceholder": "输入 API Key",
@@ -3455,12 +3465,12 @@
     },
     "access": {
       "title": "访问控制",
-      "subtitle": "控制谁能访问和管理此 Bot —— 包括 IM 渠道和工作区两侧",
+      "subtitle": "控制谁能访问和管理此专家 —— 包括 IM 渠道和工作区两侧",
       "channelTab": "渠道成员",
       "workspaceTab": "工作区成员",
       "userAccess": {
         "title": "工作区成员",
-        "subtitle": "控制哪些平台注册用户可以在网页端管理或配置此 Bot",
+        "subtitle": "控制哪些平台注册用户可以在网页端管理或配置此专家",
         "addMember": "添加",
         "subjectQuestion": "谁可以访问",
         "everyone": "全部成员",
@@ -3486,7 +3496,7 @@
       },
       "members": {
         "title": "成员",
-        "subtitle": "控制谁能与此 Bot 聊天、谁能管理它。可添加单个渠道身份或整个群聊；已关联的工作区成员会自动继承管理权限。",
+        "subtitle": "控制谁能与此专家聊天、谁能管理它。可添加单个渠道身份或整个群聊；已关联的工作区成员会自动继承管理权限。",
         "chat": "聊天",
         "manage": "管理",
         "add": "添加成员",
@@ -3497,7 +3507,7 @@
         "emptyBlacklist": "暂无黑名单成员。可在这里拉黑成员或群聊，或只设置管理权限而不改变聊天权限。",
         "empty": "暂无成员。添加成员或群聊以允许聊天，或单独授予管理权限。",
         "platformMember": "平台成员",
-        "platformMemberHint": "该渠道身份已关联到此 Bot 的某个工作区成员，但该成员没有管理权限。勾选「管理」可仅在此渠道单独授予。",
+        "platformMemberHint": "该渠道身份已关联到此专家的某个工作区成员，但该成员没有管理权限。勾选「管理」可仅在此渠道单独授予。",
         "inheritedFollowing": "管理权限继承自该成员的工作区角色，跟随工作区设置。取消勾选可仅在此渠道单独覆盖。",
         "overrideActive": "管理权限已在此渠道单独设置，不再跟随工作区",
         "recoverInherit": "恢复继承",
@@ -3619,7 +3629,7 @@
       "existingConversation": "已知会话",
       "selectConversationSource": "找个会话",
       "searchConversationSource": "搜索会话",
-      "noObservedConversations": "暂未找到匹配的会话记录。你可以手动输入会话 ID，或待 Bot 在该聊天中收到消息后再选择。",
+      "noObservedConversations": "暂未找到匹配的会话记录。你可以手动输入会话 ID，或待专家在该聊天中收到消息后再选择。",
       "manualConversationIds": "找不到？手动填 ID",
       "manualConversationIdsHint": "只有找不到聊天记录时才用这个。你需要从聊天平台里手动复制会话或话题 ID。",
       "pickTargetForConversationSearch": "先选下平台或用户，然后再搜相关的会话",
@@ -3634,7 +3644,7 @@
       "effective": {
         "title": "当前生效",
         "item": "{scope}：{access}",
-        "separator": " · ",
+        "separator": "·",
         "listJoiner": "、",
         "everyone": "所有人可用",
         "listed": "仅名单内",
@@ -3652,7 +3662,7 @@
       "configured": "已配置",
       "notConfigured": "未配置",
       "emptyTitle": "暂无平台",
-      "emptyDescription": "点击下方按钮为 Bot 添加接入平台",
+      "emptyDescription": "点击下方按钮为专家添加接入平台",
       "credentials": "凭据配置",
       "saveSuccess": "平台配置已保存",
       "saveFailed": "平台配置保存失败",
@@ -3671,11 +3681,11 @@
       "deleteFailed": "移除平台失败",
       "webhookCallback": "WebHook 回调地址",
       "webhookCallbackHint": "请将此地址填入对应平台控制台的 Webhook 配置中",
-      "lineWebhookCallbackHint": "请将此地址填入 LINE Developers 的 Messaging API Webhook 设置。Base URL 必须是公网 HTTPS，并能把 /channels/... 路由到 Memoh Channel 服务。",
+      "lineWebhookCallbackHint": "请将此地址填入 LINE Developers 的 Messaging API Webhook 设置。Base URL 必须是公网 HTTPS，并能把 /channels/... 路由到 Ami Channel 服务。",
       "wechatOAWebhookCallbackHint": "请将此地址填入微信服务号平台的回调 URL 配置中",
       "webhookCallbackPending": "保存当前配置后即可生成回调地址",
       "webhookCallbackPublicBasePending": "平台配置已保存。请配置公网 HTTPS webhook base，或等待隧道就绪。",
-      "lineWebhookPublicBaseMissing": "请先在 server 配置 MEMOH_WEBHOOK_PUBLIC_BASE_URL，或启用 Cloudflare Quick Tunnel",
+      "lineWebhookPublicBaseMissing": "请先在 server 配置 AMI_WEBHOOK_PUBLIC_BASE_URL，或启用 Cloudflare Quick Tunnel",
       "lineWebhookPublicBaseInvalid": "LINE Webhook base 必须是公网 HTTPS origin，不能包含 path、端口、localhost、内网 IP、用户名密码、query 或 fragment",
       "lineWebhookTunnelStarting": "正在创建 Cloudflare Quick Tunnel，稍后会自动显示公网回调地址",
       "lineWebhookTunnelUnavailable": "Cloudflare Quick Tunnel 当前不可用，请检查 cloudflared 配置或改用公网 HTTPS base",
@@ -3713,7 +3723,7 @@
         "verifyCodePlaceholder": "手机上显示的数字",
         "verifyCodeSubmit": "确认",
         "verifyCodeBlocked": "多次输入错误，请刷新二维码稍后再试",
-        "alreadyBound": "该微信已连接到此 Bot"
+        "alreadyBound": "该微信已连接到此专家"
       },
       "types": {
         "feishu": "飞书",
@@ -3737,7 +3747,7 @@
     },
     "memory": {
       "title": "记忆",
-      "empty": "Bot 会在对话中自动积累记忆，你也可以手动添加",
+      "empty": "专家会在对话中自动积累记忆，你也可以手动添加",
       "emptyTitle": "暂无记忆",
       "noResults": "没有匹配搜索的记忆",
       "searchPlaceholder": "搜索记忆…",
@@ -3774,7 +3784,7 @@
         "memoryModel": "记忆模型",
         "memoryModelDescription": "用于提取和整理记忆的模型",
         "memoryModelPlaceholder": "跟随对话模型（默认）",
-        "embeddingModelDescription": "为图谱召回提供语义起点。本团队所有 Bot 共用此设置。",
+        "embeddingModelDescription": "为图谱召回提供语义起点。本团队所有专家共用此设置。",
         "syncAction": "手动同步",
         "syncSuccess": "同步完成：源条目 {fsCount} 条，修复 {restoredCount} 条，索引现有 {storageCount} 条",
         "syncFailed": "手动同步失败",
@@ -3813,7 +3823,7 @@
       "title": "定时任务",
       "loadFailed": "加载失败",
       "empty": "暂无定时任务",
-      "emptyDescription": "让这个 Bot 按你设定的时间自动执行一段指令",
+      "emptyDescription": "让这个专家按你设定的时间自动执行一段指令",
       "name": "名称",
       "pattern": "表达式",
       "enabled": "启用",
@@ -3849,10 +3859,10 @@
         "sessionRuntimeNative": "该会话使用内置模型运行时，沿用其文件夹",
         "sessionRuntimeAgent": "该会话通过 {agent} 运行，沿用其文件夹",
         "model": "模型",
-        "botDefault": "Bot 默认",
+        "botDefault": "专家默认",
         "pickModel": "选择模型",
-        "noBotDefaultModel": "该 Bot 没有设置默认模型，任务会使用这里选择的模型运行",
-        "noModelAvailable": "该 Bot 没有默认模型，也没有可选的对话模型，请先添加一个",
+        "noBotDefaultModel": "该专家没有设置默认模型，任务会使用这里选择的模型运行",
+        "noModelAvailable": "该专家没有默认模型，也没有可选的对话模型，请先添加一个",
         "sessionDefault": "会话默认",
         "externalAgents": "外部 Agent",
         "agentDefaultModel": "Agent 默认",
@@ -3962,8 +3972,8 @@
     "overview": "概览",
     "customRange": "自定义范围",
     "customRangePlaceholder": "选择日期范围",
-    "selectBot": "选择 Bot",
-    "selectBotPlaceholder": "选择一个 Bot 查看用量",
+    "selectBot": "选择专家",
+    "selectBotPlaceholder": "选择一个专家查看用量",
     "timeRange": "时间范围",
     "last7Days": "最近 7 天",
     "last30Days": "最近 30 天",
@@ -4006,7 +4016,7 @@
     "records": "调用记录",
     "noRecords": "无调用记录",
     "colTime": "时间",
-    "colBot": "Bot",
+    "colBot": "专家",
     "colModel": "模型",
     "colProvider": "模型供应商",
     "colHarness": "来源",
@@ -4021,9 +4031,9 @@
     "noResults": "未找到结果",
     "noAppResults": "未找到应用",
     "install": "安装",
-    "installToBot": "安装到 Bot",
-    "selectBot": "选择 Bot",
-    "selectBotPlaceholder": "选择要安装到的 Bot…",
+    "installToBot": "安装到专家",
+    "selectBot": "选择专家",
+    "selectBotPlaceholder": "选择要安装到的专家…",
     "envVariables": "环境变量",
     "envDescription": "配置所需的环境变量",
     "installSuccess": "安装成功",
@@ -4056,7 +4066,7 @@
     "appNotFound": "未找到应用",
     "noDescription": "暂无描述",
     "unnamedSkill": "未命名 Skill",
-    "dependenciesHint": "安装到 Bot 的工作区，并与需要它们的其他应用共享",
+    "dependenciesHint": "安装到专家的工作区，并与需要它们的其他应用共享",
     "dependenciesLoadError": "依赖信息加载失败，请重试",
     "dependencyUnavailable": "暂无此依赖的信息",
     "dependencyPending": "加载中…",
@@ -4074,7 +4084,7 @@
     "viewAll": "查看全部",
     "sidebar": {
       "installed": "已安装",
-      "manageRequired": "需要此 Bot 的管理权限才能安装应用",
+      "manageRequired": "需要此专家的管理权限才能安装应用",
       "manage": "管理",
       "discovered": "工作区中已有"
     }
@@ -4090,7 +4100,7 @@
     "toolDiscoveryFailed": "工具不可用：{error}",
     "unknown": "未知连接器",
     "emptyTitle": "还没有连接器",
-    "emptyDescription": "连接服务，让这个 Bot 可以使用服务提供的工具",
+    "emptyDescription": "连接服务，让这个专家可以使用服务提供的工具",
     "catalogEmptyTitle": "暂无可用连接器",
     "catalogEmptyDescription": "请先配置 Connect-It，再浏览和连接服务",
     "authMethod": "认证方式",
@@ -4123,7 +4133,7 @@
       "disabled": "已停用"
     },
     "validation": {
-      "botRequired": "请选择 Bot",
+      "botRequired": "请选择专家",
       "authMethodRequired": "请选择认证方式",
       "fieldRequired": "请输入{field}",
       "fieldInvalid": "{field}格式不正确"
@@ -4135,12 +4145,12 @@
     "skip": "跳过",
     "start": "开始",
     "welcome": {
-      "title": "欢迎使用 Memoh",
+      "title": "欢迎使用 Ami",
       "subtitle": "你的私有化 AI 智能体平台",
       "description": "只需几步，完成你的专属工作空间配置"
     },
     "intro": {
-      "title": "欢迎使用 Memoh",
+      "title": "欢迎使用 Ami",
       "description": "你的私有化 AI 智能体平台，自托管部署，\n零遥测，为开发者打造",
       "placeholder": "介绍页内容即将推出"
     },
@@ -4192,19 +4202,19 @@
       }
     },
     "bot": {
-      "title": "创建你的第一个 Bot",
-      "placeholder": "Bot 创建即将推出",
+      "title": "创建你的第一个专家",
+      "placeholder": "专家创建即将推出",
       "preparingEnvironment": "正在准备环境...",
       "randomName": "随机取个名字",
       "model": {
         "selectPlaceholder": "选择模型",
-        "hint": "选择 Bot 回复时使用的模型。建议现在选择，之后也可随时在设置中更改。",
+        "hint": "选择专家回复时使用的模型。建议现在选择，之后也可随时在设置中更改。",
         "loading": "正在加载模型...",
         "loadFailed": "模型列表加载失败，请重试",
         "retry": "重试"
       },
       "acp": {
-        "deferredHint": "授权将在下一步创建 Bot 并准备好工作区后进行"
+        "deferredHint": "授权将在下一步创建专家并准备好工作区后进行"
       }
     },
     "im": {
@@ -4213,11 +4223,11 @@
     },
     "complete": {
       "title": "一切就绪",
-      "subtitle": "进入 Memoh，开始你的第一段对话",
-      "action": "打开 Memoh",
+      "subtitle": "进入 Ami，开始你的第一段对话",
+      "action": "打开 Ami",
       "saveFailed": "保存失败，请重试",
-      "navigationFailed": "无法打开 Bot，请重试",
-      "noModelWarning": "尚未为 Bot 选择模型，Bot 将无法回复消息。你可以稍后在 Bot 设置中配置。",
+      "navigationFailed": "无法打开专家，请重试",
+      "noModelWarning": "尚未为专家选择模型，专家将无法回复消息。你可以稍后在专家设置中配置。",
       "examplesHint": "也可以从一个示例开始"
     }
   },
@@ -4245,11 +4255,11 @@
     "checkUpdatesTimedOut": "检查超时，结果可能不完整，请稍后重试",
     "browse": "浏览市场",
     "emptyTitle": "尚未安装应用",
-    "emptyDescription": "为 Bot 安装应用，增加新的能力",
+    "emptyDescription": "为专家安装应用，增加新的能力",
     "emptyAction": "打开市场",
     "loadFailed": "无法加载应用",
     "busy": "此工作区还有另一个应用操作在进行中",
-    "viewBotApps": "查看 Bot 应用",
+    "viewBotApps": "查看专家应用",
     "components": "{count} 个组件",
     "workspaceNotRunningDescription": "安装和更新应用需要运行中的工作区。列表显示的是最近记录的状态。",
     "action": {
@@ -4382,7 +4392,7 @@
         },
         "bypassPermissions": {
           "name": "跳过权限检查",
-          "description": "跳过普通审批；显式规则和 Memoh 工具权限仍然生效"
+          "description": "跳过普通审批；显式规则和 Ami 工具权限仍然生效"
         }
       },
       "commands": {
@@ -4458,7 +4468,7 @@
         },
         "alwaysApprove": {
           "name": "全部批准",
-          "description": "所有操作直接批准，不再询问；Memoh 工具权限仍然生效"
+          "description": "所有操作直接批准，不再询问；Ami 工具权限仍然生效"
         }
       },
       "commands": {
@@ -4522,7 +4532,7 @@
     "justNow": "刚刚",
     "showAll": "显示全部 ({count})",
     "showLess": "收起",
-    "otherBots": "其他 Bot 有未读会话",
+    "otherBots": "其他专家有未读会话",
     "settingsTitle": "桌面通知",
     "settingsDescription": "你没在查看的会话收到回复、运行失败或需要确认时提醒",
     "denied": "通知已被浏览器阻止。请在浏览器设置中允许通知后开启。",

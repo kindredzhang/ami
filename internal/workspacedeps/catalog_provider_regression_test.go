@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func TestRemoteCatalogCachedReadDoesNotWaitForRefresh(t *testing.T) {

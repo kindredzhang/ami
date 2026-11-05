@@ -7,12 +7,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/bots"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/workdir"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/bots"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/workdir"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 var ErrExternalAgentWorkspaceTargetUnsupported = errors.New("workspace_target_id is not supported for external agent sessions")

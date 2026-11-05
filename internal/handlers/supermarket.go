@@ -7,10 +7,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/errs"
-	supermarketclient "github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/errs"
+	supermarketclient "github.com/kindredzhang/ami/internal/supermarket"
 )
 
 // SupermarketHandler proxies the read-only Supermarket catalog. Installing

@@ -5,13 +5,13 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/apperror"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/apperror"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 const (

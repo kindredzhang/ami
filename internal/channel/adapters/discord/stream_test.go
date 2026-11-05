@@ -12,8 +12,8 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 type roundTripFunc func(*http.Request) (*http.Response, error)

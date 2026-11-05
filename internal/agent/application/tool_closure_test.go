@@ -5,10 +5,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestRepairToolCallClosures_AppendsSyntheticToolResultForDanglingAssistantCall(t *testing.T) {
@@ -89,7 +89,7 @@ func TestRepairToolCallClosures_PreservesValidAssistantToolPair(t *testing.T) {
 				sdk.ToolCallPart{
 					ToolCallID: "web_search:1",
 					ToolName:   "web_search",
-					Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "memoh"}),
+					Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "ami"}),
 				},
 			},
 		},

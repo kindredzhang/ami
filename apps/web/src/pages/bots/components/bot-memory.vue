@@ -429,11 +429,11 @@ import {
   putBotsByBotIdMemoryByMemoryId,
   deleteBotsByBotIdMemoryById,
   postBotsByBotIdMemoryCompact,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type {
   AdaptersMemoryItem,
   AdaptersMemoryStatusResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { ConfirmPopover, MetricReadout, PageShell, SettingsSection } from '@felinic/ui'
 import { formatRelativeTime } from '@/utils/date-time'

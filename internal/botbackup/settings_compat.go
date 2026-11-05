@@ -3,9 +3,9 @@ package botbackup
 import (
 	"strings"
 
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/settings"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func decodeBackupSettings(raw []byte) (settings.Settings, error) {

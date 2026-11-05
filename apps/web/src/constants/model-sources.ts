@@ -1,4 +1,4 @@
-// Providers Memoh offers in the provider gallery, maintained by hand. Each entry
+// Providers Ami offers in the provider gallery, maintained by hand. Each entry
 // has a stable id, how it is shown, and the client type and base URL a provider
 // created from it uses. An entry with a source names the models.dev provider
 // whose model list feeds the preview and the import. The logo always comes from
@@ -7,7 +7,7 @@
 // Add a provider only after checking that its endpoint speaks the client type
 // listed here. Providers that mix protocols, need a base URL with variables, or
 // did not answer like an API when checked are left out until someone verifies
-// them. The integrations Memoh implements itself (Codex, GitHub Copilot,
+// them. The integrations Ami implements itself (Codex, GitHub Copilot,
 // OpenCode Go) and self-hosted gateways come from the former provider templates.
 // A local server (Ollama, LM Studio) has no source even where models.dev lists
 // one: it serves the models the user loaded, which only its endpoint knows.

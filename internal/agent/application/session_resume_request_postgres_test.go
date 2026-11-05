@@ -8,12 +8,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type readImageTools struct{}

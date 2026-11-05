@@ -17,11 +17,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	intrpc "github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/rpc/storagepb"
-	"github.com/felinics/memoh/internal/storage"
-	"github.com/felinics/memoh/internal/storage/providers/fallback"
-	"github.com/felinics/memoh/internal/storage/providers/localfs"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/rpc/storagepb"
+	"github.com/kindredzhang/ami/internal/storage"
+	"github.com/kindredzhang/ami/internal/storage/providers/fallback"
+	"github.com/kindredzhang/ami/internal/storage/providers/localfs"
 )
 
 func TestProviderStreamsObjectsLargerThanUnaryLimit(t *testing.T) {

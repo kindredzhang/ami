@@ -10,10 +10,10 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/config"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/config"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
 )
 
 func TestAgentAuthorizationClaimAndExpiry(t *testing.T) {

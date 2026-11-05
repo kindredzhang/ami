@@ -172,7 +172,7 @@ describe('useComposerPair runtime namespace', () => {
     env.pair.setSource('user')
     expect(env.pair.carried.value).toEqual({ modelId: 'opus', reasoningEffort: 'high' })
 
-    // Switching to Memoh: the server clears the preference, the row refreshes.
+    // Switching to Ami: the server clears the preference, the row refreshes.
     env.server.set(session({ id: 'sess-1', runtime_type: 'model' } as Partial<SessionSummary>))
     env.activeSession.value = env.server.get('sess-1')
     env.runtime.value = 'model'

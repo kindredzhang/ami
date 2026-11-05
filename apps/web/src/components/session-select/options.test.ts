@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { SessionSession } from '@memohai/sdk'
+import type { SessionSession } from '@ami/sdk'
 import type { BotWorkdir } from '@/composables/api/useWorkdirs'
 import { buildSessionOptions, sessionMark, type SessionSelectLabels } from './options'
 

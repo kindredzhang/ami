@@ -10,11 +10,11 @@ import (
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
-const meterName = "github.com/felinics/memoh/internal/errlog"
+const meterName = "github.com/kindredzhang/ami/internal/errlog"
 
 // Options describes how the unit of work ended.
 type Options struct {

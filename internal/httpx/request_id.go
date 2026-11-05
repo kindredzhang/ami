@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 // NewRequestID returns a fresh request id. It is a UUID: lowercase, so an id

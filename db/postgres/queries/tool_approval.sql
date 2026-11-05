@@ -2,7 +2,7 @@
 WITH locked_session AS (
   SELECT id
   FROM bot_sessions
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND id = sqlc.arg(session_id)
   FOR UPDATE
 ),
@@ -10,12 +10,12 @@ next_short_id AS (
   SELECT COALESCE(MAX(tool_approval_requests.short_id), 0) + 1 AS short_id
   FROM locked_session
   LEFT JOIN tool_approval_requests ON tool_approval_requests.session_id = locked_session.id
-    AND tool_approval_requests.team_id = public.memoh_current_team_id()
+    AND tool_approval_requests.team_id = public.ami_current_team_id()
 ),
 runtime_scope AS (
   SELECT session_runs.run_id, session_runs.turn_id
   FROM session_runs
-  WHERE session_runs.team_id = public.memoh_current_team_id()
+  WHERE session_runs.team_id = public.ami_current_team_id()
     AND session_runs.bot_id = sqlc.arg(bot_id)
     AND session_runs.session_id = sqlc.arg(session_id)
     AND session_runs.fencing_token = sqlc.narg(runtime_fencing_token)::bigint
@@ -83,12 +83,12 @@ RETURNING *;
 -- name: GetToolApprovalRequest :one
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: ListPendingToolApprovalsByRun :many
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND status = 'pending'
 ORDER BY created_at ASC, short_id ASC;
@@ -97,14 +97,14 @@ ORDER BY created_at ASC, short_id ASC;
 -- Finalization must also reconcile terminal decisions whose live event was lost.
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
 ORDER BY created_at ASC, short_id ASC;
 
 -- name: ClaimToolApprovalRequestForRuntime :one
 UPDATE tool_approval_requests
 SET runtime_fencing_token = sqlc.arg(runtime_fencing_token)
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
@@ -115,7 +115,7 @@ RETURNING *;
 -- name: GetPendingToolApprovalBySessionShortID :one
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND session_id = $2
   AND short_id = $3
@@ -124,7 +124,7 @@ WHERE team_id = public.memoh_current_team_id()
 -- name: GetLatestPendingToolApprovalBySession :one
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND session_id = $2
   AND status = 'pending'
@@ -134,7 +134,7 @@ LIMIT 1;
 -- name: GetPendingToolApprovalByReplyMessage :one
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND session_id = $2
   AND prompt_external_message_id = $3
@@ -146,7 +146,7 @@ LIMIT 1;
 UPDATE tool_approval_requests
 SET prompt_message_id = sqlc.narg(prompt_message_id),
     prompt_external_message_id = sqlc.arg(prompt_external_message_id)
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(id)
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(id)
 RETURNING *;
 
 -- name: ApproveToolApprovalRequest :one
@@ -158,7 +158,7 @@ SET status = 'approved',
     response_control_id = sqlc.narg(response_control_id)::text,
     response_payload_hash = sqlc.narg(response_payload_hash)::text,
     decided_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND status = 'pending'
   AND (runtime_fencing_token IS NULL OR runtime_fencing_token = sqlc.narg(runtime_fencing_token)::bigint)
@@ -173,7 +173,7 @@ SET status = 'rejected',
     response_control_id = sqlc.narg(response_control_id)::text,
     response_payload_hash = sqlc.narg(response_payload_hash)::text,
     decided_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND status = 'pending'
   AND (runtime_fencing_token IS NULL OR runtime_fencing_token = sqlc.narg(runtime_fencing_token)::bigint)
@@ -184,7 +184,7 @@ UPDATE tool_approval_requests
 SET status = 'cancelled',
     decision_reason = sqlc.arg(reason),
     decided_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND status = 'pending'
   AND (runtime_fencing_token IS NULL OR runtime_fencing_token = sqlc.narg(runtime_fencing_token)::bigint)
@@ -195,7 +195,7 @@ UPDATE tool_approval_requests
 SET status = 'cancelled',
     decision_reason = sqlc.arg(reason),
     decided_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
   AND status = 'pending'
@@ -210,7 +210,7 @@ UPDATE tool_approval_requests
 SET status = 'cancelled',
     decision_reason = sqlc.arg(reason),
     decided_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
   AND run_id = sqlc.arg(run_id)
@@ -223,7 +223,7 @@ UPDATE tool_approval_requests
 SET status = 'cancelled',
     decision_reason = sqlc.arg(reason),
     decided_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
   AND status = 'pending'
@@ -234,7 +234,7 @@ RETURNING *;
 -- name: ListPendingToolApprovalsBySession :many
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND session_id = $2
   AND status = 'pending'
@@ -243,7 +243,7 @@ ORDER BY created_at ASC, short_id ASC;
 -- name: ListToolApprovalsBySession :many
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND session_id = $2
 ORDER BY created_at ASC, short_id ASC;
@@ -251,7 +251,7 @@ ORDER BY created_at ASC, short_id ASC;
 -- name: ListToolApprovalsBySessionToolCalls :many
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
   AND tool_call_id = ANY(sqlc.arg(tool_call_ids)::text[])
@@ -260,7 +260,7 @@ ORDER BY created_at ASC, short_id ASC;
 -- name: ListToolApprovalsByBotIDs :many
 SELECT *
 FROM tool_approval_requests
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND id = ANY(sqlc.arg(ids)::uuid[])
 ORDER BY created_at ASC, short_id ASC;

@@ -6,24 +6,24 @@
 //
 // One process serves every conversation of a Bot Agent. Grok writes its
 // sessions under GROK_HOME on the bot's data volume; they are the only copy
-// of its conversation. Memoh keeps the session id in thread metadata and
+// of its conversation. Ami keeps the session id in thread metadata and
 // resumes from it; a session Grok can no longer resume starts over and says
 // so.
 //
 // An Agent authenticates with an xAI API key or a Grok account. The account
 // sign-in runs inside the Agent's own process (see login.go); Grok writes the
 // login file into the Agent's home on the bot's data volume and keeps and
-// refreshes it there. Memoh stores no copy.
+// refreshes it there. Ami stores no copy.
 package grok
 
 import (
 	"path"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/grok/grokcfg"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/workspace/vpath"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/grok/grokcfg"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/workspace/vpath"
 )
 
 const (
@@ -49,7 +49,7 @@ const (
 	// grok CLI; the catalog entry must use the same id.
 	dependencyID = "grok"
 	// defaultLauncherPath is used only when no LauncherResolver is installed.
-	defaultLauncherPath = "/opt/memoh/toolkit/bin/grok"
+	defaultLauncherPath = "/opt/ami/toolkit/bin/grok"
 	defaultProjectPath  = vpath.DataMount
 )
 

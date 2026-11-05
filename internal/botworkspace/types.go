@@ -12,7 +12,7 @@ import (
 	"errors"
 	"time"
 
-	ctr "github.com/felinics/memoh/internal/container"
+	ctr "github.com/kindredzhang/ami/internal/container"
 )
 
 // Desired states.

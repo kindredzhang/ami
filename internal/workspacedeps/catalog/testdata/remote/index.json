@@ -6,7 +6,7 @@
   "data": [
     {
       "schema_version": "1",
-      "registry_id": "memoh",
+      "registry_id": "ami",
       "dependency_id": "claude-code",
       "manifest": {
         "schema_version": "1",
@@ -64,7 +64,7 @@
       },
       "manifest_digest": "sha256:8a4d3a93ce8f9471470d2d53964565c2e9b56272f97ec2d334a4159cecae3a71",
       "artifact": {
-        "format": "memoh_dependency_v1",
+        "format": "ami_dependency_v1",
         "digest": "24e140d142569f11b8748961ee595f031335d4a088aef882f10517a0551665d9",
         "size": 3605,
         "uncompressed_size": 12793,
@@ -77,11 +77,11 @@
         "size": 425,
         "content_type": "image/svg+xml"
       },
-      "revision": "049ef7fe90f3e8c359235973c18cd1c012c83ee5d04c2217b2cf0a7663c8936f"
+      "revision": "de7b1453b7fed9ca0077ec88a0f79013ff3dafd218e7392368b329b6ad0c5c66"
     },
     {
       "schema_version": "1",
-      "registry_id": "memoh",
+      "registry_id": "ami",
       "dependency_id": "codex",
       "manifest": {
         "schema_version": "1",
@@ -139,7 +139,7 @@
       },
       "manifest_digest": "sha256:fae739876c6e7fb675cd9963d027eb4cd089d4702f73d89d9ee26169b05f2e62",
       "artifact": {
-        "format": "memoh_dependency_v1",
+        "format": "ami_dependency_v1",
         "digest": "cdbc0492cccdd4b4a769e3c742ac4b7c58b18195807b8957f87ce764fa93a24b",
         "size": 4012,
         "uncompressed_size": 12501,
@@ -152,11 +152,11 @@
         "size": 1754,
         "content_type": "image/svg+xml"
       },
-      "revision": "67824da4524c22b4a2efb7783ab233a6570e3ee6d81ba22d5101cb3f64931028"
+      "revision": "236144700e2962c6e266434682e80c818e3b59f5c78592f86dfcb253152376dd"
     },
     {
       "schema_version": "1",
-      "registry_id": "memoh",
+      "registry_id": "ami",
       "dependency_id": "node",
       "manifest": {
         "schema_version": "1",
@@ -214,7 +214,7 @@
       },
       "manifest_digest": "sha256:879b663c7b812b7e73a2d2507c6c638a3375566e0e5cfe183fd1cb69e9d01516",
       "artifact": {
-        "format": "memoh_dependency_v1",
+        "format": "ami_dependency_v1",
         "digest": "47517335fd8ca6380d84487c159d6ce8da5d5f79add3d0f50be54272222baf23",
         "size": 4890,
         "uncompressed_size": 17114,
@@ -227,11 +227,11 @@
         "size": 1696,
         "content_type": "image/svg+xml"
       },
-      "revision": "ec27d74e61287b3ab59e931500af3e706551b40e79626e4b75cdaf49c02f5419"
+      "revision": "e94d5a8e5e1d02acc851decebe2723a98b69c446ef43524aee6dd7f3f2dcd6fb"
     },
     {
       "schema_version": "1",
-      "registry_id": "memoh",
+      "registry_id": "ami",
       "dependency_id": "python",
       "manifest": {
         "schema_version": "1",
@@ -290,7 +290,7 @@
       },
       "manifest_digest": "sha256:8bb8fabd9c6754bd186d6fb5d706eaf3339f1af68d6ed000983fb7da0aee25b0",
       "artifact": {
-        "format": "memoh_dependency_v1",
+        "format": "ami_dependency_v1",
         "digest": "df5f8f81183cb8d443b24d52f8ff7fcb24e0cb5d0257dc59b2e5cbfdaffbed47",
         "size": 4900,
         "uncompressed_size": 16979,
@@ -303,11 +303,11 @@
         "size": 1606,
         "content_type": "image/svg+xml"
       },
-      "revision": "2ce8fa4ac8ee787bfcba1359583de3c45b9535216ae773a12e2d355e4ddcdbc7"
+      "revision": "da36af6c372256f4c6e214c9b71194ef9a78ca0f739747d89b3aa2ad27818f32"
     },
     {
       "schema_version": "1",
-      "registry_id": "memoh",
+      "registry_id": "ami",
       "dependency_id": "uv",
       "manifest": {
         "schema_version": "1",
@@ -364,7 +364,7 @@
       },
       "manifest_digest": "sha256:b5fe97a81fd29ca4207379c2d26ab3c1fcf9faf14deaa42b692ffe4c2ba04463",
       "artifact": {
-        "format": "memoh_dependency_v1",
+        "format": "ami_dependency_v1",
         "digest": "5eda746075379e86f9bfcf5101c9ae4254a07a5ee90d6c44715cee5000b4f0ee",
         "size": 4511,
         "uncompressed_size": 17040,
@@ -377,7 +377,7 @@
         "size": 444,
         "content_type": "image/svg+xml"
       },
-      "revision": "b2eb24ccf60c448251f597f5fd7be93e17a8fe2c982e939f489cb46099e05a4f"
+      "revision": "ea8c3fe7566746088bb9bcce9dbc4b32a9eea2c89e7ee4f3abb80b8a7af43dbe"
     }
   ]
 }

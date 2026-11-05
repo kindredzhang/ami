@@ -1,8 +1,8 @@
 import { randomUUID } from '@/utils/uuid'
 import { normalizeAgentID } from '@/utils/external-agent'
-import type { AcpprofileManagedField, AcpprofilePublicProfile, BotagentsBotAgent } from '@memohai/sdk'
+import type { AcpprofileManagedField, AcpprofilePublicProfile, BotagentsBotAgent } from '@ami/sdk'
 
-export const ACP_NO_PROJECT_ROOT = '/data/.memoh/acp-work/no-project'
+export const ACP_NO_PROJECT_ROOT = '/data/.ami/acp-work/no-project'
 
 export interface ACPAgentForm {
   setup_mode: string

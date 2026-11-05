@@ -9,12 +9,12 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	"github.com/google/uuid"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/toolcontext"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 // UserQuestionCodec maps the request an agent sends for its own question
-// tool, outside ACP elicitation, onto Memoh's question card and back.
+// tool, outside ACP elicitation, onto Ami's question card and back.
 type UserQuestionCodec struct {
 	// Method is the agent's request method, sessionId among its params.
 	Method string

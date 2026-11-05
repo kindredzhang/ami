@@ -14,8 +14,8 @@ import (
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 	"go.opentelemetry.io/otel/trace"
 
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // spanAttr reports one attribute of a recorded span.

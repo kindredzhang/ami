@@ -16,14 +16,14 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/storage/providers/containerfs"
-	"github.com/felinics/memoh/internal/storage/providers/fallback"
-	"github.com/felinics/memoh/internal/storage/providers/localfs"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/storage/providers/containerfs"
+	"github.com/kindredzhang/ami/internal/storage/providers/fallback"
+	"github.com/kindredzhang/ami/internal/storage/providers/localfs"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 // Exercise the production bridge, Server storage, RPC proxy, media service,
@@ -58,7 +58,7 @@ func TestChannelPreparesWorkspaceAttachmentsThroughServerStorage(t *testing.T) {
 	if err != nil || !bytes.Equal(got, payload) {
 		t.Fatalf("uploaded bytes = %q, %v", got, err)
 	}
-	if att.Logical.ContentHash == "" || att.Logical.Path != "/data/.memoh/media/"+att.Logical.Metadata["storage_key"].(string) {
+	if att.Logical.ContentHash == "" || att.Logical.Path != "/data/.ami/media/"+att.Logical.Metadata["storage_key"].(string) {
 		t.Fatalf("attachment lost its Server-owned asset/path: %+v", att.Logical)
 	}
 
@@ -75,7 +75,7 @@ func TestChannelPreparesWorkspaceAttachmentsThroughServerStorage(t *testing.T) {
 	if err := os.WriteFile(legacyPath, legacy, 0o600); err != nil {
 		t.Fatal(err)
 	}
-	prepared, err = channel.PrepareOutboundMessage(ctx, store, channel.ChannelConfig{BotID: "bot-1", ChannelType: channel.ChannelTypeQQ}, channel.OutboundMessage{Message: channel.Message{Attachments: []channel.Attachment{{Type: channel.AttachmentFile, Path: "/data/.memoh/media/" + key}}}})
+	prepared, err = channel.PrepareOutboundMessage(ctx, store, channel.ChannelConfig{BotID: "bot-1", ChannelType: channel.ChannelTypeQQ}, channel.OutboundMessage{Message: channel.Message{Attachments: []channel.Attachment{{Type: channel.AttachmentFile, Path: "/data/.ami/media/" + key}}}})
 	if err != nil {
 		t.Fatalf("prepare legacy media alias: %v", err)
 	}

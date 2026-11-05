@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 const (

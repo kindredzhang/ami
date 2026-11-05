@@ -7,8 +7,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/contextview"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/contextview"
 )
 
 // runtimeContextViaContextView builds the runtime context view. The current user

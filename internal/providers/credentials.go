@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	memohcopilot "github.com/felinics/memoh/internal/copilot"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/models"
+	amicopilot "github.com/kindredzhang/ami/internal/copilot"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 const openAIAuthClaimPath = "https://api.openai.com/auth"
@@ -39,7 +39,7 @@ func (s *Service) ResolveModelCredentials(ctx context.Context, provider sqlc.Pro
 		if err != nil {
 			return ModelCredentials{}, err
 		}
-		copilotToken, err := memohcopilot.ResolveToken(ctx, githubToken)
+		copilotToken, err := amicopilot.ResolveToken(ctx, githubToken)
 		if err != nil {
 			return ModelCredentials{}, err
 		}

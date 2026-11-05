@@ -59,10 +59,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Typecheck runtime
-        run: pnpm --filter @memohai/runtime typecheck
+        run: pnpm --filter @ami/runtime typecheck
 
       - name: Test runtime
-        run: pnpm --filter @memohai/runtime test
+        run: pnpm --filter @ami/runtime test
 
       - name: Build runtime
-        run: pnpm --filter @memohai/runtime build
+        run: pnpm --filter @ami/runtime build

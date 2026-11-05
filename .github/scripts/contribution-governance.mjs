@@ -1,6 +1,6 @@
 import { bodyFingerprint, ciWorkflows, classify, typeLabels, validate } from './contribution-policy.mjs';
 
-const marker = '<!-- memoh-contribution-format:v1 -->';
+const marker = '<!-- ami-contribution-format:v1 -->';
 const statusContext = 'PR Format';
 const pathFor = name => `.github/workflows/${name}`;
 

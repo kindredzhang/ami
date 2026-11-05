@@ -19,10 +19,10 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	embeddeddb "github.com/felinics/memoh/db"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/team"
+	embeddeddb "github.com/kindredzhang/ami/db"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func sqlState(err error) string {
@@ -61,7 +61,7 @@ func teamMigrationDSN(t *testing.T) string {
 	}
 	defer admin.Close()
 
-	dbName := "memoh_team_test_" + strconv.Itoa(os.Getpid()) + "_" + strconv.FormatUint(teamTestDBSeq.Add(1), 10)
+	dbName := "ami_team_test_" + strconv.Itoa(os.Getpid()) + "_" + strconv.FormatUint(teamTestDBSeq.Add(1), 10)
 	if _, err := admin.Exec(context.Background(), "CREATE DATABASE "+dbName); err != nil {
 		t.Fatalf("create isolated test database: %v", err)
 	}
@@ -275,7 +275,7 @@ func TestCanonicalInitContainsFinalTeamMembershipSchema(t *testing.T) {
 	}
 
 	var teamID string
-	if err := pool.QueryRow(ctx, `SELECT public.memoh_current_team_id()::text`).Scan(&teamID); sqlState(err) != "42501" {
+	if err := pool.QueryRow(ctx, `SELECT public.ami_current_team_id()::text`).Scan(&teamID); sqlState(err) != "42501" {
 		t.Fatalf("canonical team context SQLSTATE = %q, want 42501", sqlState(err))
 	}
 
@@ -283,7 +283,7 @@ func TestCanonicalInitContainsFinalTeamMembershipSchema(t *testing.T) {
 	if err := pool.QueryRow(ctx, `
 		SELECT to_regclass('public.teams') IS NULL
 		   AND to_regclass('public.team_members') IS NULL
-		   AND to_regprocedure('public.memoh_current_team_id()') IS NULL`).Scan(&teams); err != nil {
+		   AND to_regprocedure('public.ami_current_team_id()') IS NULL`).Scan(&teams); err != nil {
 		t.Fatalf("inspect canonical init rollback: %v", err)
 	}
 	if !teams {
@@ -346,7 +346,7 @@ func limitedOwnerDSN(t *testing.T) string {
 		t.Fatalf("connect isolated database: %v", err)
 	}
 
-	role := "memoh_migration_test_" + strconv.Itoa(os.Getpid()) + "_" + strconv.FormatUint(teamTestDBSeq.Add(1), 10)
+	role := "ami_migration_test_" + strconv.Itoa(os.Getpid()) + "_" + strconv.FormatUint(teamTestDBSeq.Add(1), 10)
 	const password = "migration_test_password"
 	if _, err := admin.Exec(ctx, "CREATE ROLE "+role+" LOGIN NOSUPERUSER NOCREATEROLE NOBYPASSRLS PASSWORD '"+password+"'"); err != nil {
 		t.Fatalf("create limited migration role: %v", err)
@@ -378,7 +378,7 @@ func TestMigrationsDoNotRequireClusterRolePrivileges(t *testing.T) {
 		t.Fatalf("migrate as database owner without CREATEROLE/BYPASSRLS: %v", err)
 	}
 	// Down migrations run under the same role and must not touch FORCE RLS
-	// tables through a policy that needs memoh.team_id either.
+	// tables through a policy that needs ami.team_id either.
 	stepDown(t, limitedDSN, 1)
 	stepUp(t, limitedDSN, 1)
 }
@@ -531,7 +531,7 @@ func TestTeamChainReversible(t *testing.T) {
 		t.Fatalf("check teams after step down: %v", err)
 	}
 	if err := pool.QueryRow(ctx,
-		`SELECT to_regprocedure('public.memoh_current_team_id()') IS NOT NULL`).Scan(&helperExists); err != nil {
+		`SELECT to_regprocedure('public.ami_current_team_id()') IS NOT NULL`).Scan(&helperExists); err != nil {
 		t.Fatalf("check team helper after step down: %v", err)
 	}
 	if teamsExists {

@@ -21,18 +21,18 @@ RETURNING *;
 -- name: GetScheduleByID :one
 SELECT *
 FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: ListSchedulesByBot :many
 SELECT *
 FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY created_at DESC;
 
 -- name: ListEnabledSchedules :many
 SELECT *
 FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND enabled = true
+WHERE team_id = public.ami_current_team_id() AND enabled = true
 ORDER BY created_at DESC;
 
 -- name: UpdateSchedule :one
@@ -54,18 +54,18 @@ SET name = $2,
     workdir_id = sqlc.narg(workdir_id)::uuid,
     max_run_seconds = COALESCE(NULLIF(sqlc.arg(max_run_seconds)::integer, 0), 3600),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING *;
 
 -- name: DeleteSchedule :exec
 DELETE FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: DisableSchedule :one
 UPDATE schedule
 SET enabled = false,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING *;
 
 -- name: IncrementScheduleCalls :one
@@ -76,5 +76,5 @@ SET current_calls = current_calls + 1,
       ELSE enabled
     END,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING *;

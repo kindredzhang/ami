@@ -8,9 +8,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/messageconv"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/messageconv"
 )
 
 // MarshalStoredModelMessage encodes the existing turn message payload used by

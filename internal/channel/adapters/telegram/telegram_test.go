@@ -17,9 +17,9 @@ import (
 
 	tele "gopkg.in/telebot.v4"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // newStubTelegramBot builds a telebot bot suitable for tests that need a
@@ -82,9 +82,9 @@ func TestIsTelegramBotMentioned(t *testing.T) {
 	t.Run("text mention", func(t *testing.T) {
 		t.Parallel()
 		msg := &tele.Message{
-			Text: "hello @MemohBot",
+			Text: "hello @AmiBot",
 		}
-		if !isTelegramBotMentioned(msg, "memohbot") {
+		if !isTelegramBotMentioned(msg, "amibot") {
 			t.Fatalf("expected bot mention from text")
 		}
 	})
@@ -95,11 +95,11 @@ func TestIsTelegramBotMentioned(t *testing.T) {
 			Entities: []tele.MessageEntity{
 				{
 					Type: tele.EntityTMention,
-					User: &tele.User{IsBot: true, Username: "memohbot"},
+					User: &tele.User{IsBot: true, Username: "amibot"},
 				},
 			},
 		}
-		if !isTelegramBotMentioned(msg, "memohbot") {
+		if !isTelegramBotMentioned(msg, "amibot") {
 			t.Fatalf("expected bot mention from text_mention entity")
 		}
 	})
@@ -114,7 +114,7 @@ func TestIsTelegramBotMentioned(t *testing.T) {
 				},
 			},
 		}
-		if isTelegramBotMentioned(msg, "memohbot") {
+		if isTelegramBotMentioned(msg, "amibot") {
 			t.Fatalf("expected no mention for different bot")
 		}
 	})
@@ -124,31 +124,31 @@ func TestIsTelegramBotMentioned(t *testing.T) {
 		msg := &tele.Message{
 			Text: "hello everyone",
 		}
-		if isTelegramBotMentioned(msg, "memohbot") {
+		if isTelegramBotMentioned(msg, "amibot") {
 			t.Fatalf("expected no mention")
 		}
 	})
 
 	t.Run("username prefix collision", func(t *testing.T) {
 		t.Parallel()
-		msg := &tele.Message{Text: "/new discuss @memohbot_extra"}
-		if isTelegramBotMentioned(msg, "memohbot") {
+		msg := &tele.Message{Text: "/new discuss @amibot_extra"}
+		if isTelegramBotMentioned(msg, "amibot") {
 			t.Fatal("longer username must not count as the current bot mention")
 		}
 	})
 
 	t.Run("email local part", func(t *testing.T) {
 		t.Parallel()
-		msg := &tele.Message{Text: "send this to alice@memohbot"}
-		if isTelegramBotMentioned(msg, "memohbot") {
+		msg := &tele.Message{Text: "send this to alice@amibot"}
+		if isTelegramBotMentioned(msg, "amibot") {
 			t.Fatal("email address must not count as a bot mention")
 		}
 	})
 
 	t.Run("punctuated exact mention", func(t *testing.T) {
 		t.Parallel()
-		msg := &tele.Message{Text: "(@MemohBot), please respond"}
-		if !isTelegramBotMentioned(msg, "memohbot") {
+		msg := &tele.Message{Text: "(@AmiBot), please respond"}
+		if !isTelegramBotMentioned(msg, "amibot") {
 			t.Fatal("exact mention with punctuation should count")
 		}
 	})
@@ -419,7 +419,7 @@ func TestBuildTelegramMediaGroupInboundMessageAggregatesAttachments(t *testing.T
 
 	adapter := NewTelegramAdapter(nil)
 	bot := newStubTelegramBot(t)
-	bot.Me = &tele.User{ID: 1001, Username: "memohbot"}
+	bot.Me = &tele.User{ID: 1001, Username: "amibot"}
 	cfg := channel.ChannelConfig{}
 	first := &tele.Message{
 		ID:       101,
@@ -471,7 +471,7 @@ func TestBuildTelegramInboundMessageIncludesUpdateIDMetadata(t *testing.T) {
 
 	adapter := NewTelegramAdapter(nil)
 	bot := newStubTelegramBot(t)
-	bot.Me = &tele.User{ID: 1001, Username: "memohbot"}
+	bot.Me = &tele.User{ID: 1001, Username: "amibot"}
 	update := &tele.Update{
 		ID: 777,
 		Message: &tele.Message{
@@ -497,7 +497,7 @@ func TestBuildTelegramInboundMessage_PlainFormatWhenNoEntities(t *testing.T) {
 
 	adapter := NewTelegramAdapter(nil)
 	bot := newStubTelegramBot(t)
-	bot.Me = &tele.User{ID: 1, Username: "memohbot"}
+	bot.Me = &tele.User{ID: 1, Username: "amibot"}
 	update := &tele.Update{
 		ID: 1,
 		Message: &tele.Message{
@@ -524,7 +524,7 @@ func TestBuildTelegramInboundMessage_RichFormatWhenEntitiesPopulateParts(t *test
 
 	adapter := NewTelegramAdapter(nil)
 	bot := newStubTelegramBot(t)
-	bot.Me = &tele.User{ID: 1, Username: "memohbot"}
+	bot.Me = &tele.User{ID: 1, Username: "amibot"}
 	update := &tele.Update{
 		ID: 1,
 		Message: &tele.Message{
@@ -557,17 +557,17 @@ func TestBuildTelegramInboundMessage_RichMentionDoesNotDuplicatePlainText(t *tes
 
 	adapter := NewTelegramAdapter(nil)
 	bot := newStubTelegramBot(t)
-	bot.Me = &tele.User{ID: 1, Username: "memoh1bot"}
-	const body = "@memoh1bot telegram 新的bot api除了latex还支持什么富文本"
+	bot.Me = &tele.User{ID: 1, Username: "ami1bot"}
+	const body = "@ami1bot telegram 新的bot api除了latex还支持什么富文本"
 	update := &tele.Update{
 		ID: 1,
 		Message: &tele.Message{
 			ID:     71890,
 			Text:   body,
-			Chat:   &tele.Chat{ID: -1001, Type: tele.ChatGroup, Title: "Project Memoh"},
+			Chat:   &tele.Chat{ID: -1001, Type: tele.ChatGroup, Title: "Project Ami"},
 			Sender: &tele.User{ID: 7583740083, Username: "softboil"},
 			Entities: tele.Entities{
-				{Type: tele.EntityMention, Offset: 0, Length: len("@memoh1bot")},
+				{Type: tele.EntityMention, Offset: 0, Length: len("@ami1bot")},
 			},
 		},
 	}
@@ -586,8 +586,8 @@ func TestBuildTelegramInboundMessage_RichMentionDoesNotDuplicatePlainText(t *tes
 	if got, _ := inbound.Metadata["raw_text"].(string); got != body {
 		t.Fatalf("raw_text = %q, want %q", got, body)
 	}
-	if got, _ := inbound.Metadata["bot_username"].(string); got != "memoh1bot" {
-		t.Fatalf("bot_username = %q, want memoh1bot", got)
+	if got, _ := inbound.Metadata["bot_username"].(string); got != "ami1bot" {
+		t.Fatalf("bot_username = %q, want ami1bot", got)
 	}
 }
 
@@ -1489,7 +1489,7 @@ func TestParseConfig_APIBaseURL(t *testing.T) {
 
 	t.Run("http proxy config", func(t *testing.T) {
 		t.Parallel()
-		proxyURL := "http://memoh:" + "secret" + "@sztu.cc:3128"
+		proxyURL := "http://ami:" + "secret" + "@sztu.cc:3128"
 		cfg, err := parseConfig(map[string]any{
 			"botToken":     "t4",
 			"httpProxyUrl": proxyURL,
@@ -1530,7 +1530,7 @@ func TestNormalizeConfig_APIBaseURL(t *testing.T) {
 
 	t.Run("includes http proxy config", func(t *testing.T) {
 		t.Parallel()
-		proxyURL := "http://memoh:" + "secret" + "@sztu.cc:3128"
+		proxyURL := "http://ami:" + "secret" + "@sztu.cc:3128"
 		norm, err := normalizeConfig(map[string]any{
 			"botToken":     "t3",
 			"httpProxyUrl": proxyURL,

@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 // A claimed steer is named before its row exists, the same way admission names

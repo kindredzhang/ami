@@ -13,14 +13,14 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/agent/application"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/turn"
-	chatview "github.com/felinics/memoh/internal/agent/view"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 const (

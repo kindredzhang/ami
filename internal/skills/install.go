@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const archivePublicationCleanupTimeout = 30 * time.Second

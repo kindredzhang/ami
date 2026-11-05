@@ -8,11 +8,11 @@ import (
 
 	"google.golang.org/grpc/codes"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/rpc"
-	runtimeRpc "github.com/felinics/memoh/internal/rpc/runtime"
-	"github.com/felinics/memoh/internal/webhooktunnel"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/rpc"
+	runtimeRpc "github.com/kindredzhang/ami/internal/rpc/runtime"
+	"github.com/kindredzhang/ami/internal/webhooktunnel"
 )
 
 const (

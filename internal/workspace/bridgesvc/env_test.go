@@ -6,12 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 // setDepsShimDir points the shim directory at dir for the test. An empty dir
 // disables the PATH rewrite so tests that assert the raw environment do not
-// depend on whether /data/.memoh/deps/bin exists on the machine.
+// depend on whether /data/.ami/deps/bin exists on the machine.
 func setDepsShimDir(t *testing.T, dir string) {
 	t.Helper()
 	previous := depsShimDir
@@ -52,9 +52,9 @@ func TestExecEnvCleanStartsFromOnlyExplicitEnv(t *testing.T) {
 
 func TestExecPTYEnvInheritsDefaultEnvironment(t *testing.T) {
 	setDepsShimDir(t, "")
-	t.Setenv("MEMOH_TEST_PTY_SENTINEL", "present")
+	t.Setenv("AMI_TEST_PTY_SENTINEL", "present")
 	env := execPTYEnv(&pb.ExecInput{})
-	if !hasEnvValue(env, "MEMOH_TEST_PTY_SENTINEL", "present") {
+	if !hasEnvValue(env, "AMI_TEST_PTY_SENTINEL", "present") {
 		t.Fatalf("default PTY env did not inherit process environment: %v", env)
 	}
 	if !hasEnvValue(env, "TERM", "xterm-256color") {
@@ -64,12 +64,12 @@ func TestExecPTYEnvInheritsDefaultEnvironment(t *testing.T) {
 
 func TestExecPTYEnvCleanKeepsOnlyExplicitEnvAndTerm(t *testing.T) {
 	setDepsShimDir(t, "")
-	t.Setenv("MEMOH_TEST_PTY_SENTINEL", "present")
+	t.Setenv("AMI_TEST_PTY_SENTINEL", "present")
 	env := execPTYEnv(&pb.ExecInput{
 		CleanEnv: true,
 		Env:      []string{"PATH=/toolkit"},
 	})
-	if hasEnvValue(env, "MEMOH_TEST_PTY_SENTINEL", "present") {
+	if hasEnvValue(env, "AMI_TEST_PTY_SENTINEL", "present") {
 		t.Fatalf("clean PTY env leaked process environment: %v", env)
 	}
 	if !hasEnvValue(env, "PATH", "/toolkit") {
@@ -83,10 +83,10 @@ func TestExecPTYEnvCleanKeepsOnlyExplicitEnvAndTerm(t *testing.T) {
 func TestExecEnvPutsDepsShimDirFirstOnPath(t *testing.T) {
 	shims := t.TempDir()
 	setDepsShimDir(t, shims)
-	t.Setenv("PATH", "/opt/memoh/toolkit/bin:/usr/bin")
+	t.Setenv("PATH", "/opt/ami/toolkit/bin:/usr/bin")
 
 	// Inherited PATH: the shim directory is prepended.
-	if got := envValue(execEnv(&pb.ExecInput{}), "PATH"); got != shims+":/opt/memoh/toolkit/bin:/usr/bin" {
+	if got := envValue(execEnv(&pb.ExecInput{}), "PATH"); got != shims+":/opt/ami/toolkit/bin:/usr/bin" {
 		t.Fatalf("inherited PATH = %q", got)
 	}
 	// An explicit PATH wins over the inherited one and is prepended too; the
@@ -95,7 +95,7 @@ func TestExecEnvPutsDepsShimDirFirstOnPath(t *testing.T) {
 	if got := env[len(env)-1]; got != "PATH="+shims+":/toolkit" {
 		t.Fatalf("explicit PATH = %q (env %v)", got, env)
 	}
-	if !hasEnvValue(env, "PATH", "/opt/memoh/toolkit/bin:/usr/bin") {
+	if !hasEnvValue(env, "PATH", "/opt/ami/toolkit/bin:/usr/bin") {
 		t.Fatalf("inherited PATH entry rewritten: %v", env)
 	}
 	// Clean env with an explicit PATH.
@@ -111,7 +111,7 @@ func TestExecEnvPutsDepsShimDirFirstOnPath(t *testing.T) {
 		t.Fatalf("already-prefixed PATH = %#v", env)
 	}
 	// The PTY path shares the rewrite.
-	if got := envValue(execPTYEnv(&pb.ExecInput{}), "PATH"); got != shims+":/opt/memoh/toolkit/bin:/usr/bin" {
+	if got := envValue(execPTYEnv(&pb.ExecInput{}), "PATH"); got != shims+":/opt/ami/toolkit/bin:/usr/bin" {
 		t.Fatalf("PTY PATH = %q", got)
 	}
 }

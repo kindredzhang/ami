@@ -1,31 +1,31 @@
 // Desktop renderer entry. Owns its bootstrap chain so desktop can layer
 // on Electron-specific plugins / stores / providers without touching
-// @memohai/web. Pairs with `src/renderer/index.html`.
+// @ami/web. Pairs with `src/renderer/index.html`.
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { PiniaColada, useQueryCache } from '@pinia/colada'
-import { createQueryCachePersistencePlugin, whenQueryCacheRestored } from '@memohai/web/lib/query-cache-persistence'
+import { createQueryCachePersistencePlugin, whenQueryCacheRestored } from '@ami/web/lib/query-cache-persistence'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { watchEffect } from 'vue'
-import i18n from '@memohai/web/i18n'
-import { setupApiClient } from '@memohai/web/api-client'
-import { configureProviderIconLoader } from '@memohai/web/components/provider-icon/preload'
-import { installFileDropGuard } from '@memohai/web/lib/file-drop-guard'
-import { appKeyboardCommands, createKeyboardCommandRegistry, type AppKeyboardCommand } from '@memohai/web/lib/keyboard-commands'
-import { canDispatchKeyboardCommand, selectActiveKeyboardBindings } from '@memohai/web/lib/keyboard-context'
-import { connectBrowserKeyboardShortcutsLive } from '@memohai/web/lib/browser-keyboard-shortcuts'
-import { toElectronAccelerator } from '@memohai/web/lib/keyboard-bindings'
-import { KEYBOARD_REGISTRY } from '@memohai/web/composables/useKeyboardCommand'
-import { registerWorkspaceTabCommands } from '@memohai/web/pages/home/commands/workspace-tab-commands'
-import { useWorkspaceTabsStore } from '@memohai/web/store/workspace-tabs'
-import { useKeyboardShortcutsStore } from '@memohai/web/store/keyboard-shortcuts'
-import { useChatStore } from '@memohai/web/store/chat-list'
+import i18n from '@ami/web/i18n'
+import { setupApiClient } from '@ami/web/api-client'
+import { configureProviderIconLoader } from '@ami/web/components/provider-icon/preload'
+import { installFileDropGuard } from '@ami/web/lib/file-drop-guard'
+import { appKeyboardCommands, createKeyboardCommandRegistry, type AppKeyboardCommand } from '@ami/web/lib/keyboard-commands'
+import { canDispatchKeyboardCommand, selectActiveKeyboardBindings } from '@ami/web/lib/keyboard-context'
+import { connectBrowserKeyboardShortcutsLive } from '@ami/web/lib/browser-keyboard-shortcuts'
+import { toElectronAccelerator } from '@ami/web/lib/keyboard-bindings'
+import { KEYBOARD_REGISTRY } from '@ami/web/composables/useKeyboardCommand'
+import { registerWorkspaceTabCommands } from '@ami/web/pages/home/commands/workspace-tab-commands'
+import { useWorkspaceTabsStore } from '@ami/web/store/workspace-tabs'
+import { useKeyboardShortcutsStore } from '@ami/web/store/keyboard-shortcuts'
+import { useChatStore } from '@ami/web/store/chat-list'
 
 import '@fontsource-variable/inter'
 import 'markstream-vue/index.css'
-import '@memohai/web/style.css'
+import '@ami/web/style.css'
 import './desktop-shell.css'
 import 'katex/dist/katex.min.css'
 
@@ -120,7 +120,7 @@ async function bootstrap() {
     .use(PiniaColada, {
       plugins: [
         // Same cross-reload snapshot as the web app (see
-        // @memohai/web/lib/query-cache-persistence.ts).
+        // @ami/web/lib/query-cache-persistence.ts).
         createQueryCachePersistencePlugin(),
       ],
     })

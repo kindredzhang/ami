@@ -3,7 +3,7 @@ package botworkspace
 import (
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 var (

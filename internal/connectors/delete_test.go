@@ -11,8 +11,8 @@ import (
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 	"github.com/jackc/pgx/v5"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 type disconnectQueries struct {

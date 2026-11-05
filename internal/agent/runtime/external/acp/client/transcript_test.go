@@ -6,9 +6,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/partmeta"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
 )
 
 func TestTranscriptKeepsSubmittedUserInputAnswers(t *testing.T) {

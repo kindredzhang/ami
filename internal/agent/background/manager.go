@@ -17,10 +17,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/job"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/job"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -43,7 +43,7 @@ const (
 	DefaultTaskRetention = 24 * time.Hour
 	// OutputLogDir is the default directory where background task output logs
 	// are written.
-	OutputLogDir = "/tmp/memoh-bg"
+	OutputLogDir = "/tmp/ami-bg"
 
 	// stallCheckInterval is how often the stall watchdog checks output growth.
 	stallCheckInterval = 5 * time.Second

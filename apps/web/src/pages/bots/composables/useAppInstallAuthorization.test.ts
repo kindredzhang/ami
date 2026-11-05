@@ -5,7 +5,7 @@ import type { AppOperation } from '@/store/app-operations'
 import { useAppInstallAuthorization } from './useAppInstallAuthorization'
 
 const mocks = vi.hoisted(() => ({ list: vi.fn(), invalidate: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({ getBotsByBotIdApps: mocks.list }))
+vi.mock('@ami/sdk', () => ({ getBotsByBotIdApps: mocks.list }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 vi.mock('@pinia/colada', () => ({ useQueryCache: () => ({ invalidateQueries: mocks.invalidate }) }))
 vi.mock('@/composables/api/useApps', () => ({ invalidateBotApps: mocks.invalidate }))
@@ -17,11 +17,11 @@ const connector = (type: string, status = 'needs_auth', connectionStatus?: strin
   type, required: true, status, connector: connectionStatus ? { status: connectionStatus } : undefined,
 })
 const item = (connectors: unknown[], status = 'partial') => ({
-  installation_id: 'installation', registry_id: 'memoh', app_id: 'example', status, connectors,
+  installation_id: 'installation', registry_id: 'ami', app_id: 'example', status, connectors,
 })
 function setup(status = 'running', action = 'install') {
   const operation = ref({
-    key: 'bot/memoh/example', botId: 'bot', registryId: 'memoh',
+    key: 'bot/ami/example', botId: 'bot', registryId: 'ami',
     appId: 'example', status, action, result: 'partial',
     steps: [{ kind: 'connector', id: 'notion', status: 'needs_auth' }],
   } as AppOperation)

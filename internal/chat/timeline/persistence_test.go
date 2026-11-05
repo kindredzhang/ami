@@ -11,10 +11,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/chat/checkpoint"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/chat/checkpoint"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 type fakeEventQueries struct {

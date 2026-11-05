@@ -34,13 +34,13 @@ func TestApplyToolResultStillRecognizesExecBackgroundStart(t *testing.T) {
 	applyToolResultToUIMessage(msg, map[string]any{
 		"status":      "auto_backgrounded",
 		"task_id":     "bg_bot1_bbbb",
-		"output_file": "/tmp/memoh-bg/bg_bot1_bbbb.log",
+		"output_file": "/tmp/ami-bg/bg_bot1_bbbb.log",
 	})
 
 	if msg.Background == nil {
 		t.Fatal("expected background task recognized from exec tool result")
 	}
-	if msg.Background.Status != "running" || msg.Background.OutputFile != "/tmp/memoh-bg/bg_bot1_bbbb.log" {
+	if msg.Background.Status != "running" || msg.Background.OutputFile != "/tmp/ami-bg/bg_bot1_bbbb.log" {
 		t.Errorf("unexpected background state: %+v", msg.Background)
 	}
 }

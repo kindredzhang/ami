@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 func TestUncertainOperationRemainsInProgressUntilOwnerDies(t *testing.T) {

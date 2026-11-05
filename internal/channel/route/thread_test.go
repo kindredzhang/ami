@@ -8,9 +8,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 type coordinatorRouteStore struct {
@@ -110,7 +110,7 @@ func TestEnrichThreadsPreservesRouteProjection(t *testing.T) {
 	queries := &routeThreadQueries{projections: []sqlc.ListChatRouteThreadProjectionsByIDsRow{{
 		ID:               routeID,
 		ConversationType: pgtype.Text{String: "group", Valid: true},
-		Metadata:         []byte(`{"conversation_name":"Memoh"}`),
+		Metadata:         []byte(`{"conversation_name":"Ami"}`),
 	}}}
 	service := NewService(nil, queries)
 
@@ -124,7 +124,7 @@ func TestEnrichThreadsPreservesRouteProjection(t *testing.T) {
 	if len(got) != 1 || got[0].RouteConversationType != "group" {
 		t.Fatalf("EnrichThreads() = %#v", got)
 	}
-	if got[0].RouteMetadata["conversation_name"] != "Memoh" {
+	if got[0].RouteMetadata["conversation_name"] != "Ami" {
 		t.Fatalf("RouteMetadata = %#v", got[0].RouteMetadata)
 	}
 	if queries.calls != 1 || queries.params.BotID != botID {

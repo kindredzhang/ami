@@ -15,7 +15,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errlog"
 )
 
 // Config controls how often and how soon a failed model call is retried. A

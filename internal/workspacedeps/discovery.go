@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // State is the on-disk state.json of a managed dependency. It is
@@ -103,18 +103,18 @@ const (
 	discoveryTimeout    = 2 * time.Minute
 	versionProbeTimeout = 5 * time.Second
 
-	markerPrefix       = "__MEMOH_"
-	markerDep          = "__MEMOH_DEP__"
-	markerStateBegin   = "__MEMOH_STATE_BEGIN__"
-	markerStateEnd     = "__MEMOH_STATE_END__"
-	markerManaged      = "__MEMOH_MANAGED__"
-	markerToolkit      = "__MEMOH_TOOLKIT__"
-	markerPath         = "__MEMOH_PATH__"
-	markerLock         = "__MEMOH_LOCK__"
-	markerAbandoned    = "__MEMOH_LOCK_ABANDONED__"
-	markerVersionBegin = "__MEMOH_VERSION_BEGIN__"
-	markerVersionEnd   = "__MEMOH_VERSION_END__"
-	markerEnd          = "__MEMOH_END__"
+	markerPrefix       = "__AMI_"
+	markerDep          = "__AMI_DEP__"
+	markerStateBegin   = "__AMI_STATE_BEGIN__"
+	markerStateEnd     = "__AMI_STATE_END__"
+	markerManaged      = "__AMI_MANAGED__"
+	markerToolkit      = "__AMI_TOOLKIT__"
+	markerPath         = "__AMI_PATH__"
+	markerLock         = "__AMI_LOCK__"
+	markerAbandoned    = "__AMI_LOCK_ABANDONED__"
+	markerVersionBegin = "__AMI_VERSION_BEGIN__"
+	markerVersionEnd   = "__AMI_VERSION_END__"
+	markerEnd          = "__AMI_END__"
 )
 
 // versionPattern extracts the first semantic-version-looking token from a
@@ -126,10 +126,10 @@ var versionPattern = regexp.MustCompile(`\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?`)
 // runs without `set -e`: a failing probe must not abort discovery of the
 // remaining dependencies. Paths are separated from other fields by tabs so
 // paths with spaces survive.
-const discoveryPreamble = lockProbeHelpers + `memoh_resolve() {
-  memoh_p=$(command -v "$1" 2>/dev/null) || memoh_p=''
-  case "$memoh_p" in
-    /*) printf '%s\n' "$memoh_p" ;;
+const discoveryPreamble = lockProbeHelpers + `ami_resolve() {
+  ami_p=$(command -v "$1" 2>/dev/null) || ami_p=''
+  case "$ami_p" in
+    /*) printf '%s\n' "$ami_p" ;;
     *) printf '\n' ;;
   esac
 }
@@ -225,11 +225,11 @@ func writeDependencyProbe(b *strings.Builder, dep catalog.Dependency, statePath,
 	fmt.Fprintf(b, "printf '%s\\t%%s\\n' %s\n", markerDep, shellQuote(dep.ID))
 	// Probe the same stable kernel lock used by execution and finalization;
 	// file presence alone does not imply that an operation is still running.
-	fmt.Fprintf(b, "if memoh_lock_active %s; then printf '%s\\t%%s\\n' %s; elif [ -d %s ]; then printf '%s\\t%%s\\n' %s; fi\n", shellQuote(lock), markerLock, shellQuote(dep.ID), shellQuote(lock), markerAbandoned, shellQuote(dep.ID))
-	fmt.Fprintf(b, "memoh_state=%s\n", shellQuote(statePath))
-	b.WriteString("if [ -f \"$memoh_state\" ]; then\n")
+	fmt.Fprintf(b, "if ami_lock_active %s; then printf '%s\\t%%s\\n' %s; elif [ -d %s ]; then printf '%s\\t%%s\\n' %s; fi\n", shellQuote(lock), markerLock, shellQuote(dep.ID), shellQuote(lock), markerAbandoned, shellQuote(dep.ID))
+	fmt.Fprintf(b, "ami_state=%s\n", shellQuote(statePath))
+	b.WriteString("if [ -f \"$ami_state\" ]; then\n")
 	b.WriteString("  printf '" + markerStateBegin + "\\n'\n")
-	b.WriteString("  cat \"$memoh_state\"\n")
+	b.WriteString("  cat \"$ami_state\"\n")
 	b.WriteString("  printf '\\n" + markerStateEnd + "\\n'\n")
 	b.WriteString("fi\n")
 
@@ -238,12 +238,12 @@ func writeDependencyProbe(b *strings.Builder, dep catalog.Dependency, statePath,
 		fmt.Fprintf(b, "if [ -x %s ]; then\n", shellQuote(toolkitPath))
 		fmt.Fprintf(b, "  printf '%s\\t%%s\\t%%s\\n' %s %s\n", markerToolkit, shellQuote(command), shellQuote(toolkitPath))
 		b.WriteString("fi\n")
-		fmt.Fprintf(b, "memoh_p=$(memoh_resolve %s)\n", shellQuote(command))
+		fmt.Fprintf(b, "ami_p=$(ami_resolve %s)\n", shellQuote(command))
 		// Our own shims resolve to the managed copy; they are not a third
 		// source.
-		fmt.Fprintf(b, "case \"$memoh_p\" in %s/*) memoh_p='' ;; esac\n", shellQuote(shimDir))
-		b.WriteString("if [ -n \"$memoh_p\" ]; then\n")
-		fmt.Fprintf(b, "  printf '%s\\t%%s\\t%%s\\n' %s \"$memoh_p\"\n", markerPath, shellQuote(command))
+		fmt.Fprintf(b, "case \"$ami_p\" in %s/*) ami_p='' ;; esac\n", shellQuote(shimDir))
+		b.WriteString("if [ -n \"$ami_p\" ]; then\n")
+		fmt.Fprintf(b, "  printf '%s\\t%%s\\t%%s\\n' %s \"$ami_p\"\n", markerPath, shellQuote(command))
 		b.WriteString("fi\n")
 	}
 }
@@ -267,8 +267,8 @@ func probeManagedEntrypoints(ctx context.Context, client *bridge.Client, deps []
 			continue
 		}
 		fmt.Fprintf(&script, "printf '%s\\t%%s\\n' %s\n", markerDep, shellQuote(dep.ID))
-		fmt.Fprintf(&script, "if [ -x %s ]; then memoh_ok=yes; else memoh_ok=no; fi\n", shellQuote(entrypoint))
-		fmt.Fprintf(&script, "printf '%s\\t%%s\\t%%s\\t%%s\\n' %s %s \"$memoh_ok\"\n", markerManaged, shellQuote(command), shellQuote(entrypoint))
+		fmt.Fprintf(&script, "if [ -x %s ]; then ami_ok=yes; else ami_ok=no; fi\n", shellQuote(entrypoint))
+		fmt.Fprintf(&script, "printf '%s\\t%%s\\t%%s\\t%%s\\n' %s %s \"$ami_ok\"\n", markerManaged, shellQuote(command), shellQuote(entrypoint))
 	}
 	if script.Len() == 0 {
 		return nil

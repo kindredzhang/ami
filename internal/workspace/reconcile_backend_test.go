@@ -11,10 +11,10 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/felinics/memoh/internal/botworkspace"
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/botworkspace"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type unreadableBridgeService struct{ legacyRouteTestService }
@@ -61,7 +61,7 @@ func TestIsTransientClassifiesByErrorChain(t *testing.T) {
 		"connection reset":  {err: errors.Join(ctr.ErrRuntime, os.NewSyscallError("read", syscall.ECONNRESET)), want: true},
 		"connection refuse": {err: fmt.Errorf("dial: %w", syscall.ECONNREFUSED), want: true},
 		"missing image": {
-			err:  errors.Join(ctr.ErrNotFound, errors.New("manifest for memoh/whereof:latest not found")),
+			err:  errors.Join(ctr.ErrNotFound, errors.New("manifest for ami/whereof:latest not found")),
 			want: false,
 		},
 		"runtime failure mentioning timeout": {

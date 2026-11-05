@@ -289,7 +289,7 @@ import {
   type HandlersChannelMeta,
   type ChannelChannelConfig,
   type HandlersDailyTokenUsage,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useBotQuery } from '@/composables/api/useBot'
 import BotChecksPanel from './bot-checks-panel.vue'
 import ChannelIcon from '@/components/channel-icon/index.vue'

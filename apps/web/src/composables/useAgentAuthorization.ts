@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import {
   deleteAgentAuthorizationsById, getAgentAuthorizationsById, postAgentAuthorizations,
   postAgentAuthorizationsByIdExchange, type AgentcredentialAuthorization,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { isDirectBotAgentRuntime, type DirectBotAgentRuntime } from '@/utils/bot-agent'
 import { safeSessionGet, safeSessionRemove, safeSessionSet } from '@/utils/safe-storage'

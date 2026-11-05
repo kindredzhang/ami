@@ -20,10 +20,10 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	attachmentpkg "github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/textutil"
+	attachmentpkg "github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/textutil"
 )
 
 const Type channel.ChannelType = "matrix"
@@ -219,7 +219,7 @@ func (*MatrixAdapter) Descriptor() channel.Descriptor {
 					Type:        channel.FieldString,
 					Required:    true,
 					Title:       "User ID",
-					Description: "Matrix bot/user ID, e.g. @memoh:example.com",
+					Description: "Matrix bot/user ID, e.g. @ami:example.com",
 				},
 				"accessToken": {
 					Type:     channel.FieldSecret,
@@ -1752,9 +1752,9 @@ func (a *MatrixAdapter) nextTxnID() string {
 	a.txnID++
 	rnd, err := cryptorand.Int(cryptorand.Reader, big.NewInt(10000))
 	if err != nil {
-		return fmt.Sprintf("memoh-%d-%d", time.Now().UnixMilli(), a.txnID)
+		return fmt.Sprintf("ami-%d-%d", time.Now().UnixMilli(), a.txnID)
 	}
-	return fmt.Sprintf("memoh-%d-%d-%04d", time.Now().UnixMilli(), a.txnID, rnd.Int64())
+	return fmt.Sprintf("ami-%d-%d-%04d", time.Now().UnixMilli(), a.txnID, rnd.Int64())
 }
 
 func (a *MatrixAdapter) seenEvent(configID, eventID string) bool {

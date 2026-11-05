@@ -14,12 +14,12 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/acl"
-	"github.com/felinics/memoh/internal/bots"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	modelpkg "github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/acl"
+	"github.com/kindredzhang/ami/internal/bots"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	modelpkg "github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // secretCause stands for database error text that must never reach a warning:

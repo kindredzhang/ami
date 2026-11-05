@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 type logBuffer struct {

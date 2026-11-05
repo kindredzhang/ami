@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/memory/migrate"
-	"github.com/felinics/memoh/internal/memory/wikistore"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
+	"github.com/kindredzhang/ami/internal/memory/wikistore"
 )
 
 func TestGraphCacheDoesNotInstallBuildInvalidatedDuringStoreRead(t *testing.T) {

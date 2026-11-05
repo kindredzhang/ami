@@ -15,10 +15,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/team"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestContextLifecycleMigrationRoundTrip(t *testing.T) {
@@ -51,7 +51,7 @@ func TestContextLifecycleQueriesRoundTripContentLight(t *testing.T) {
 		t.Fatalf("acquire database connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("bind default team: %v", err)
 	}
 
@@ -339,7 +339,7 @@ WHERE run_id IN ($1, $2)
 		t.Fatalf("seed second team: %v", err)
 	}
 	rls := rlsConn(t, pool, dsn)
-	if _, err := rls.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", teamTwo); err != nil {
+	if _, err := rls.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", teamTwo); err != nil {
 		t.Fatalf("bind second team: %v", err)
 	}
 	var visible int
@@ -428,7 +428,7 @@ func TestUpsertTerminalContextLifecycleConvergesByRunIdentity(t *testing.T) {
 		t.Fatalf("acquire database connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("bind default team: %v", err)
 	}
 
@@ -748,7 +748,7 @@ func TestContextLifecycleSelectionDecisionsMigrationSplitsAndRollsUpExistingRows
 		t.Fatalf("acquire database connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("bind default team: %v", err)
 	}
 

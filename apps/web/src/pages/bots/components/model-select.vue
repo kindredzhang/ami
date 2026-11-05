@@ -48,7 +48,7 @@ import { computed, ref, watch } from 'vue'
 import { ChevronsUpDown } from 'lucide-vue-next'
 import { Popover, PopoverTrigger, PopoverContent, menuChromeClass, selectTriggerClass } from '@felinic/ui'
 import { useI18n } from 'vue-i18n'
-import type { ModelsGetResponse, ModelsModelType, ProvidersGetResponse } from '@memohai/sdk'
+import type { ModelsGetResponse, ModelsModelType, ProvidersGetResponse } from '@ami/sdk'
 import ModelOptions from './model-options.vue'
 import { EFFORT_LABELS, REASONING_EFFORT_DISABLE, displayedEffort } from './reasoning-effort'
 

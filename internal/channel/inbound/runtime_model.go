@@ -5,11 +5,11 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/commandsyntax"
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/commandsyntax"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // runtimeModelResource maps the /model and /reasoning spellings the command

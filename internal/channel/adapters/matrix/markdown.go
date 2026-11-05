@@ -10,7 +10,7 @@ import (
 	"github.com/yuin/goldmark/extension"
 	goldhtml "github.com/yuin/goldmark/renderer/html"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 const matrixHTMLFormat = "org.matrix.custom.html"

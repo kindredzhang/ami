@@ -1,5 +1,5 @@
 // Package toolcontext owns the request-scoped identity and lifecycle shared by
-// every Memoh tool transport. It is independent of MCP, ACP, and native tool
+// every Ami tool transport. It is independent of MCP, ACP, and native tool
 // protocols so those adapters can all bind work to the same agent run.
 package toolcontext
 
@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // Session carries request-scoped identity and runtime ownership for tool

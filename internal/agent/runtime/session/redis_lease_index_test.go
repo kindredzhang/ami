@@ -8,8 +8,8 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 // reserveRuntimeRun writes one live reservation whose owner lease ends at

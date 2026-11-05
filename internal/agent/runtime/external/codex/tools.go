@@ -1,4 +1,4 @@
-// Memoh tool-gateway injection for codex threads. Each thread gets its own
+// Ami tool-gateway injection for codex threads. Each thread gets its own
 // reverse-HTTP route into the workspace tools proxy, configured through the
 // thread's `mcp_servers` config override at start/resume/fork. The route outlives
 // individual turns (thread config is start-time), so the tool session
@@ -10,20 +10,20 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
-// memohMCPServerName is the config key codex shows in tool names
-// (memoh__send_message and friends).
-const memohMCPServerName = "memoh"
+// amiMCPServerName is the config key codex shows in tool names
+// (ami__send_message and friends).
+const amiMCPServerName = "ami"
 
-// MemohToolTimeoutSec caps one Memoh gateway tool call on the codex side.
-// Memoh tools can legitimately block on a human decision (approval cards,
+// AmiToolTimeoutSec caps one Ami gateway tool call on the codex side.
+// Ami tools can legitimately block on a human decision (approval cards,
 // ask_user) for up to their wait windows; the toolmount timeout-ladder guard
 // test pins this above them.
-const MemohToolTimeoutSec = 900
+const AmiToolTimeoutSec = 900
 
 // threadRef carries the thread id into the mount's session resolver; the id
 // is only known after thread/start returns.
@@ -47,7 +47,7 @@ func (r *threadRef) get() string {
 // prepareThreadTools mounts the gateway for a thread about to start,
 // resume, or fork. The returned function binds the mount to the thread or
 // closes it when creation fails. A gateway that cannot be mounted gives no
-// config: the thread runs without Memoh tools, and every turn says so.
+// config: the thread runs without Ami tools, and every turn says so.
 func (d *Driver) prepareThreadTools(ctx context.Context, srv *appServer, input external.PromptInput) (map[string]any, func(threadID string)) {
 	ref := &threadRef{}
 	//nolint:contextcheck // the route serves every later turn of the thread, not only the one that opened it.
@@ -55,15 +55,15 @@ func (d *Driver) prepareThreadTools(ctx context.Context, srv *appServer, input e
 		return srv.toolSessionForThread(ref.get())
 	})
 	if err != nil {
-		d.logger.WarnContext(ctx, "codex: Memoh tool gateway unavailable", slog.String("bot_id", srv.botID), slog.Any("error", err))
+		d.logger.WarnContext(ctx, "codex: Ami tool gateway unavailable", slog.String("bot_id", srv.botID), slog.Any("error", err))
 		return nil, func(threadID string) { srv.setThreadToolless(threadID, threadID != "") }
 	}
 	config := map[string]any{
 		"features.default_mode_request_user_input": true,
 		"mcp_servers": map[string]any{
-			memohMCPServerName: map[string]any{
+			amiMCPServerName: map[string]any{
 				"url":              mount.URL,
-				"tool_timeout_sec": MemohToolTimeoutSec,
+				"tool_timeout_sec": AmiToolTimeoutSec,
 			},
 		},
 	}

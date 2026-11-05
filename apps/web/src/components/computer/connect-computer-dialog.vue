@@ -91,8 +91,8 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@pinia/colada'
-import { deleteUsersMeRuntimesById, type UserruntimeRuntime } from '@memohai/sdk'
-import { getBotsQuery } from '@memohai/sdk/colada'
+import { deleteUsersMeRuntimesById, type UserruntimeRuntime } from '@ami/sdk'
+import { getBotsQuery } from '@ami/sdk/colada'
 import {
   Button,
   CalloutBanner,

@@ -1,8 +1,8 @@
 package application
 
 import (
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/turn"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // chatRequestFromCommand translates the pure-data command into the

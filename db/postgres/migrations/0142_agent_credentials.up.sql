@@ -6,7 +6,7 @@
 
 CREATE TABLE IF NOT EXISTS public.agent_credentials (
     id                   UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id              UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id              UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                      REFERENCES public.teams(id) ON DELETE RESTRICT,
     owner_user_id        UUID        NOT NULL,
     provider             TEXT        NOT NULL,
@@ -47,14 +47,14 @@ DROP POLICY IF EXISTS agent_credentials_team_update ON public.agent_credentials;
 DROP POLICY IF EXISTS agent_credentials_team_delete ON public.agent_credentials;
 
 CREATE POLICY agent_credentials_team_select ON public.agent_credentials
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY agent_credentials_team_insert ON public.agent_credentials
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY agent_credentials_team_update ON public.agent_credentials
-    FOR UPDATE USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR UPDATE USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY agent_credentials_team_delete ON public.agent_credentials
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- One credential per Bot Agent instance. ON DELETE SET NULL detaches the
 -- Agent instead of deleting it when a credential row is removed.

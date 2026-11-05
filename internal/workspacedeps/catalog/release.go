@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	OfficialRegistry = "memoh"
+	OfficialRegistry = "ami"
 	MaxArtifactBytes = 1024 * 1024
 	MaxArtifactFiles = 32
 	MaxCatalogBytes  = 4 * 1024 * 1024
@@ -124,7 +124,7 @@ func (r Release) Validate() error {
 		return errors.New("catalog: invalid dependency release identity or schema")
 	}
 	a := r.Artifact
-	if a.Format != "memoh_dependency_v1" || a.ContentType != "application/gzip" || !ValidRevision(a.Digest) {
+	if a.Format != "ami_dependency_v1" || a.ContentType != "application/gzip" || !ValidRevision(a.Digest) {
 		return errors.New("catalog: invalid dependency artifact format or digest")
 	}
 	for _, size := range []int64{a.Size, a.UncompressedSize, a.ArchiveSize} {

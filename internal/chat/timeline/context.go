@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // TurnResponseEntry represents an assistant or tool message from bot_history_messages,

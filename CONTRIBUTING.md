@@ -43,27 +43,27 @@ Default host ports are shifted away from the production compose stack: Web `1808
 The dev Compose files pull the pinned multi-architecture image
 `ghcr.io/felinics/connect-it:0.3.1`; no Connect-It source checkout is required.
 The image serves the API, MCP endpoint, and admin UI from one container.
-Connect-It uses the same `memoh` PostgreSQL database as Memoh, with
+Connect-It uses the same `ami` PostgreSQL database as Ami, with
 its independently migrated tables isolated in the `connect_it` schema. The
 schema is owned, created, and migrated by the Connect-It server itself on
-startup; Memoh's migrations never touch it.
+startup; Ami's migrations never touch it.
 
 `mise run dev` shares a fixed development bootstrap token between both sides:
 the Connect-It container seeds it as an API token at startup
-(`CONNECT_IT_BOOTSTRAP_API_TOKEN`) and the Memoh server presents it as its
+(`CONNECT_IT_BOOTSTRAP_API_TOKEN`) and the Ami server presents it as its
 bearer token. The Connectors tab is therefore available from the first
 startup, with no token minting or caching involved. The admin UI remains
 available at `http://localhost:18421` with the development credentials
 `admin` / `admin123`. The Connect-It port binds to loopback only: the token
 is public, so the deployment must not be reachable from the LAN. If the
 bootstrap token was revoked through the admin UI, rotate it once with
-`MEMOH_CONNECT_IT_API_TOKEN=cit_<64 hex chars> mise run dev` — the new value
+`AMI_CONNECT_IT_API_TOKEN=cit_<64 hex chars> mise run dev` — the new value
 is seeded as a fresh token and the revoked one stays revoked.
 
-Override the host UI port with `MEMOH_DEV_CONNECT_IT_PORT`, the public OAuth callback
-address with `MEMOH_DEV_CONNECT_IT_BASE_URL`, or point at an external Connect-It
-deployment with `MEMOH_CONNECT_IT_BASE_URL` and `MEMOH_CONNECT_IT_API_TOKEN`. For
-image testing, override `MEMOH_DEV_CONNECT_IT_IMAGE`.
+Override the host UI port with `AMI_DEV_CONNECT_IT_PORT`, the public OAuth callback
+address with `AMI_DEV_CONNECT_IT_BASE_URL`, or point at an external Connect-It
+deployment with `AMI_CONNECT_IT_BASE_URL` and `AMI_CONNECT_IT_API_TOKEN`. For
+image testing, override `AMI_DEV_CONNECT_IT_IMAGE`.
 
 ## Daily Development
 
@@ -117,11 +117,11 @@ Run focused tests before opening a pull request:
 go test ./internal/channel/adapters/dingtalk
 go test ./internal/...
 pnpm test --run
-pnpm --filter @memohai/desktop typecheck
+pnpm --filter @ami/desktop typecheck
 mise run lint
 ```
 
-For frontend-only changes, `pnpm lint` and `pnpm test --run` are usually enough. For desktop changes, also run `pnpm --filter @memohai/desktop typecheck`.
+For frontend-only changes, `pnpm lint` and `pnpm test --run` are usually enough. For desktop changes, also run `pnpm --filter @ami/desktop typecheck`.
 
 ## SQL, API, and SDK Changes
 
@@ -162,9 +162,9 @@ Contributors can submit an issue or PR before format checks run. GitHub Actions 
 
 ```sh
 # Preview the configuration without changing GitHub
-node .github/scripts/sync-labels.mjs felinics/Memoh
+node .github/scripts/sync-labels.mjs kindredzhang/ami
 # Apply the configuration
-node .github/scripts/sync-labels.mjs felinics/Memoh --apply
+node .github/scripts/sync-labels.mjs kindredzhang/ami --apply
 ```
 
 The repository maintains these 14 labels:
@@ -266,8 +266,8 @@ The controller adopts the new behavior only after it lands on the default branch
 The initial migration script is read-only by default; `--apply` explicitly enables writes:
 
 ```sh
-node .github/scripts/migrate-labels.mjs felinics/Memoh /absolute/backup/directory
-node .github/scripts/migrate-labels.mjs felinics/Memoh /absolute/backup/directory --apply
+node .github/scripts/migrate-labels.mjs kindredzhang/ami /absolute/backup/directory
+node .github/scripts/migrate-labels.mjs kindredzhang/ami /absolute/backup/directory --apply
 ```
 
 Before writing, the script saves label definitions, historical associations, and open-PR labels/classifications. It renames old size labels, applies the configuration, adds base bug/feat labels to historical regional classifications, and removes explicitly listed obsolete labels. It does not guess historical types from question/documentation labels or post comments. Finally, it recalculates size/scope labels for open PRs, skipping any PR whose head changed. Closed PR sizes are not recalculated.

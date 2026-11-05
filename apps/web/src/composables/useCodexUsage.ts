@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getBotsByBotIdAgentsByIdQuota } from '@memohai/sdk'
+import { getBotsByBotIdAgentsByIdQuota } from '@ami/sdk'
 
 // Usage is read from the Agent's Codex, which a read starts when it is not
 // running, so it is never polled: callers read it when it can have changed.

@@ -94,7 +94,7 @@ type RuntimeModelOption struct {
 
 // RuntimeModelState is the model a session's runtime will use next turn and
 // the models it can switch to. Supported is false for runtimes whose model
-// is not chosen per session through Memoh (ACP changes it in the agent).
+// is not chosen per session through Ami (ACP changes it in the agent).
 type RuntimeModelState struct {
 	Supported       bool                 `json:"supported"`
 	ModelID         string               `json:"model_id,omitempty"`

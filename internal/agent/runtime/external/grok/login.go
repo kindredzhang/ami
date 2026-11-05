@@ -9,12 +9,12 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/grok/grokcfg"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/grok/grokcfg"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // A Grok account signs in on the Agent's own process, in the Agent's home:

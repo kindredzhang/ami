@@ -1,10 +1,10 @@
 // Generic provider deep-link contract (`/providers/connect#payload=...`).
-// Any aggregator or gateway (New API, one-api forks, …) can hand Memoh a
+// Any aggregator or gateway (New API, one-api forks, …) can hand Ami a
 // prefilled provider by encoding this payload as base64url in the URL
 // fragment. The fragment never reaches the server, so the key stays out of
 // access logs; the page always asks for user confirmation before saving.
 
-export const PROVIDER_CONNECT_KIND = 'memoh-provider-import'
+export const PROVIDER_CONNECT_KIND = 'ami-provider-import'
 
 export interface ProviderConnectPayload {
   name: string

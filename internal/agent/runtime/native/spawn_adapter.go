@@ -10,9 +10,9 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/uuid"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 // SpawnStepCommitFactory builds the per-step persistence callback for one

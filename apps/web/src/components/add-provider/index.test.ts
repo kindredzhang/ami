@@ -36,7 +36,7 @@ vi.mock('@pinia/colada', async () => {
   }
 })
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   postProviders: vi.fn(),
   postProvidersByIdImportModels: vi.fn(),
 }))

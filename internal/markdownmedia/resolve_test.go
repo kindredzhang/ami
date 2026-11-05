@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 type memoryStore struct {

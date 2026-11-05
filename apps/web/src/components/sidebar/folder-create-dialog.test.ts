@@ -7,7 +7,7 @@ import { PiniaColada } from '@pinia/colada'
 import FolderCreateDialog from './folder-create-dialog.vue'
 
 const api = vi.hoisted(() => ({ targets: vi.fn(), mkdir: vi.fn(), create: vi.fn(), refresh: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsByBotIdWorkspaceTargets: api.targets,
   postBotsByBotIdContainerFsMkdir: api.mkdir,
 }))

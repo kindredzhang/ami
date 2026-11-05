@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestBuildInboundMessage_TextOnly(t *testing.T) {

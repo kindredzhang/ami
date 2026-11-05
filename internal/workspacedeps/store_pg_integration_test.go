@@ -13,11 +13,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/dbtest"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/team"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/dbtest"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 var (

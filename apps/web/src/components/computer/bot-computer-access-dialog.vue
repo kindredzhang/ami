@@ -45,7 +45,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { SettingsIcon } from '@memohai/icon/ui'
+import { SettingsIcon } from '@ami/icon/ui'
 import {
   Button,
   Dialog,

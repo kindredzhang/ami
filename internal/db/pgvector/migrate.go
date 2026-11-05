@@ -5,9 +5,9 @@ import (
 	"io/fs"
 	"log/slog"
 
-	dbembed "github.com/felinics/memoh/db"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db"
+	dbembed "github.com/kindredzhang/ami/db"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db"
 )
 
 const migrationsPath = "pgvector/migrations"

@@ -159,7 +159,7 @@ describe('settings interaction default Agent selector', () => {
     const form = createForm()
     const { app, root } = await mountCard(form)
 
-    const selector = root.querySelector('[data-select-value="memoh"]')
+    const selector = root.querySelector('[data-select-value="ami"]')
     expect(selector).not.toBeNull()
     expect(root.querySelector('[data-option-value="agent:agent-codex"]')).not.toBeNull()
 
@@ -176,7 +176,7 @@ describe('settings interaction default Agent selector', () => {
     app.unmount()
   })
 
-  it('switches back to Memoh and clears the default Bot Agent binding', async () => {
+  it('switches back to Ami and clears the default Bot Agent binding', async () => {
     const form = createForm({
       chat_runtime: 'codex',
       default_bot_agent_id: 'agent-codex',
@@ -189,7 +189,7 @@ describe('settings interaction default Agent selector', () => {
     const selector = root.querySelector('[data-select-value="agent:agent-codex"]')
     expect(selector).not.toBeNull()
 
-    uiState.nextSelectValue = 'memoh'
+    uiState.nextSelectValue = 'ami'
     selector!.dispatchEvent(new MouseEvent('click'))
     await nextTick()
 
@@ -211,7 +211,7 @@ describe('settings interaction default Agent selector', () => {
 
     expect(root.textContent).toContain('bots.settings.defaultAgentUnavailable')
     expect(root.textContent).toContain('bots.settings.defaultAgentUnavailableDescription')
-    expect(root.querySelector('[data-option-value="memoh"]')).not.toBeNull()
+    expect(root.querySelector('[data-option-value="ami"]')).not.toBeNull()
 
     app.unmount()
   })

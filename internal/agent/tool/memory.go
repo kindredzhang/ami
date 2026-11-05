@@ -10,12 +10,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/mcp"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/memory/storefs"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/mcp"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/storefs"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 const maxVisibleMemorySourceRefs = memprovider.MaxSourceRefsPerToolResult

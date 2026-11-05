@@ -9,9 +9,9 @@ import (
 	"sort"
 	"strings"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 const namespaceDBHistoryMessage = "bot_history_message"

@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 // Disconnecting a credential purges it from the runtime first, and answers a

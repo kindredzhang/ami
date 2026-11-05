@@ -150,7 +150,7 @@ const title = ref(props.params.api.title ?? '')
 const isActive = ref(props.params.api.isActive)
 // Per-group active: this tab is its group's visible panel (every group has one).
 // Drives the active SHAPE (SVG), the resident close slot, and the seam/hover CSS
-// via the .memoh-tab-active class toggled on the .dv-tab wrapper. isActive is
+// via the .ami-tab-active class toggled on the .dv-tab wrapper. isActive is
 // layout-level (only the focused group's active tab) and is kept ONLY for label
 // colour — the focused group's active tab reads brighter, inactive groups' active
 // tabs stay dim. dockview's own .dv-active-tab is isActive-scoped, so it can't
@@ -247,7 +247,7 @@ onBeforeUnmount(() => {
   // Clear the imperatively-set class so it can't linger on a .dv-tab wrapper that
   // dockview later reuses for a different (e.g. terminal) tab component that never
   // sets it — otherwise a stale active style could survive the swap.
-  rootEl.value?.closest('.dv-tab')?.classList.remove('memoh-tab-active')
+  rootEl.value?.closest('.dv-tab')?.classList.remove('ami-tab-active')
   for (const d of disposables) d.dispose()
 })
 
@@ -262,7 +262,7 @@ watch(isVisible, (active) => {
 // seam/hover/shape rules need, since every group's active tab wears the shape.
 function syncGroupActiveClass() {
   const tab = rootEl.value?.closest<HTMLElement>('.dv-tab')
-  if (tab) tab.classList.toggle('memoh-tab-active', isVisible.value)
+  if (tab) tab.classList.toggle('ami-tab-active', isVisible.value)
 }
 
 function installShapeObserver() {

@@ -3,10 +3,10 @@ package client
 import (
 	"unicode/utf8"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/prune"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/prune"
 )
 
 type ToolOutputLimit = contextlimit.ToolOutputLimit

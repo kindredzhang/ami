@@ -22,10 +22,10 @@ DECLARE
   clock_floor BIGINT;
   cursor_floor BIGINT;
 BEGIN
-  previous_team_id := current_setting('memoh.team_id', true);
+  previous_team_id := current_setting('ami.team_id', true);
 
   FOR migration_team_id IN SELECT id FROM public.teams ORDER BY id LOOP
-    PERFORM set_config('memoh.team_id', migration_team_id::text, true);
+    PERFORM set_config('ami.team_id', migration_team_id::text, true);
 
     SELECT COALESCE(MAX(
       CASE
@@ -74,8 +74,8 @@ BEGIN
     RAISE EXCEPTION 'session event cursor exhausted JSON-safe integer range';
   END IF;
   PERFORM setval('bot_session_event_cursor_seq', cursor_floor, true);
-  PERFORM set_config('memoh.team_id', COALESCE(previous_team_id, ''), true);
+  PERFORM set_config('ami.team_id', COALESCE(previous_team_id, ''), true);
 END $$;
 
 ALTER POLICY teams_self_select ON public.teams
-  USING (id = public.memoh_current_team_id());
+  USING (id = public.ami_current_team_id());

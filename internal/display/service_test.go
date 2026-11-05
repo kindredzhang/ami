@@ -95,7 +95,7 @@ func TestWebRTCAPIReusesSingleUDPPortAcrossPeerConnections(t *testing.T) {
 }
 
 func TestIsSocketReadyRequiresListener(t *testing.T) {
-	path := filepath.Join(os.TempDir(), "memoh-display-ready-test.sock")
+	path := filepath.Join(os.TempDir(), "ami-display-ready-test.sock")
 	_ = os.Remove(path)
 	t.Cleanup(func() { _ = os.Remove(path) })
 	listenConfig := net.ListenConfig{}

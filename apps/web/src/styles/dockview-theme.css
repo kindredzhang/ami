@@ -1,4 +1,4 @@
-/* Memoh dockview theme: maps dockview's --dv-* variables onto the design
+/* Ami dockview theme: maps dockview's --dv-* variables onto the design
  * tokens from @felinic/ui style.css so the dock chrome follows light/dark
  * and any future palette swap automatically.
  *
@@ -9,7 +9,7 @@
  * light and dark (see apps/web/src/style.css), the active tab "punches through"
  * the strip by its FILL alone: no painted divider, no overflow fight, and no
  * brand top-accent needed (the old inset highlight is gone). */
-.dockview-theme-memoh {
+.dockview-theme-ami {
   --dv-group-view-background-color: var(--surface-editor);
 
   --dv-tabs-and-actions-container-background-color: var(--surface-chrome);
@@ -45,8 +45,8 @@
   --dv-active-sash-color: var(--ring);
 
   /* Drop indicator fill: dockview's grey, toned down from the base 0.5 opacity
-   * (which reads too dark on Memoh's chrome). The base theme defines this per
-   * .dockview-theme-dark/light, which .dockview-theme-memoh does NOT extend, so
+   * (which reads too dark on Ami's chrome). The base theme defines this per
+   * .dockview-theme-dark/light, which .dockview-theme-ami does NOT extend, so
    * it must be re-declared here. The void/pane centre drop is rendered entirely
    * by dockview's default anchor/selection styles using this colour — no custom
    * override below. Only the tab-to-tab insertion line is themed (brand colour).
@@ -243,7 +243,7 @@
  * it matches the sidebar/panel dividers exactly instead of being an invented brighter
  * grey. color-mix in oklab pre-composites the translucent border onto --surface-chrome;
  * this single value is the one knob for the whole dock outline's weight. */
-.dark .dockview-theme-memoh {
+.dark .dockview-theme-ami {
   --dock-stroke: color-mix(in oklab, oklch(1 0 0) 8%, var(--surface-chrome));
   --tab-strip-junction-stroke: var(--dock-stroke);
   --workspace-tab-outline-color: var(--dock-stroke);
@@ -257,7 +257,7 @@
  * title on hover (no reserved slot — see workspace-tab.vue). --tab-hover-bg is the
  * opaque colour a tab wears while hovered; the close affordance paints it to blot
  * out the text beneath the button. */
-.dockview-theme-memoh .dv-tab {
+.dockview-theme-ami .dv-tab {
   box-sizing: border-box;
   padding: 0;
   /* A tab activates on click but is not a link/button affordance — keep the plain
@@ -292,7 +292,7 @@
   --tab-hover-bg: var(--surface-chrome-hover);
 }
 
-.dockview-theme-memoh .dv-tab.dv-drop-target {
+.dockview-theme-ami .dv-tab.dv-drop-target {
   /* ui-allow-z: not on the z-index ladder (packages/ui/AGENTS.md "z 梯"): the
      999 fallback is dockview's own CSS variable contract
      (--dv-overlay-z-index), read by the library's internal overlay stacking —
@@ -301,7 +301,7 @@
   z-index: calc(var(--dv-overlay-z-index, 999) + 1);
 }
 
-.dockview-theme-memoh .dv-tab:not(.memoh-tab-active)::before {
+.dockview-theme-ami .dv-tab:not(.ami-tab-active)::before {
   content: '';
   position: absolute;
   /* Box coords: the tab box is already top-offset by margin-top:--tab-inset, so
@@ -329,7 +329,7 @@
   pointer-events: none;
 }
 
-.dockview-theme-memoh .dv-tab:not(.memoh-tab-active):hover::before {
+.dockview-theme-ami .dv-tab:not(.ami-tab-active):hover::before {
   opacity: 1;
   transition: none;
 }
@@ -339,7 +339,7 @@
  * to the right-hand tab so "prev is active" needs no :has(). --tab-divider is the
  * paint switch; the rules below flip it transparent where a boundary already exists.
  * No hover rule: the hover pill is inset from the seam, so they never collide. */
-.dockview-theme-memoh .dv-tab::after {
+.dockview-theme-ami .dv-tab::after {
   content: '';
   position: absolute;
   left: 0;
@@ -367,16 +367,16 @@
  * match and the first tab's seam would stay painted as a stray line at the strip's
  * left edge. The adjacency form is DOM-order-independent: it just asks "is there a
  * tab to my left", which is exactly the seam's presence condition. */
-.dockview-theme-memoh .dv-tab:not(.dv-tab + .dv-tab)::after,
-.dockview-theme-memoh .dv-tab.memoh-tab-active::after,
-.dockview-theme-memoh .dv-tab.memoh-tab-active + .dv-tab::after {
+.dockview-theme-ami .dv-tab:not(.dv-tab + .dv-tab)::after,
+.dockview-theme-ami .dv-tab.ami-tab-active::after,
+.dockview-theme-ami .dv-tab.ami-tab-active + .dv-tab::after {
   --tab-divider: transparent;
 }
 
 /* Adjacent editor tabs touch; separation is state, surface, and the seam divider
  * above — not whitespace. Edge padding is geometry protection for the connected
  * active corner, not a visual gutter. */
-.dockview-theme-memoh .dv-tabs-container {
+.dockview-theme-ami .dv-tabs-container {
   gap: var(--tab-gap);
   padding-inline: var(--tab-edge-pad);
 }
@@ -395,7 +395,7 @@
  * header's direct flex child — there's no .dv-scrollable layer — so this rule
  * targets it directly. overflow:visible drops upstream's scroll clip
  * (disableTabsOverflowList is on, no scroll to clip). */
-.dockview-theme-memoh .dv-tabs-and-actions-container > .dv-tabs-container {
+.dockview-theme-ami .dv-tabs-and-actions-container > .dv-tabs-container {
   flex: 1 1 auto;
   min-width: 0;
   overflow: visible;
@@ -410,13 +410,13 @@
  * hairline), and no edge shadow either. Editor tabs have no min-width floor, so the
  * strip absorbs more tabs by shrinking them rather than overflowing — the hidden bar
  * is just belt-and-suspenders against a transient overflow frame. */
-.dockview-theme-memoh .dv-tabs-container {
+.dockview-theme-ami .dv-tabs-container {
   scrollbar-width: none;
 }
-.dockview-theme-memoh .dv-tabs-container::-webkit-scrollbar {
+.dockview-theme-ami .dv-tabs-container::-webkit-scrollbar {
   display: none;
 }
-.dockview-theme-memoh .dv-scrollable > .dv-scrollbar {
+.dockview-theme-ami .dv-scrollable > .dv-scrollbar {
   display: none;
 }
 
@@ -424,7 +424,7 @@
  * keeps the same box metrics as inactive tabs, but it no longer paints its own
  * fill/border/foot pieces; otherwise separate raster models meet at the lower
  * turns and produce doubled pixels. */
-.dockview-theme-memoh .dv-tab.memoh-tab-active {
+.dockview-theme-ami .dv-tab.ami-tab-active {
   background-color: transparent !important;
   /* The active tab never takes the hover lift, so its blot-out colour is the
    * editor surface it already wears. */
@@ -434,28 +434,28 @@
 /* Hover on an UNSELECTED tab: the tab box stays transparent at rest; the
  * chrome-hover fill is painted by ::before as a rounded rectangle centred on the
  * label. Text does not move. */
-.dockview-theme-memoh .dv-tab:not(.memoh-tab-active):hover {
+.dockview-theme-ami .dv-tab:not(.ami-tab-active):hover {
   background-color: transparent !important;
 }
 
 /* Active tab paint is owned by the SVG shape in workspace-tab.vue (fill + 1px
  * stroke crown/foot). dockview's built-in `:not(:first-child)::before` divider also
  * targets the active tab as a transparent no-op at z-5; kill it so nothing can sit
- * over the SVG. (Our hover-pill ::before is `:not(.memoh-tab-active)`, so it never
+ * over the SVG. (Our hover-pill ::before is `:not(.ami-tab-active)`, so it never
  * applies here — this only silences dockview's own pseudo.) */
-.dockview-theme-memoh .dv-tab.memoh-tab-active::before {
+.dockview-theme-ami .dv-tab.ami-tab-active::before {
   content: none;
 }
 
-.dockview-theme-memoh .dv-right-actions-container,
-.dockview-theme-memoh .dv-left-actions-container {
+.dockview-theme-ami .dv-right-actions-container,
+.dockview-theme-ami .dv-left-actions-container {
   align-items: center;
   box-sizing: border-box;
   height: 100%;
 }
 
 /* Prefix actions container: renders navigation buttons before the tabs. */
-.dockview-theme-memoh .dv-pre-actions-container {
+.dockview-theme-ami .dv-pre-actions-container {
   position: relative;
   display: flex;
   align-items: center;
@@ -468,7 +468,7 @@
  * width as the transition so web/desktop prefix padding can change without a
  * hard-coded gradient stop. The strip-wide shadow remains underneath and carries
  * the settled tab colour through the rest of the header. */
-.dockview-theme-memoh .dv-pre-actions-container::after {
+.dockview-theme-ami .dv-pre-actions-container::after {
   content: '';
   position: absolute;
   inset-inline: 0;
@@ -494,11 +494,11 @@
  *
  * On the desktop shell the same blank strip doubles as the window-drag handle,
  * so we claim it with -webkit-app-region: drag. While a panel/group is being
- * dragged the dock root gets .memoh-dock-dragging and we release that claim
+ * dragged the dock root gets .ami-dock-dragging and we release that claim
  * (no-drag) so the OS lets the native drop events through to the void; without
  * this the window-move region would swallow them. (-webkit-app-region is a no-op
  * on web, where the void is simply always droppable + the group-drag handle.) */
-.dockview-theme-memoh .dv-void-container {
+.dockview-theme-ami .dv-void-container {
   order: 2;
   flex: 1 1 auto;
   /* The tabs-container carries padding-inline:--tab-edge-pad (active-flare geometry
@@ -509,13 +509,13 @@
   margin-right: calc(-1 * var(--tab-edge-pad));
   -webkit-app-region: drag;
 }
-.memoh-dock-dragging .dockview-theme-memoh .dv-void-container {
+.ami-dock-dragging .dockview-theme-ami .dv-void-container {
   -webkit-app-region: no-drag;
 }
 
 /* Right actions hug their content at the strip's far right — just the Preview
  * action when present (group-actions.vue); the void to its left fills the gap. */
-.dockview-theme-memoh .dv-right-actions-container {
+.dockview-theme-ami .dv-right-actions-container {
   flex: 0 0 auto;
 }
 
@@ -538,14 +538,14 @@
  * divider off the seam and out of line with the active tab's edge (the "tail line
  * sits too far right" symptom); a negative one would pull the "+" into the active
  * tab's box. padding-left adds the breathing room from the seam to the "+" glyph. */
-.dockview-theme-memoh .dv-left-actions-container {
+.dockview-theme-ami .dv-left-actions-container {
   position: relative;
   flex: 0 0 auto;
   order: 1;
   margin-left: 0;
   padding-left: var(--tab-action-gap);
 }
-.dockview-theme-memoh .dv-left-actions-container::before {
+.dockview-theme-ami .dv-left-actions-container::before {
   content: '';
   position: absolute;
   left: 0;
@@ -560,13 +560,13 @@
 /* Same rule as an inter-tab seam: when the LAST tab is active, its side-stroke is
  * the boundary, so the lead divider hides. padding-left stays, so the "+" does NOT
  * jump left when you select the last tab. The condition is "the active tab has no
- * tab to its right" — expressed as :has(.dv-tab.memoh-tab-active NOT followed by
+ * tab to its right" — expressed as :has(.dv-tab.ami-tab-active NOT followed by
  * another .dv-tab) — which is DOM-order-independent and does not rely on
  * :last-child (the patch appends the "+" as the first child, and dockview may also
  * append non-tab children, so :last-child is fragile here). A plain sibling
  * selector can't bridge the "+" and the last tab either, since the "+" sits at the
  * FRONT of the container, not after the last tab — so :has() is the only reach. */
-.dockview-theme-memoh .dv-tabs-and-actions-container:has(.dv-tab.memoh-tab-active):not(:has(.dv-tab.memoh-tab-active ~ .dv-tab)) .dv-left-actions-container::before {
+.dockview-theme-ami .dv-tabs-and-actions-container:has(.dv-tab.ami-tab-active):not(:has(.dv-tab.ami-tab-active ~ .dv-tab)) .dv-left-actions-container::before {
   content: none;
 }
 
@@ -577,11 +577,11 @@
  * scrollbars:'native', so dockview never creates the .dv-scrollable wrapper — the
  * tabs list is the header's direct child. Per-tab drops use .dv-tab.dv-drop-target
  * below.) */
-.dockview-theme-memoh .dv-void-container {
+.dockview-theme-ami .dv-void-container {
   position: relative;
 }
 
-.dockview-theme-memoh .dv-void-container.dv-drop-target {
+.dockview-theme-ami .dv-void-container.dv-drop-target {
   z-index: calc(var(--dv-overlay-z-index, 999) + 1);
 }
 
@@ -593,46 +593,46 @@
  * one unbroken line. The active (and hovered) tab's OPAQUE background paints over this
  * hairline at its own slot, so that tab reads as continuous with the pane below
  * (punch-through); transparent inactive tabs and the leftover gap let the line show. */
-.dockview-theme-memoh .dv-tabs-and-actions-container {
+.dockview-theme-ami .dv-tabs-and-actions-container {
   box-shadow: inset 0 calc(-1 * var(--workspace-divider-width)) 0 var(--dock-stroke);
 }
 
 /* Dockview keeps a 4px sash hit target for comfortable resizing, while these
  * rules reduce only the visible workspace divider and active sash indicator. */
-.dockview-theme-memoh .dv-split-view-container.dv-horizontal > .dv-view-container > .dv-view:not(:first-child)::before {
+.dockview-theme-ami .dv-split-view-container.dv-horizontal > .dv-view-container > .dv-view:not(:first-child)::before {
   width: var(--workspace-divider-width);
 }
 
-.dockview-theme-memoh .dv-split-view-container.dv-vertical > .dv-view-container > .dv-view:not(:first-child)::before {
+.dockview-theme-ami .dv-split-view-container.dv-vertical > .dv-view-container > .dv-view:not(:first-child)::before {
   height: var(--workspace-divider-width);
 }
 
-.dockview-theme-memoh .dv-split-view-container > .dv-sash-container > .dv-sash {
+.dockview-theme-ami .dv-split-view-container > .dv-sash-container > .dv-sash {
   background-color: transparent;
 }
 
-.dockview-theme-memoh .dv-split-view-container > .dv-sash-container > .dv-sash::after {
+.dockview-theme-ami .dv-split-view-container > .dv-sash-container > .dv-sash::after {
   content: '';
   position: absolute;
   background-color: transparent;
   pointer-events: none;
 }
 
-.dockview-theme-memoh .dv-split-view-container.dv-horizontal > .dv-sash-container > .dv-sash::after {
+.dockview-theme-ami .dv-split-view-container.dv-horizontal > .dv-sash-container > .dv-sash::after {
   inset-block: 0;
   left: 50%;
   width: var(--workspace-divider-width);
   transform: translateX(-50%);
 }
 
-.dockview-theme-memoh .dv-split-view-container.dv-vertical > .dv-sash-container > .dv-sash::after {
+.dockview-theme-ami .dv-split-view-container.dv-vertical > .dv-sash-container > .dv-sash::after {
   inset-inline: 0;
   top: 50%;
   height: var(--workspace-divider-width);
   transform: translateY(-50%);
 }
 
-.dockview-theme-memoh .dv-split-view-container > .dv-sash-container > .dv-sash:not(.disabled):is(:hover, :active)::after {
+.dockview-theme-ami .dv-split-view-container > .dv-sash-container > .dv-sash:not(.disabled):is(:hover, :active)::after {
   background-color: var(--ring);
 }
 
@@ -647,8 +647,8 @@
  * ::after. It also fires on `:focus` (mouse click), not just `:focus-visible`.
  * Selection is already carried by the fill + the connected bottom edge, so kill
  * the pseudo's outline at the source. */
-.dockview-theme-memoh .dv-tab:focus::after,
-.dockview-theme-memoh .dv-tab:focus-within::after {
+.dockview-theme-ami .dv-tab:focus::after,
+.dockview-theme-ami .dv-tab:focus-within::after {
   outline: none !important;
 }
 
@@ -656,10 +656,10 @@
  * dock chrome (tab chip, tabindex=0; group host, tabindex=-1). !important defeats
  * the global `* { outline-color: … }` base layer regardless of cascade order. This
  * only touches dock chrome — focus rings inside panes (editor, inputs) are intact. */
-.dockview-theme-memoh .dv-tab:focus,
-.dockview-theme-memoh .dv-tab:focus-visible,
-.dockview-theme-memoh .dv-groupview:focus,
-.dockview-theme-memoh .dv-groupview:focus-visible {
+.dockview-theme-ami .dv-tab:focus,
+.dockview-theme-ami .dv-tab:focus-visible,
+.dockview-theme-ami .dv-groupview:focus,
+.dockview-theme-ami .dv-groupview:focus-visible {
   outline: none !important;
 }
 
@@ -672,8 +672,8 @@
  * the v7 anchor DOM paint a thin brand-coloured caret at the seam between two tabs
  * (left/right of the target tab). This is the ONLY brand-coloured drop affordance:
  * it marks a precise insertion index, not a whole-target accept. */
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line {
   z-index: calc(var(--dv-overlay-z-index, 999) + 1);
   border: none !important;
   border-radius: 999px;
@@ -684,7 +684,7 @@
 
 /* Legacy in-place selection DOM is re-created on every hovered target, so a
  * transition would just fade a brand-new node in — keep it instant. */
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line {
   transition: none !important;
 }
 
@@ -695,7 +695,7 @@
  * with transform: translateX(offset), and dockview swaps the left/right class as the
  * cursor crosses a tab midpoint, so transform must transition too or that half-step
  * would jump. opacity stays un-transitioned so appear/disappear is instant. */
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line {
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line {
   transition:
     left var(--tab-drop-line-slide) ease-out,
     top var(--tab-drop-line-slide) ease-out,
@@ -707,20 +707,20 @@
  * for one frame when the drop moves to a DIFFERENT group, so the caret should SNAP to
  * the new group instead of gliding across the gap between groups. Upstream ships this
  * snap as an opacity:0 flash, but only under .dockview-theme-dark/light/etc. —
- * .dockview-theme-memoh does not extend those, so without this rule the glide
+ * .dockview-theme-ami does not extend those, so without this rule the glide
  * transition above would animate the caret flying across the layout. Kill the
  * transition for that one marked frame so the move is instant. */
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-container-changed {
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-container-changed {
   transition: none !important;
 }
 
 /* v7 anchor centre drop: also rendered by dockview's default anchor style — no
  * override (see the void comment above). */
 
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-left,
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-right,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-left,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-right {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-left,
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-right,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-left,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-right {
   top: var(--tab-drop-line-top) !important;
   width: var(--tab-drop-line-width) !important;
   height: var(--tab-drop-line-height) !important;
@@ -729,37 +729,37 @@
   transform: none !important;
 }
 
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-left,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-left {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-left,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-left {
   transform: translateX(var(--tab-drop-line-left-offset)) !important;
 }
 
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-right,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-right {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-right,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-right {
   transform: translateX(var(--tab-drop-line-right-offset)) !important;
 }
 
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-top,
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-bottom,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-top,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-bottom {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-top,
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-bottom,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-top,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-bottom {
   width: calc(100% - 0.75rem) !important;
   height: 0.125rem !important;
   transform: translateX(0.375rem) !important;
 }
 
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-top,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-top {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-top,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-top {
   transform: translate(0.375rem, -0.0625rem) !important;
 }
 
-.dockview-theme-memoh .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-bottom,
-.dockview-theme-memoh .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-bottom {
+.dockview-theme-ami .dv-drop-target > .dv-drop-target-dropzone > .dv-drop-target-selection.dv-drop-target-selection-line.dv-drop-target-bottom,
+.dockview-theme-ami .dv-drop-target-container .dv-drop-target-anchor.dv-drop-target-anchor-line.dv-drop-target-bottom {
   transform: translate(0.375rem, 0.1875rem) !important;
 }
 
 /* ---- Drag ghost: the floating chip that follows the pointer ------------------
- * Memoh patches dockview-core's single-tab ghost builder to create this minimal
+ * Ami patches dockview-core's single-tab ghost builder to create this minimal
  * title-only chip instead of cloneNode(true) on the docked tab. The docked tab's
  * DOM carries strip-only structure (active SVG, close slot, dirty dot, lane
  * padding), and cloning that structure is exactly what made the ghost impossible

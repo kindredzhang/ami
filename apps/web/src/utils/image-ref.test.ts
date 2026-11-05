@@ -13,10 +13,10 @@ describe('shortenImageRef', () => {
   })
 
   it('strips docker hub registry prefix for namespaced images', () => {
-    expect(shortenImageRef('docker.io/memohai/memoh:latest')).toBe('memohai/memoh:latest')
+    expect(shortenImageRef('docker.io/ami/ami:latest')).toBe('ami/ami:latest')
   })
 
   it('preserves non-docker-hub registries', () => {
-    expect(shortenImageRef('ghcr.io/felinics/memoh:latest')).toBe('ghcr.io/felinics/memoh:latest')
+    expect(shortenImageRef('ghcr.io/kindredzhang/ami:latest')).toBe('ghcr.io/kindredzhang/ami:latest')
   })
 })

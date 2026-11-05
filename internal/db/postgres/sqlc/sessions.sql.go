@@ -14,7 +14,7 @@ import (
 const activateSessionRuntimeFence = `-- name: ActivateSessionRuntimeFence :one
 UPDATE bot_sessions
 SET runtime_fencing_token = $1
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND bot_id = $3
   AND runtime_fencing_token <= $1
@@ -41,7 +41,7 @@ SET preferred_chat_model_id = $1::uuid,
     preferred_external_model_id = $2::text,
     preferred_reasoning_effort = $3::text,
     model_preference_revision = gen_random_uuid()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $4
   AND runtime_type = $5
   AND model_preference_revision IS NOT DISTINCT FROM $6::uuid
@@ -176,11 +176,11 @@ func (q *Queries) CreateSession(ctx context.Context, arg CreateSessionParams) (B
 
 const deleteSessionDiscussCursorsByBot = `-- name: DeleteSessionDiscussCursorsByBot :exec
 DELETE FROM bot_session_discuss_cursors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id IN (
   SELECT id
   FROM bot_sessions
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND bot_id = $1
 )
 `
@@ -194,7 +194,7 @@ const forkSessionFromAssistantTurn = `-- name: ForkSessionFromAssistantTurn :one
 WITH source_session AS (
   SELECT s.id, s.bot_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.runtime_metadata, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision, s.visibility, s.title, s.metadata, s.next_turn_position, s.history_checkpoint_id, s.runtime_fencing_token, s.runtime_reset_token, s.runtime_reset_expires_at, s.runtime_config_epoch, s.parent_session_id, s.created_by_user_id, s.attention_at, s.attention_kind, s.created_at, s.updated_at, s.deleted_at, s.team_id, s.workdir_id, s.bot_agent_id
   FROM bot_sessions s
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = $1
     AND s.bot_id = $2
     AND s.type = 'chat'
@@ -206,7 +206,7 @@ target_turn AS (
     vm.turn_position AS position,
     vm.id AS message_id
   FROM source_session s
-  JOIN bot_visible_history_messages vm ON vm.team_id = public.memoh_current_team_id()
+  JOIN bot_visible_history_messages vm ON vm.team_id = public.ami_current_team_id()
     AND vm.session_id = s.id
     AND vm.turn_id = $3
     AND vm.role = 'assistant'
@@ -238,7 +238,7 @@ copy_messages AS (
     vm.turn_position < tt.position
     OR vm.turn_position = tt.position
   )
-  WHERE vm.team_id = public.memoh_current_team_id()
+  WHERE vm.team_id = public.ami_current_team_id()
     AND vm.session_id = $1
   ORDER BY vm.turn_position ASC, vm.turn_message_seq ASC, vm.created_at ASC, vm.id ASC
 ),
@@ -309,7 +309,7 @@ created_session AS (
     fp.visibility,
     -- External runtimes fork their own runtime-side session: the caller
     -- passes the new driver-owned keys (e.g. the forked codex thread id) so
-    -- the two Memoh sessions never share one runtime session.
+    -- the two Ami sessions never share one runtime session.
     COALESCE($5, fp.runtime_metadata) AS runtime_metadata,
     $6,
     jsonb_set(
@@ -410,7 +410,7 @@ copied_assets AS (
   FROM bot_history_message_assets a
   JOIN copy_messages cm ON cm.old_message_id = a.message_id
   JOIN inserted_messages im ON im.id = cm.new_message_id
-  WHERE a.team_id = public.memoh_current_team_id()
+  WHERE a.team_id = public.ami_current_team_id()
   RETURNING id
 )
 SELECT cs.id,
@@ -473,7 +473,7 @@ func (q *Queries) ForkSessionFromAssistantTurn(ctx context.Context, arg ForkSess
 const getLatestSessionModelPreference = `-- name: GetLatestSessionModelPreference :one
 SELECT preferred_chat_model_id, preferred_reasoning_effort
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND created_by_user_id = $2
   AND runtime_type = 'model'
@@ -511,7 +511,7 @@ func (q *Queries) GetLatestSessionModelPreference(ctx context.Context, arg GetLa
 const getSessionByID = `-- name: GetSessionByID :one
 SELECT id, bot_id, route_id, channel_type, type, session_mode, runtime_type, runtime_metadata, preferred_chat_model_id, preferred_reasoning_effort, preferred_external_model_id, model_preference_revision, visibility, title, metadata, next_turn_position, history_checkpoint_id, runtime_fencing_token, runtime_reset_token, runtime_reset_expires_at, runtime_config_epoch, parent_session_id, created_by_user_id, attention_at, attention_kind, created_at, updated_at, deleted_at, team_id, workdir_id, bot_agent_id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND deleted_at IS NULL
 `
@@ -558,7 +558,7 @@ func (q *Queries) GetSessionByID(ctx context.Context, id pgtype.UUID) (BotSessio
 const getSessionDiscussCursor = `-- name: GetSessionDiscussCursor :one
 SELECT session_id, scope_key, route_id, source, consumed_cursor, consumed_event_cursor, updated_at, team_id
 FROM bot_session_discuss_cursors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = $1
   AND scope_key = $2
 `
@@ -587,7 +587,7 @@ func (q *Queries) GetSessionDiscussCursor(ctx context.Context, arg GetSessionDis
 const listBotSessionIDs = `-- name: ListBotSessionIDs :many
 SELECT id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
 ORDER BY id
 `
@@ -618,8 +618,8 @@ const listSessionDiscussCursorsByBot = `-- name: ListSessionDiscussCursorsByBot 
 SELECT c.session_id, c.scope_key, c.route_id, c.source, c.consumed_cursor, c.consumed_event_cursor, c.updated_at, c.team_id
 FROM bot_session_discuss_cursors c
 JOIN bot_sessions s ON s.id = c.session_id
-WHERE c.team_id = public.memoh_current_team_id()
-  AND s.team_id = public.memoh_current_team_id()
+WHERE c.team_id = public.ami_current_team_id()
+  AND s.team_id = public.ami_current_team_id()
   AND s.bot_id = $1
 ORDER BY c.updated_at ASC, c.session_id ASC, c.scope_key ASC
 `
@@ -658,7 +658,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = $1
   AND s.deleted_at IS NULL
 ORDER BY s.updated_at DESC
@@ -737,7 +737,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = $1
   AND s.created_by_user_id = $2
   AND s.deleted_at IS NULL
@@ -822,7 +822,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = $1
   AND s.created_by_user_id = $2
   AND s.deleted_at IS NULL
@@ -965,7 +965,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = $1
   AND s.deleted_at IS NULL
   AND s.type = ANY($2::text[])
@@ -1111,7 +1111,7 @@ func (q *Queries) ListSessionsByBotPaged(ctx context.Context, arg ListSessionsBy
 const listSessionsByRoute = `-- name: ListSessionsByRoute :many
 SELECT id, bot_id, route_id, channel_type, type, session_mode, runtime_type, runtime_metadata, preferred_chat_model_id, preferred_reasoning_effort, preferred_external_model_id, model_preference_revision, visibility, title, metadata, next_turn_position, history_checkpoint_id, runtime_fencing_token, runtime_reset_token, runtime_reset_expires_at, runtime_config_epoch, parent_session_id, created_by_user_id, attention_at, attention_kind, created_at, updated_at, deleted_at, team_id, workdir_id, bot_agent_id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND route_id = $1
   AND deleted_at IS NULL
 ORDER BY updated_at DESC
@@ -1172,14 +1172,14 @@ func (q *Queries) ListSessionsByRoute(ctx context.Context, routeID pgtype.UUID) 
 const listSubagentSessionsByParent = `-- name: ListSubagentSessionsByParent :many
 SELECT id, bot_id, route_id, channel_type, type, session_mode, runtime_type, runtime_metadata, preferred_chat_model_id, preferred_reasoning_effort, preferred_external_model_id, model_preference_revision, visibility, title, metadata, next_turn_position, history_checkpoint_id, runtime_fencing_token, runtime_reset_token, runtime_reset_expires_at, runtime_config_epoch, parent_session_id, created_by_user_id, attention_at, attention_kind, created_at, updated_at, deleted_at, team_id, workdir_id, bot_agent_id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND parent_session_id = $1
   AND type = 'subagent'
   AND deleted_at IS NULL
   AND EXISTS (
     SELECT 1
     FROM subagent_configs config
-    WHERE config.team_id = public.memoh_current_team_id()
+    WHERE config.team_id = public.ami_current_team_id()
       AND config.session_id = bot_sessions.id
   )
 ORDER BY created_at DESC
@@ -1240,7 +1240,7 @@ func (q *Queries) ListSubagentSessionsByParent(ctx context.Context, parentSessio
 const lockSessionDecisionSequence = `-- name: LockSessionDecisionSequence :one
 SELECT id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND bot_id = $2
   AND deleted_at IS NULL
@@ -1262,7 +1262,7 @@ func (q *Queries) LockSessionDecisionSequence(ctx context.Context, arg LockSessi
 const lockSessionForCommitReconciliation = `-- name: LockSessionForCommitReconciliation :one
 SELECT id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND bot_id = $2
 FOR UPDATE
@@ -1287,7 +1287,7 @@ func (q *Queries) LockSessionForCommitReconciliation(ctx context.Context, arg Lo
 const lockSessionForFork = `-- name: LockSessionForFork :exec
 SELECT s.id
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = $1
 FOR SHARE
 `
@@ -1303,7 +1303,7 @@ func (q *Queries) LockSessionForFork(ctx context.Context, sessionID pgtype.UUID)
 const lockSessionRuntimeFence = `-- name: LockSessionRuntimeFence :one
 SELECT runtime_fencing_token
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND bot_id = $2
   AND runtime_fencing_token = $3
@@ -1327,7 +1327,7 @@ func (q *Queries) LockSessionRuntimeFence(ctx context.Context, arg LockSessionRu
 const lockSessionRuntimeFenceForActivation = `-- name: LockSessionRuntimeFenceForActivation :one
 SELECT runtime_fencing_token
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND bot_id = $2
   AND deleted_at IS NULL
@@ -1360,7 +1360,7 @@ func (q *Queries) NextSessionRuntimeFenceToken(ctx context.Context) (int64, erro
 const setSessionNextTurnPosition = `-- name: SetSessionNextTurnPosition :exec
 UPDATE bot_sessions
 SET next_turn_position = $1::bigint
-WHERE team_id = public.memoh_current_team_id() AND id = $2
+WHERE team_id = public.ami_current_team_id() AND id = $2
 `
 
 type SetSessionNextTurnPositionParams struct {
@@ -1379,7 +1379,7 @@ SET deleted_at = now(),
     updated_at = now(),
     runtime_config_epoch = runtime_config_epoch + 1,
     runtime_fencing_token = nextval('session_runtime_fencing_token_seq')::bigint
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND deleted_at IS NULL
 `
@@ -1395,7 +1395,7 @@ const softDeleteSessionsByBot = `-- name: SoftDeleteSessionsByBot :exec
 WITH target_sessions AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.bot_id = $1
     AND session.deleted_at IS NULL
   ORDER BY session.id
@@ -1407,7 +1407,7 @@ SET deleted_at = now(),
     runtime_config_epoch = session.runtime_config_epoch + 1,
     runtime_fencing_token = nextval('session_runtime_fencing_token_seq')::bigint
 FROM target_sessions target
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = target.id
 `
 
@@ -1422,7 +1422,7 @@ func (q *Queries) SoftDeleteSessionsByBot(ctx context.Context, botID pgtype.UUID
 const touchSession = `-- name: TouchSession :exec
 UPDATE bot_sessions
 SET updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1 AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = $1 AND deleted_at IS NULL
 `
 
 func (q *Queries) TouchSession(ctx context.Context, id pgtype.UUID) error {
@@ -1433,7 +1433,7 @@ func (q *Queries) TouchSession(ctx context.Context, id pgtype.UUID) error {
 const updateSessionMetadata = `-- name: UpdateSessionMetadata :one
 UPDATE bot_sessions
 SET metadata = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $2 AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = $2 AND deleted_at IS NULL
 RETURNING id, bot_id, route_id, channel_type, type, session_mode, runtime_type, runtime_metadata, preferred_chat_model_id, preferred_reasoning_effort, preferred_external_model_id, model_preference_revision, visibility, title, metadata, next_turn_position, history_checkpoint_id, runtime_fencing_token, runtime_reset_token, runtime_reset_expires_at, runtime_config_epoch, parent_session_id, created_by_user_id, attention_at, attention_kind, created_at, updated_at, deleted_at, team_id, workdir_id, bot_agent_id
 `
 
@@ -1484,7 +1484,7 @@ func (q *Queries) UpdateSessionMetadata(ctx context.Context, arg UpdateSessionMe
 const updateSessionMetadataWithRuntimeFence = `-- name: UpdateSessionMetadataWithRuntimeFence :one
 UPDATE bot_sessions
 SET metadata = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND bot_id = $3
   AND runtime_fencing_token = $4
@@ -1549,7 +1549,7 @@ SET preferred_chat_model_id = $2,
     preferred_reasoning_effort = $3,
     preferred_external_model_id = $4,
     model_preference_revision = gen_random_uuid()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND deleted_at IS NULL
 `
@@ -1579,7 +1579,7 @@ func (q *Queries) UpdateSessionModelPreference(ctx context.Context, arg UpdateSe
 const updateSessionRuntimeMetadata = `-- name: UpdateSessionRuntimeMetadata :one
 UPDATE bot_sessions
 SET runtime_metadata = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND runtime_type = $3
   AND ($4::bigint IS NULL OR runtime_fencing_token <= $4::bigint)
@@ -1648,7 +1648,7 @@ func (q *Queries) UpdateSessionRuntimeMetadata(ctx context.Context, arg UpdateSe
 const updateSessionTitle = `-- name: UpdateSessionTitle :one
 UPDATE bot_sessions
 SET title = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $2 AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = $2 AND deleted_at IS NULL
 RETURNING id, bot_id, route_id, channel_type, type, session_mode, runtime_type, runtime_metadata, preferred_chat_model_id, preferred_reasoning_effort, preferred_external_model_id, model_preference_revision, visibility, title, metadata, next_turn_position, history_checkpoint_id, runtime_fencing_token, runtime_reset_token, runtime_reset_expires_at, runtime_config_epoch, parent_session_id, created_by_user_id, attention_at, attention_kind, created_at, updated_at, deleted_at, team_id, workdir_id, bot_agent_id
 `
 
@@ -1699,7 +1699,7 @@ func (q *Queries) UpdateSessionTitle(ctx context.Context, arg UpdateSessionTitle
 const updateSessionTitleWithRuntimeFence = `-- name: UpdateSessionTitleWithRuntimeFence :one
 UPDATE bot_sessions
 SET title = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND bot_id = $3
   AND runtime_fencing_token = $4
@@ -1776,7 +1776,7 @@ SET type = $1,
       THEN gen_random_uuid() ELSE model_preference_revision END,
     runtime_config_epoch = runtime_config_epoch + 1,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $7 AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = $7 AND deleted_at IS NULL
 RETURNING id, bot_id, route_id, channel_type, type, session_mode, runtime_type, runtime_metadata, preferred_chat_model_id, preferred_reasoning_effort, preferred_external_model_id, model_preference_revision, visibility, title, metadata, next_turn_position, history_checkpoint_id, runtime_fencing_token, runtime_reset_token, runtime_reset_expires_at, runtime_config_epoch, parent_session_id, created_by_user_id, attention_at, attention_kind, created_at, updated_at, deleted_at, team_id, workdir_id, bot_agent_id
 `
 

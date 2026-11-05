@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // Stored model configs carry schema_version; a config without one is version

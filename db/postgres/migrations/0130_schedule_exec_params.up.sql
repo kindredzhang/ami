@@ -66,7 +66,7 @@ ALTER TABLE public.schedule ADD CONSTRAINT schedule_model_exclusive_check
 -- Composite team FKs, NOT VALID to skip the validation scan: the columns
 -- were added NULL in this very migration, so validation is vacuous — and the
 -- scan would evaluate the referenced tables' FORCE RLS policies, which raise
--- when the migration role has no memoh.team_id GUC set.
+-- when the migration role has no ami.team_id GUC set.
 ALTER TABLE public.schedule DROP CONSTRAINT IF EXISTS schedule_target_session_id_fkey;
 ALTER TABLE public.schedule
   ADD CONSTRAINT schedule_target_session_id_fkey
@@ -101,7 +101,7 @@ ALTER TABLE public.bot_sessions ADD CONSTRAINT bot_sessions_visibility_check
 
 -- Backfill mirrors the legacy UserFacingSessionTypes() filter exactly:
 -- historical schedule/heartbeat/subagent sessions stay internal. FORCE RLS
--- would hide every row from the migration role (no memoh.team_id GUC), so
+-- would hide every row from the migration role (no ami.team_id GUC), so
 -- suspend it for the UPDATE, matching the 0001 team-migration pattern.
 ALTER TABLE public.bot_sessions NO FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.bot_sessions DISABLE ROW LEVEL SECURITY;

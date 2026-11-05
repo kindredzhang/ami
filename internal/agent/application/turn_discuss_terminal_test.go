@@ -9,11 +9,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 type canceledDiscussTerminalReporter struct {

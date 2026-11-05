@@ -7,11 +7,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/apps"
-	"github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apps"
+	"github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 type (
@@ -54,7 +54,7 @@ func (*capabilityTestApps) Get(context.Context, string, string) (apps.Item, erro
 
 func TestCapabilityInstallKeepsReleaseAndDependencySnapshotAcrossApproval(t *testing.T) {
 	p, _, review, session := capabilityFixture(t)
-	registry := &capabilityTestRegistry{current: supermarket.AppDescriptor{AppSummary: supermarket.AppSummary{RegistryID: "memoh", AppID: "node"}, Revision: "approved"}}
+	registry := &capabilityTestRegistry{current: supermarket.AppDescriptor{AppSummary: supermarket.AppSummary{RegistryID: "ami", AppID: "node"}, Revision: "approved"}}
 	service := &capabilityTestApps{}
 	p.opts.Apps = service
 	p.opts.Registry = registry
@@ -72,7 +72,7 @@ func TestCapabilityInstallKeepsReleaseAndDependencySnapshotAcrossApproval(t *tes
 	var progress []any
 	for _, tool := range available {
 		if tool.Name == ToolAppManage().String() {
-			result, err = tool.Execute(&toolexec.ToolExecContext{Context: t.Context(), SendProgress: func(value sdk.ToolOutput) { progress = append(progress, toolexec.OutputValue(value)) }}, toolexec.ArgumentsFromValue(map[string]any{"action": "install", "registry_id": "memoh", "app_id": "node"}))
+			result, err = tool.Execute(&toolexec.ToolExecContext{Context: t.Context(), SendProgress: func(value sdk.ToolOutput) { progress = append(progress, toolexec.OutputValue(value)) }}, toolexec.ArgumentsFromValue(map[string]any{"action": "install", "registry_id": "ami", "app_id": "node"}))
 		}
 	}
 	if err != nil {
@@ -123,7 +123,7 @@ func TestCapabilityAppDoesNotExecuteChangedPlanAfterApproval(t *testing.T) {
 	for _, action := range []string{"uninstall", "resume"} {
 		t.Run(action, func(t *testing.T) {
 			p, _, review, session := capabilityFixture(t)
-			release := supermarket.AppDescriptor{AppSummary: supermarket.AppSummary{RegistryID: "memoh", AppID: "node"}, Revision: "approved"}
+			release := supermarket.AppDescriptor{AppSummary: supermarket.AppSummary{RegistryID: "ami", AppID: "node"}, Revision: "approved"}
 			service := &changingCapabilityApps{item: apps.Item{Installation: &apps.Installation{ID: "installation", Revision: "approved", Status: apps.StatusFailed}, Release: &release}}
 			p.opts.Apps = service
 			p.opts.Registry = &capabilityTestRegistry{current: release}

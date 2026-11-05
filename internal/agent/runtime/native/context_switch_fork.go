@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // defaultForkSilence is how long a fork request may stay silent when the run

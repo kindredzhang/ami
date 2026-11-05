@@ -3,7 +3,7 @@ package external
 import (
 	"errors"
 
-	"github.com/felinics/memoh/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/agentcredential"
 )
 
 // CredentialError reports an Agent credential the user must fix (missing, of

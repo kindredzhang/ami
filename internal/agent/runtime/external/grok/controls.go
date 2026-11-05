@@ -6,11 +6,11 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/grok/grokcfg"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/grok/grokcfg"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 var (
@@ -51,7 +51,7 @@ const (
 	statusCommand  = "status"
 )
 
-// Commands lists what Memoh drives itself. Grok advertises many more slash
+// Commands lists what Ami drives itself. Grok advertises many more slash
 // commands, some of which change the session's permissions or schedule work
 // past the turn; those stay out until each is given a deliberate mapping.
 func (*Driver) Commands(context.Context, external.PromptInput) ([]external.Command, error) {

@@ -8,10 +8,10 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	chatview "github.com/felinics/memoh/internal/agent/view"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 // runRequestResolver reads only the interrupted run's own inputs and history.

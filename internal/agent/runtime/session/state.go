@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 func runtimeDeltaForAgentEvent(event native.StreamEvent, messages []chatview.UIMessage) (RuntimeDelta, bool) {

@@ -12,11 +12,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 type testCLIProcess struct {
@@ -109,8 +109,8 @@ func TestClaudeTurnMapping(t *testing.T) {
 	feed(t, r, `{"type":"stream_event","session_id":"sess-abc","event":{"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"Looking"}}}`)
 	feed(t, r, `{"type":"assistant","session_id":"sess-abc","parent_tool_use_id":null,"message":{"role":"assistant","content":[{"type":"text","text":"Looking"},{"type":"tool_use","id":"tu_1","name":"Bash","input":{"command":"go test ./..."}}]}}`)
 	feed(t, r, `{"type":"user","session_id":"sess-abc","parent_tool_use_id":null,"message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"tu_1","content":[{"type":"text","text":"ok"}],"is_error":false}]}}`)
-	feed(t, r, `{"type":"assistant","session_id":"sess-abc","parent_tool_use_id":null,"message":{"role":"assistant","content":[{"type":"tool_use","id":"tu_memoh","name":"mcp__memoh__ask_user","input":{"questions":[]}}]}}`)
-	feed(t, r, `{"type":"user","session_id":"sess-abc","parent_tool_use_id":null,"message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"tu_memoh","content":{"status":"submitted"},"is_error":false}]}}`)
+	feed(t, r, `{"type":"assistant","session_id":"sess-abc","parent_tool_use_id":null,"message":{"role":"assistant","content":[{"type":"tool_use","id":"tu_ami","name":"mcp__ami__ask_user","input":{"questions":[]}}]}}`)
+	feed(t, r, `{"type":"user","session_id":"sess-abc","parent_tool_use_id":null,"message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"tu_ami","content":{"status":"submitted"},"is_error":false}]}}`)
 	// Subagent traffic must not leak into the main stream.
 	feed(t, r, `{"type":"stream_event","session_id":"sess-abc","parent_tool_use_id":"tu_2","event":{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"sub"}}}`)
 	feed(t, r, `{"type":"result","subtype":"success","session_id":"sess-abc","is_error":false,"result":"Done. Tests pass.","usage":{"input_tokens":1200,"cache_read_input_tokens":800,"cache_creation_input_tokens":0,"output_tokens":90},"total_cost_usd":0.031}`)

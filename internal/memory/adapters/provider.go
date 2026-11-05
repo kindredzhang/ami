@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 const (
@@ -94,7 +94,7 @@ type IngestResult struct {
 	Skipped int `json:"skipped"`
 }
 
-// SemanticCompactProvider is implemented by providers that can apply Memoh's
+// SemanticCompactProvider is implemented by providers that can apply Ami's
 // semantic memory compact contract under the selected bot scope.
 type SemanticCompactProvider interface {
 	SemanticCompactCapability() MemoryCompactCapability

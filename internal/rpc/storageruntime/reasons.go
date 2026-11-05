@@ -7,9 +7,9 @@ import (
 
 	"google.golang.org/grpc/codes"
 
-	"github.com/felinics/memoh/internal/media"
-	intrpc "github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/storage"
+	"github.com/kindredzhang/ami/internal/media"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/storage"
 )
 
 // errInvalidRequest is the identity of a storage request the server refused

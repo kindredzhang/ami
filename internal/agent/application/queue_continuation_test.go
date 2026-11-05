@@ -9,8 +9,8 @@ import (
 	"testing/synctest"
 	"time"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/turn"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // newFollowUpTestService wires a Service whose live queue lives in a memory

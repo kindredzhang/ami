@@ -10,9 +10,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 type turnResponseSourceMessageService struct {

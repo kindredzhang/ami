@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	ctr "github.com/felinics/memoh/internal/container"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 type statusRuntime interface {

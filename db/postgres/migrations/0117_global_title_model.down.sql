@@ -68,7 +68,7 @@ SELECT
     tm.updated_at AS membership_updated_at
 FROM public.team_members tm
 JOIN public.users u ON u.id = tm.user_id
-WHERE tm.team_id = public.memoh_current_team_id();
+WHERE tm.team_id = public.ami_current_team_id();
 
 ALTER TABLE public.team_members
     DROP CONSTRAINT IF EXISTS team_members_title_model_id_fkey,

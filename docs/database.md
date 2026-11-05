@@ -12,7 +12,7 @@
 
 PostgreSQL migrations live in `db/postgres/migrations/`:
 
-- **Merged migrations are immutable — NEVER modify historical migrations unless strictly necessary.** Once an incremental migration (`0002_` onward) is merged into `main`, existing databases may already have applied it, so editing it creates schema drift between fresh installs and upgraded environments (including Memoh-Cloud's synced stream). Do not edit, rename, renumber, reorder, or delete it. To fix or change it, add a new migration with the next number. Allowed changes are limited to:
+- **Merged migrations are immutable — NEVER modify historical migrations unless strictly necessary.** Once an incremental migration (`0002_` onward) is merged into `main`, existing databases may already have applied it, so editing it creates schema drift between fresh installs and upgraded environments (including Ami-Cloud's synced stream). Do not edit, rename, renumber, reorder, or delete it. To fix or change it, add a new migration with the next number. Allowed changes are limited to:
   - migrations introduced by PRs that are not yet merged;
   - new migrations;
   - the `0001_init` snapshot, which must keep reflecting the final schema (see below).
@@ -32,7 +32,7 @@ PostgreSQL migrations live in `db/postgres/migrations/`:
 - **Down migration must fully reverse up**: The `.down.sql` must cleanly undo everything its `.up.sql` does, in reverse order.
 - **One file is one transaction**: golang-migrate sends a migration file as a single statement batch, which PostgreSQL runs as one implicit transaction, so every lock a file takes is held until the whole file commits. Adding a constraint `NOT VALID` and validating it in the same file therefore holds the `ADD`'s ACCESS EXCLUSIVE lock through the validation scan. To validate a large table without blocking reads and writes, put `ADD … NOT VALID` in one migration and `VALIDATE CONSTRAINT` in the next (0167/0168 do this).
 - **After creating or modifying migrations**, run `mise run sqlc-generate` to regenerate Go sqlc code, then validate the PostgreSQL migration path.
-- **0157 is reserved**: `0157_reserved_cloud_alignment` is intentionally empty. It realigns this stream with Memoh-Cloud's copy, which numbers every migration from 0141 onward one higher, so both use the same numbers from 0158 on. Never reuse a number or renumber a merged migration; Cloud-only schema changes belong in Cloud's own migration stream.
+- **0157 is reserved**: `0157_reserved_cloud_alignment` is intentionally empty. It realigns this stream with Ami-Cloud's copy, which numbers every migration from 0141 onward one higher, so both use the same numbers from 0158 on. Never reuse a number or renumber a merged migration; Cloud-only schema changes belong in Cloud's own migration stream.
 
 ## Database Tables
 
@@ -55,7 +55,7 @@ The canonical source of truth for the full PostgreSQL schema is `db/postgres/mig
 - `bot_history_messages` — Unified message history under bot scope
 - `bot_history_message_assets` — Message → content_hash asset links (with name and metadata)
 - `bot_history_message_compacts` — Compaction logs and the summaries they wrote
-- `bot_history_checkpoints` — What stands in a request for a session's history up to a position (`turn_position`, `turn_message_seq`): rows kept by reference and summaries, in order, always at least one summary. Each names its parent; `memoh_rewind_history_checkpoint` moves a session back along that chain when rows its active checkpoint depends on are removed and deletes the checkpoints it moved back past (see `docs/agent-runtime.md`)
+- `bot_history_checkpoints` — What stands in a request for a session's history up to a position (`turn_position`, `turn_message_seq`): rows kept by reference and summaries, in order, always at least one summary. Each names its parent; `ami_rewind_history_checkpoint` moves a session back along that chain when rows its active checkpoint depends on are removed and deletes the checkpoints it moved back past (see `docs/agent-runtime.md`)
 
 **User Input**
 - `user_input_requests` — In-conversation questions posed by the `ask_user` tool, keyed by session and tool_call_id

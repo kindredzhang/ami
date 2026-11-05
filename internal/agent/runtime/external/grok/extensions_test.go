@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
 )
 
 func TestModelStateFollowsWhatGrokReports(t *testing.T) {
@@ -31,7 +31,7 @@ func TestModelStateFollowsWhatGrokReports(t *testing.T) {
 	}
 }
 
-func TestGatewayStatusReportsOnlyTheMemohTools(t *testing.T) {
+func TestGatewayStatusReportsOnlyTheAmiTools(t *testing.T) {
 	grok := &fakeGrok{}
 	srv := newTestProcess(t, grok)
 	ctx := context.Background()
@@ -40,7 +40,7 @@ func TestGatewayStatusReportsOnlyTheMemohTools(t *testing.T) {
 	}
 	for _, report := range []map[string]any{
 		{"sessionId": "s1", "name": "other_server", "status": mcpStatusUnavailable, "reason": "handshake_failed"},
-		{"sessionId": "s1", "name": "Memoh_Tools", "status": mcpStatusUnavailable, "reason": "handshake_failed"},
+		{"sessionId": "s1", "name": "Ami_Tools", "status": mcpStatusUnavailable, "reason": "handshake_failed"},
 	} {
 		if err := grok.conn.SendNotification(ctx, mcpStatusMethod, report); err != nil {
 			t.Fatal(err)
@@ -48,7 +48,7 @@ func TestGatewayStatusReportsOnlyTheMemohTools(t *testing.T) {
 	}
 	status, ok := srv.gatewayStatus(ctx, "s1", 5*time.Second)
 	if !ok || status.Status != mcpStatusUnavailable || status.Reason != "handshake_failed" {
-		t.Fatalf("gatewayStatus() = %+v, %v; want Grok's report on the Memoh tools", status, ok)
+		t.Fatalf("gatewayStatus() = %+v, %v; want Grok's report on the Ami tools", status, ok)
 	}
 }
 

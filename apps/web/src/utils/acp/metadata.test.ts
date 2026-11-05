@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { AcpprofilePublicProfile } from '@memohai/sdk'
+import type { AcpprofilePublicProfile } from '@ami/sdk'
 import {
   defaultSetupMode,
   findMissingRequiredManagedField,

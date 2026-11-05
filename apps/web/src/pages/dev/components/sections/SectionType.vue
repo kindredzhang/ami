@@ -50,7 +50,7 @@ const colors = [
   { cls: 'text-muted-foreground/60', label: 'muted/60 — disabled / placeholder' },
 ]
 
-const sample = 'Memoh 排版 — The quick brown fox 0123456789'
+const sample = 'Ami 排版 — The quick brown fox 0123456789'
 
 // Measured specs, keyed by scale name.
 const specs = ref<Record<string, string>>({})

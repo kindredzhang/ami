@@ -4,10 +4,10 @@ import { safeSessionGet, safeSessionRemove, safeSessionSet } from '@/utils/safe-
 import { ONBOARDING_KEYS } from './constants'
 
 const LEGACY_SESSION_KEYS = [
-  'memoh:onboarding:runtime-state',
-  'memoh:onboarding:acp-selection',
-  'memoh:onboarding:created-bot-id',
-  'memoh:onboarding:provider-added-count',
+  'ami:onboarding:runtime-state',
+  'ami:onboarding:acp-selection',
+  'ami:onboarding:created-bot-id',
+  'ami:onboarding:provider-added-count',
 ] as const
 
 export interface OnboardingAgentResult {

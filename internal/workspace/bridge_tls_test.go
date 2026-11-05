@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 func TestBridgeTLSOptionsFromConfigDisabled(t *testing.T) {
@@ -22,10 +22,10 @@ func TestBridgeTLSOptionsFromConfigStrict(t *testing.T) {
 	if err != nil {
 		t.Fatalf("strict mode: %v", err)
 	}
-	if opts.ServerName != "memoh-bridge."+cfg.InstanceID+".bridge.memoh.internal" {
+	if opts.ServerName != "ami-bridge."+cfg.InstanceID+".bridge.ami.internal" {
 		t.Fatalf("derived ServerName = %q", opts.ServerName)
 	}
-	if opts.ExpectedServerURI != "spiffe://memoh/instance/"+cfg.InstanceID+"/bridge" {
+	if opts.ExpectedServerURI != "spiffe://ami/instance/"+cfg.InstanceID+"/bridge" {
 		t.Fatalf("ExpectedServerURI = %q", opts.ExpectedServerURI)
 	}
 	if opts.ClientCertFile != filepath.Join(cfg.BridgeTLS.ServerDir, serverClientCertFile) ||
@@ -53,7 +53,7 @@ func TestBridgeTLSRuntimeOptionsFromConfigStrict(t *testing.T) {
 	if opts.BridgeMaterialDir != cfg.BridgeTLS.BridgeDir {
 		t.Fatalf("BridgeMaterialDir = %q", opts.BridgeMaterialDir)
 	}
-	if opts.ExpectedClientURI != "spiffe://memoh/instance/"+cfg.InstanceID+"/server" {
+	if opts.ExpectedClientURI != "spiffe://ami/instance/"+cfg.InstanceID+"/server" {
 		t.Fatalf("ExpectedClientURI = %q", opts.ExpectedClientURI)
 	}
 }

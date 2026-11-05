@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestHistorySourceMessageIDsFollowRetainedDatabaseMessages(t *testing.T) {

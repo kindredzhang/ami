@@ -53,13 +53,13 @@ jobs:
       postgres:
         image: postgres:18-alpine
         env:
-          POSTGRES_DB: memoh_test
-          POSTGRES_USER: memoh
-          POSTGRES_PASSWORD: memoh123
+          POSTGRES_DB: ami_test
+          POSTGRES_USER: ami
+          POSTGRES_PASSWORD: ami123
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U memoh"
+          --health-cmd "pg_isready -U ami"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 5
@@ -83,7 +83,7 @@ jobs:
           git diff --exit-code -- internal/db/postgres/sqlc internal/db/pgvector/sqlc
 
       - name: Build
-        run: go build -o memoh-server ./cmd/agent
+        run: go build -o ami-server ./cmd/agent
 
       - name: Generate config
         run: |
@@ -91,24 +91,24 @@ jobs:
           [postgres]
           host = "127.0.0.1"
           port = 5432
-          user = "memoh"
-          password = "memoh123"
-          database = "memoh_test"
+          user = "ami"
+          password = "ami123"
+          database = "ami_test"
           sslmode = "disable"
           TOML
 
       - name: Migrate up
-        run: ./memoh-server migrate up
+        run: ./ami-server migrate up
 
       - name: Migrate down
-        run: ./memoh-server migrate down
+        run: ./ami-server migrate down
 
       - name: Migrate up (idempotent)
-        run: ./memoh-server migrate up
+        run: ./ami-server migrate up
 
       - name: Test PostgreSQL query and compaction lifecycle paths
         env:
-          TEST_POSTGRES_DSN: postgres://memoh:memoh123@127.0.0.1:5432/memoh_test?sslmode=disable
+          TEST_POSTGRES_DSN: postgres://ami:ami123@127.0.0.1:5432/ami_test?sslmode=disable
         # internal/chat/thread owns the fork query, whose CTEs cut history by
         # turn position. internal/agent/view drives persistence -> paged history
         # query -> UI conversion, which is the only place the turn identity the

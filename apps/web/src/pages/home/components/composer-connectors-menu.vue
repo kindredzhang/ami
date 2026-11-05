@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { SettingsIcon, ConnectorIcon } from '@memohai/icon/ui'
+import { SettingsIcon, ConnectorIcon } from '@ami/icon/ui'
 
 import { computed, ref } from 'vue'
 import { useQuery } from '@pinia/colada'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { DropdownMenuItem, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, Spinner } from '@felinic/ui'
-import { getBotsByBotIdConnectors, getConnectorsCatalog } from '@memohai/sdk'
+import { getBotsByBotIdConnectors, getConnectorsCatalog } from '@ami/sdk'
 import ProviderIcon from '@/components/provider-icon/index.vue'
 import { useCapabilitiesStore } from '@/store/capabilities'
 

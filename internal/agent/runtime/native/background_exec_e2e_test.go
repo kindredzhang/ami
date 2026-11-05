@@ -14,11 +14,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 // ---------------------------------------------------------------------------

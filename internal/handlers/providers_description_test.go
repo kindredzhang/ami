@@ -4,9 +4,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/providers"
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/providers"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 func descriptionPointer(value string) *string { return &value }

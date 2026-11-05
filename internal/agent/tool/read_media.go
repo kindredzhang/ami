@@ -12,7 +12,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const defaultReadMediaMaxBytes = 20 * 1024 * 1024
@@ -63,7 +63,7 @@ type ReadMediaToolOutput struct {
 // executor encodes every non-text output, so the loop-side decorator and the
 // MCP gateway recognise the internal result by this envelope rather than by
 // its Go type, and only the read_media tool ever produces it.
-const readMediaOutputEnvelopeKey = "memoh_read_media"
+const readMediaOutputEnvelopeKey = "ami_read_media"
 
 type readMediaToolOutputWire struct {
 	Public         ReadMediaToolResult `json:"public"`

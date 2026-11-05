@@ -3,8 +3,8 @@ package historyfrag
 import (
 	"time"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/turn"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 const CollectorHistoryRecords = "history_records"

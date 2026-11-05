@@ -20,8 +20,8 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 func discard() *slog.Logger { return slog.New(slog.NewJSONHandler(&bytes.Buffer{}, nil)) }
@@ -322,12 +322,12 @@ func TestEveryProcessHasItsOwnInstanceID(t *testing.T) {
 		return v.AsString()
 	}
 
-	first := instanceID(telemetry.Service{Name: "memoh-server"})
-	second := instanceID(telemetry.Service{Name: "memoh-server"})
+	first := instanceID(telemetry.Service{Name: "ami-server"})
+	second := instanceID(telemetry.Service{Name: "ami-server"})
 	if first == "" || first == second {
 		t.Fatalf("unconfigured instance ids = %q, %q, want two distinct values", first, second)
 	}
-	if got := instanceID(telemetry.Service{Name: "memoh-server", InstanceID: " node-a "}); got != "node-a" {
+	if got := instanceID(telemetry.Service{Name: "ami-server", InstanceID: " node-a "}); got != "node-a" {
 		t.Fatalf("configured instance id = %q, want node-a", got)
 	}
 }

@@ -10,7 +10,7 @@ import {
   type ExternalModelOption,
   type ModelsGetResponse,
   type ProvidersGetResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import {
   BOT_AGENT_RUNTIME_CLAUDE_CODE,
   isDirectBotAgentRuntime,

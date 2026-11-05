@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
 )
 
 func TestRunnerRestoresNativeSession(t *testing.T) {
@@ -42,14 +42,14 @@ func TestRunnerRestoresNativeSession(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			runner, command := newStartSessionTestRunner(t)
 			capture := filepath.Join(t.TempDir(), "lifecycle.json")
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_SESSION_LIFECYCLE_FILE", capture)
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_RESUME", tt.resume)
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_LOAD", tt.load)
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_RESUME_ERROR", tt.resumeErr)
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_LOAD_ERROR", tt.loadErr)
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_REPLAY_HISTORY", "1")
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_REPLAY_BURST", tt.replayBurst)
-			t.Setenv("MEMOH_ACP_FAKE_AGENT_USAGE", "{}")
+			t.Setenv("AMI_ACP_FAKE_AGENT_CAPTURE_SESSION_LIFECYCLE_FILE", capture)
+			t.Setenv("AMI_ACP_FAKE_AGENT_RESUME", tt.resume)
+			t.Setenv("AMI_ACP_FAKE_AGENT_LOAD", tt.load)
+			t.Setenv("AMI_ACP_FAKE_AGENT_RESUME_ERROR", tt.resumeErr)
+			t.Setenv("AMI_ACP_FAKE_AGENT_LOAD_ERROR", tt.loadErr)
+			t.Setenv("AMI_ACP_FAKE_AGENT_REPLAY_HISTORY", "1")
+			t.Setenv("AMI_ACP_FAKE_AGENT_REPLAY_BURST", tt.replayBurst)
+			t.Setenv("AMI_ACP_FAKE_AGENT_USAGE", "{}")
 			var (
 				mu     sync.Mutex
 				events []event.StreamEvent

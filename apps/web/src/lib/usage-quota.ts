@@ -9,4 +9,4 @@ export interface UsageQuotaBridge {
   getUsedPercent(): Promise<number | null>
 }
 
-export const UsageQuotaKey: InjectionKey<UsageQuotaBridge | undefined> = Symbol('memohai:usage-quota')
+export const UsageQuotaKey: InjectionKey<UsageQuotaBridge | undefined> = Symbol('ami:usage-quota')

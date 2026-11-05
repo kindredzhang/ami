@@ -14,15 +14,15 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type memoryCapabilityQueries struct {

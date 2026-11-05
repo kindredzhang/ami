@@ -10,7 +10,7 @@
 
 CREATE TABLE IF NOT EXISTS public.bot_history_checkpoints (
     id               UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id          UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id          UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                  REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id       UUID        NOT NULL,
     parent_id        UUID,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS public.bot_history_checkpoints (
     turn_message_seq BIGINT      NOT NULL,
     items            JSONB       NOT NULL DEFAULT '[]'::jsonb,
     created_at       TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
-    CONSTRAINT memoh_team_key_c3970c8700e1 UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_c3970c8700e1 UNIQUE (team_id, id),
     CONSTRAINT bot_history_checkpoints_position_check CHECK (turn_position >= 0 AND turn_message_seq >= 0),
     CONSTRAINT bot_history_checkpoints_items_check CHECK (pg_catalog.jsonb_typeof(items) = 'array'),
     CONSTRAINT bot_history_checkpoints_summary_check CHECK (pg_catalog.jsonb_path_exists(items, '$[*].summary')),
@@ -41,24 +41,24 @@ ALTER TABLE public.bot_history_checkpoints FORCE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS bot_history_checkpoints_team_select ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_select ON public.bot_history_checkpoints
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_history_checkpoints_team_insert ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_insert ON public.bot_history_checkpoints
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_history_checkpoints_team_update ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_update ON public.bot_history_checkpoints
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_history_checkpoints_team_delete ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_delete ON public.bot_history_checkpoints
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- The session's active checkpoint. NULL: nothing stands for any of its
 -- history, so its whole history is context.
 ALTER TABLE public.bot_sessions ADD COLUMN IF NOT EXISTS history_checkpoint_id UUID;
 -- Validating the reference scans both tables, which are under FORCE row
--- level security keyed on memoh.team_id, which a migration connection never
+-- level security keyed on ami.team_id, which a migration connection never
 -- sets. Lift it around the validation and restore it after.
 DO $history_checkpoint_fkey$
 BEGIN
@@ -85,12 +85,12 @@ BEGIN
 END
 $history_checkpoint_fkey$;
 
--- memoh_history_checkpoint_kept is the newest checkpoint on a session's active
+-- ami_history_checkpoint_kept is the newest checkpoint on a session's active
 -- chain that still holds once rows from a position on were removed (deleted,
 -- hidden or replaced). Its summary may have read any row up to its position,
 -- so a checkpoint holds only when it is before the position. NULL when no
 -- checkpoint holds.
-CREATE OR REPLACE FUNCTION public.memoh_history_checkpoint_kept(
+CREATE OR REPLACE FUNCTION public.ami_history_checkpoint_kept(
   p_session_id uuid,
   p_turn_position bigint,
   p_turn_message_seq bigint
@@ -108,14 +108,14 @@ AS $$
     JOIN public.bot_history_checkpoints checkpoint
       ON checkpoint.team_id = session.team_id
      AND checkpoint.id = session.history_checkpoint_id
-    WHERE session.team_id = public.memoh_current_team_id()
+    WHERE session.team_id = public.ami_current_team_id()
       AND session.id = p_session_id
     UNION ALL
     SELECT parent.id, parent.parent_id, parent.turn_position, parent.turn_message_seq,
       chain.depth + 1
     FROM chain
     JOIN public.bot_history_checkpoints parent
-      ON parent.team_id = public.memoh_current_team_id()
+      ON parent.team_id = public.ami_current_team_id()
      AND parent.id = chain.parent_id
   )
   SELECT chain.id
@@ -125,14 +125,14 @@ AS $$
   LIMIT 1
 $$;
 
--- memoh_rewind_history_checkpoint makes the newest checkpoint that still
+-- ami_rewind_history_checkpoint makes the newest checkpoint that still
 -- holds once rows of the session from a position on were removed, as
--- memoh_history_checkpoint_kept reads the removal, the session's active one,
+-- ami_history_checkpoint_kept reads the removal, the session's active one,
 -- and reports whether that moved it. The checkpoints it moves back past
 -- account for a removed row, so none holds again, and nothing else names
 -- them: a fork copies its own. It deletes them. The caller holds the session
 -- row lock.
-CREATE OR REPLACE FUNCTION public.memoh_rewind_history_checkpoint(
+CREATE OR REPLACE FUNCTION public.ami_rewind_history_checkpoint(
   p_session_id uuid,
   p_turn_position bigint,
   p_turn_message_seq bigint
@@ -150,34 +150,34 @@ BEGIN
   SELECT session.history_checkpoint_id
     INTO active
   FROM public.bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = p_session_id;
   IF active IS NULL THEN
     RETURN false;
   END IF;
-  kept := public.memoh_history_checkpoint_kept(p_session_id, p_turn_position, p_turn_message_seq);
+  kept := public.ami_history_checkpoint_kept(p_session_id, p_turn_position, p_turn_message_seq);
   IF kept IS NOT DISTINCT FROM active THEN
     RETURN false;
   END IF;
   UPDATE public.bot_sessions session
   SET history_checkpoint_id = kept
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = p_session_id;
   -- The first checkpoint after the kept one on the chain; deleting it
   -- deletes the rest through parent_id.
   DELETE FROM public.bot_history_checkpoints checkpoint
-  WHERE checkpoint.team_id = public.memoh_current_team_id()
+  WHERE checkpoint.team_id = public.ami_current_team_id()
     AND checkpoint.id = (
       WITH RECURSIVE chain AS (
         SELECT moved.id, moved.parent_id
         FROM public.bot_history_checkpoints moved
-        WHERE moved.team_id = public.memoh_current_team_id()
+        WHERE moved.team_id = public.ami_current_team_id()
           AND moved.id = active
         UNION ALL
         SELECT parent.id, parent.parent_id
         FROM chain
         JOIN public.bot_history_checkpoints parent
-          ON parent.team_id = public.memoh_current_team_id()
+          ON parent.team_id = public.ami_current_team_id()
          AND parent.id = chain.parent_id
         WHERE chain.parent_id IS DISTINCT FROM kept
       )
@@ -206,7 +206,7 @@ BEGIN
   END IF;
 
   -- Every table the conversion reads or writes is under FORCE row level
-  -- security keyed on memoh.team_id, which a migration connection never
+  -- security keyed on ami.team_id, which a migration connection never
   -- sets. Lift it for the conversion and restore it after, as 0165 does.
   ALTER TABLE public.bot_sessions NO FORCE ROW LEVEL SECURITY;
   ALTER TABLE public.bot_sessions DISABLE ROW LEVEL SECURITY;

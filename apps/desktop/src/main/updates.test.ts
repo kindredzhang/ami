@@ -46,7 +46,7 @@ beforeEach(() => {
   vi.resetModules()
   vi.resetAllMocks()
   vi.useFakeTimers()
-  vi.stubEnv('MEMOH_DESKTOP_UPDATE_BASE_URL', 'https://updates.example.test/')
+  vi.stubEnv('AMI_DESKTOP_UPDATE_BASE_URL', 'https://updates.example.test/')
   f.persisted = ''
   f.handlers.clear()
   f.events.clear()

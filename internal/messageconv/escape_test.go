@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // A command with "&&" and ">" must read back from a row with the same bytes

@@ -7,9 +7,9 @@ import (
 
 	openairesponses "github.com/felinics/twilight/provider/openai/responses"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/errs"
-	modelspkg "github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/errs"
+	modelspkg "github.com/kindredzhang/ami/internal/models"
 )
 
 // customBaseURLModelCatalog asks the configured OpenAI-compatible endpoint for

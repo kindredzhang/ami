@@ -1,4 +1,4 @@
-// Bridges codex MCP server elicitation to Memoh's ask_user decision flow.
+// Bridges codex MCP server elicitation to Ami's ask_user decision flow.
 // Form-mode schemas reuse the shared elicitation core (the same mapping the
 // ACP runtime uses); url mode renders as a single confirm card. The protocol
 // carries no thread id, so the app-server routes an elicitation to the bot's
@@ -13,15 +13,15 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
 )
 
 // dispatchElicitation sends runtime requests to a uniquely owned turn.
-// Even Memoh tool consents must reach a user or be declined.
+// Even Ami tool consents must reach a user or be declined.
 func (s *appServer) dispatchElicitation(req *protocol.Inbound, params *protocol.McpServerElicitationRequestParams) {
 	turn := s.soleActiveTurn()
 	if turn == nil {
@@ -227,7 +227,7 @@ func (t *turnState) runElicitationFlow(ctx context.Context, input any) (userinpu
 }
 
 // emitElicitationDeclinedNotice surfaces a declined MCP elicitation in the
-// conversation so the user knows a tool asked for input Memoh could not show.
+// conversation so the user knows a tool asked for input Ami could not show.
 func (t *turnState) emitElicitationDeclinedNotice(reason string) {
 	t.emit(event.StreamEvent{
 		Type:       event.RuntimeNotice,

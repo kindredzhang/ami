@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // getFeishuPostContentLines returns content lines from post message.

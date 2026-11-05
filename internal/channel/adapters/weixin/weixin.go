@@ -10,15 +10,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 // Type is the channel type identifier for WeChat.
 const Type channel.ChannelType = "weixin"
 
-// WeixinAdapter is the Memoh channel adapter for personal WeChat via the Tencent iLink API.
+// WeixinAdapter is the Ami channel adapter for personal WeChat via the Tencent iLink API.
 type WeixinAdapter struct {
 	logger       *slog.Logger
 	client       *Client

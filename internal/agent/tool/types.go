@@ -11,10 +11,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/tool/internal/toolset"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/tool/internal/toolset"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // SkillDetail holds the description and content of a loadable skill.

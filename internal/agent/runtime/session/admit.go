@@ -11,8 +11,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 var (

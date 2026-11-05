@@ -40,12 +40,12 @@ RETURNING *;
 
 -- name: GetUserProviderOAuthToken :one
 SELECT * FROM user_provider_oauth_tokens
-WHERE team_id = public.memoh_current_team_id() AND provider_id = sqlc.arg(provider_id)
+WHERE team_id = public.ami_current_team_id() AND provider_id = sqlc.arg(provider_id)
   AND user_id = sqlc.arg(user_id);
 
 -- name: GetUserProviderOAuthTokenByState :one
 SELECT * FROM user_provider_oauth_tokens
-WHERE team_id = public.memoh_current_team_id() AND state = sqlc.arg(state)
+WHERE team_id = public.ami_current_team_id() AND state = sqlc.arg(state)
   AND state != '';
 
 -- name: UpdateUserProviderOAuthState :exec
@@ -65,5 +65,5 @@ ON CONFLICT (team_id, provider_id, user_id) DO UPDATE SET
 
 -- name: DeleteUserProviderOAuthToken :exec
 DELETE FROM user_provider_oauth_tokens
-WHERE team_id = public.memoh_current_team_id() AND provider_id = sqlc.arg(provider_id)
+WHERE team_id = public.ami_current_team_id() AND provider_id = sqlc.arg(provider_id)
   AND user_id = sqlc.arg(user_id);

@@ -14,7 +14,7 @@ import {
   type DesktopUpdateStateEvent,
 } from '../shared/updates'
 
-const UPDATE_FEED_BASE_URL = (process.env.MEMOH_DESKTOP_UPDATE_BASE_URL ?? '').trim()
+const UPDATE_FEED_BASE_URL = (process.env.AMI_DESKTOP_UPDATE_BASE_URL ?? '').trim()
 // The app is tray-resident and can run for weeks without a quit. Restart always
 // installs the cached download without a last-moment check, so a release newer
 // than the last check is only picked up on the following launch. A check fetches

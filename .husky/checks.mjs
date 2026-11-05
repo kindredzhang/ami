@@ -102,7 +102,7 @@ async function run(label, command, args, timeoutSeconds, capture = false) {
   const timer = setTimeout(() => {
     console.error(`[hooks] ${label} exceeded ${timeoutSeconds}s; check failed (not skipped)`)
     console.error('[hooks] The wall-clock budget includes tool startup and compilation; a timeout does not establish a test failure.')
-    console.error('[hooks] For an expected cold build, retry with a larger MEMOH_CHECK_TIMEOUT_SECONDS value (see .husky/README.md).')
+    console.error('[hooks] For an expected cold build, retry with a larger AMI_CHECK_TIMEOUT_SECONDS value (see .husky/README.md).')
     stop()
   }, timeoutSeconds * 1000)
   process.once('SIGINT', stop)
@@ -128,9 +128,9 @@ async function main() {
   process.chdir(git(['rev-parse', '--show-toplevel']).trim())
   const only = process.argv[2]
   if (only && !['--plan', 'sizes', 'web', 'go', 'go-test'].includes(only)) throw new Error(`Unknown check: ${only}`)
-  const full = process.env.MEMOH_FULL_CHECKS === '1'
-  const timeout = Number(process.env.MEMOH_CHECK_TIMEOUT_SECONDS || (full ? 900 : 180))
-  if (!Number.isFinite(timeout) || timeout <= 0) throw new Error('MEMOH_CHECK_TIMEOUT_SECONDS must be positive')
+  const full = process.env.AMI_FULL_CHECKS === '1'
+  const timeout = Number(process.env.AMI_CHECK_TIMEOUT_SECONDS || (full ? 900 : 180))
+  if (!Number.isFinite(timeout) || timeout <= 0) throw new Error('AMI_CHECK_TIMEOUT_SECONDS must be positive')
   const changed = git(['diff', '--cached', '--name-only', '--no-renames', '-z']).split('\0').filter(Boolean)
   const entries = indexEntries()
   const plan = planChecks(changed, entries.map(entry => entry.path), full)
@@ -146,7 +146,7 @@ async function main() {
     else await run('Web lint', 'pnpm', plan.web === 'full' ? ['exec', 'eslint', '.'] : ['exec', 'lint-staged'], timeout)
   }
   if (!only || only === 'go' || only === 'go-test') {
-    if (plan.fullGoInCI) console.log('[hooks] Go: broad impact; full validation belongs to CI or explicit MEMOH_FULL_CHECKS=1')
+    if (plan.fullGoInCI) console.log('[hooks] Go: broad impact; full validation belongs to CI or explicit AMI_FULL_CHECKS=1')
     if (plan.go.length && !plan.go.includes('./...')) {
       // Let Go apply GOOS/GOARCH/GOFLAGS and build tags. Explicitly naming a
       // tag-only package fails where ./... would skip it. Preserve every other

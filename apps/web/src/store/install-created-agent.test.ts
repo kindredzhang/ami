@@ -1,7 +1,7 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { reactive } from 'vue'
 const api = vi.hoisted(() => ({ preflight: vi.fn(), app: vi.fn(), startWorkspace: vi.fn(), start: vi.fn(), view: vi.fn(), unview: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({ getSupermarketRegistriesByRegistryIdAppsByAppId: api.app, postBotsByBotIdContainerStart: api.startWorkspace }))
+vi.mock('@ami/sdk', () => ({ getSupermarketRegistriesByRegistryIdAppsByAppId: api.app, postBotsByBotIdContainerStart: api.startWorkspace }))
 vi.mock('@/composables/api/useWorkspaceDependencies', () => ({ preflightDependencies: api.preflight }))
 vi.mock('@/i18n', () => ({ default: { global: { t: (key: string) => key } } }))
 vi.mock('./app-operations', () => ({ useAppOperationsStore: () => ({ start: api.start, view: api.view, unview: api.unview }) }))
@@ -11,7 +11,7 @@ const satisfied = { workspace_state: 'running', items: [{ dependency_id: 'codex'
 let operation: { key: string, status: string, result: string, error: string }
 beforeEach(() => {
   vi.resetAllMocks()
-  operation = reactive({ key: 'bot/memoh/codex', status: 'running', result: '', error: '' })
+  operation = reactive({ key: 'bot/ami/codex', status: 'running', result: '', error: '' })
   api.preflight.mockResolvedValueOnce({ workspace_state: 'running', items: [{ dependency_id: 'codex', state: 'missing' }] }).mockResolvedValue(satisfied)
   api.app.mockResolvedValue({ data: { revision: 'published-revision' } })
   api.start.mockReturnValue({ kind: 'started', operation })
@@ -23,7 +23,7 @@ it('installs the canonical App automatically and waits for a verified dependency
   const installing = installCreatedAgent('bot', agent)
   await started.promise
   expect(api.start).toHaveBeenCalledWith(expect.objectContaining({
-    action: 'install', install: { registryId: 'memoh', appId: 'codex', revision: 'published-revision' },
+    action: 'install', install: { registryId: 'ami', appId: 'codex', revision: 'published-revision' },
   }))
   operation.result = 'installed'; operation.status = 'done'
   await installing

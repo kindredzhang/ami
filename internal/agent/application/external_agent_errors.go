@@ -4,11 +4,11 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpagent "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpagent "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // ExternalAgentError translates an External Agent failure the user can act on

@@ -1,6 +1,6 @@
-import { client } from '@memohai/sdk/client'
-import type { Options } from '@memohai/sdk'
-import type { BotsBot, HandlersCreateContainerResponse, PostBotsData } from '@memohai/sdk'
+import { client } from '@ami/sdk/client'
+import type { Options } from '@ami/sdk'
+import type { BotsBot, HandlersCreateContainerResponse, PostBotsData } from '@ami/sdk'
 import type { ContainerCreateLayerStatus } from './useContainerStream'
 import {
   fetchSSEProblem,

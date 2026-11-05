@@ -13,11 +13,11 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/job"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/job"
 )
 
 // Backend performs the workspace operations for one runtime (containerd,

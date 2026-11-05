@@ -332,8 +332,8 @@ import {
   deleteUsersMeRuntimesById,
   postUsersMeRuntimes,
   type UserruntimeRuntime,
-} from '@memohai/sdk'
-import { getBotsQuery } from '@memohai/sdk/colada'
+} from '@ami/sdk'
+import { getBotsQuery } from '@ami/sdk/colada'
 import {
   Badge,
   Button,
@@ -351,7 +351,7 @@ import {
   toast,
 } from '@felinic/ui'
 import { Plus, Trash2 } from 'lucide-vue-next'
-import { SettingsIcon as Settings } from '@memohai/icon/ui'
+import { SettingsIcon as Settings } from '@ami/icon/ui'
 import { ConfirmPopover, FieldStack, FormStack, InlineLoadingRow, PageShell, SettingsRow, SettingsSection } from '@felinic/ui'
 import BotComputerAccessDialog from '@/components/computer/bot-computer-access-dialog.vue'
 import ComputerAccessList from '@/components/computer/computer-access-list.vue'

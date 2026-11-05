@@ -10,7 +10,7 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // eventLog is a prompt sink that keeps every event the session hands it,

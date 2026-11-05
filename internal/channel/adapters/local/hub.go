@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // RouteHubEvent is a routed outbound stream event for local transports.

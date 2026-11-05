@@ -1,14 +1,14 @@
 # App：Supermarket 资源统一为应用
 
-状态：已实施（Supermarket 侧在 `feat/packages` 分支，Memoh 侧在本分支）。本文是 skills、workspace dependencies、connector 三条线合并为 app 的设计与实施记录。涉及两个仓库：Supermarket（registry 与 API）与 Memoh（Server 与 Web）。
+状态：已实施（Supermarket 侧在 `feat/packages` 分支，Ami 侧在本分支）。本文是 skills、workspace dependencies、connector 三条线合并为 app 的设计与实施记录。涉及两个仓库：Supermarket（registry 与 API）与 Ami（Server 与 Web）。
 
 ## 1. 背景与目标
 
 现状：
 
 - 重构前，Supermarket 里 Package 只是 `packages/<id>/skills/<skill>/` 的容器，可选的 `package.yaml` 只有 `postinstall`。app 的名称、描述、标签、图标全部由 skills 聚合而来，没有版本号。
-- workspace dependencies 是 `registries/memoh/dependencies/<id>/` 下的独立资源，有独立的不可变发布、独立 lock 与独立 API。Memoh 侧有完整的目录缓存、脚本 runner、状态机与 launcher 绑定。
-- connector 的目录完全来自 connect-it 服务编译期注册的 `connector.Type`。Memoh 只保存 `(bot, connection_id, alias)` 绑定，Supermarket 里没有 connector。
+- workspace dependencies 是 `registries/ami/dependencies/<id>/` 下的独立资源，有独立的不可变发布、独立 lock 与独立 API。Ami 侧有完整的目录缓存、脚本 runner、状态机与 launcher 绑定。
+- connector 的目录完全来自 connect-it 服务编译期注册的 `connector.Type`。Ami 只保存 `(bot, connection_id, alias)` 绑定，Supermarket 里没有 connector。
 - Web 端 Supermarket 有 connectors、skills、dependencies 三个 tab；bot 详情页也有三个平行 tab。
 
 目标：
@@ -16,19 +16,19 @@
 1. 用户面只有 app 一种可浏览、可安装、可删除、可更新的单元。
 2. app 可以组合 skills、dependencies、connectors 三类组件。
 3. app 拥有版本、作者、主页、许可证、分类、图标与多语言描述，并支持检查更新与更新。
-4. deps 与 connector 在 registry 与 Memoh 两侧都保持独立实体，app 只按 id 引用，同一 bot 上不会重复安装。
+4. deps 与 connector 在 registry 与 Ami 两侧都保持独立实体，app 只按 id 引用，同一 bot 上不会重复安装。
 
 ## 2. 已定决策
 
 | 决策 | 结论 |
 | --- | --- |
 | 名字 | 对外及业务协议统一为 App，中文 UI 显示为“应用” |
-| deps 的位置 | 保留 `registries/memoh/dependencies/<id>/`，app 只引用 id；不搬进 app 目录 |
+| deps 的位置 | 保留 `registries/ami/dependencies/<id>/`，app 只引用 id；不搬进 app 目录 |
 | deps 的独立发布 | 保留不可变发布、`dependencies.lock.json` 与 `/api/dependencies*`，只撤掉独立浏览入口 |
 | connector | app 引用 connect-it 的 `connector_type`，绑定与凭据仍由 connectors 服务与 connect-it 管理 |
 | 数据迁移 | 不做，当前版本尚未发布 |
 | 部分安装 | 允许，app 有 `partial` 状态 |
-| 哪些 registry 可含 deps 与 connector | 第一期仅 `memoh` registry；远程 registry 的 app 只有 skills |
+| 哪些 registry 可含 deps 与 connector | 第一期仅 `ami` registry；远程 registry 的 app 只有 skills |
 | dep 的 revision 是否被 app 锁定 | 不锁定，安装与更新时总是解析 dep 当前定义，与现有 workspacedeps 行为一致 |
 | 安装粒度 | App 与依赖仅安装到 Bot 的隔离工作区，安装记录与 dep 引用按 Bot 管理；connection 仍为 Bot 级共享 |
 | 子项删除 | skills、deps、connector 不能在 app 之外单独删除；dep 子项保留 update、reinstall、rollback、查看脚本，connector 子项保留授权、重新授权、启停、断开（断开会吊销 Bot 级连接并让引用它的 app 重新要求授权） |
@@ -43,13 +43,13 @@
 ```text
 registries/
 ├── categories.yaml                       # 新增：跨 registry 共享的分类表
-├── memoh/
+├── ami/
 │   ├── registry.yaml
 │   ├── release.lock.json
 │   ├── dependencies.lock.json
 │   ├── dependencies/<dep-id>/            # 不变
 │   └── apps/<pkg>/
-│       ├── app.yaml                  # memoh registry 必需，schema 2
+│       ├── app.yaml                  # ami registry 必需，schema 2
 │       ├── icon.svg                      # 可选
 │       └── skills/<skill-id>/SKILL.md    # 可选，app 至少要有一种组件
 └── openai/                               # 不变，adapter 派生 app
@@ -63,7 +63,7 @@ id: codex                        # 必须等于目录名
 version: 1.0.0                   # semver，仅供展示与人类沟通
 name: Codex
 description: OpenAI Codex CLI.
-author: { name: Memoh, email: hello@memoh.ai }
+author: { name: Ami, email: hello@memoh.ai }
 homepage: https://github.com/openai/codex
 repository: https://github.com/felinics/supermarket
 license: Apache-2.0
@@ -73,7 +73,7 @@ tags: [codex, agent]
 translations:
   zh: { name: Codex, description: "OpenAI Codex 命令行" }
   ja: { description: "OpenAI Codex コマンドライン" }
-dependencies: [codex]            # 引用 registries/memoh/dependencies/<id>
+dependencies: [codex]            # 引用 registries/ami/dependencies/<id>
 connectors:
   - { type: github, required: false }   # 引用 connect-it 的 connector_type
 postinstall: []                  # 沿用 schema 1 的格式与限制
@@ -84,8 +84,8 @@ postinstall: []                  # 沿用 schema 1 的格式与限制
 - `schema_version` 只接受 `"2"`，schema 1 不再支持。
 - `id`、`version`、`name`、`description`、`category` 必填。
 - skills 由 `skills/` 目录扫描得到，不在 yaml 里声明。
-- `dependencies` 只允许在 `memoh` registry 出现，每项必须能解析到已启用的 dependency。
-- `connectors[].type` 只允许在 `memoh` registry 出现，格式 `^[a-z][a-z0-9_]*$`，构建时不校验 connect-it 是否真的有这个 type。
+- `dependencies` 只允许在 `ami` registry 出现，每项必须能解析到已启用的 dependency。
+- `connectors[].type` 只允许在 `ami` registry 出现，格式 `^[a-z][a-z0-9_]*$`，构建时不校验 connect-it 是否真的有这个 type。
 - app 至少要有一个 skill、一个 dependency 或一个 connector。
 - `translations` 只接受 `en`、`zh`、`ja`，结构与 dependency 的 `translations` 一致。
 - skill 的 `metadata.author`、`metadata.homepage` 缺省时回落到 app。
@@ -110,7 +110,7 @@ categories:
     order: 999
 ```
 
-远程 registry 的自由文本分类先经 `normalizeSkillCategory` 归一化，再按 `aliases` 匹配，匹配不到落到 `other`。`memoh` registry 的 app 与 dependency 的 `category` 必须是表中的 id。
+远程 registry 的自由文本分类先经 `normalizeSkillCategory` 归一化，再按 `aliases` 匹配，匹配不到落到 `other`。`ami` registry 的 app 与 dependency 的 `category` 必须是表中的 id。
 
 ### 3.4 规范包
 
@@ -127,22 +127,22 @@ categories:
 | `GET /api/apps` | 新增 `component=skills\|dependencies\|connectors` 过滤；`category` 改为按 categories.yaml 的 id 过滤 |
 | `GET /api/categories` | 新增，返回全局分类表含三语名称与各 registry 计数 |
 | `GET /api/registries/:id/categories` | 删除，由全局接口替代 |
-| `/api/dependencies*` 四个接口 | 不变，Memoh 继续用它们拉定义 |
+| `/api/dependencies*` 四个接口 | 不变，Ami 继续用它们拉定义 |
 | `GET /api/artifacts/icon/:digest` | 不变，app 图标复用 |
 
 ### 3.7 涉及文件
 
 - `registry/app-manifest.ts`：schema 2 解析与校验。
-- `registry/adapters/memoh.ts`：读取 app.yaml，允许无 skills 的包，收集 dependencies 与 connectors 引用。
+- `registry/adapters/ami.ts`：读取 app.yaml，允许无 skills 的包，收集 dependencies 与 connectors 引用。
 - `registry/adapters/common.ts`、`skill-directory.ts`、`codex-marketplace.ts`：合成远程 registry 的 app 元数据，version 缺省。
 - `registry/catalog.ts`、`registry/snapshot.ts`、`registry/types.ts`：类型、分类表、摘要字段。
-- `registry/publish/candidate.ts`：跨资源校验，dependencies 引用必须解析到 `registries/memoh/dependencies/`，每个 dependency 必须有规范包。
+- `registry/publish/candidate.ts`：跨资源校验，dependencies 引用必须解析到 `registries/ami/dependencies/`，每个 dependency 必须有规范包。
 - `registry/definitions/`：新增 categories.yaml 加载。
 - `server/api/apps/index.get.ts`、新增 `server/api/categories.get.ts`、删除 `server/api/registries/[id]/categories.get.ts`。
 - `registries/categories.yaml`、七个现有包的 `app.yaml`、五个规范包。
 - `README.md`、`test/registry-http.test.ts`、`registry/*.test.ts`。
 
-## 4. Memoh 后端
+## 4. Ami 后端
 
 ### 4.1 数据表
 
@@ -175,7 +175,7 @@ RLS 策略与现有表一致。
 
 输入 `(bot, registry, app, revision)`。
 
-1. 拉取并校验 release，检查 `dependencies` 与 `connectors` 非空时 registry 必须是 `memoh`。
+1. 拉取并校验 release，检查 `dependencies` 与 `connectors` 非空时 registry 必须是 `ami`。
 2. 写安装记录，状态 `installing`。
 3. 逐个处理 dependency 引用：若该 `(bot, dep)` 已安装或镜像自带，只写引用；否则调用 workspacedeps 安装，日志流透传给客户端。任一失败记录 `last_error` 但继续。
 4. 发布 skills，原子替换，失败则整个安装记为 `failed` 并回滚 skills。
@@ -203,7 +203,7 @@ RLS 策略与现有表一致。
 
 ### 4.6 发现的 dep 与规范包
 
-列表接口把 workspacedeps 报告的、未被任何安装记录引用的已安装或镜像自带 dep，合成为规范包 `memoh/<dep-id>` 的虚拟条目，`installation_id` 为空，`reason=discovered`。列表里与已安装包一样显示（图标借用该 dep 的图标），不带状态标记，也不提供安装按钮（它已经可用）；只有从 Supermarket 详情页安装同 id 的规范包时才正式写入安装记录并建立引用。agent 启用流程的 preflight 与安装步骤改为安装规范包。launcher 绑定表 `BuiltinLauncherCommands` 与 `provides[0]` 校验不变。
+列表接口把 workspacedeps 报告的、未被任何安装记录引用的已安装或镜像自带 dep，合成为规范包 `ami/<dep-id>` 的虚拟条目，`installation_id` 为空，`reason=discovered`。列表里与已安装包一样显示（图标借用该 dep 的图标），不带状态标记，也不提供安装按钮（它已经可用）；只有从 Supermarket 详情页安装同 id 的规范包时才正式写入安装记录并建立引用。agent 启用流程的 preflight 与安装步骤改为安装规范包。launcher 绑定表 `BuiltinLauncherCommands` 与 `provides[0]` 校验不变。
 
 ### 4.7 HTTP 接口
 
@@ -246,7 +246,7 @@ RLS 策略与现有表一致。
 ### 5.1 Supermarket
 
 - `pages/supermarket/index.vue`：删除三个 tab 与 `?tab=`，改为单一列表；筛选为 registry、分类、组件类型三组；搜索框统一。卡片显示版本、分类、组件计数徽章。
-- `pages/supermarket/app-detail.vue`：路由改为 `/supermarket/:registryId/:appId`；新增 Dependencies 与 Connectors 两节，依赖通过其规范包（`memoh/<dep-id>`）展示名称、图标与描述；Information 节增加版本、作者、主页、仓库、许可证、分类。connector 的名称、图标与授权方式从 `/connectors/catalog` 补全，connect-it 未配置时显示“此包需要 connector，当前部署未启用”。
+- `pages/supermarket/app-detail.vue`：路由改为 `/supermarket/:registryId/:appId`；新增 Dependencies 与 Connectors 两节，依赖通过其规范包（`ami/<dep-id>`）展示名称、图标与描述；Information 节增加版本、作者、主页、仓库、许可证、分类。connector 的名称、图标与授权方式从 `/connectors/catalog` 补全，connect-it 未配置时显示“此包需要 connector，当前部署未启用”。
 - `pages/supermarket/components/install-app-dialog.vue`：选择 Bot 后展示安装预览，包括将安装的 deps、将发布的 skills、需授权的 connectors；提交后进入进度对话框。
 - 删除 `install-dependency-dialog.vue`、`connect-connector-dialog.vue` 的独立入口，授权表单逻辑迁移为子项组件复用。
 
@@ -271,9 +271,9 @@ RLS 策略与现有表一致。
 | 阶段 | 内容 | 验收 |
 | --- | --- | --- |
 | 1 Supermarket | schema 2、categories.yaml、adapter 与候选构建校验、发布产物字段、API 变化、五个规范包与七个现有包的 app.yaml、README | `bun test`、`bun run registry:validate`、`bun run registry:publish` 通过；本地 `GET /api/apps` 返回新字段；`GET /api/categories` 三语可用 |
-| 2 Memoh 后端 | 迁移、`internal/apps`、handler、SDK 重新生成、删除旧路由 | Go 单测覆盖安装、删除、更新、部分安装、引用计数与规范包合成；`go test ./internal/apps/... ./internal/workspacedeps/... ./internal/connectors/... ./internal/supermarket/...` 通过；swagger 与 SDK 无 diff 残留 |
+| 2 Ami 后端 | 迁移、`internal/apps`、handler、SDK 重新生成、删除旧路由 | Go 单测覆盖安装、删除、更新、部分安装、引用计数与规范包合成；`go test ./internal/apps/... ./internal/workspacedeps/... ./internal/connectors/... ./internal/supermarket/...` 通过；swagger 与 SDK 无 diff 残留 |
 | 3 前端 | Supermarket 单列表与详情页、安装对话框、bot 详情 apps tab、操作 store、i18n | vitest 通过；手工验证安装含 dep 与 connector 的包、部分安装后继续、删除预览与执行、检查更新与更新 |
-| 4 收尾 | memoh-docs 的 supermarket、connectors、bot 指南更新，新增 apps 指南；删除前端与后端残留代码与 i18n key | 文档与实际行为一致 |
+| 4 收尾 | ami-docs 的 supermarket、connectors、bot 指南更新，新增 apps 指南；删除前端与后端残留代码与 i18n key | 文档与实际行为一致 |
 
 ## 7. 假设与后续
 
@@ -284,7 +284,7 @@ RLS 策略与现有表一致。
 
 ## 8. App 协议直接切换
 
-Memoh #1197 与 Supermarket #22 必须配套升级。清单为 `app.yaml`（schema 2），自有 registry 目录为 `apps/`；应用路由为 `/api/apps`、`/api/registries/:id/apps/*`，Memoh 对应 `/supermarket/apps` 与 `/bots/:bot_id/apps`。JSON 使用 `app_id`、`apps` 和 `app_count`，应用级 SSE kind 为 `app`。不提供旧 Package 路由、字段或清单兼容层。
+Ami #1197 与 Supermarket #22 必须配套升级。清单为 `app.yaml`（schema 2），自有 registry 目录为 `apps/`；应用路由为 `/api/apps`、`/api/registries/:id/apps/*`，Ami 对应 `/supermarket/apps` 与 `/bots/:bot_id/apps`。JSON 使用 `app_id`、`apps` 和 `app_count`，应用级 SSE kind 为 `app`。不提供旧 Package 路由、字段或清单兼容层。
 
 应用描述、Skill 来源描述、发布文档、快照与 registry 状态升级为 schema 2；registry 定义、分类表和 dependency 协议保持 schema 1。Skill 文件归档格式和第三方源格式不变。所有发布内容由 Bun 1.3.14 重新生成、计算摘要并发布；旧不可变对象不覆盖。旧状态文件不能被新代码读取，切换时使用独立数据目录或桶准备新发布，并将消费端与 registry 一起切换；回滚时恢复匹配的旧服务与旧数据源。
 

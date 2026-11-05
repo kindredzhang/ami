@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { SettingsSection } from '@felinic/ui'
-import type { AcpprofilePublicProfile } from '@memohai/sdk'
+import type { AcpprofilePublicProfile } from '@ami/sdk'
 import type { ACPAgentForm } from '@/utils/acp'
 import AcpManagedFields from './acp-managed-fields.vue'
 

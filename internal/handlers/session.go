@@ -14,20 +14,20 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/agent/application"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpagent "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/bots"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/workdir"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpagent "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/bots"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/workdir"
 )
 
 // SessionHandler handles bot session CRUD endpoints.
@@ -376,7 +376,7 @@ func (h *SessionHandler) ForkSession(c echo.Context) error {
 	}
 
 	// External runtimes fork their own conversation first; the returned
-	// runtime metadata binds the Memoh fork to the runtime-side fork.
+	// runtime metadata binds the Ami fork to the runtime-side fork.
 	var runtimeMetadataOverride map[string]any
 	agentRuntimeSource := session.IsExternalRuntime(source)
 	sourceCaps, _ := h.runtimes.Caps(session.RuntimeTypeOf(source))

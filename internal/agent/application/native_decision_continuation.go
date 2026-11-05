@@ -6,8 +6,8 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // runNativeDecisionContinuation owns the model stream after a committed answer.

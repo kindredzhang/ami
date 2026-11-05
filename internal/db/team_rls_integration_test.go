@@ -17,7 +17,7 @@ import (
 func rlsConn(t *testing.T, ownerPool *pgxpool.Pool, dsn string) *pgx.Conn {
 	t.Helper()
 	ctx := context.Background()
-	role := fmt.Sprintf("memoh_rls_test_%d_%d", os.Getpid(), teamTestDBSeq.Add(1))
+	role := fmt.Sprintf("ami_rls_test_%d_%d", os.Getpid(), teamTestDBSeq.Add(1))
 	if _, err := ownerPool.Exec(ctx, "CREATE ROLE "+role+" NOLOGIN NOSUPERUSER NOBYPASSRLS"); err != nil {
 		t.Fatalf("create RLS test role: %v", err)
 	}
@@ -25,7 +25,7 @@ func rlsConn(t *testing.T, ownerPool *pgxpool.Pool, dsn string) *pgx.Conn {
 		"GRANT USAGE ON SCHEMA public TO " + role,
 		"GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO " + role,
 		"GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO " + role,
-		"GRANT EXECUTE ON FUNCTION public.memoh_current_team_id() TO " + role,
+		"GRANT EXECUTE ON FUNCTION public.ami_current_team_id() TO " + role,
 	}
 	for _, grant := range grants {
 		if _, err := ownerPool.Exec(ctx, grant); err != nil {
@@ -95,7 +95,7 @@ func TestTeamRLSDynamicIsolation(t *testing.T) {
 			return err
 		}
 		defer func() { _ = tx.Rollback(ctx) }()
-		if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamID); err != nil {
+		if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamID); err != nil {
 			return err
 		}
 		if err := fn(tx); err != nil {
@@ -121,7 +121,7 @@ func TestTeamRLSDynamicIsolation(t *testing.T) {
 			t.Fatalf("begin read: %v", err)
 		}
 		defer func() { _ = tx.Rollback(ctx) }()
-		if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamID); err != nil {
+		if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamID); err != nil {
 			t.Fatalf("bind team: %v", err)
 		}
 		var count int

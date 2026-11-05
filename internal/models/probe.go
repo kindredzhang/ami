@@ -17,10 +17,10 @@ import (
 	openairesponses "github.com/felinics/twilight/provider/openai/responses"
 	sdk "github.com/felinics/twilight/sdk"
 
-	memohcopilot "github.com/felinics/memoh/internal/copilot"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/errs"
+	amicopilot "github.com/kindredzhang/ami/internal/copilot"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const probeTimeout = DefaultProviderProbeTimeout
@@ -163,7 +163,7 @@ func NewSDKProvider(baseURL, apiKey, codexAccountID string, clientType ClientTyp
 		return openaicodex.New(opts...)
 
 	case ClientTypeGitHubCopilot:
-		return memohcopilot.NewProvider(apiKey, httpClient)
+		return amicopilot.NewProvider(apiKey, httpClient)
 
 	case ClientTypeAnthropicMessages:
 		opts := []anthropicmessages.Option{
@@ -245,7 +245,7 @@ func (s *Service) resolveGitHubCopilotAccessToken(ctx context.Context, provider 
 	if accessToken == "" {
 		return "", errors.New("oauth token is missing access token")
 	}
-	copilotToken, err := memohcopilot.ResolveToken(ctx, accessToken)
+	copilotToken, err := amicopilot.ResolveToken(ctx, accessToken)
 	if err != nil {
 		return "", err
 	}

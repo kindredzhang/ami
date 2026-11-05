@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/supermarket"
 )
 
 func TestConnectorAuthorizationPreservesDependencyFailure(t *testing.T) {
@@ -43,7 +43,7 @@ func TestConnectorAuthorizationPreservesDependencyFailure(t *testing.T) {
 				if tc.wantStatus == StatusPartial {
 					h.deps.installErr["codex"] = errors.New("dependency installation failed")
 				}
-				pkg := release("memoh", "review", "a", "1.0.0", []string{"review"}, []string{"codex"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
+				pkg := release("ami", "review", "a", "1.0.0", []string{"review"}, []string{"codex"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
 				h.publish(pkg)
 				result, _ := h.install(t, pkg)
 				if result.Installation.Status != StatusPartial {
@@ -82,7 +82,7 @@ func TestResumeReplacesLegacyFailureAndClearsItOnSuccess(t *testing.T) {
 	h := newHarness()
 	h.deps.present["codex"] = absentDep("codex")
 	h.deps.installErr["codex"] = errors.New("dependency installation failed")
-	pkg := release("memoh", "codex", "a", "1.0.0", []string{"review"}, []string{"codex"}, nil)
+	pkg := release("ami", "codex", "a", "1.0.0", []string{"review"}, []string{"codex"}, nil)
 	h.publish(pkg)
 	result, _ := h.install(t, pkg)
 	h.store.mu.Lock()

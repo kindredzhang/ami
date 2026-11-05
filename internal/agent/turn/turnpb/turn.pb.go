@@ -499,7 +499,7 @@ var File_internal_agent_turn_turnpb_turn_proto protoreflect.FileDescriptor
 
 const file_internal_agent_turn_turnpb_turn_proto_rawDesc = "" +
 	"\n" +
-	"%internal/agent/turn/turnpb/turn.proto\x12\rmemoh.turn.v1\"!\n" +
+	"%internal/agent/turn/turnpb/turn.proto\x12\vami.turn.v1\"!\n" +
 	"\vJsonRequest\x12\x12\n" +
 	"\x04json\x18\x01 \x01(\fR\x04json\"\"\n" +
 	"\fJsonResponse\x12\x12\n" +
@@ -512,11 +512,11 @@ const file_internal_agent_turn_turnpb_turn_proto_rawDesc = "" +
 	"injectJson\x122\n" +
 	"\x14outbound_assets_json\x18\x03 \x01(\fH\x00R\x12outboundAssetsJson\x12\x18\n" +
 	"\x06cancel\x18\x04 \x01(\bH\x00R\x06cancelB\x06\n" +
-	"\x04body\"\xb9\x01\n" +
-	"\vRunResponse\x122\n" +
-	"\astarted\x18\x01 \x01(\v2\x16.memoh.turn.v1.StartedH\x00R\astarted\x124\n" +
-	"\x05event\x18\x02 \x01(\v2\x1c.memoh.turn.v1.EventResponseH\x00R\x05event\x128\n" +
-	"\tcompleted\x18\x03 \x01(\v2\x18.memoh.turn.v1.CompletedH\x00R\tcompletedB\x06\n" +
+	"\x04body\"\xb3\x01\n" +
+	"\vRunResponse\x120\n" +
+	"\astarted\x18\x01 \x01(\v2\x14.ami.turn.v1.StartedH\x00R\astarted\x122\n" +
+	"\x05event\x18\x02 \x01(\v2\x1a.ami.turn.v1.EventResponseH\x00R\x05event\x126\n" +
+	"\tcompleted\x18\x03 \x01(\v2\x16.ami.turn.v1.CompletedH\x00R\tcompletedB\x06\n" +
 	"\x04body\"R\n" +
 	"\aStarted\x12\x15\n" +
 	"\x06run_id\x18\x01 \x01(\tR\x05runId\x120\n" +
@@ -529,19 +529,19 @@ const file_internal_agent_turn_turnpb_turn_proto_rawDesc = "" +
 	"\x03seq\x18\x04 \x01(\x03R\x03seq\x12\x12\n" +
 	"\x04kind\x18\x05 \x01(\tR\x04kind\x12\x18\n" +
 	"\apayload\x18\x06 \x01(\fR\apayload\"\v\n" +
-	"\tCompleted2\xd7\x06\n" +
-	"\vTurnService\x12J\n" +
-	"\x0fRuntimeCommands\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12J\n" +
-	"\x0fRuntimeControls\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12I\n" +
-	"\x0eSetRuntimeMode\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12G\n" +
-	"\fRuntimeModel\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12J\n" +
-	"\x0fSetRuntimeModel\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12P\n" +
-	"\x15ExecuteRuntimeCommand\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12C\n" +
-	"\bStopTurn\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponse\x12@\n" +
-	"\x03Run\x12\x19.memoh.turn.v1.RunRequest\x1a\x1a.memoh.turn.v1.RunResponse(\x010\x01\x12Q\n" +
-	"\x13RespondToolApproval\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1c.memoh.turn.v1.EventResponse0\x01\x12N\n" +
-	"\x10RespondUserInput\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1c.memoh.turn.v1.EventResponse0\x01\x12T\n" +
-	"\x19AdvancePlainTextUserInput\x12\x1a.memoh.turn.v1.JsonRequest\x1a\x1b.memoh.turn.v1.JsonResponseB6Z4github.com/felinics/memoh/internal/agent/turn/turnpbb\x06proto3"
+	"\tCompleted2\xab\x06\n" +
+	"\vTurnService\x12F\n" +
+	"\x0fRuntimeCommands\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12F\n" +
+	"\x0fRuntimeControls\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12E\n" +
+	"\x0eSetRuntimeMode\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12C\n" +
+	"\fRuntimeModel\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12F\n" +
+	"\x0fSetRuntimeModel\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12L\n" +
+	"\x15ExecuteRuntimeCommand\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12?\n" +
+	"\bStopTurn\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponse\x12<\n" +
+	"\x03Run\x12\x17.ami.turn.v1.RunRequest\x1a\x18.ami.turn.v1.RunResponse(\x010\x01\x12M\n" +
+	"\x13RespondToolApproval\x12\x18.ami.turn.v1.JsonRequest\x1a\x1a.ami.turn.v1.EventResponse0\x01\x12J\n" +
+	"\x10RespondUserInput\x12\x18.ami.turn.v1.JsonRequest\x1a\x1a.ami.turn.v1.EventResponse0\x01\x12P\n" +
+	"\x19AdvancePlainTextUserInput\x12\x18.ami.turn.v1.JsonRequest\x1a\x19.ami.turn.v1.JsonResponseB8Z6github.com/kindredzhang/ami/internal/agent/turn/turnpbb\x06proto3"
 
 var (
 	file_internal_agent_turn_turnpb_turn_proto_rawDescOnce sync.Once
@@ -557,40 +557,40 @@ func file_internal_agent_turn_turnpb_turn_proto_rawDescGZIP() []byte {
 
 var file_internal_agent_turn_turnpb_turn_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_internal_agent_turn_turnpb_turn_proto_goTypes = []any{
-	(*JsonRequest)(nil),   // 0: memoh.turn.v1.JsonRequest
-	(*JsonResponse)(nil),  // 1: memoh.turn.v1.JsonResponse
-	(*RunRequest)(nil),    // 2: memoh.turn.v1.RunRequest
-	(*RunResponse)(nil),   // 3: memoh.turn.v1.RunResponse
-	(*Started)(nil),       // 4: memoh.turn.v1.Started
-	(*EventResponse)(nil), // 5: memoh.turn.v1.EventResponse
-	(*Completed)(nil),     // 6: memoh.turn.v1.Completed
+	(*JsonRequest)(nil),   // 0: ami.turn.v1.JsonRequest
+	(*JsonResponse)(nil),  // 1: ami.turn.v1.JsonResponse
+	(*RunRequest)(nil),    // 2: ami.turn.v1.RunRequest
+	(*RunResponse)(nil),   // 3: ami.turn.v1.RunResponse
+	(*Started)(nil),       // 4: ami.turn.v1.Started
+	(*EventResponse)(nil), // 5: ami.turn.v1.EventResponse
+	(*Completed)(nil),     // 6: ami.turn.v1.Completed
 }
 var file_internal_agent_turn_turnpb_turn_proto_depIdxs = []int32{
-	4,  // 0: memoh.turn.v1.RunResponse.started:type_name -> memoh.turn.v1.Started
-	5,  // 1: memoh.turn.v1.RunResponse.event:type_name -> memoh.turn.v1.EventResponse
-	6,  // 2: memoh.turn.v1.RunResponse.completed:type_name -> memoh.turn.v1.Completed
-	0,  // 3: memoh.turn.v1.TurnService.RuntimeCommands:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 4: memoh.turn.v1.TurnService.RuntimeControls:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 5: memoh.turn.v1.TurnService.SetRuntimeMode:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 6: memoh.turn.v1.TurnService.RuntimeModel:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 7: memoh.turn.v1.TurnService.SetRuntimeModel:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 8: memoh.turn.v1.TurnService.ExecuteRuntimeCommand:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 9: memoh.turn.v1.TurnService.StopTurn:input_type -> memoh.turn.v1.JsonRequest
-	2,  // 10: memoh.turn.v1.TurnService.Run:input_type -> memoh.turn.v1.RunRequest
-	0,  // 11: memoh.turn.v1.TurnService.RespondToolApproval:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 12: memoh.turn.v1.TurnService.RespondUserInput:input_type -> memoh.turn.v1.JsonRequest
-	0,  // 13: memoh.turn.v1.TurnService.AdvancePlainTextUserInput:input_type -> memoh.turn.v1.JsonRequest
-	1,  // 14: memoh.turn.v1.TurnService.RuntimeCommands:output_type -> memoh.turn.v1.JsonResponse
-	1,  // 15: memoh.turn.v1.TurnService.RuntimeControls:output_type -> memoh.turn.v1.JsonResponse
-	1,  // 16: memoh.turn.v1.TurnService.SetRuntimeMode:output_type -> memoh.turn.v1.JsonResponse
-	1,  // 17: memoh.turn.v1.TurnService.RuntimeModel:output_type -> memoh.turn.v1.JsonResponse
-	1,  // 18: memoh.turn.v1.TurnService.SetRuntimeModel:output_type -> memoh.turn.v1.JsonResponse
-	1,  // 19: memoh.turn.v1.TurnService.ExecuteRuntimeCommand:output_type -> memoh.turn.v1.JsonResponse
-	1,  // 20: memoh.turn.v1.TurnService.StopTurn:output_type -> memoh.turn.v1.JsonResponse
-	3,  // 21: memoh.turn.v1.TurnService.Run:output_type -> memoh.turn.v1.RunResponse
-	5,  // 22: memoh.turn.v1.TurnService.RespondToolApproval:output_type -> memoh.turn.v1.EventResponse
-	5,  // 23: memoh.turn.v1.TurnService.RespondUserInput:output_type -> memoh.turn.v1.EventResponse
-	1,  // 24: memoh.turn.v1.TurnService.AdvancePlainTextUserInput:output_type -> memoh.turn.v1.JsonResponse
+	4,  // 0: ami.turn.v1.RunResponse.started:type_name -> ami.turn.v1.Started
+	5,  // 1: ami.turn.v1.RunResponse.event:type_name -> ami.turn.v1.EventResponse
+	6,  // 2: ami.turn.v1.RunResponse.completed:type_name -> ami.turn.v1.Completed
+	0,  // 3: ami.turn.v1.TurnService.RuntimeCommands:input_type -> ami.turn.v1.JsonRequest
+	0,  // 4: ami.turn.v1.TurnService.RuntimeControls:input_type -> ami.turn.v1.JsonRequest
+	0,  // 5: ami.turn.v1.TurnService.SetRuntimeMode:input_type -> ami.turn.v1.JsonRequest
+	0,  // 6: ami.turn.v1.TurnService.RuntimeModel:input_type -> ami.turn.v1.JsonRequest
+	0,  // 7: ami.turn.v1.TurnService.SetRuntimeModel:input_type -> ami.turn.v1.JsonRequest
+	0,  // 8: ami.turn.v1.TurnService.ExecuteRuntimeCommand:input_type -> ami.turn.v1.JsonRequest
+	0,  // 9: ami.turn.v1.TurnService.StopTurn:input_type -> ami.turn.v1.JsonRequest
+	2,  // 10: ami.turn.v1.TurnService.Run:input_type -> ami.turn.v1.RunRequest
+	0,  // 11: ami.turn.v1.TurnService.RespondToolApproval:input_type -> ami.turn.v1.JsonRequest
+	0,  // 12: ami.turn.v1.TurnService.RespondUserInput:input_type -> ami.turn.v1.JsonRequest
+	0,  // 13: ami.turn.v1.TurnService.AdvancePlainTextUserInput:input_type -> ami.turn.v1.JsonRequest
+	1,  // 14: ami.turn.v1.TurnService.RuntimeCommands:output_type -> ami.turn.v1.JsonResponse
+	1,  // 15: ami.turn.v1.TurnService.RuntimeControls:output_type -> ami.turn.v1.JsonResponse
+	1,  // 16: ami.turn.v1.TurnService.SetRuntimeMode:output_type -> ami.turn.v1.JsonResponse
+	1,  // 17: ami.turn.v1.TurnService.RuntimeModel:output_type -> ami.turn.v1.JsonResponse
+	1,  // 18: ami.turn.v1.TurnService.SetRuntimeModel:output_type -> ami.turn.v1.JsonResponse
+	1,  // 19: ami.turn.v1.TurnService.ExecuteRuntimeCommand:output_type -> ami.turn.v1.JsonResponse
+	1,  // 20: ami.turn.v1.TurnService.StopTurn:output_type -> ami.turn.v1.JsonResponse
+	3,  // 21: ami.turn.v1.TurnService.Run:output_type -> ami.turn.v1.RunResponse
+	5,  // 22: ami.turn.v1.TurnService.RespondToolApproval:output_type -> ami.turn.v1.EventResponse
+	5,  // 23: ami.turn.v1.TurnService.RespondUserInput:output_type -> ami.turn.v1.EventResponse
+	1,  // 24: ami.turn.v1.TurnService.AdvancePlainTextUserInput:output_type -> ami.turn.v1.JsonResponse
 	14, // [14:25] is the sub-list for method output_type
 	3,  // [3:14] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name

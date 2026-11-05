@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestFilterSubagentToolsBlocksOnlyDirectInteractionAndDelegation(t *testing.T) {

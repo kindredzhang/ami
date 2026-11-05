@@ -8,8 +8,8 @@ import (
 	"slices"
 	"strings"
 
-	attachmentpkg "github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/models"
+	attachmentpkg "github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 const (

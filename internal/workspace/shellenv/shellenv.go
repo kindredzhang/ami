@@ -2,7 +2,7 @@
 // in and which command search path that shell gives them. The browser
 // terminal and every launcher that must find user-installed commands derive
 // from the same launch line here, so a command that resolves in the terminal
-// also resolves for a process Memoh starts.
+// also resolves for a process Ami starts.
 package shellenv
 
 import (
@@ -13,12 +13,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspace/vpath"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/vpath"
 )
 
 const (
-	pathOutEnv = "MEMOH_SHELL_PATH_OUT"
+	pathOutEnv = "AMI_SHELL_PATH_OUT"
 	// probeKillBackstop is how much later than probeTimeout the bridge kills the
 	// probe, for workspaces where the shell could not be given its own timeout.
 	probeKillBackstop = time.Second
@@ -58,10 +58,10 @@ func shellLine(run, args string) string {
 // those tools.
 func pathProbeCommand(timeout time.Duration) string {
 	detached := `setsid -w timeout -k 1 `
-	return `memoh_path_out=$(mktemp) || exit 1; memoh_detach=""; ` +
-		`if ` + detached + `1 true >/dev/null 2>&1; then memoh_detach="` + detached + strconv.Itoa(int(timeout/time.Second)) + `"; fi; ` +
-		shellLine(pathOutEnv+`="$memoh_path_out" $memoh_detach `, ` -ic 'printf "%s" "$PATH" > "$`+pathOutEnv+`"' >/dev/null 2>&1 </dev/null`) +
-		`; cat "$memoh_path_out"; rm -f "$memoh_path_out"`
+	return `ami_path_out=$(mktemp) || exit 1; ami_detach=""; ` +
+		`if ` + detached + `1 true >/dev/null 2>&1; then ami_detach="` + detached + strconv.Itoa(int(timeout/time.Second)) + `"; fi; ` +
+		shellLine(pathOutEnv+`="$ami_path_out" $ami_detach `, ` -ic 'printf "%s" "$PATH" > "$`+pathOutEnv+`"' >/dev/null 2>&1 </dev/null`) +
+		`; cat "$ami_path_out"; rm -f "$ami_path_out"`
 }
 
 // ResolvePath returns the command search path an interactive workspace shell

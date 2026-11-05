@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 func (h *Handler) buildStatusGroup() *CommandGroup {

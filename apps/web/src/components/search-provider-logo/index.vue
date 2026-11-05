@@ -37,7 +37,7 @@ import {
   Sogou,
   Serper,
   DeepseekColor,
-} from '@memohai/icon'
+} from '@ami/icon'
 
 const searchIcons: Record<string, Component> = {
   brave: Brave,

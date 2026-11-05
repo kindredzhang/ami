@@ -8,7 +8,7 @@ import (
 
 	"github.com/felinics/dingtalk-stream-sdk-go/chatbot"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // sessionWebhookContext holds a cached session webhook for a received message.
@@ -367,7 +367,7 @@ func extractStringField(raw any, keys ...string) string {
 	return ""
 }
 
-// normalizeDingTalkConversationType maps DingTalk conversationType values to Memoh constants.
+// normalizeDingTalkConversationType maps DingTalk conversationType values to Ami constants.
 // "1" = single/private; "2" = group.
 func normalizeDingTalkConversationType(raw string) string {
 	switch strings.TrimSpace(raw) {

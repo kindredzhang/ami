@@ -1,27 +1,27 @@
 #!/bin/sh
 
 apt_get_once() {
-  timeout_seconds="${MEMOH_APT_COMMAND_TIMEOUT:-300}"
+  timeout_seconds="${AMI_APT_COMMAND_TIMEOUT:-300}"
   if has_cmd timeout; then
     timeout "$timeout_seconds" apt-get \
-      -o "Acquire::Retries=${MEMOH_APT_RETRIES:-2}" \
-      -o "Acquire::Connect::Timeout=${MEMOH_APT_CONNECT_TIMEOUT:-20}" \
-      -o "Acquire::http::Timeout=${MEMOH_APT_HTTP_TIMEOUT:-30}" \
-      -o "Acquire::https::Timeout=${MEMOH_APT_HTTP_TIMEOUT:-30}" \
+      -o "Acquire::Retries=${AMI_APT_RETRIES:-2}" \
+      -o "Acquire::Connect::Timeout=${AMI_APT_CONNECT_TIMEOUT:-20}" \
+      -o "Acquire::http::Timeout=${AMI_APT_HTTP_TIMEOUT:-30}" \
+      -o "Acquire::https::Timeout=${AMI_APT_HTTP_TIMEOUT:-30}" \
       "$@"
     return $?
   fi
   apt-get \
-    -o "Acquire::Retries=${MEMOH_APT_RETRIES:-2}" \
-    -o "Acquire::Connect::Timeout=${MEMOH_APT_CONNECT_TIMEOUT:-20}" \
-    -o "Acquire::http::Timeout=${MEMOH_APT_HTTP_TIMEOUT:-30}" \
-    -o "Acquire::https::Timeout=${MEMOH_APT_HTTP_TIMEOUT:-30}" \
+    -o "Acquire::Retries=${AMI_APT_RETRIES:-2}" \
+    -o "Acquire::Connect::Timeout=${AMI_APT_CONNECT_TIMEOUT:-20}" \
+    -o "Acquire::http::Timeout=${AMI_APT_HTTP_TIMEOUT:-30}" \
+    -o "Acquire::https::Timeout=${AMI_APT_HTTP_TIMEOUT:-30}" \
     "$@"
 }
 
 apt_get() {
-  max_attempts="${MEMOH_APT_COMMAND_RETRIES:-3}"
-  retry_delay="${MEMOH_APT_RETRY_DELAY:-5}"
+  max_attempts="${AMI_APT_COMMAND_RETRIES:-3}"
+  retry_delay="${AMI_APT_RETRY_DELAY:-5}"
   case "$max_attempts" in
     ""|*[!0-9]*|0) max_attempts=3 ;;
   esac
@@ -75,7 +75,7 @@ install_alpine_optional() {
 }
 
 display_style_enabled() {
-  style="${MEMOH_DISPLAY_DESKTOP_STYLE:-macos}"
+  style="${AMI_DISPLAY_DESKTOP_STYLE:-macos}"
   case "$style" in
     ""|0|false|False|FALSE|off|Off|OFF|none|None|NONE) return 1 ;;
     *) return 0 ;;
@@ -131,7 +131,7 @@ has_macos_wallpaper_assets() {
 }
 
 install_macos_assets_globally() {
-  case "${MEMOH_DISPLAY_INSTALL_ASSETS_GLOBAL:-}" in
+  case "${AMI_DISPLAY_INSTALL_ASSETS_GLOBAL:-}" in
     1|true|True|TRUE|yes|Yes|YES|on|On|ON) return 0 ;;
     *) return 1 ;;
   esac
@@ -142,12 +142,12 @@ clone_or_update_theme_repo() {
   dest="$2"
   [ -n "$url" ] && [ -n "$dest" ] || return 1
   if [ -d "$dest/.git" ]; then
-    run_limited "${MEMOH_THEME_FETCH_TIMEOUT:-180}" git -C "$dest" fetch --depth=1 origin >/dev/null 2>&1 || return 1
-    run_limited "${MEMOH_THEME_FETCH_TIMEOUT:-180}" git -C "$dest" reset --hard origin/HEAD >/dev/null 2>&1 || return 1
+    run_limited "${AMI_THEME_FETCH_TIMEOUT:-180}" git -C "$dest" fetch --depth=1 origin >/dev/null 2>&1 || return 1
+    run_limited "${AMI_THEME_FETCH_TIMEOUT:-180}" git -C "$dest" reset --hard origin/HEAD >/dev/null 2>&1 || return 1
     return 0
   fi
   rm -rf "$dest"
-  run_limited "${MEMOH_THEME_FETCH_TIMEOUT:-180}" git clone --depth=1 "$url" "$dest" >/dev/null 2>&1
+  run_limited "${AMI_THEME_FETCH_TIMEOUT:-180}" git clone --depth=1 "$url" "$dest" >/dev/null 2>&1
 }
 
 install_macos_theme_assets() {
@@ -156,7 +156,7 @@ install_macos_theme_assets() {
   has_cmd git || return 0
   has_cmd bash || return 0
 
-  theme_cache="${XDG_CACHE_HOME:-$HOME/.cache}/memoh-display-themes"
+  theme_cache="${XDG_CACHE_HOME:-$HOME/.cache}/ami-display-themes"
   if install_macos_assets_globally; then
     theme_dest=/usr/local/share/themes
     icon_dest=/usr/local/share/icons
@@ -176,7 +176,7 @@ install_macos_theme_assets() {
     (
       cd "$theme_cache/WhiteSur-gtk-theme"
       export SUDO_USER="${SUDO_USER:-root}"
-      run_limited "${MEMOH_THEME_INSTALL_TIMEOUT:-240}" ./install.sh \
+      run_limited "${AMI_THEME_INSTALL_TIMEOUT:-240}" ./install.sh \
         -d "$theme_dest" \
         -n WhiteSur \
         -c dark \
@@ -191,7 +191,7 @@ install_macos_theme_assets() {
   if clone_or_update_theme_repo https://github.com/vinceliuice/WhiteSur-icon-theme.git "$theme_cache/WhiteSur-icon-theme"; then
     (
       cd "$theme_cache/WhiteSur-icon-theme"
-      run_limited "${MEMOH_THEME_INSTALL_TIMEOUT:-180}" ./install.sh \
+      run_limited "${AMI_THEME_INSTALL_TIMEOUT:-180}" ./install.sh \
         -d "$icon_dest" \
         -n WhiteSur \
         -t default \
@@ -202,7 +202,7 @@ install_macos_theme_assets() {
   if clone_or_update_theme_repo https://github.com/vinceliuice/WhiteSur-cursors.git "$theme_cache/WhiteSur-cursors"; then
     (
       cd "$theme_cache/WhiteSur-cursors"
-      run_limited "${MEMOH_THEME_INSTALL_TIMEOUT:-120}" ./install.sh
+      run_limited "${AMI_THEME_INSTALL_TIMEOUT:-120}" ./install.sh
     ) || true
   fi
 
@@ -218,8 +218,8 @@ install_macos_theme_assets() {
 install_debian_style_extras() {
   display_style_enabled || return 0
   has_macos_theme_assets && return 0
-  if [ "${MEMOH_APT_INDEX_UPDATED:-0}" != "1" ]; then
-    apt_get update && MEMOH_APT_INDEX_UPDATED=1 || true
+  if [ "${AMI_APT_INDEX_UPDATED:-0}" != "1" ]; then
+    apt_get update && AMI_APT_INDEX_UPDATED=1 || true
   fi
   progress 54 desktop "Installing macOS desktop theme dependencies"
   install_debian_optional sudo git unzip bash sassc libglib2.0-bin libglib2.0-dev-bin libglib2.0-dev libxml2-utils librsvg2-common gtk2-engines-murrine gtk2-engines-pixbuf plank papirus-icon-theme arc-theme fonts-inter gnome-themes-extra bibata-cursor-theme xfce4-appmenu-plugin xfce4-windowck-plugin appmenu-gtk2-module appmenu-gtk3-module appmenu-registrar
@@ -246,13 +246,13 @@ install_style_extras_for_current_os() {
 }
 
 install_debian() {
-  has_cmd apt-get || { echo "This image looks Debian-like but apt-get is unavailable. Install the Memoh workspace toolkit or use a Debian/Alpine image." >&2; exit 1; }
+  has_cmd apt-get || { echo "This image looks Debian-like but apt-get is unavailable. Install the Ami workspace toolkit or use a Debian/Alpine image." >&2; exit 1; }
   export DEBIAN_FRONTEND=noninteractive
   export APT_LISTCHANGES_FRONTEND=none
   progress 18 system "Detected Debian workspace"
   progress 24 installing "Updating package index"
   apt_get update
-  MEMOH_APT_INDEX_UPDATED=1
+  AMI_APT_INDEX_UPDATED=1
   if ! has_cmd apt-extracttemplates; then
     apt_get install -y --no-install-recommends apt-utils
   fi
@@ -276,7 +276,7 @@ install_debian() {
 }
 
 install_alpine() {
-  has_cmd apk || { echo "This image looks Alpine-like but apk is unavailable. Install the Memoh workspace toolkit or use a Debian/Alpine image." >&2; exit 1; }
+  has_cmd apk || { echo "This image looks Alpine-like but apk is unavailable. Install the Ami workspace toolkit or use a Debian/Alpine image." >&2; exit 1; }
   progress 18 system "Detected Alpine workspace"
   progress 42 installing "Installing VNC, desktop, browser, accessibility, and CJK fonts"
   apk add --no-cache tigervnc xkeyboard-config xfce4 xfce4-terminal dbus-x11 xterm chromium fontconfig ttf-dejavu font-noto-cjk font-noto-emoji at-spi2-core

@@ -6,8 +6,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 type decisionOutputBackend struct {

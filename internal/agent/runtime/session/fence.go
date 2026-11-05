@@ -3,7 +3,7 @@ package sessionruntime
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // FenceActivator hands durable persistence ownership to one run's fencing

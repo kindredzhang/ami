@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 func TestWebContinuationDoesNotCreateChannelCheckpoint(t *testing.T) {

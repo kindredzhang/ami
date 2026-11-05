@@ -1,17 +1,17 @@
 -- name: DeleteBotChannelConfig :exec
 DELETE FROM bot_channel_configs
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND channel_type = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND channel_type = $2;
 
 -- name: GetBotChannelConfig :one
 SELECT id, bot_id, channel_type, credentials, external_identity, self_identity, routing, capabilities, disabled, verified_at, created_at, updated_at, team_id
 FROM bot_channel_configs
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND channel_type = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND channel_type = $2
 LIMIT 1;
 
 -- name: GetBotChannelConfigByExternalIdentity :one
 SELECT id, bot_id, channel_type, credentials, external_identity, self_identity, routing, capabilities, disabled, verified_at, created_at, updated_at, team_id
 FROM bot_channel_configs
-WHERE team_id = public.memoh_current_team_id() AND channel_type = $1 AND external_identity = $2
+WHERE team_id = public.ami_current_team_id() AND channel_type = $1 AND external_identity = $2
 LIMIT 1;
 
 -- name: UpsertBotChannelConfig :one
@@ -36,7 +36,7 @@ UPDATE bot_channel_configs
 SET
   disabled = $3,
   updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND channel_type = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND channel_type = $2
 RETURNING id, bot_id, channel_type, credentials, external_identity, self_identity, routing, capabilities, disabled, verified_at, created_at, updated_at, team_id;
 
 -- name: SaveMatrixSyncSinceToken :execrows
@@ -45,18 +45,18 @@ SET routing = COALESCE(routing, '{}'::jsonb) || jsonb_build_object(
   '_matrix',
   COALESCE(routing->'_matrix', '{}'::jsonb) || jsonb_build_object('since_token', sqlc.arg(since_token)::text)
 )
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: ListBotChannelConfigsByType :many
 SELECT id, bot_id, channel_type, credentials, external_identity, self_identity, routing, capabilities, disabled, verified_at, created_at, updated_at, team_id
 FROM bot_channel_configs
-WHERE team_id = public.memoh_current_team_id() AND channel_type = $1
+WHERE team_id = public.ami_current_team_id() AND channel_type = $1
 ORDER BY created_at DESC;
 
 -- name: GetUserChannelBinding :one
 SELECT id, user_id, channel_type, config, created_at, updated_at, team_id
 FROM user_channel_bindings
-WHERE team_id = public.memoh_current_team_id() AND user_id = $1 AND channel_type = $2
+WHERE team_id = public.ami_current_team_id() AND user_id = $1 AND channel_type = $2
 LIMIT 1;
 
 -- name: UpsertUserChannelBinding :one
@@ -71,5 +71,5 @@ RETURNING id, user_id, channel_type, config, created_at, updated_at, team_id;
 -- name: ListUserChannelBindingsByPlatform :many
 SELECT id, user_id, channel_type, config, created_at, updated_at, team_id
 FROM user_channel_bindings
-WHERE team_id = public.memoh_current_team_id() AND channel_type = $1
+WHERE team_id = public.ami_current_team_id() AND channel_type = $1
 ORDER BY created_at DESC;

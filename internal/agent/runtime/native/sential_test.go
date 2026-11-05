@@ -11,7 +11,7 @@ func TestToolLoopGuardNilReceiver(t *testing.T) {
 	result := guard.Inspect(ToolLoopInput{
 		ToolName: "search",
 		Input: map[string]any{
-			"query": "memoh",
+			"query": "ami",
 		},
 	})
 
@@ -31,7 +31,7 @@ func TestToolLoopGuardConcurrentInspectAndReset(t *testing.T) {
 	input := ToolLoopInput{
 		ToolName: "web_search",
 		Input: map[string]any{
-			"query":     "memoh logs",
+			"query":     "ami logs",
 			"requestId": "volatile",
 		},
 	}

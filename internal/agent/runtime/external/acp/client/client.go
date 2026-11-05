@@ -17,16 +17,16 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	"github.com/google/uuid"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/toolcontext"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/toolcontext"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -93,13 +93,13 @@ type clientCallbacks struct {
 	pendingAvailableCommands map[acp.SessionId][]AvailableCommandInfo
 	// restoring is set while session/resume or session/load is in flight.
 	// Load replays the earlier conversation as session/update, and some
-	// agents replay on resume too; Memoh already holds that history.
+	// agents replay on resume too; Ami already holds that history.
 	restoring bool
 	// mcpToolCall decodes the MCP server and tool from a permission request's
 	// raw input when the agent encodes them its own way.
 	mcpToolCall func(rawInput any) (serverName, toolName string, ok bool)
 	// runtimeOwnsApproval sends approvals straight to the user, skipping
-	// Memoh's policy (SessionConfig.RuntimeOwnsApproval).
+	// Ami's policy (SessionConfig.RuntimeOwnsApproval).
 	runtimeOwnsApproval bool
 	// userQuestions answers the agent's own question requests
 	// (SessionConfig.UserQuestions).
@@ -596,24 +596,24 @@ func (c *clientCallbacks) RequestPermission(ctx context.Context, p acp.RequestPe
 	// Consent is never a policy shortcut. ACP adapters encode fallback
 	// elicitation consent in the request shape, so the user must see the Agent's
 	// choices even when its server name would otherwise pass MCP preflight.
-	// Correlated real Memoh MCP tool calls remain delegated to the gateway's own
+	// Correlated real Ami MCP tool calls remain delegated to the gateway's own
 	// scoped policy and approval flow rather than creating a duplicate prompt.
 	consentShaped := isConsentShapedPermission(state)
 	forceReview := consentShaped
 	mcpShaped := false
 	if preflight, ok := c.mcpPreflight(state); ok {
 		mcpShaped = true
-		if !forceReview && c.allowsMemohMCPToolPreflight(ctx, preflight) {
+		if !forceReview && c.allowsAmiMCPToolPreflight(ctx, preflight) {
 			return allowWithGuard()
 		}
-		// Servers outside Memoh's scoped tool gateway are still ones the user
+		// Servers outside Ami's scoped tool gateway are still ones the user
 		// configured in their agent deliberately; the user decides, not a
 		// blanket refusal - and "the user decides" must hold in every policy
 		// configuration, so a disabled approval policy cannot silently select
 		// an allow option on the user's behalf.
 		forceReview = true
 		if c.logger != nil {
-			c.logger.InfoContext(ctx, "routing non-Memoh MCP permission request to generic approval",
+			c.logger.InfoContext(ctx, "routing non-Ami MCP permission request to generic approval",
 				slog.String("tool_call_id", state.id),
 				slog.String("server_name", preflight.serverName),
 				slog.String("tool_name", preflight.toolName),
@@ -636,7 +636,7 @@ func (c *clientCallbacks) RequestPermission(ctx context.Context, p acp.RequestPe
 		if !mcpShaped && !consentShaped {
 			// Only an agent-declared kind whose path/command failed to parse
 			// inherits the classified deny posture (policy_kind). MCP consents
-			// carry a Memoh-synthesized kind - denying them under the shell
+			// carry a Ami-synthesized kind - denying them under the shell
 			// exec policy class would silently kill the agent's MCP tools -
 			// so they stay on the human-review lane.
 			if kind := stringFromAny(input["kind"]); kind != "" {
@@ -749,7 +749,7 @@ func genericPermissionStateReady(state *acpToolState) bool {
 
 // normalizeACPOptionKind canonicalizes an agent-provided option kind for
 // comparison. Storage (approvalOptionsFromACP) and classification must agree,
-// or a non-canonically-cased kind would be approved by Memoh yet unanswered
+// or a non-canonically-cased kind would be approved by Ami yet unanswered
 // toward the agent.
 func normalizeACPOptionKind(kind acp.PermissionOptionKind) acp.PermissionOptionKind {
 	return acp.PermissionOptionKind(strings.ToLower(strings.TrimSpace(string(kind))))
@@ -1141,7 +1141,7 @@ func mcpPermissionPreflightFromState(state *acpToolState) (mcpPermissionPrefligh
 			// never a tool-call preflight (tool arguments nest under their own
 			// key). Refusing to parse it here means a consent whose id prefix
 			// or key set drifts upstream still lands on the forced-review lane
-			// instead of the Memoh-server auto-allow.
+			// instead of the Ami-server auto-allow.
 			return mcpPermissionPreflight{}, false
 		}
 	}
@@ -1191,16 +1191,16 @@ func mcpToolCallFromStructuredTitle(title string) (toolName, serverName string, 
 	return toolName, serverName, true
 }
 
-func (c *clientCallbacks) allowsMemohMCPToolPreflight(ctx context.Context, preflight mcpPermissionPreflight) bool {
+func (c *clientCallbacks) allowsAmiMCPToolPreflight(ctx context.Context, preflight mcpPermissionPreflight) bool {
 	if c == nil || c.toolGateway == nil {
 		return false
 	}
 	if !preflight.supportedMethod {
 		return false
 	}
-	if !isMemohToolsMCPServerName(preflight.serverName) {
+	if !isAmiToolsMCPServerName(preflight.serverName) {
 		if c.logger != nil {
-			c.logger.WarnContext(ctx, "rejecting MCP tool preflight for missing or non-Memoh server",
+			c.logger.WarnContext(ctx, "rejecting MCP tool preflight for missing or non-Ami server",
 				slog.String("shape", preflight.shape),
 				slog.String("server_name", preflight.serverName),
 				slog.String("tool_name", preflight.toolName))
@@ -1208,9 +1208,9 @@ func (c *clientCallbacks) allowsMemohMCPToolPreflight(ctx context.Context, prefl
 		return false
 	}
 	// Codex ACP preflights for MCP tools identify the server but may omit the
-	// tool name. The actual call still goes through Memoh's scoped tool
+	// tool name. The actual call still goes through Ami's scoped tool
 	// gateway; when the name is present, classify it against that same gateway
-	// so ACP sees the native-aligned Memoh tool surface.
+	// so ACP sees the native-aligned Ami tool surface.
 	if !preflight.hasToolName {
 		return true
 	}

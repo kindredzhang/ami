@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/hooks"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/settings"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/hooks"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestLoadMemoryContextMessage_NoProvider(t *testing.T) {

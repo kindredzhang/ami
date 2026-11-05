@@ -11,12 +11,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/settings"
-	videopkg "github.com/felinics/memoh/internal/video"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/settings"
+	videopkg "github.com/kindredzhang/ami/internal/video"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -485,7 +485,7 @@ func (p *VideoGenProvider) persistVideoJobReceipt(ctx context.Context, botID, ta
 			root = strings.TrimRight(info.DefaultWorkDir, "/")
 		}
 	}
-	path := root + "/.memoh/video-jobs/" + taskID + ".json"
+	path := root + "/.ami/video-jobs/" + taskID + ".json"
 	data, _ := json.Marshal(map[string]any{"task_id": taskID, "job_id": job.ID, "model_id": modelIDFromJob(model, job), "created_at": time.Now().UTC()})
 	writeCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
 	defer cancel()

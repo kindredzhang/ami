@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
 import { computed, ref } from 'vue'
-import type { AcpagentRuntimeStatus, AcpclientAvailableCommandInfo } from '@memohai/sdk'
+import type { AcpagentRuntimeStatus, AcpclientAvailableCommandInfo } from '@ami/sdk'
 import { useACPRuntime } from './useACPRuntime'
 
 const chatStoreMock = vi.hoisted(() => ({

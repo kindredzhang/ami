@@ -15,9 +15,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 func newTestBridgeClient(t *testing.T) *bridge.Client {

@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/rpc/runtimepb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/rpc/runtimepb"
 )
 
 // callOverWire runs handlerErr through a real server and client.

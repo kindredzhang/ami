@@ -3,7 +3,7 @@ package external
 import (
 	"errors"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
 )
 
 // CodexFormMarkers reads the markers Codex puts in a form property's _meta:

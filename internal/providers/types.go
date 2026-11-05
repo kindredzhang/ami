@@ -3,8 +3,8 @@ package providers
 import (
 	"time"
 
-	"github.com/felinics/memoh/internal/modelcatalog"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/modelcatalog"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // CreateRequest represents a request to create a new provider.

@@ -14,13 +14,13 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/agent/application"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/apperror"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/errs"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/apperror"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/errs"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 // A WebSocket request that fails before a run takes it over is answered with a
@@ -29,7 +29,7 @@ import (
 // frame.
 func TestFailWSRequestAnswersByCodeAndRecordsTheCause(t *testing.T) {
 	t.Parallel()
-	const secret = "SECRET dial unix /run/memoh.sock"
+	const secret = "SECRET dial unix /run/ami.sock"
 	tests := []struct {
 		name        string
 		err         error

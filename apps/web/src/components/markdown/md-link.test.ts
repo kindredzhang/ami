@@ -7,7 +7,7 @@ import { registerSharedMarkdownComponents } from './index'
 import { clearSiteIconLookups } from '@/utils/site-icon'
 
 const mocks = vi.hoisted(() => ({ siteIcon: vi.fn(async () => ({ data: { light: 'https://site.example/favicon.svg', dark: 'https://site.example/favicon-dark.svg' } })), openFile: vi.fn(() => true), openBrowserAt: vi.fn(() => true), error: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({ getSiteIcon: mocks.siteIcon }))
+vi.mock('@ami/sdk', () => ({ getSiteIcon: mocks.siteIcon }))
 const settings = reactive({ resolvedColorMode: 'dark' })
 vi.mock('@/store/settings', () => ({ useSettingsStore: () => settings }))
 vi.mock('@/store/workspace-tabs', () => ({ useWorkspaceTabsStore: () => mocks }))

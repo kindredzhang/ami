@@ -5,10 +5,10 @@ import (
 	"errors"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // Account asks the Agent's Codex which ChatGPT account it is signed in to.

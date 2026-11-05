@@ -7,8 +7,8 @@ import (
 
 	dockerclient "github.com/docker/docker/client"
 
-	"github.com/felinics/memoh/internal/config"
-	containerapi "github.com/felinics/memoh/internal/container"
+	"github.com/kindredzhang/ami/internal/config"
+	containerapi "github.com/kindredzhang/ami/internal/container"
 )
 
 func TestProvideServiceDockerSlot(t *testing.T) {
@@ -21,7 +21,7 @@ func TestProvideServiceDockerSlot(t *testing.T) {
 	if !ok {
 		t.Fatal("docker service should expose optional ImageService")
 	}
-	_, imgErr := imageSvc.GetImage(context.Background(), "memohai/definitely-missing:test")
+	_, imgErr := imageSvc.GetImage(context.Background(), "amiai/definitely-missing:test")
 	switch {
 	case containerapi.IsNotFound(imgErr):
 		return

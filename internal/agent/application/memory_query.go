@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"strings"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/prune"
-	"github.com/felinics/memoh/internal/textutil"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/prune"
+	"github.com/kindredzhang/ami/internal/textutil"
 )
 
 const (

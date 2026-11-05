@@ -88,7 +88,7 @@ describe('HostPathResolver', () => {
 })
 
 async function temporaryRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'memoh-runtime-host-paths-'))
+  const root = await mkdtemp(join(tmpdir(), 'ami-runtime-host-paths-'))
   temporaryDirectories.push(root)
   return root
 }

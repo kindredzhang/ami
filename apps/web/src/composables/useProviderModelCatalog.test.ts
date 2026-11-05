@@ -11,7 +11,7 @@ vi.mock('@pinia/colada', () => ({
 }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 vi.mock('@felinic/ui', () => ({ toast: { warning: mocks.warning } }))
-vi.mock('@memohai/sdk', () => ({ postProvidersByIdImportModels: mocks.post, postProvidersByIdImportCatalogModels: mocks.catalogPost }))
+vi.mock('@ami/sdk', () => ({ postProvidersByIdImportModels: mocks.post, postProvidersByIdImportCatalogModels: mocks.catalogPost }))
 
 import { useProviderModelCatalog } from './useProviderModelCatalog'
 

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/workspace"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 // ResolveForSession resolves a session's workdir binding to the target it

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
 )
 
 // recordThreadMetadata publishes a matching id/path pair. An unknown path

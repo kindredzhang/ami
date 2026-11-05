@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { ComputerIcon, ShortcutIcon } from '@memohai/icon/ui'
+import { ComputerIcon, ShortcutIcon } from '@ami/icon/ui'
 import { computed, inject, onBeforeUnmount, ref, type Component } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'

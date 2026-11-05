@@ -8,16 +8,16 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	"github.com/google/uuid"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/toolcontext"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 // createElicitationRequest accepts the v0.13.5 form shape plus the optional
 // session/tool-call extensions emitted by some adapters. The protocol form
 // itself carries neither field, so ownership comes from the callback's current
-// Memoh tool session and the attached ACP Session.
+// Ami tool session and the attached ACP Session.
 type createElicitationRequest struct {
 	Meta            map[string]any `json:"_meta,omitempty"`
 	SessionID       string         `json:"sessionId,omitempty"`

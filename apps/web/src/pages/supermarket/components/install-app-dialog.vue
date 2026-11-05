@@ -128,7 +128,7 @@ import {
   getConnectorsCatalog,
   getWorkspaceDependencies,
   type HandlersSupermarketAppDescriptor,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import BotSelect from '@/components/bot-select/index.vue'
 import AppProgressDialog from '@/pages/bots/components/app-progress-dialog.vue'
 import { useAppOperation } from '@/pages/bots/composables/useAppOperation'

@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "registry_id": "memoh",
+  "registry_id": "ami",
   "dependency_id": "claude-code",
   "manifest": {
     "schema_version": "1",
@@ -58,7 +58,7 @@
   },
   "manifest_digest": "sha256:8a4d3a93ce8f9471470d2d53964565c2e9b56272f97ec2d334a4159cecae3a71",
   "artifact": {
-    "format": "memoh_dependency_v1",
+    "format": "ami_dependency_v1",
     "digest": "24e140d142569f11b8748961ee595f031335d4a088aef882f10517a0551665d9",
     "size": 3605,
     "uncompressed_size": 12793,

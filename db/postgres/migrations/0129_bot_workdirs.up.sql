@@ -14,7 +14,7 @@
 
 CREATE TABLE IF NOT EXISTS public.bot_workdirs (
     id                 UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id            UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id            UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                    REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id             UUID        NOT NULL,
     name               TEXT        NOT NULL,
@@ -68,15 +68,15 @@ DROP POLICY IF EXISTS bot_workdirs_team_update ON public.bot_workdirs;
 DROP POLICY IF EXISTS bot_workdirs_team_delete ON public.bot_workdirs;
 
 CREATE POLICY bot_workdirs_team_select ON public.bot_workdirs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workdirs_team_insert ON public.bot_workdirs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workdirs_team_update ON public.bot_workdirs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workdirs_team_delete ON public.bot_workdirs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Immutable per-session workdir binding. SET NULL only fires on the hard
 -- delete path (remote unbind cascade / bot deletion); the API archive path
@@ -89,7 +89,7 @@ ALTER TABLE public.bot_sessions
 -- NOT VALID skips the validation scan: workdir_id was added NULL in this
 -- very migration, so validation is vacuous — and the scan would evaluate
 -- bot_sessions' FORCE RLS policies, which raise when the migration role has
--- no memoh.team_id GUC set. New writes are enforced normally.
+-- no ami.team_id GUC set. New writes are enforced normally.
 ALTER TABLE public.bot_sessions
     ADD CONSTRAINT bot_sessions_workdir_id_fkey
     FOREIGN KEY (team_id, workdir_id)

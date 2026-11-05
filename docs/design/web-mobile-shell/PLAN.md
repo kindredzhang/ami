@@ -6,9 +6,9 @@
 
 | 项 | 值 |
 |---|---|
-| Worktree | `/Users/qqqqqf/Documents/Memoh-web-mobile-shell` |
+| Worktree | `/Users/qqqqqf/Documents/Ami-web-mobile-shell` |
 | Branch | `feat/web-mobile-shell`(base `origin/main` @ `b8b694ceb`) |
-| 范围 | OSS `apps/web`(+ 必要时 `packages/ui`);不碰 Memoh Cloud |
+| 范围 | OSS `apps/web`(+ 必要时 `packages/ui`);不碰 Ami Cloud |
 | 状态 | 架构已裁决,实现未开始 |
 | 验证纪律 | AI 只做 lint/typecheck/build + 代码层 spike;渲染效果与 happy path 归人类 QA |
 

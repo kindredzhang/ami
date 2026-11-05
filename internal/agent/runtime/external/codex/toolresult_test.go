@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
 )
 
 func TestToolResultsReachNativeDisplayFields(t *testing.T) {

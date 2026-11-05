@@ -10,11 +10,11 @@ import (
 	"net/url"
 	"strings"
 
-	memohcopilot "github.com/felinics/memoh/internal/copilot"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/reasoning"
+	amicopilot "github.com/kindredzhang/ami/internal/copilot"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 const (
@@ -65,7 +65,7 @@ func (s *Service) fetchGitHubCopilotModels(ctx context.Context, provider sqlc.Pr
 	if err != nil {
 		return nil, fmt.Errorf("resolve GitHub Copilot OAuth token: %w", err)
 	}
-	return s.listGitHubCopilotRemoteModels(ctx, memohcopilot.DefaultAPIBaseURL, githubToken)
+	return s.listGitHubCopilotRemoteModels(ctx, amicopilot.DefaultAPIBaseURL, githubToken)
 }
 
 func (s *Service) listGitHubCopilotRemoteModels(ctx context.Context, baseURL, githubToken string) ([]RemoteModel, error) {
@@ -83,7 +83,7 @@ func (s *Service) listGitHubCopilotRemoteModels(ctx context.Context, baseURL, gi
 	req.Header.Set("Authorization", "Bearer "+strings.TrimSpace(githubToken))
 	req.Header.Set("Accept", "application/json")
 
-	resp, err := memohcopilot.NewHTTPClient(s.httpClient).Do(req) //nolint:gosec // The production endpoint is fixed; the parameter exists for isolated tests.
+	resp, err := amicopilot.NewHTTPClient(s.httpClient).Do(req) //nolint:gosec // The production endpoint is fixed; the parameter exists for isolated tests.
 	if err != nil {
 		return nil, errs.WrapDependency(err, "request GitHub Copilot models")
 	}
@@ -157,7 +157,7 @@ func (s *Service) listGitHubCopilotRemoteModels(ctx context.Context, baseURL, gi
 			thinkingMode = models.ThinkingModeToggle
 		}
 		// Copilot rejects a prompt over max_prompt_tokens, which can be well
-		// below the model's window, and Memoh budgets the prompt by the window.
+		// below the model's window, and Ami budgets the prompt by the window.
 		limits := model.Capabilities.Limits
 		contextWindow := limits.MaxContextWindowTokens
 		if limits.MaxPromptTokens != nil && (contextWindow == nil || *limits.MaxPromptTokens < *contextWindow) {

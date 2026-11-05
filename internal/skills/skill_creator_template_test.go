@@ -11,14 +11,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/templates"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/templates"
 )
 
 // The built-in skill-creator ships its own path guidance and Python
 // scaffolder. They must create user Skills directly below ManagedDirPath,
 // otherwise the Skills they create are never discovered.
-const skillCreatorTemplateDir = ".memoh/skills/skill-creator"
+const skillCreatorTemplateDir = ".ami/skills/skill-creator"
 
 var initSkillDefaultPathExpr = regexp.MustCompile(`"--path",\s*default="([^"]+)"`)
 

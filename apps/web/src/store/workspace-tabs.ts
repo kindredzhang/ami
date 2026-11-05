@@ -137,7 +137,7 @@ export const useWorkspaceTabsStore = defineStore('workspace-tabs', () => {
   // header strip (the growing void container) doubles as a window-drag region
   // (`-webkit-app-region: drag`), which swallows native drag-and-drop events so a
   // tab can't land on the blank part of another group's tab bar. chat-workspace
-  // mirrors this onto the dock root as `.memoh-dock-dragging`, and the theme
+  // mirrors this onto the dock root as `.ami-dock-dragging`, and the theme
   // flips the void to `no-drag` while it's set so the whole header accepts drops,
   // then back to a window handle on drag end.
   const panelDragging = ref(false)

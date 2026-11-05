@@ -11,13 +11,13 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/chat/checkpoint"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/chat/checkpoint"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 func TestDropPreflightFailureTurns(t *testing.T) {

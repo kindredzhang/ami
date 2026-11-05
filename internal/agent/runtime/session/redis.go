@@ -162,7 +162,7 @@ func newRedisBackend(opts RedisOptions) (*RedisBackend, error) {
 	}
 	prefix := strings.TrimSpace(opts.KeyPrefix)
 	if prefix == "" {
-		prefix = "memoh:session_runtime:"
+		prefix = "ami:session_runtime:"
 	}
 	return &RedisBackend{
 		client:        client,

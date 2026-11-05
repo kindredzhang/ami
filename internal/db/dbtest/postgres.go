@@ -5,8 +5,8 @@ import (
 	"io/fs"
 	"log/slog"
 
-	dbembed "github.com/felinics/memoh/db"
-	dbpkg "github.com/felinics/memoh/internal/db"
+	dbembed "github.com/kindredzhang/ami/db"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
 )
 
 // MigratePostgresUp applies the same embedded migration chain used by the server.

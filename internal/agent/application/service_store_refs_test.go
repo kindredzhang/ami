@@ -13,11 +13,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestToProviderMessagesKeepsPersistedContentAndSourceAligned(t *testing.T) {

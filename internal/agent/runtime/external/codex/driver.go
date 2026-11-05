@@ -11,17 +11,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 // ApprovalService is the decision flow the driver routes approvals through.
@@ -116,7 +116,7 @@ func (d *Driver) resolveAgentConfig(ctx context.Context, botID, botAgentID strin
 		return Config{}, external.Fail(external.FailureAuthRequired, err)
 	}
 	// A ChatGPT login is Codex's own: it signs in, stores, and refreshes it
-	// in CODEX_HOME, and Memoh keeps no copy.
+	// in CODEX_HOME, and Ami keeps no copy.
 	if cfg.Auth != AuthAPIKey {
 		return cfg, nil
 	}
@@ -255,7 +255,7 @@ func (d *Driver) Prompt(ctx context.Context, input external.PromptInput) (extern
 	cfg, err := d.resolveAgentConfig(ctx, input.BotID, input.BotAgentID, true)
 	if err != nil {
 		// A credential failure is already a Failure; reading the Agent's
-		// configuration is Memoh's own and stays private.
+		// configuration is Ami's own and stays private.
 		return external.PromptResult{}, err
 	}
 
@@ -445,7 +445,7 @@ func (d *Driver) ensureThread(ctx context.Context, srv *appServer, cfg Config, i
 		return threadID, nil
 	}
 	toolsConfig, bindTools := d.prepareThreadTools(ctx, srv, input)
-	// Memoh keeps its own history; loading a thread never reads Codex's turns.
+	// Ami keeps its own history; loading a thread never reads Codex's turns.
 	excludeTurns := true
 	params := protocol.ThreadResumeParams{
 		ExcludeTurns:      &excludeTurns,
@@ -562,7 +562,7 @@ func (d *Driver) interruptTurn(srv *appServer, turn *turnState, turnID string) {
 	}
 }
 
-// botGatewayToolLookup reports whether a tool name is served by the Memoh
+// botGatewayToolLookup reports whether a tool name is served by the Ami
 // tool gateway for this bot. It uses the same base session as a thread with
 // no active turn, so the consent-time lookup matches the registry the
 // execution will see; misses and errors report false (fail closed).
@@ -641,7 +641,7 @@ func (d *Driver) acquireServer(ctx context.Context, botID, botAgentID string) (*
 // prevent.
 func emitThreadNotices(srv *appServer, threadID string, sink external.EventSink) {
 	if srv.threadToolless(threadID) {
-		toolmount.EmitUnavailableNotice(sink, "this conversation started without Memoh tools; start a new session to restore them")
+		toolmount.EmitUnavailableNotice(sink, "this conversation started without Ami tools; start a new session to restore them")
 	}
 }
 

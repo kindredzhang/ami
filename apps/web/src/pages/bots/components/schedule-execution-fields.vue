@@ -161,7 +161,7 @@ import {
   getModels,
   getProviders,
   getBotsByBotIdAcpOptions,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type {
   AcpclientModelInfo,
   AcpclientReasoningEffortInfo,
@@ -170,7 +170,7 @@ import type {
   ModelsGetResponse,
   ProvidersGetResponse,
   SessionSession,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { botAgentName, botAgentProvider, isDirectBotAgentRuntime, normalizeBotAgentRuntime, sessionAgentProvider, type DirectBotAgentRuntime } from '@/utils/bot-agent'
 import { isAgentRuntimeType, normalizedRuntimeType } from '@/store/chat-list.utils'
@@ -215,7 +215,7 @@ const TARGET_SESSION_MODES = ['chat', 'schedule']
 const EXTERNAL_AGENT_PROVIDER_ID = '__external_agents__'
 const EXTERNAL_AGENT_VALUE_PREFIX = 'agent:'
 
-// An agent's own models carry no Memoh provider, so their picker groups by
+// An agent's own models carry no Ami provider, so their picker groups by
 // nothing. Hoisted so the prop identity is stable across renders.
 const NO_PROVIDERS: ProvidersGetResponse[] = []
 

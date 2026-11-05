@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestListSkillReturnsSortedSummaries(t *testing.T) {

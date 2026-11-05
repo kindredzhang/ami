@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 // NewManagerFromConfig is the single construction site where the two configured

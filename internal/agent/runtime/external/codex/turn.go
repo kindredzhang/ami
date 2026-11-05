@@ -13,11 +13,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // interruptSettleTimeout bounds how long an interrupted turn may take to
@@ -32,8 +32,8 @@ type turnState struct {
 	approval  approval.FlowService
 	waiter    func(approvalID string) func()
 	userInput UserInputService
-	// toolLookup reports whether a tool name exists on the Memoh gateway; the
-	// MCP consent branch uses it to recognize Memoh-owned tools.
+	// toolLookup reports whether a tool name exists on the Ami gateway; the
+	// MCP consent branch uses it to recognize Ami-owned tools.
 	toolLookup func(context.Context, string) bool
 	logger     *slog.Logger
 	threadID   string
@@ -316,7 +316,7 @@ func (t *turnState) handleItemStarted(item *protocol.ThreadItem) {
 		})
 	case item.MCPToolCall != nil:
 		mcpCall := item.MCPToolCall
-		if isMemohMCPToolCall(mcpCall) {
+		if isAmiMCPToolCall(mcpCall) {
 			return
 		}
 		name := mcpToolName(mcpCall)
@@ -384,7 +384,7 @@ func (t *turnState) handleItemCompleted(item *protocol.ThreadItem) {
 		t.emit(event.StreamEvent{Type: event.ToolCallEnd, ToolCallID: fc.ID, ToolName: t.toolName(fc.ID), Result: fileChangeInput(fc)})
 	case item.MCPToolCall != nil:
 		mcpCall := item.MCPToolCall
-		if isMemohMCPToolCall(mcpCall) {
+		if isAmiMCPToolCall(mcpCall) {
 			return
 		}
 		ev := event.StreamEvent{Type: event.ToolCallEnd, ToolCallID: mcpCall.ID, ToolName: t.toolName(mcpCall.ID)}
@@ -419,7 +419,7 @@ func (t *turnState) toolName(itemID string) string {
 	return "exec"
 }
 
-// handleServerRequest decides one approval request through the Memoh approval
+// handleServerRequest decides one approval request through the Ami approval
 // flow and answers the app-server. Runs on its own goroutine, bounded by the
 // turn-scoped context and cancellable via serverRequest/resolved.
 func (t *turnState) handleServerRequest(c *conn, req *protocol.Inbound, decoded any) {
@@ -477,7 +477,7 @@ func (t *turnState) handleServerRequest(c *conn, req *protocol.Inbound, decoded 
 	case *protocol.ToolRequestUserInputParams:
 		_ = c.Respond(req.ID, t.requestUserInput(ctx, params))
 	default:
-		_ = c.RespondError(req.ID, -32601, "memoh does not handle this request")
+		_ = c.RespondError(req.ID, -32601, "ami does not handle this request")
 	}
 }
 
@@ -683,7 +683,7 @@ func (t *turnState) result() (external.PromptResult, error) {
 	}
 }
 
-// buildTurnInput assembles the turn/start input items: the Memoh context
+// buildTurnInput assembles the turn/start input items: the Ami context
 // document, the user's message, and any inline images as data URLs.
 func buildTurnInput(input external.PromptInput) []protocol.UserInput {
 	items := make([]protocol.UserInput, 0, 2+len(input.Images))
@@ -728,8 +728,8 @@ func mcpToolName(call *protocol.McpToolCallThreadItem) string {
 	return fmt.Sprintf("%s.%s", server, tool)
 }
 
-func isMemohMCPToolCall(call *protocol.McpToolCallThreadItem) bool {
-	return strings.EqualFold(strings.TrimSpace(call.Server), memohMCPServerName)
+func isAmiMCPToolCall(call *protocol.McpToolCallThreadItem) bool {
+	return strings.EqualFold(strings.TrimSpace(call.Server), amiMCPServerName)
 }
 
 func mcpToolErrorMessage(mcpErr *protocol.McpToolCallError) string {

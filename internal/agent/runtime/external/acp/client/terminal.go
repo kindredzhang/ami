@@ -11,10 +11,10 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const (

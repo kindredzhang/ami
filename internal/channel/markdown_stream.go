@@ -5,7 +5,7 @@ import (
 	"maps"
 	"strings"
 
-	"github.com/felinics/memoh/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
 )
 
 // Markdown media on a stream: prose streams as usual, and only text that may

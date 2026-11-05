@@ -3,7 +3,7 @@ package view
 import (
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // UIStreamEventFromAgentEvent adapts a runtime stream event to the UI

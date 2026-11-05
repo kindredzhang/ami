@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 // Removal actions and reasons reported by RemovalPreview.

@@ -5,12 +5,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/chat/checkpoint"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/chat/checkpoint"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func TestHistoryRecordPathPreservesLegacyServiceMessagePipeline(t *testing.T) {
@@ -22,7 +22,7 @@ func TestHistoryRecordPathPreservesLegacyServiceMessagePipeline(t *testing.T) {
 			sdk.ToolCallPart{
 				ToolCallID: "call-1",
 				ToolName:   "lookup",
-				Input:      toolexec.ArgumentsFromValue(map[string]any{"q": "memoh"}),
+				Input:      toolexec.ArgumentsFromValue(map[string]any{"q": "ami"}),
 			},
 		},
 	}

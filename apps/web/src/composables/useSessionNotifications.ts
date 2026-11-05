@@ -15,7 +15,7 @@ export function useSessionNotifications() {
   const settings = useNotificationSettings()
   const router = useRouter()
   const { t } = useI18n()
-  const channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('memoh-session-attention')
+  const channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('ami-session-attention')
   const probes = new Map<string, () => void>()
   let disposed = false
   let generation = 0
@@ -50,7 +50,7 @@ export function useSessionNotifications() {
     if (disposed || expected !== generation || !settings.active || isSessionViewed(entry.sessionId)
       || unread.entries[entry.sessionId]?.attentionAt !== entry.attentionAt) return
     const bot = chat.bots.find(item => item.id === entry.botId)
-    const title = `${bot?.display_name || bot?.name || 'Memoh'} · ${entry.title || t('chat.untitledSession')}`.slice(0, 256)
+    const title = `${bot?.display_name || bot?.name || 'Ami'} · ${entry.title || t('chat.untitledSession')}`.slice(0, 256)
     const body = t(`notifications.kind.${entry.kind}`)
     if (settings.desktop) {
       await window.api?.desktop?.notify?.({ ...entry, title, body })
@@ -59,12 +59,12 @@ export function useSessionNotifications() {
     const send = () => {
       if (disposed || expected !== generation || !settings.active || isSessionViewed(entry.sessionId)
         || unread.entries[entry.sessionId]?.attentionAt !== entry.attentionAt) return
-      const key = `memoh-notified:${entry.sessionId}`
+      const key = `ami-notified:${entry.sessionId}`
       try {
         const previous = localStorage.getItem(key)
         if (previous && Date.parse(previous) >= Date.parse(entry.attentionAt)) return
       } catch { /* Storage can be unavailable in private browsing. The notification tag still replaces duplicates. */ }
-      const notification = new Notification(title, { body, tag: `memoh:${entry.sessionId}` })
+      const notification = new Notification(title, { body, tag: `ami:${entry.sessionId}` })
       try { localStorage.setItem(key, entry.attentionAt) } catch { /* Permission does not depend on storage access. */ }
       notification.onclick = () => {
         notification.close()
@@ -72,7 +72,7 @@ export function useSessionNotifications() {
         void router.push(sessionAttentionPath(entry.botId, entry.sessionId))
       }
     }
-    if (navigator.locks) await navigator.locks.request('memoh-system-notification', send)
+    if (navigator.locks) await navigator.locks.request('ami-system-notification', send)
     else send()
   }
 

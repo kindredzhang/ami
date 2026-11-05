@@ -150,11 +150,11 @@
       "fieldChatACL": "聊天 ACL"
     },
     "link": {
-      "usage": "用法：/link <code> — 把此账号关联到你的 Memoh 用户。",
+      "usage": "用法：/link <code> — 把此账号关联到你的 Ami 用户。",
       "missingCode": "请提供关联码：/link <code>",
-      "success": "已关联。此账号现在已绑定到你的 Memoh 用户，并继承你的 Bot 权限。",
+      "success": "已关联。此账号现在已绑定到你的 Ami 用户，并继承你的 Bot 权限。",
       "notFound": "关联码无效。",
-      "expired": "关联码已过期。请在 Memoh 设置中重新生成。",
+      "expired": "关联码已过期。请在 Ami 设置中重新生成。",
       "consumed": "该关联码已被使用。",
       "noIdentity": "无法关联：缺少渠道身份。",
       "unavailable": "账号关联功能当前不可用。",
@@ -446,9 +446,9 @@
       "unknownCommand": "未知命令 {command}，用 {help} 查看可用命令。也可去掉斜杠作为普通消息发送。",
       "unknownCommandShort": "未知命令 {command}，用 {help} 查看全部命令。",
       "unknownAction": "{command} 不支持 {action} 操作，用 {help} 查看可用操作。",
-      "ownerOnly": "⚠️ 仅机器人所有者可执行 {command}，聊天不受影响。如果你就是所有者，请先在 Memoh 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
+      "ownerOnly": "⚠️ 仅机器人所有者可执行 {command}，聊天不受影响。如果你就是所有者，请先在 Ami 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
       "noAccess": "⚠️ 你没有该 Bot 的访问权限。",
-      "accessDeniedHint": "⚠️ 你暂时无法与该 Bot 对话。如果你是它的所有者，请在 Memoh 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码> 关联你的账号。",
+      "accessDeniedHint": "⚠️ 你暂时无法与该 Bot 对话。如果你是它的所有者，请在 Ami 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码> 关联你的账号。",
       "accessDeniedManager": "⚠️ 你可以管理这个 Bot，但这个频道身份没有开启 Chat。Manage 命令仍然可用；如果这个身份也需要发送普通消息，请让 Bot 所有者在 Channel Access 里开启 Chat。",
       "generic": "⚠️ 暂时无法完成 {command}，请稍后再试。",
       "genericNoResource": "⚠️ 出了点问题，请稍后再试。",
@@ -631,7 +631,7 @@
     },
     "elicitation_declined": "工具请求的交互未能展示，此次请求已拒绝。",
     "external_agent": {
-      "account_unbound": "你的 IM 账号还没关联到 Memoh 账号，暂时无法使用该 Bot 的工作区。如果你是它的所有者，请在 Memoh 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
+      "account_unbound": "你的 IM 账号还没关联到 Ami 账号，暂时无法使用该 Bot 的工作区。如果你是它的所有者，请在 Ami 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
       "container_workspace_required": "该 Agent 运行时需要容器工作区。请先把 Bot 切换到容器工作区，再重试。",
       "turn_replacement_unsupported": "外部 Agent 会话不支持重试或编辑，请改为发送一条新消息。"
     },
@@ -649,7 +649,7 @@
       "usage_limited": "外部 Agent 账号的使用额度已用完。请等额度重置后再试，或检查该账号的套餐与账单。"
     },
     "fetch_provider": {
-      "native_managed": "内置抓取服务由 Memoh 管理，无法这样修改。",
+      "native_managed": "内置抓取服务由 Ami 管理，无法这样修改。",
       "not_found": "这个抓取服务已不存在，请刷新列表后重新选择。"
     },
     "group_chat_acp_unsupported": "群聊不能创建对话模式的外部 Agent 会话。请使用 /new <Agent 名称> 或 /new discuss <Agent 名称>。",
@@ -810,7 +810,7 @@
       "reasoning_options_unavailable": "暂时无法解析对话模型的推理选项，请稍后重试。"
     },
     "skill": {
-      "builtin_read_only": "Memoh 自带 Skill 由系统管理，无法编辑或删除。",
+      "builtin_read_only": "Ami 自带 Skill 由系统管理，无法编辑或删除。",
       "directory_shared": "该 Skill 的文件夹中还包含其他 Skill，无法在这里重命名或删除。请在文件中删除它的 SKILL.md。",
       "name_invalid": "Skill 的 YAML frontmatter 中需要有效的名称。",
       "name_taken": "已存在同名 Skill，请换一个名称。",
@@ -845,7 +845,7 @@
       "operation_failed": "审批响应处理失败。",
       "request_invalid": "审批响应格式无效，请刷新后重试。"
     },
-    "tools_unavailable": "此会话的 Memoh 工具不可用，请新建会话后重试。",
+    "tools_unavailable": "此会话的 Ami 工具不可用，请新建会话后重试。",
     "transcription_model": {
       "not_found": "这个语音转写模型已不存在，请刷新列表后重新选择。"
     },

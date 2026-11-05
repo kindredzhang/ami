@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 func TestClearBotRuntimeDataClearsCompactionArtifactsPostgresPath(t *testing.T) {
@@ -43,24 +43,24 @@ func TestClearBotRuntimeDataClearsCompactionArtifactsPostgresPath(t *testing.T) 
 CREATE TABLE bot_channel_routes (
   id UUID PRIMARY KEY,
   bot_id UUID NOT NULL,
-  team_id UUID NOT NULL DEFAULT public.memoh_current_team_id()
+  team_id UUID NOT NULL DEFAULT public.ami_current_team_id()
 );
 CREATE TABLE bot_sessions (
   id UUID PRIMARY KEY,
   bot_id UUID NOT NULL,
-  team_id UUID NOT NULL DEFAULT public.memoh_current_team_id(),
+  team_id UUID NOT NULL DEFAULT public.ami_current_team_id(),
   route_id UUID REFERENCES bot_channel_routes(id) ON DELETE SET NULL
 );
 CREATE TABLE bot_history_message_compacts (
   id UUID PRIMARY KEY,
   bot_id UUID NOT NULL,
-  team_id UUID NOT NULL DEFAULT public.memoh_current_team_id(),
+  team_id UUID NOT NULL DEFAULT public.ami_current_team_id(),
   session_id UUID REFERENCES bot_sessions(id) ON DELETE CASCADE
 );
 CREATE TABLE bot_history_messages (
   id UUID PRIMARY KEY,
   bot_id UUID NOT NULL,
-  team_id UUID NOT NULL DEFAULT public.memoh_current_team_id(),
+  team_id UUID NOT NULL DEFAULT public.ami_current_team_id(),
   session_id UUID REFERENCES bot_sessions(id) ON DELETE SET NULL
 );
 `); err != nil {

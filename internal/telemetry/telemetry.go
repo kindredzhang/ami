@@ -1,4 +1,4 @@
-// Package telemetry assembles OpenTelemetry tracing and metrics for a Memoh
+// Package telemetry assembles OpenTelemetry tracing and metrics for a Ami
 // process.
 //
 // Tracing answers the question logs cannot: where the time went, and which
@@ -40,18 +40,18 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/version"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 // ScopeName identifies spans this repository creates, as opposed to spans from
 // an instrumentation library.
-const ScopeName = "github.com/felinics/memoh"
+const ScopeName = "github.com/kindredzhang/ami"
 
 // Service describes the process being traced.
 type Service struct {
-	// Name is the service.name every span is attributed to: "memoh-server",
-	// "memoh-channel". A backend groups by it, so it has to be stable.
+	// Name is the service.name every span is attributed to: "ami-server",
+	// "ami-channel". A backend groups by it, so it has to be stable.
 	Name string
 	// InstanceID distinguishes replicas of the same service. Optional: when
 	// empty, each process gets a random one.

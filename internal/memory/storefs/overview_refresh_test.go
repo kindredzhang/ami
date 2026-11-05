@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 var errWorkspaceUnavailable = errors.New("workspace unavailable")

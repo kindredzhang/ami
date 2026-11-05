@@ -1,6 +1,6 @@
 import { externalAgentDisplayName, externalAgentIcon, normalizeAgentID } from '@/utils/external-agent'
 import type { Component } from 'vue'
-import type { AcpprofilePublicProfile, BotagentsBotAgent } from '@memohai/sdk'
+import type { AcpprofilePublicProfile, BotagentsBotAgent } from '@ami/sdk'
 
 export const BOT_AGENT_RUNTIME_ACP = 'acp'
 export const BOT_AGENT_RUNTIME_CODEX = 'codex'
@@ -162,7 +162,7 @@ export function isDirectBotAgentConfigured(
   if (!isAgentAuthMode(auth) || !DIRECT_BOT_AGENT_AUTH_MODES[runtime].includes(auth)) return false
   // A Claude Code workspace login and the device-code sign-ins (Codex's
   // ChatGPT account, a Grok account) are kept by the CLI in the workspace;
-  // Memoh stores no credential for them.
+  // Ami stores no credential for them.
   return auth === 'workspace' || isDeviceLoginAuthMode(auth) || !!agent?.agent_credential_id
 }
 

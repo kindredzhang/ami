@@ -35,7 +35,7 @@ export function appPrimaryAction(
 /**
  * Whether to offer "Try it", which prefills a chat prompt asking the bot to
  * demo the App. Any App the workspace can run qualifies: one installed
- * through Memoh, or one discovered already present in the workspace (an
+ * through Ami, or one discovered already present in the workspace (an
  * available update does not change that). Apps mid-operation, failed or
  * partially installed are left out until they are whole again.
  */

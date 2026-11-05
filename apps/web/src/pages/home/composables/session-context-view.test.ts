@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { HandlersContextUsage } from '@memohai/sdk'
+import type { HandlersContextUsage } from '@ami/sdk'
 import { resolveSessionContextView } from './session-context-view'
 
 const usage: HandlersContextUsage = {

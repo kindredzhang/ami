@@ -12,7 +12,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 var (

@@ -51,7 +51,7 @@ type ToolExecOutcome struct {
 // encountered nothing in the batch executes: the outcome carries the deferral
 // marker and no results, the step is persisted with its tool calls open, and
 // the batch runs when the decision resumes the run. (This is the behaviour of
-// the SDK executor Memoh ran before the copy; the copied revision executed
+// the SDK executor Ami ran before the copy; the copied revision executed
 // the calls ahead of the deferral, which let a read_media result land in a
 // step whose carrier never reached the model.) A non-nil error is returned
 // only for handler failures (approval handler error, unknown decision); in

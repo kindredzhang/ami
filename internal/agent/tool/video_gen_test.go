@@ -11,8 +11,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestVideoGenStartsBackgroundTaskAndCompletes(t *testing.T) {

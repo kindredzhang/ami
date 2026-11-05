@@ -225,7 +225,7 @@ import { externalAgentDisplayName, externalAgentIcon } from '@/utils/external-ag
 import { computed, inject, ref } from 'vue'
 import { Clock, ListChecks, LoaderCircle, Mail, MailOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
-import { OpenInTabIcon } from '@memohai/icon/ui'
+import { OpenInTabIcon } from '@ami/icon/ui'
 import type { SessionSummary } from '@/composables/api/useChat'
 import {
   Checkbox,

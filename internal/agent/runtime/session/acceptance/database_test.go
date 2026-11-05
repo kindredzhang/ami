@@ -16,7 +16,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-const postgresURLEnv = "MEMOH_SESSION_RUNTIME_POSTGRES_URL"
+const postgresURLEnv = "AMI_SESSION_RUNTIME_POSTGRES_URL"
 
 var sha256Hex = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
@@ -119,7 +119,7 @@ func requireLedger(t testingT) *ledgerProbe {
 		defer cancel()
 		config, err := pgxpool.ParseConfig(envOr(
 			postgresURLEnv,
-			"postgres://memoh:memoh123@127.0.0.1:15432/memoh?sslmode=disable",
+			"postgres://ami:ami123@127.0.0.1:15432/ami?sslmode=disable",
 		))
 		if err != nil {
 			globalLedgerErr = fmt.Errorf("parse acceptance PostgreSQL URL: %w", err)

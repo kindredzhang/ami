@@ -13,9 +13,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // scriptedSummarizer answers fork requests in turn, repeating its last
@@ -375,7 +375,7 @@ func TestFoldReadsAMessageLargerThanItsWindowByItsHeadAndTail(t *testing.T) {
 	}
 	fork := summarizer.requests[0]
 	read := messageText(fork.Messages[1])
-	if forkTokens(fork) > ev.Window || !strings.Contains(read, "HUGE_HEAD") || !strings.Contains(read, "HUGE_TAIL") || !strings.Contains(read, "[memoh pruned]") {
+	if forkTokens(fork) > ev.Window || !strings.Contains(read, "HUGE_HEAD") || !strings.Contains(read, "HUGE_TAIL") || !strings.Contains(read, "[ami pruned]") {
 		t.Fatalf("fork = %d tokens, read %d bytes of the message, want its head and tail within the window", forkTokens(fork), len(read))
 	}
 	if messageText(fork.Messages[0]) != messageText(r.messages[0]) || len(fork.Messages) != r.cut+1 {

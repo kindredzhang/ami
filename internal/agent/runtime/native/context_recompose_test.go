@@ -8,7 +8,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/hooks"
+	"github.com/kindredzhang/ami/internal/hooks"
 )
 
 func TestAgentStreamRequestsContextRecomposeWithoutPublicFailure(t *testing.T) {

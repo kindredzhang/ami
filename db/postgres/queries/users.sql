@@ -5,7 +5,7 @@ WITH created_user AS (
   RETURNING users.*
 ), created_membership AS (
   INSERT INTO team_members (team_id, user_id, is_active)
-  SELECT public.memoh_current_team_id(), id, sqlc.arg(is_active)
+  SELECT public.ami_current_team_id(), id, sqlc.arg(is_active)
   FROM created_user
   RETURNING team_members.*
 )
@@ -31,7 +31,7 @@ SELECT users.*
 FROM users
 JOIN team_members membership
   ON membership.user_id = users.id
- AND membership.team_id = public.memoh_current_team_id()
+ AND membership.team_id = public.ami_current_team_id()
 WHERE users.id = sqlc.arg(user_id);
 
 -- name: CreateAccount :one
@@ -46,7 +46,7 @@ WITH updated_user AS (
   WHERE users.id = sqlc.arg(user_id)
     AND EXISTS (
       SELECT 1 FROM team_members membership
-      WHERE membership.team_id = public.memoh_current_team_id()
+      WHERE membership.team_id = public.ami_current_team_id()
         AND membership.user_id = users.id
     )
   RETURNING users.*
@@ -57,7 +57,7 @@ WITH updated_user AS (
       data_root = sqlc.arg(data_root),
       updated_at = now()
   FROM updated_user
-  WHERE membership.team_id = public.memoh_current_team_id()
+  WHERE membership.team_id = public.ami_current_team_id()
     AND membership.user_id = updated_user.id
   RETURNING membership.*
 )
@@ -108,7 +108,7 @@ WITH upserted_user AS (
     team_id, user_id, role, is_active, data_root
   )
   SELECT
-    public.memoh_current_team_id(),
+    public.ami_current_team_id(),
     id,
     sqlc.arg(role)::user_role,
     sqlc.arg(is_active),
@@ -181,7 +181,7 @@ WITH updated_user AS (
   WHERE users.id = sqlc.arg(user_id)
     AND EXISTS (
       SELECT 1 FROM team_members membership
-      WHERE membership.team_id = public.memoh_current_team_id()
+      WHERE membership.team_id = public.ami_current_team_id()
         AND membership.user_id = users.id
     )
   RETURNING users.*
@@ -193,7 +193,7 @@ WITH updated_user AS (
         ELSE membership.updated_at
       END
   FROM updated_user
-  WHERE membership.team_id = public.memoh_current_team_id()
+  WHERE membership.team_id = public.ami_current_team_id()
     AND membership.user_id = updated_user.id
   RETURNING membership.*
 )
@@ -220,7 +220,7 @@ WITH updated_membership AS (
   SET role = sqlc.arg(role)::user_role,
       is_active = COALESCE(sqlc.narg(is_active)::boolean, membership.is_active),
       updated_at = now()
-  WHERE membership.team_id = public.memoh_current_team_id()
+  WHERE membership.team_id = public.ami_current_team_id()
     AND membership.user_id = sqlc.arg(user_id)
   RETURNING membership.*
 )
@@ -247,7 +247,7 @@ SET password_hash = sqlc.arg(password_hash),
 WHERE id = sqlc.arg(user_id)
   AND EXISTS (
     SELECT 1 FROM team_members membership
-    WHERE membership.team_id = public.memoh_current_team_id()
+    WHERE membership.team_id = public.ami_current_team_id()
       AND membership.user_id = users.id
   )
 RETURNING id;
@@ -256,7 +256,7 @@ RETURNING id;
 UPDATE team_members
 SET is_active = FALSE,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND user_id = sqlc.arg(user_id)
 RETURNING user_id;
 
@@ -267,7 +267,7 @@ SET last_login_at = now(),
 WHERE id = sqlc.arg(user_id)
   AND EXISTS (
     SELECT 1 FROM team_members membership
-    WHERE membership.team_id = public.memoh_current_team_id()
+    WHERE membership.team_id = public.ami_current_team_id()
       AND membership.user_id = users.id
   )
 RETURNING id;

@@ -10,15 +10,15 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type HooksHandler struct {

@@ -6,7 +6,7 @@
 
 CREATE TABLE IF NOT EXISTS public.session_runs (
     run_id             UUID        PRIMARY KEY,
-    team_id            UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id            UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                    REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id             UUID        NOT NULL,
     session_id         UUID        NOT NULL,
@@ -79,15 +79,15 @@ DROP POLICY IF EXISTS session_runs_team_update ON public.session_runs;
 DROP POLICY IF EXISTS session_runs_team_delete ON public.session_runs;
 
 CREATE POLICY session_runs_team_select ON public.session_runs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY session_runs_team_insert ON public.session_runs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_runs_team_update ON public.session_runs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_runs_team_delete ON public.session_runs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Decision -> run + turn (SR-DEC-001) and history -> run traceability.
 -- Deliberately plain nullable columns rather than foreign keys: history and

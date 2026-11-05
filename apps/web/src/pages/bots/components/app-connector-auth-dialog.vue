@@ -5,7 +5,7 @@ import {
   Button, CalloutBanner, Dialog, DialogBody,
   DialogDescription, DialogFooter, DialogHeader, DialogPanel, DialogTitle, toast,
 } from '@felinic/ui'
-import type { ConnectitConnector } from '@memohai/sdk'
+import type { ConnectitConnector } from '@ami/sdk'
 import type { AppConnectorItem } from '@/composables/api/useApps'
 import AppConnectorAuthForm from './app-connector-auth-form.vue'
 

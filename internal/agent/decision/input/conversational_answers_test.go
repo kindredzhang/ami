@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 func TestBrowserStepLabelsSurviveStorageAndTextReplies(t *testing.T) {
@@ -51,7 +51,7 @@ func TestBrowserStepLabelsSurviveStorageAndTextReplies(t *testing.T) {
 }
 
 func TestStoredSelectAnswerPolicy(t *testing.T) {
-	for _, source := range []string{"", ProviderSourceMemohTool, ProviderSourceACPElicitation, ProviderSourceCodexElicitation, ProviderSourceCodexUserInput, "unknown"} {
+	for _, source := range []string{"", ProviderSourceAmiTool, ProviderSourceACPElicitation, ProviderSourceCodexElicitation, ProviderSourceCodexUserInput, "unknown"} {
 		t.Run(source, func(t *testing.T) {
 			queries := newFakeUserInputQueries()
 			svc := NewService(slog.New(slog.DiscardHandler), queries)
@@ -59,7 +59,7 @@ func TestStoredSelectAnswerPolicy(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			native := source == "" || source == ProviderSourceMemohTool
+			native := source == "" || source == ProviderSourceAmiTool
 			if req.UIPayload.Questions[0].AllowCustom != native {
 				t.Fatal("incorrect creation policy")
 			}

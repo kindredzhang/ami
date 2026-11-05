@@ -8,13 +8,13 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/oauthctx"
-	"github.com/felinics/memoh/internal/providers"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/oauthctx"
+	"github.com/kindredzhang/ami/internal/providers"
 )
 
 type ProviderOAuthHandler struct {
@@ -162,9 +162,9 @@ func (h *ProviderOAuthHandler) Callback(c echo.Context) error {
   </head>
   <body style="font-family: sans-serif; padding: 24px;">
     <h2>Provider connected</h2>
-    <p>Your current Memoh account is now connected.</p>
+    <p>Your current Ami account is now connected.</p>
     <script>
-      window.opener?.postMessage({ type: "memoh-provider-oauth-success", providerId: "{{.ProviderID}}" }, "*");
+      window.opener?.postMessage({ type: "ami-provider-oauth-success", providerId: "{{.ProviderID}}" }, "*");
       window.close();
     </script>
   </body>

@@ -238,8 +238,8 @@ import {
   postBotsByBotIdUserAccess,
   putBotsByBotIdUserAccessByGrantId,
   deleteBotsByBotIdUserAccessByGrantId,
-} from '@memohai/sdk'
-import type { BotsUserGrant, HandlersBotUserCandidate } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { BotsUserGrant, HandlersBotUserCandidate } from '@ami/sdk'
 
 type Permission = BotPermission
 

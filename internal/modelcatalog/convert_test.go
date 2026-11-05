@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func TestFormerBrowserCatalogFixtures(t *testing.T) {

@@ -11,15 +11,15 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/context/compaction"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/agent/context/compaction"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 func TestContextProvenanceKeepsTheStoredRowThroughReasoningProjection(t *testing.T) {

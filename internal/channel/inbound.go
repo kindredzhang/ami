@@ -9,10 +9,10 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/logger"
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/logger"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 // ErrInboundQueueFull indicates the synchronous inbound queue admission failed

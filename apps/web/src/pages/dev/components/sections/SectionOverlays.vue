@@ -161,13 +161,13 @@ const showStatusBar = ref(true)
         <HoverCard>
           <HoverCardTrigger as-child>
             <Button variant="link">
-              @memoh
+              @ami
             </Button>
           </HoverCardTrigger>
           <HoverCardContent>
             <div class="text-sm">
               <p class="font-medium">
-                Memoh
+                Ami
               </p>
               <p class="mt-1 text-muted-foreground">
                 Multi-member, structured long-memory AI agent platform. Hover previews

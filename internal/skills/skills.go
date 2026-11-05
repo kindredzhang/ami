@@ -13,16 +13,16 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/felinics/memoh/internal/config"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/config"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const (
 	ManagedDirPath            = config.DefaultDataMount + "/skills"
 	LegacyDirPath             = config.DefaultDataMount + "/.skills"
-	IndexDirPath              = config.DefaultDataMount + "/.memoh/skills"
+	IndexDirPath              = config.DefaultDataMount + "/.ami/skills"
 	IndexFilePath             = IndexDirPath + "/index.json"
-	SkillDiscoveryRootsEnvVar = "MEMOH_SKILL_DISCOVERY_ROOTS"
+	SkillDiscoveryRootsEnvVar = "AMI_SKILL_DISCOVERY_ROOTS"
 
 	SourceKindManaged  = "managed"
 	SourceKindLegacy   = "legacy"

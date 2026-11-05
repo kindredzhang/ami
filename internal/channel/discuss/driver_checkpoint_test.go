@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 // fakeCheckpointSource serves one checkpoint and records what it was asked

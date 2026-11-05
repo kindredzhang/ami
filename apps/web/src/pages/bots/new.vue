@@ -156,7 +156,7 @@
         />
 
         <SettingsRow
-          v-if="agentType === MEMOH_AGENT_VALUE"
+          v-if="agentType === AMI_AGENT_VALUE"
           :label="$t('bots.settings.chatModel')"
           :description="$t('bots.steps.modelDesc')"
           stack="sm"
@@ -327,8 +327,8 @@ import { useDebounceFn } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@pinia/colada'
-import { getModels, getProviders, getBotsNameAvailability } from '@memohai/sdk'
-import type { BotsCreateBotRequest } from '@memohai/sdk'
+import { getModels, getProviders, getBotsNameAvailability } from '@ami/sdk'
+import type { BotsCreateBotRequest } from '@ami/sdk'
 import { useAvatarInitials } from '@/composables/useAvatarInitials'
 import { aclPresetOptions, defaultAclPreset } from '@/constants/acl-presets'
 import { emptyTimezoneValue } from '@/utils/timezones'
@@ -338,12 +338,12 @@ import TimezoneSelect from '@/components/timezone-select/index.vue'
 import { useBotCreateProgressStore } from '@/store/bot-create-progress'
 import { useUserStore } from '@/store/user'
 import { BOT_PERMISSION_ORDER } from '@/utils/bot-permissions'
-import type { BotsUserGrant } from '@memohai/sdk'
+import type { BotsUserGrant } from '@ami/sdk'
 import ModelSelect from './components/model-select.vue'
 import AgentTypePill from './components/agent-type-pill.vue'
 import AgentAuthorization from './components/agent-authorization.vue'
 import { readAgentAuthorizationDraft } from '@/composables/useAgentAuthorization'
-import { MEMOH_AGENT_VALUE } from './components/agent-type'
+import { AMI_AGENT_VALUE } from './components/agent-type'
 import BotUserAccess from './components/bot-user-access.vue'
 import AvatarEditDialog from './components/avatar-edit-dialog.vue'
 import BotImportPanel from './components/bot-import-panel.vue'
@@ -479,8 +479,8 @@ const { data: providerData } = useQuery({
 const models = computed(() => modelData.value ?? [])
 const providers = computed(() => providerData.value ?? [])
 
-const authorizationKey = 'memoh:new-bot:agent-authorization'
-const agentType = ref(readAgentAuthorizationDraft(authorizationKey)?.runtime ?? MEMOH_AGENT_VALUE)
+const authorizationKey = 'ami:new-bot:agent-authorization'
+const agentType = ref(readAgentAuthorizationDraft(authorizationKey)?.runtime ?? AMI_AGENT_VALUE)
 const account = ref({ ready: false, busy: false, id: '', auth: '' })
 const accountPanel = ref<InstanceType<typeof AgentAuthorization> | null>(null)
 

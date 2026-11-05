@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/errs"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 type preparedHistoryContext struct {

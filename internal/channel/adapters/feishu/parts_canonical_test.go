@@ -3,8 +3,8 @@ package feishu
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/partsfixture"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/partsfixture"
 )
 
 // TestCanonicalPartsRendering pins the Feishu adapter's card markdown output for

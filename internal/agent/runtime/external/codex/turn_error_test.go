@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // A failed turn reports what Codex said, whether the error arrived on the

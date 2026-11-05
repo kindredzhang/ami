@@ -11,15 +11,15 @@ import (
 // contract deliberately uses two backend instances with one prefix: a queue
 // operation that only works inside one process is not a valid Redis backend.
 func TestRedisLiveQueueContractOptional(t *testing.T) {
-	redisURL := os.Getenv("MEMOH_TEST_REDIS_URL")
+	redisURL := os.Getenv("AMI_TEST_REDIS_URL")
 	if redisURL == "" {
-		redisURL = os.Getenv("MEMOH_TEST_VALKEY_URL")
+		redisURL = os.Getenv("AMI_TEST_VALKEY_URL")
 	}
 	if redisURL == "" {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("distributed queue contract requires MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("distributed queue contract requires AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL to run the Redis live queue contract")
+		t.Skip("set AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL to run the Redis live queue contract")
 	}
 
 	prefix := uniqueRuntimeBackendPrefix("live-queue")

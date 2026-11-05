@@ -3,7 +3,7 @@ package application
 import (
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 const discussAgentPromptPrefix = "You are replying in a discuss-mode conversation. The runtime is reset each turn, so use the complete context below as the source of truth.\n\n" +

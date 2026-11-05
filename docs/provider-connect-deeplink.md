@@ -1,14 +1,14 @@
 # Provider Connect Deep Link
 
-第三方服务（API 网关、聚合平台、中转站等）可以通过一条 deep link，把 provider 预填进 Memoh。用户在确认页看到将要添加的内容，点击确认后才会保存——Memoh 不会静默接受 URL 里的凭据。
+第三方服务（API 网关、聚合平台、中转站等）可以通过一条 deep link，把 provider 预填进 Ami。用户在确认页看到将要添加的内容，点击确认后才会保存——Ami 不会静默接受 URL 里的凭据。
 
 ## URL 格式
 
 ```
-https://<memoh-host>/providers/connect#payload=<base64url(json)>
+https://<ami-host>/providers/connect#payload=<base64url(json)>
 ```
 
-- `memoh-host`：Memoh Web 的地址（Memoh Cloud 用固定域名，自托管用实例自己的域名）。
+- `ami-host`：Ami Web 的地址（Ami Cloud 用固定域名，自托管用实例自己的域名）。
 - payload 放在 **fragment**（`#` 之后）：浏览器不会把 fragment 发给服务器，API Key 不会进入 access log 或 Referer。
 - payload 是 **UTF-8 JSON 的 base64url 编码**（无 padding，`-`/`_` 替换 `+`/`/`）。
 
@@ -17,7 +17,7 @@ https://<memoh-host>/providers/connect#payload=<base64url(json)>
 | 字段 | 必填 | 说明 |
 | --- | --- | --- |
 | `v` | 是 | 固定为 `1`。未知版本会被拒绝。 |
-| `kind` | 是 | 固定为 `memoh-provider-import`。 |
+| `kind` | 是 | 固定为 `ami-provider-import`。 |
 | `base_url` | 是 | provider 的 base URL，仅接受 `http:` / `https:`。 |
 | `api_key` | 是 | 明文 key，确认页只显示后 4 位。 |
 | `client_type` | 否 | API 格式，缺省 `openai-completions`。可选：`openai-completions` / `openai-responses` / `anthropic-messages` / `google-generative-ai`。OAuth 类（`openai-codex`、`github-copilot`）不支持预填。 |
@@ -29,7 +29,7 @@ https://<memoh-host>/providers/connect#payload=<base64url(json)>
 ```json
 {
   "v": 1,
-  "kind": "memoh-provider-import",
+  "kind": "ami-provider-import",
   "name": "My New API",
   "base_url": "https://api.example.com/v1",
   "api_key": "sk-xxx",
@@ -50,9 +50,9 @@ https://<memoh-host>/providers/connect#payload=<base64url(json)>
 
 ## 已知限制
 
-- 未登录用户会被重定向到登录页，登录后 fragment 不会回带——生成方应假定用户已登录目标 Memoh。
+- 未登录用户会被重定向到登录页，登录后 fragment 不会回带——生成方应假定用户已登录目标 Ami。
 - 确认页解析完 payload 后会用 `history.replaceState` 抹掉地址栏 fragment（避免 key 留在浏览器历史/历史同步里），因此**刷新页面会报「链接缺少 payload」**——这是有意行为，链接是一次跳转用的，第三方应能随时重新生成。
-- payload 不应携带模型清单等大数据：模型由 Memoh 创建后自行拉取，URL 保持短。
+- payload 不应携带模型清单等大数据：模型由 Ami 创建后自行拉取，URL 保持短。
 
 ## 安全说明
 

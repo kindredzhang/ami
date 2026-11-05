@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	messageevent "github.com/felinics/memoh/internal/chat/event"
+	messageevent "github.com/kindredzhang/ami/internal/chat/event"
 )
 
 func TestCompactionActivityLifecycle(t *testing.T) {

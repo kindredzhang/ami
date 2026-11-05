@@ -12,12 +12,12 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel/inbound"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/rpc"
-	runtimeRpc "github.com/felinics/memoh/internal/rpc/runtime"
-	"github.com/felinics/memoh/internal/rpc/runtimepb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel/inbound"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/rpc"
+	runtimeRpc "github.com/kindredzhang/ami/internal/rpc/runtime"
+	"github.com/kindredzhang/ami/internal/rpc/runtimepb"
 )
 
 var queueCodes = []string{

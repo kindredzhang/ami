@@ -11,7 +11,7 @@ import (
 )
 
 func TestIsCNICheckUnsupportedMatchesLibcniSentinel(t *testing.T) {
-	list, err := libcni.ConfListFromBytes([]byte(`{"cniVersion":"0.3.1","name":"memoh","plugins":[{"type":"bridge"}]}`))
+	list, err := libcni.ConfListFromBytes([]byte(`{"cniVersion":"0.3.1","name":"ami","plugins":[{"type":"bridge"}]}`))
 	if err != nil {
 		t.Fatalf("parse conf list: %v", err)
 	}

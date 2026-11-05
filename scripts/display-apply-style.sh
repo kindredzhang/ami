@@ -1,15 +1,15 @@
 #!/bin/sh
 
 style_version='2026-07-22.1'
-desktop_style_script="${MEMOH_DESKTOP_STYLE_SCRIPT:-/opt/memoh/scripts/desktop-style.sh}"
-style_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/memoh"
+desktop_style_script="${AMI_DESKTOP_STYLE_SCRIPT:-/opt/ami/scripts/desktop-style.sh}"
+style_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ami"
 style_marker="$style_config_dir/display-style.version"
-style_lock=/tmp/memoh-desktop-style.lock
+style_lock=/tmp/ami-desktop-style.lock
 style_lock_stale_seconds=60
-style_log=/tmp/memoh-desktop-style.log
+style_log=/tmp/ami-desktop-style.log
 
 style_enabled() {
-  style="${MEMOH_DISPLAY_DESKTOP_STYLE:-macos}"
+  style="${AMI_DISPLAY_DESKTOP_STYLE:-macos}"
   case "$style" in
     ""|0|false|False|FALSE|off|Off|OFF|none|None|NONE) return 1 ;;
     *) return 0 ;;

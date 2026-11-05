@@ -22,8 +22,8 @@ func sampleSnapshot() Snapshot {
 				Present:    true,
 				Source:     SourceManaged,
 				Version:    "0.150.0",
-				Command:    "/data/.memoh/deps/codex/current/bin/codex",
-				Candidates: []Candidate{{Source: SourceManaged, Path: "/data/.memoh/deps/codex/current/bin/codex", Version: "0.150.0"}},
+				Command:    "/data/.ami/deps/codex/current/bin/codex",
+				Candidates: []Candidate{{Source: SourceManaged, Path: "/data/.ami/deps/codex/current/bin/codex", Version: "0.150.0"}},
 			},
 		},
 	}

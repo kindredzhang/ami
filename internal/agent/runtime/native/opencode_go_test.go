@@ -12,7 +12,7 @@ import (
 	opencodego "github.com/felinics/twilight/provider/opencode/go"
 	"github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func TestOpenCodeGoUsesRunSessionForGenerateAndStream(t *testing.T) {

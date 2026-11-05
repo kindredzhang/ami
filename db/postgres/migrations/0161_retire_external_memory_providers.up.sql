@@ -4,7 +4,7 @@
 -- Clear those selections (memory_provider_id = NULL means memory is off) and
 -- delete the placeholder rows. Built-in rows and the table itself are kept.
 --
--- bots and memory_providers may use FORCE RLS keyed on memoh.team_id, which a
+-- bots and memory_providers may use FORCE RLS keyed on ami.team_id, which a
 -- migration connection never sets. Lift the policies for the cleanup and
 -- restore each table's original RLS state before leaving the migration.
 

@@ -3,7 +3,7 @@ package sessionruntime
 import (
 	"encoding/json"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 // These wire views share one input adapter without copying the domain's field

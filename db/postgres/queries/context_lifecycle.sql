@@ -36,20 +36,20 @@ RETURNING run_id, bot_id, session_id, status, error_code, created_at;
 -- name: GetContextLifecycleByRunID :one
 SELECT run_id, team_id, bot_id, session_id, status, error_code, snapshot, created_at
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id);
 
 -- name: GetContextLifecycleSelectionDecisionsByRunID :one
 SELECT selection_decisions
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id);
 
 -- name: UpdateAbortedContextLifecycleSnapshot :one
 UPDATE context_lifecycles
 SET snapshot = sqlc.arg(snapshot)::jsonb - 'selection_decisions',
     selection_decisions = COALESCE(sqlc.arg(snapshot)::jsonb -> 'selection_decisions', selection_decisions)
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
@@ -79,7 +79,7 @@ ON CONFLICT (run_id) DO UPDATE
 SET
   status = 'aborted',
   error_code = NULL
-WHERE context_lifecycles.team_id = public.memoh_current_team_id()
+WHERE context_lifecycles.team_id = public.ami_current_team_id()
   AND context_lifecycles.bot_id = EXCLUDED.bot_id
   AND context_lifecycles.session_id = EXCLUDED.session_id
 RETURNING run_id, bot_id, session_id, status, error_code, created_at;
@@ -121,7 +121,7 @@ SET
       THEN COALESCE(EXCLUDED.selection_decisions, context_lifecycles.selection_decisions)
     ELSE context_lifecycles.selection_decisions
   END
-WHERE context_lifecycles.team_id = public.memoh_current_team_id()
+WHERE context_lifecycles.team_id = public.ami_current_team_id()
   AND context_lifecycles.team_id = EXCLUDED.team_id
   AND context_lifecycles.bot_id = EXCLUDED.bot_id
   AND context_lifecycles.session_id = EXCLUDED.session_id
@@ -130,7 +130,7 @@ RETURNING run_id, bot_id, session_id, status, error_code, created_at;
 -- name: GetLatestAssistantContextLifecycleByRunID :one
 SELECT id, metadata
 FROM bot_history_messages
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND role = 'assistant'
   AND metadata ? 'context_lifecycle'
@@ -140,7 +140,7 @@ LIMIT 1;
 -- name: GetLatestAssistantContextLifecycleMetadataByRunID :one
 SELECT metadata
 FROM bot_history_messages
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND role = 'assistant'
   AND metadata ? 'context_lifecycle'
@@ -155,7 +155,7 @@ SELECT
   created_at,
   (snapshot - 'selection_decisions'::text)::jsonb AS snapshot
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = sqlc.arg(session_id)
 ORDER BY created_at DESC, run_id DESC
 LIMIT sqlc.arg(max_count);
@@ -163,7 +163,7 @@ LIMIT sqlc.arg(max_count);
 -- name: GetLatestContextLifecycleBySession :one
 SELECT (snapshot - 'selection_decisions'::text)::jsonb AS snapshot
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = sqlc.arg(session_id)
 ORDER BY created_at DESC, run_id DESC
 LIMIT 1;
@@ -180,7 +180,7 @@ FROM session_runs
 LEFT JOIN context_lifecycles
   ON context_lifecycles.team_id = session_runs.team_id
  AND context_lifecycles.run_id = session_runs.run_id
-WHERE session_runs.team_id = public.memoh_current_team_id()
+WHERE session_runs.team_id = public.ami_current_team_id()
   AND session_runs.state IN ('completed', 'aborted', 'failed', 'lost')
   AND (
     context_lifecycles.run_id IS NULL
@@ -204,7 +204,7 @@ SELECT EXISTS (
     AND NOT EXISTS (
       SELECT 1
       FROM context_lifecycles AS lifecycles
-      WHERE lifecycles.team_id = public.memoh_current_team_id()
+      WHERE lifecycles.team_id = public.ami_current_team_id()
         AND lifecycles.run_id = messages.run_id
     )
 );

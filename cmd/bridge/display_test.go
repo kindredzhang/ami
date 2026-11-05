@@ -40,7 +40,7 @@ func TestIsBrowserArgRejectsShellCommandsContainingBrowserText(t *testing.T) {
 	for _, arg := range []string{
 		"sh -lc command -v chromium",
 		"--remote-debugging-port=9222",
-		"/tmp/memoh-display-prepare.sh",
+		"/tmp/ami-display-prepare.sh",
 	} {
 		if isBrowserArg(arg) {
 			t.Fatalf("expected %q not to be recognized as a browser executable", arg)

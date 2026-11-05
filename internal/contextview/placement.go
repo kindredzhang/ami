@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"strings"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 type StablePrefixPlacer struct{}

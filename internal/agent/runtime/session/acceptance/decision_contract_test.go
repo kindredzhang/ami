@@ -11,9 +11,9 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	turntransport "github.com/felinics/memoh/internal/agent/turn/grpctransport"
-	intrpc "github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	turntransport "github.com/kindredzhang/ami/internal/agent/turn/grpctransport"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
 )
 
 // TestSRDEC001LiveDecisionContinuesSameRun is the always-on decision baseline.

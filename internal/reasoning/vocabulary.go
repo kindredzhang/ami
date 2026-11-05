@@ -7,7 +7,7 @@
 //
 // It is a leaf package on purpose. Everything it needs arrives as plain strings
 // and slices, so any caller can use it: turn orchestration, the subagent spawn
-// path, slash commands, HTTP handlers. Nothing here imports another Memoh package.
+// path, slash commands, HTTP handlers. Nothing here imports another Ami package.
 package reasoning
 
 import (

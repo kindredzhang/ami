@@ -1,8 +1,8 @@
 package overlay
 
 import (
-	netctl "github.com/felinics/memoh/internal/network"
-	"github.com/felinics/memoh/internal/network/overlay/internal/sidecar"
+	netctl "github.com/kindredzhang/ami/internal/network"
+	"github.com/kindredzhang/ami/internal/network/overlay/internal/sidecar"
 )
 
 type ProviderDeps struct {

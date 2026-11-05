@@ -6,7 +6,7 @@ export type WorkspaceLink =
   | { kind: 'external' }
   | { kind: 'native' }
 
-// The one place that decides what a chat link opens. `null` means Memoh cannot
+// The one place that decides what a chat link opens. `null` means Ami cannot
 // open it, and the link is shown as its label only. That covers relative paths
 // such as `summary.md`: the browser would resolve them against the app itself
 // and replace the page (on Desktop, with a bare "not found" and no way back).

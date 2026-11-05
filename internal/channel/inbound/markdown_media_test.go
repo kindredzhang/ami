@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/channel"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/channel"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func TestBindFinalMediaUsesSnapshotAndPreservesRoutingMetadata(t *testing.T) {

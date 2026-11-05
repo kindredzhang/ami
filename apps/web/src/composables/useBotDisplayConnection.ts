@@ -3,7 +3,7 @@ import {
   deleteBotsByBotIdContainerDisplaySessionsBySessionId,
   getBotsByBotIdContainerDisplay,
   postBotsByBotIdContainerDisplayWebrtcOffer,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import i18n from '@/i18n'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { decodeClipboardMessage, encodeClipboardPaste } from './display-clipboard'

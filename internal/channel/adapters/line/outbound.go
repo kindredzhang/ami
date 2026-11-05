@@ -12,10 +12,10 @@ import (
 
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 
-	"github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/publicmedia"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/publicmedia"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (

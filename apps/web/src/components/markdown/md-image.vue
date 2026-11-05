@@ -12,7 +12,7 @@ const attrs = useAttrs()
 const { t } = useI18n()
 const openWorkspaceLink = useWorkspaceLink()
 const assetUrl = computed(() => markdownAssetUrl(props.node.src))
-const failed = computed(() => props.node.src.startsWith('memoh-media-error:'))
+const failed = computed(() => props.node.src.startsWith('ami-media-error:'))
 // An image that has no archived copy yet (still streaming) or never gets one
 // (an older or non-chat message) is still a workspace file: open it there,
 // like a file link, instead of requesting /data from the app origin.

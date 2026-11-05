@@ -20,7 +20,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 const (
@@ -117,7 +117,7 @@ func parseOptions(args []string, output io.Writer) (commandOptions, error) {
 	}
 	fs := flag.NewFlagSet("gen-bridge-mtls", flag.ContinueOnError)
 	fs.SetOutput(output)
-	fs.StringVar(&opts.instanceID, "instance-id", "", "Memoh instance UUID used in SPIFFE URI SANs")
+	fs.StringVar(&opts.instanceID, "instance-id", "", "Ami instance UUID used in SPIFFE URI SANs")
 	fs.StringVar(&opts.outDir, "out", opts.outDir, "output directory that will receive server/ and bridge/")
 	fs.StringVar(&opts.serverName, "server-name", "", "optional synthetic bridge DNS SAN; defaults from instance-id")
 	fs.BoolVar(&opts.force, "force", false, "replace existing server/ and bridge/ material directories")
@@ -154,11 +154,11 @@ func days(value int) time.Duration {
 }
 
 func generateBridgeMTLS(instanceID, serverName string, leafTTL, caTTL time.Duration) (bridgeMTLSMaterial, error) {
-	clientCACert, clientCAKey, clientCAPEM, err := newMTLSCA(fmt.Sprintf("memoh instance %s server-client CA", instanceID), caTTL)
+	clientCACert, clientCAKey, clientCAPEM, err := newMTLSCA(fmt.Sprintf("ami instance %s server-client CA", instanceID), caTTL)
 	if err != nil {
 		return bridgeMTLSMaterial{}, err
 	}
-	bridgeCACert, bridgeCAKey, bridgeCAPEM, err := newMTLSCA(fmt.Sprintf("memoh instance %s bridge-server CA", instanceID), caTTL)
+	bridgeCACert, bridgeCAKey, bridgeCAPEM, err := newMTLSCA(fmt.Sprintf("ami instance %s bridge-server CA", instanceID), caTTL)
 	if err != nil {
 		return bridgeMTLSMaterial{}, err
 	}
@@ -168,7 +168,7 @@ func generateBridgeMTLS(instanceID, serverName string, leafTTL, caTTL time.Durat
 		return bridgeMTLSMaterial{}, err
 	}
 	clientCertPEM, clientKeyPEM, err := newMTLSLeaf(clientCACert, clientCAKey, leafSpec{
-		commonName:  fmt.Sprintf("memoh instance %s server", instanceID),
+		commonName:  fmt.Sprintf("ami instance %s server", instanceID),
 		extKeyUsage: x509.ExtKeyUsageClientAuth,
 		uris:        []*url.URL{clientURI},
 	}, leafTTL)
@@ -181,7 +181,7 @@ func generateBridgeMTLS(instanceID, serverName string, leafTTL, caTTL time.Durat
 		return bridgeMTLSMaterial{}, err
 	}
 	bridgeCertPEM, bridgeKeyPEM, err := newMTLSLeaf(bridgeCACert, bridgeCAKey, leafSpec{
-		commonName:  fmt.Sprintf("memoh instance %s bridge", instanceID),
+		commonName:  fmt.Sprintf("ami instance %s bridge", instanceID),
 		extKeyUsage: x509.ExtKeyUsageServerAuth,
 		dnsNames:    []string{serverName},
 		uris:        []*url.URL{bridgeURI},
@@ -216,7 +216,7 @@ func newMTLSCA(commonName string, ttl time.Duration) (*x509.Certificate, *ecdsa.
 	now := time.Now()
 	template := &x509.Certificate{
 		SerialNumber:          serial,
-		Subject:               pkix.Name{CommonName: commonName, Organization: []string{"memoh"}},
+		Subject:               pkix.Name{CommonName: commonName, Organization: []string{"ami"}},
 		NotBefore:             now.Add(-5 * time.Minute),
 		NotAfter:              now.Add(ttl),
 		KeyUsage:              x509.KeyUsageCertSign,
@@ -247,7 +247,7 @@ func newMTLSLeaf(ca *x509.Certificate, caKey *ecdsa.PrivateKey, spec leafSpec, t
 	now := time.Now()
 	template := &x509.Certificate{
 		SerialNumber: serial,
-		Subject:      pkix.Name{CommonName: spec.commonName, Organization: []string{"memoh"}},
+		Subject:      pkix.Name{CommonName: spec.commonName, Organization: []string{"ami"}},
 		NotBefore:    now.Add(-5 * time.Minute),
 		NotAfter:     now.Add(ttl),
 		KeyUsage:     x509.KeyUsageDigitalSignature,

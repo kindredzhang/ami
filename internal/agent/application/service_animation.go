@@ -16,7 +16,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/media/lottie"
+	"github.com/kindredzhang/ami/internal/media/lottie"
 )
 
 // animationFrameCount is how many frames of an animated attachment reach the

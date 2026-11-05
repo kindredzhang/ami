@@ -12,7 +12,7 @@ import (
 )
 
 const getBotWorkspaceResourceLimits = `-- name: GetBotWorkspaceResourceLimits :one
-SELECT bot_id, cpu_millicores, memory_bytes, storage_bytes, created_at, updated_at, team_id FROM bot_workspace_resource_limits WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+SELECT bot_id, cpu_millicores, memory_bytes, storage_bytes, created_at, updated_at, team_id FROM bot_workspace_resource_limits WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 `
 
 func (q *Queries) GetBotWorkspaceResourceLimits(ctx context.Context, botID pgtype.UUID) (BotWorkspaceResourceLimit, error) {

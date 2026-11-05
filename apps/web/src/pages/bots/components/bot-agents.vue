@@ -218,14 +218,14 @@ import {
   toast,
 } from '@felinic/ui'
 import { MoreHorizontal, Plus, Trash2 } from 'lucide-vue-next'
-import { SettingsIcon as Settings } from '@memohai/icon/ui'
+import { SettingsIcon as Settings } from '@ami/icon/ui'
 import {
   deleteBotsByBotIdAgentsById,
   getAcpProfiles,
   patchBotsByBotIdAgentsById,
   type AcpprofilePublicProfile,
   type BotagentsBotAgent,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type { Ref } from 'vue'
 import SettingsAcpDetail from './settings-acp-detail.vue'
 import SettingsDirectAgentDetail from './settings-direct-agent-detail.vue'

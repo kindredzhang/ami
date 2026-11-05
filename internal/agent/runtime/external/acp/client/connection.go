@@ -12,7 +12,7 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const promptCancellationDrainTimeout = 3 * time.Second

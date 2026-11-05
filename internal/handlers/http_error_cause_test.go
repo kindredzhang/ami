@@ -7,9 +7,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/workdir"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/workdir"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // A status-only echo.HTTPError answers with the generic code for its status;

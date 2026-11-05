@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 type lockedBuffer struct {

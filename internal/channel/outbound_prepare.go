@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	attachmentpkg "github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/media"
+	attachmentpkg "github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 // sharedHTTPClient is reused across attachment downloads to benefit from connection pooling.

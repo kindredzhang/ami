@@ -9,12 +9,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/team"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 // resumeLedgerQueries keeps the harness's configuration fakes and sends the

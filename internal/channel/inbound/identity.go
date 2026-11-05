@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/acl"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/identities"
+	"github.com/kindredzhang/ami/internal/acl"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/identities"
 )
 
 // IdentityDecision indicates whether the inbound message should be stopped with an optional reply.

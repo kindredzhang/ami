@@ -9,9 +9,9 @@ import (
 
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 // asReceived returns err as a client receives it.

@@ -29,7 +29,7 @@ vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: translate }),
 }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   deleteProvidersByIdOauthToken: vi.fn(),
   getProvidersByIdOauthAuthorize: mocks.getAuthorize,
   getProvidersByIdOauthStatus: mocks.getOAuthStatus,
@@ -41,7 +41,7 @@ vi.mock('@/composables/useProviderModelCatalog', () => ({
   useProviderModelCatalog: () => ({ syncProviderModelCatalog: mocks.syncCatalog }),
 }))
 
-// @memohai/icon builds its icons with lucide's createLucideIcon, so keep
+// @ami/icon builds its icons with lucide's createLucideIcon, so keep
 // the real module and stub only the icons this test renders.
 vi.mock('lucide-vue-next', async importOriginal => ({
   ...await importOriginal<typeof import('lucide-vue-next')>(),

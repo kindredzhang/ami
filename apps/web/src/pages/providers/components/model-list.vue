@@ -172,7 +172,7 @@ import { SettingsSection } from '@felinic/ui'
 import CreateModel from '@/components/create-model/index.vue'
 import ImportModelsDialog from '@/components/import-models-dialog/index.vue'
 import ModelItem from './model-item.vue'
-import type { ModelsGetResponse } from '@memohai/sdk'
+import type { ModelsGetResponse } from '@ami/sdk'
 
 const PAGE_SIZE = 8
 

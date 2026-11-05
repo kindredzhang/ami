@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func TestInternalFeedbackPersistenceSource(t *testing.T) {

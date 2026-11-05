@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
 )
 
 type controlProcess struct {
@@ -145,8 +145,8 @@ func (a *explicitRuntimeApproval) WaitForDecision(context.Context, string) (appr
 	return approval.Request{ID: "approval-1", Status: a.status, DecidedByUser: true}, nil
 }
 
-// Native questions require an explicit decision. Memoh MCP wrappers skip the
-// native card because the tool gateway enforces Memoh's policy on execution.
+// Native questions require an explicit decision. Ami MCP wrappers skip the
+// native card because the tool gateway enforces Ami's policy on execution.
 func TestClaudeNativeApprovalBoundary(t *testing.T) {
 	for _, tc := range []struct {
 		tool, status, behavior string
@@ -157,7 +157,7 @@ func TestClaudeNativeApprovalBoundary(t *testing.T) {
 		{"mcp__external__lookup", approval.StatusRejected, "deny", 1},
 		{"ExitPlanMode", approval.StatusApproved, "allow", 1},
 		{"ExitPlanMode", approval.StatusRejected, "deny", 1},
-		{"mcp__memoh__exec", approval.StatusRejected, "allow", 0},
+		{"mcp__ami__exec", approval.StatusRejected, "allow", 0},
 	} {
 		t.Run(tc.tool+"/"+tc.status, func(t *testing.T) {
 			r, p := controlTestRunner()

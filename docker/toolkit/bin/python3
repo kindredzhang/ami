@@ -1,5 +1,5 @@
 #!/bin/sh
-TOOLKIT="${MEMOH_TOOLKIT_DIR:-/opt/memoh/toolkit}"
+TOOLKIT="${AMI_TOOLKIT_DIR:-/opt/ami/toolkit}"
 TOOLKIT_CA_BUNDLE="$TOOLKIT/certs/ca-certificates.crt"
 
 case "$(uname -m)" in
@@ -25,5 +25,5 @@ for PYTHONDIR in "$TOOLKIT/python-$PYTHON_LIBC-$PYTHON_ARCH" "$TOOLKIT/python-$P
   fi
 done
 
-echo "python3 is not installed in the Memoh workspace toolkit for ${PYTHON_LIBC}/${PYTHON_ARCH}" >&2
+echo "python3 is not installed in the Ami workspace toolkit for ${PYTHON_LIBC}/${PYTHON_ARCH}" >&2
 exit 127

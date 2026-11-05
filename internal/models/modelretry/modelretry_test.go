@@ -14,7 +14,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // TestRetryable pins which failed model calls are made again and the class

@@ -1,4 +1,4 @@
-export const colorSchemeIds = ['memoh', 'ocean', 'forest', 'rose', 'amber'] as const
+export const colorSchemeIds = ['ami', 'ocean', 'forest', 'rose', 'amber'] as const
 
 export type ColorSchemeId = typeof colorSchemeIds[number]
 
@@ -12,9 +12,9 @@ export interface ColorSchemeOption {
 
 export const colorSchemes: ColorSchemeOption[] = [
   {
-    id: 'memoh',
-    labelKey: 'settings.appearance.colorSchemes.memoh',
-    descriptionKey: 'settings.appearance.colorSchemeDescriptions.memoh',
+    id: 'ami',
+    labelKey: 'settings.appearance.colorSchemes.ami',
+    descriptionKey: 'settings.appearance.colorSchemeDescriptions.ami',
     swatches: ['oklch(0.984 0.0024 72)', 'rgb(255 255 255)', 'oklch(0.21 0.004 95)', 'oklch(0.52 0.006 95)', 'oklch(0.55 0.22 290)'],
     darkSwatches: ['oklch(0.152 0 0)', 'oklch(0.21 0 0)', 'oklch(0.86 0 0)', 'oklch(0.62 0 0)', 'oklch(0.72 0.16 290)'],
   },

@@ -19,12 +19,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/application"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/testutil/sessionledger"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/testutil/sessionledger"
 )
 
 const (

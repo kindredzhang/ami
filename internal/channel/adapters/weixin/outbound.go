@@ -16,8 +16,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 type assetOpener interface {
@@ -260,5 +260,5 @@ func encodeAESKeyForSend(key []byte) string {
 func generateClientID() string {
 	b := make([]byte, 8)
 	_, _ = rand.Read(b)
-	return "memoh-weixin-" + hex.EncodeToString(b)
+	return "ami-weixin-" + hex.EncodeToString(b)
 }

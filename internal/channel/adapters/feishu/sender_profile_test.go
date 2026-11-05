@@ -3,7 +3,7 @@ package feishu
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestApplySenderProfileFillDisplayAndUsername(t *testing.T) {

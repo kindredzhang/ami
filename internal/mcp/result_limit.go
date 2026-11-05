@@ -3,8 +3,8 @@ package mcp
 import (
 	"strings"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	textprune "github.com/felinics/memoh/internal/prune"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	textprune "github.com/kindredzhang/ami/internal/prune"
 )
 
 type ToolOutputLimit = contextlimit.ToolOutputLimit
@@ -68,7 +68,7 @@ func isTruncatedFallback(value any) bool {
 	if !ok {
 		return false
 	}
-	truncated, _ := result["_memoh_truncated"].(bool)
+	truncated, _ := result["_ami_truncated"].(bool)
 	return truncated
 }
 

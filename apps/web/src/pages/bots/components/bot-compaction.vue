@@ -9,8 +9,8 @@ import {
   PaginationFirst, PaginationItem, PaginationLast,
   PaginationNext, PaginationPrevious,
 } from '@felinic/ui'
-import { getBotsByBotIdCompactionLogs } from '@memohai/sdk'
-import type { CompactionLog } from '@memohai/sdk'
+import { getBotsByBotIdCompactionLogs } from '@ami/sdk'
+import type { CompactionLog } from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { formatDateTime } from '@/utils/date-time'
 

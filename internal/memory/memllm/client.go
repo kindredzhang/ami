@@ -10,9 +10,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
 const (

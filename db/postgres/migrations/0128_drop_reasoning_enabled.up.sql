@@ -9,8 +9,8 @@
 -- the column default was false, this covers nearly every existing bot; raising
 -- those to a real tier is deliberately left to a separate, opt-in migration.
 
--- bots is under FORCE row level security keyed on memoh.team_id, which a
--- migration connection never sets, so a bare UPDATE fails with "memoh.team_id is
+-- bots is under FORCE row level security keyed on ami.team_id, which a
+-- migration connection never sets, so a bare UPDATE fails with "ami.team_id is
 -- not set". Lift the policy for the data step and restore it after, the same way
 -- 0125 does.
 ALTER TABLE bots NO FORCE ROW LEVEL SECURITY;

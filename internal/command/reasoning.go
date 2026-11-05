@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/reasoning"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // offChoice is the user-facing token for the disabled state. Storage represents

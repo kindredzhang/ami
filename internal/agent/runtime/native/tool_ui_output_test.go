@@ -5,10 +5,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestWrapToolUIOutputStripsReservedKey(t *testing.T) {

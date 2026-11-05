@@ -1,4 +1,4 @@
-import type { AcpagentRuntimeStatus } from '@memohai/sdk'
+import type { AcpagentRuntimeStatus } from '@ami/sdk'
 
 export function acpRuntimeMatchesConfiguration(
   runtime: AcpagentRuntimeStatus | undefined,

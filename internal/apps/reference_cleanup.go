@@ -4,8 +4,8 @@ import (
 	"context"
 	"slices"
 
-	"github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 // pruneReferences releases references absent from the published release. All

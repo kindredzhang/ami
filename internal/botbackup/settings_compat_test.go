@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func TestDecodeBackupSettingsIgnoresRetiredCompaction(t *testing.T) {

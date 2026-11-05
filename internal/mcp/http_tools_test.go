@@ -13,7 +13,7 @@ import (
 
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 type fenceCapturingToolSource struct {

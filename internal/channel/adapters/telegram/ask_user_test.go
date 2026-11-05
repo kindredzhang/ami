@@ -4,9 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/i18n"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 const testAskUserRequestID = "0b5e7a1c-9f2d-4e3a-8b6c-1d2e3f4a5b6c"
@@ -119,7 +119,7 @@ func TestRenderAskUserPageMultiQuestionFlow(t *testing.T) {
 	}
 
 	// Replying to the last text question completes the set immediately.
-	state = applyTestOp(t, payload, state, userinput.InteractionOp{Kind: userinput.OpSetText, QuestionID: "q2", Text: "Memoh Telegram 适配"})
+	state = applyTestOp(t, payload, state, userinput.InteractionOp{Kind: userinput.OpSetText, QuestionID: "q2", Text: "Ami Telegram 适配"})
 	if !state.Completed {
 		t.Fatalf("state should be completed: %#v", state)
 	}
@@ -128,7 +128,7 @@ func TestRenderAskUserPageMultiQuestionFlow(t *testing.T) {
 		t.Fatalf("q1 = %#v", q1)
 	}
 	q2, _ := state.Answer("q2")
-	if q2.Text != "Memoh Telegram 适配" {
+	if q2.Text != "Ami Telegram 适配" {
 		t.Fatalf("q2 = %#v", q2)
 	}
 }

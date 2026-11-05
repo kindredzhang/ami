@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 import type { Ref } from 'vue'
-import type { ProvidertemplatesGetResponse } from '@memohai/sdk'
+import type { ProvidertemplatesGetResponse } from '@ami/sdk'
 
 interface QueryOptions {
   key: () => string[]
@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
   queryOptions: undefined as unknown as QueryOptions,
 }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getProviderTemplatesById: mocks.getTemplate,
 }))
 

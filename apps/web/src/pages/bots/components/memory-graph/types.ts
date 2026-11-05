@@ -1,4 +1,4 @@
-import type { HandlersGraphEdge, HandlersGraphNode } from '@memohai/sdk'
+import type { HandlersGraphEdge, HandlersGraphNode } from '@ami/sdk'
 
 export type GraphNode = HandlersGraphNode
 export type GraphEdge = HandlersGraphEdge

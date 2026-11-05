@@ -3,7 +3,7 @@ package feishu
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestExtractFeishuPostParts_StyleArrayIsRespected(t *testing.T) {
@@ -45,7 +45,7 @@ func TestExtractFeishuPostParts_LinkTag(t *testing.T) {
 	content := map[string]any{
 		"content": []any{
 			[]any{
-				map[string]any{"tag": "a", "text": "Memoh", "href": "https://example.com"},
+				map[string]any{"tag": "a", "text": "Ami", "href": "https://example.com"},
 			},
 		},
 	}
@@ -53,7 +53,7 @@ func TestExtractFeishuPostParts_LinkTag(t *testing.T) {
 	if len(parts) != 1 || parts[0].Type != channel.MessagePartLink {
 		t.Fatalf("expected link part, got %+v", parts)
 	}
-	if parts[0].URL != "https://example.com" || parts[0].Text != "Memoh" {
+	if parts[0].URL != "https://example.com" || parts[0].Text != "Ami" {
 		t.Fatalf("link content wrong: %+v", parts[0])
 	}
 }

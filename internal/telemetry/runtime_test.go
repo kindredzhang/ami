@@ -9,7 +9,7 @@ import (
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/metric/metricdata"
 
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 func metricNames(t *testing.T, reader *sdkmetric.ManualReader) map[string]metricdata.Metrics {
@@ -56,7 +56,7 @@ func TestPoolStatsReportOccupancyAndWaits(t *testing.T) {
 	t.Cleanup(func() { otel.SetMeterProvider(previous) })
 
 	// A pool connects lazily, so this opens no connection.
-	pool, err := pgxpool.New(context.Background(), "postgres://memoh@127.0.0.1:1/memoh?pool_max_conns=7")
+	pool, err := pgxpool.New(context.Background(), "postgres://ami@127.0.0.1:1/ami?pool_max_conns=7")
 	if err != nil {
 		t.Fatal(err)
 	}

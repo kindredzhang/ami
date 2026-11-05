@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import type { AcpagentRuntimeStatus } from '@memohai/sdk'
+import type { AcpagentRuntimeStatus } from '@ami/sdk'
 import {
   ensureACPRuntime as requestEnsureACPRuntime,
   setACPRuntimeMode as requestSetACPRuntimeMode,

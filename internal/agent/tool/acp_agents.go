@@ -10,11 +10,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // ACPRuntimeSummary is the tool-local projection of a booted ACP runtime's

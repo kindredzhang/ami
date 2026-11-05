@@ -8,7 +8,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/felinics/memoh/internal/toolcontext"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 // ToolSessionContext is the MCP gateway's compatibility name for the shared
@@ -23,7 +23,7 @@ type ToolDescriptor struct {
 }
 
 // ToolSource represents a tool source surfaced through the MCP gateway.
-// Implementations may wrap federated MCP connections or selected native Memoh
+// Implementations may wrap federated MCP connections or selected native Ami
 // ToolProviders.
 type ToolSource interface {
 	ListTools(ctx context.Context, session ToolSessionContext) ([]ToolDescriptor, error)

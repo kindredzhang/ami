@@ -13,11 +13,11 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (

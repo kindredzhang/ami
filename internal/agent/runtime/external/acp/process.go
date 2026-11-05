@@ -7,9 +7,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // Process is one ACP agent process. ACP lets one connection host several

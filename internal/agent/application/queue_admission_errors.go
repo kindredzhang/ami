@@ -3,7 +3,7 @@ package application
 import (
 	"errors"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 // QueueAdmissionFailure names why queue admission refused an input. It is the

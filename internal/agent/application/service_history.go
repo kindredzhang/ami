@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"strings"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/chat/checkpoint"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/chat/checkpoint"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 // injectWorkspaceTransitionRecords marks every switch of Computer between

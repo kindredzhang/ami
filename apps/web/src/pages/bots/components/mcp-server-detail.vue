@@ -444,15 +444,15 @@ import {
   type SegmentedItem,
 } from '@felinic/ui'
 import { Globe, KeyRound, Loader2, Pencil, RefreshCw, SlidersHorizontal, Terminal, Trash2 } from 'lucide-vue-next'
-import { ErrorIcon } from '@memohai/icon/ui'
+import { ErrorIcon } from '@ami/icon/ui'
 import {
   postBotsByBotIdMcp, putBotsByBotIdMcpById, deleteBotsByBotIdMcpById,
   postBotsByBotIdMcpByIdProbe, getBotsByBotIdMcpByIdOauthStatus,
   postBotsByBotIdMcpByIdOauthDiscover, postBotsByBotIdMcpByIdOauthAuthorize,
   deleteBotsByBotIdMcpByIdOauthToken,
-} from '@memohai/sdk'
-import { client } from '@memohai/sdk/client'
-import type { McpUpsertRequest, McpToolDescriptor, McpOAuthStatus } from '@memohai/sdk'
+} from '@ami/sdk'
+import { client } from '@ami/sdk/client'
+import type { McpUpsertRequest, McpToolDescriptor, McpOAuthStatus } from '@ami/sdk'
 import { ConfirmPopover, SettingsRow, SettingsSection } from '@felinic/ui'
 import CheckDrawIcon from '@/components/check-draw-icon/index.vue'
 import KeyValueEditor from '@/components/key-value-editor/index.vue'

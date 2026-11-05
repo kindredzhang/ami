@@ -6,9 +6,9 @@ import (
 
 	"google.golang.org/grpc/codes"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/agent/turn/turnpb"
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn/turnpb"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 // turnReasons registers the turn sentinels on the error envelope. The server

@@ -7,8 +7,8 @@ import (
 
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 // overWire returns err as a client receives it.

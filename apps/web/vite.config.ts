@@ -11,9 +11,9 @@ export default defineConfig(({ command }) => {
   const defaultPort = 8082
   const defaultHost = '127.0.0.1'
   const defaultApiBaseUrl = process.env.VITE_API_URL ?? 'http://localhost:8080'
-  const configuredProxyTarget = process.env.MEMOH_WEB_PROXY_TARGET?.trim()
-  const configuredChannelProxyTarget = process.env.MEMOH_CHANNEL_PROXY_TARGET?.trim()
-  const configuredPath = process.env.MEMOH_CONFIG_PATH?.trim() || process.env.CONFIG_PATH?.trim()
+  const configuredProxyTarget = process.env.AMI_WEB_PROXY_TARGET?.trim()
+  const configuredChannelProxyTarget = process.env.AMI_CHANNEL_PROXY_TARGET?.trim()
+  const configuredPath = process.env.AMI_CONFIG_PATH?.trim() || process.env.CONFIG_PATH?.trim()
   const configPath = configuredPath && configuredPath.length > 0 ? configuredPath : '../../config.toml'
 
   let port = defaultPort
@@ -22,7 +22,7 @@ export default defineConfig(({ command }) => {
 
   if (command !== 'build') {
     try {
-      const { loadConfig, getBaseUrl } = require('@memohai/config') as {
+      const { loadConfig, getBaseUrl } = require('@ami/config') as {
         loadConfig: (path: string) => {
           web?: { port?: number; host?: string }
         }
@@ -91,7 +91,7 @@ export default defineConfig(({ command }) => {
       // package's TS project for no gain. Non-zero exit fails dev/build
       // loudly with the recovery recipe on stderr.
       {
-        name: 'memoh:verify-patched-deps',
+        name: 'ami:verify-patched-deps',
         configResolved() {
           execFileSync(
             process.execPath,

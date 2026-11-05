@@ -12,12 +12,12 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/bots"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/settings"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/bots"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestContextCompositionBucketsToolDefsByProvider(t *testing.T) {
@@ -198,7 +198,7 @@ func TestGetSessionInfoOmitsCompactionForACPRuntime(t *testing.T) {
 		t.Fatalf("breakdown = %+v, want the ACP composition", response.ContextUsage.Breakdown)
 	}
 	if response.ContextUsage.Compaction != nil {
-		t.Fatalf("compaction = %+v, want none: Memoh never compacts ACP sessions", response.ContextUsage.Compaction)
+		t.Fatalf("compaction = %+v, want none: Ami never compacts ACP sessions", response.ContextUsage.Compaction)
 	}
 }
 

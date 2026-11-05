@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 type HistoryTurn struct {

@@ -9,11 +9,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	session "github.com/felinics/memoh/internal/chat/thread"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type fakeHistorySessionLister struct {

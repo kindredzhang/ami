@@ -118,7 +118,7 @@ const api = {
   },
 }
 
-export type MemohApi = typeof api
+export type AmiApi = typeof api
 
 if (process.contextIsolated) {
   try {

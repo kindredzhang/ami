@@ -1,7 +1,7 @@
 import { EXTERNAL_AGENT_DEFAULT_PROJECT_PATH } from '@/utils/external-agent'
 import { isAgentRuntimeType } from '../chat-list.utils'
 import type { Ref } from 'vue'
-import { getBotsByBotIdSettings } from '@memohai/sdk'
+import { getBotsByBotIdSettings } from '@ami/sdk'
 import type { ExternalAgentSessionInput } from './types'
 
 interface ExternalAgentSettings {

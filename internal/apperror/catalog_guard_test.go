@@ -301,7 +301,7 @@ func TestCatalogGolden(t *testing.T) {
 }
 
 // sessionCodes are the codes that answer 401. The Web client signs out on a
-// 401, so only a missing or invalid Memoh session answers with it.
+// 401, so only a missing or invalid Ami session answers with it.
 var sessionCodes = map[Code]struct{}{
 	CodeHTTPUnauthorized:                       {},
 	CodeContextLifecycleAuthenticationRequired: {},
@@ -312,7 +312,7 @@ func TestCatalogUnauthorizedIsSessionOnly(t *testing.T) {
 	for code, definition := range catalog {
 		_, session := sessionCodes[code]
 		if definition.HTTPStatus == http.StatusUnauthorized && !session {
-			t.Errorf("catalog entry %q answers 401, which signs the Web client out; only a Memoh session failure may", code)
+			t.Errorf("catalog entry %q answers 401, which signs the Web client out; only a Ami session failure may", code)
 		}
 		if session && definition.HTTPStatus != http.StatusUnauthorized {
 			t.Errorf("session code %q answers %d, want 401", code, definition.HTTPStatus)

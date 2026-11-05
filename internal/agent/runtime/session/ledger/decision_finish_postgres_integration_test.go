@@ -5,8 +5,8 @@ import (
 
 	"github.com/google/uuid"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 // Finishing must see both lost terminal notifications and expired pending
@@ -54,10 +54,10 @@ func TestPostgresFinishReadsAllRunDecisions(t *testing.T) {
 		t.Fatalf("routing semantics changed: %d err=%v", len(pending), err)
 	}
 	// An unrelated team must not gain access by knowing the globally unique run ID.
-	if _, err := conn.Exec(ctx, `SELECT set_config('memoh.team_id',$1,false)`, uuid.NewString()); err != nil {
+	if _, err := conn.Exec(ctx, `SELECT set_config('ami.team_id',$1,false)`, uuid.NewString()); err != nil {
 		t.Fatal(err)
 	}
-	defer func() { _, _ = conn.Exec(ctx, `RESET memoh.team_id`) }()
+	defer func() { _, _ = conn.Exec(ctx, `RESET ami.team_id`) }()
 	approvals, err = queries.ListToolApprovalsByRun(ctx, id)
 	if err != nil || len(approvals) != 0 {
 		t.Fatalf("approval team isolation: %d err=%v", len(approvals), err)

@@ -192,7 +192,7 @@ import {
   menuSeparatorClass,
   MenuScrollArea,
 } from '@felinic/ui'
-import type { ModelsGetResponse, ModelsModelType, ProvidersGetResponse } from '@memohai/sdk'
+import type { ModelsGetResponse, ModelsModelType, ProvidersGetResponse } from '@ami/sdk'
 import { useListboxKeyboard } from '@/composables/useListboxKeyboard'
 import ModelDescriptionTooltip from '@/components/model-description-tooltip/index.vue'
 import { getModelDescription, matchesModelSearch } from '@/utils/model-description'

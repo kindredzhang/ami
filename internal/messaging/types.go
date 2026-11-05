@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	attachmentpkg "github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/media"
+	attachmentpkg "github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 // Platform is the delivery platform identifier used by Agent-facing

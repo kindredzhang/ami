@@ -5,10 +5,10 @@
 ## 环境
 
 - 从 `origin/main` 的 `860382510` 创建独立 worktree，分支 `codex/agent-capability-management`。原 checkout 的未提交内容未改动。
-- 使用仓库的 `scripts/dev-compose.sh` / `devenv/docker-compose.yml` 启动隔离 Compose 项目 `memoh-capability`；Web 为 `http://localhost:21482`，Server 为 `http://localhost:21480`。
+- 使用仓库的 `scripts/dev-compose.sh` / `devenv/docker-compose.yml` 启动隔离 Compose 项目 `ami-capability`；Web 为 `http://localhost:21482`，Server 为 `http://localhost:21480`。
 - 已核对 Server 的 `/workspace` 挂载指向本分支 worktree。Server、Channel、PostgreSQL、pgvector、Connect-It 健康；Web 实际可访问，Server `HEAD /health` 返回 200。
 - 测试覆盖真实 Web、Go Server、审批持久化、工作区容器、Supermarket 下载及文件发布。模型使用本地确定性 OpenAI 兼容测试服务，以稳定触发具体工具调用；MCP OAuth 使用本地测试授权服务。未使用真实第三方账号或付费模型凭据。
-- 本地 Compose override 修正开发配置中 pgvector 的容器内地址，并设置 `MEMOH_SERVER_PUBLIC_URL=http://localhost:21482`；这些环境文件不纳入提交。
+- 本地 Compose override 修正开发配置中 pgvector 的容器内地址，并设置 `AMI_SERVER_PUBLIC_URL=http://localhost:21482`；这些环境文件不纳入提交。
 
 ## 真实 UI 与运行时结果
 
@@ -19,7 +19,7 @@
 | 同任务使用 | 安装后同一 Agent turn 调用 `list_skills`、`use_skill`，并正常结束 | [03](screenshots/agent-capability-management/03-same-task-skill.png) |
 | 卸载 | 聊天确认后返回 `removed`，随后可重新安装 | [04](screenshots/agent-capability-management/04-app-uninstall.png) |
 | MCP 授权入口 | 聊天创建 MCP 并发起 OAuth，返回供用户点击的授权链接 | [05](screenshots/agent-capability-management/05-oauth-link.png) |
-| OAuth 回调 | 浏览器完成本地测试授权，Memoh 回调页显示连接成功 | [06](screenshots/agent-capability-management/06-oauth-callback.png) |
+| OAuth 回调 | 浏览器完成本地测试授权，Ami 回调页显示连接成功 | [06](screenshots/agent-capability-management/06-oauth-callback.png) |
 | 授权后使用 | 聊天探测并在同一任务调用新发现的 `qa_oauth_mcp_qa_echo` | [07](screenshots/agent-capability-management/07-authorized-mcp-call.png) |
 | 停用持久化 | 聊天停用连接，Settings 显示开关关闭及授权状态；后续模型工具表移除该 MCP 工具 | [08](screenshots/agent-capability-management/08-mcp-settings.png) |
 | App 持久化 | Settings 显示已安装 App 的 18 个 Skills | [09](screenshots/agent-capability-management/09-installed-app-settings.png) |

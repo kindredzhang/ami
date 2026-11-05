@@ -378,7 +378,7 @@ import {
   Spinner,
 } from '@felinic/ui'
 import { KeyRound, RefreshCw } from 'lucide-vue-next'
-import { ErrorIcon } from '@memohai/icon/ui'
+import { ErrorIcon } from '@ami/icon/ui'
 import CheckDrawIcon from '@/components/check-draw-icon/index.vue'
 import LoadingButton from '@/components/loading-button/index.vue'
 import {
@@ -395,13 +395,13 @@ import {
   getProvidersByIdOauthStatus,
   postProvidersByIdOauthPoll,
   postProvidersByIdTest,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type {
   ProvidersGetResponse,
   ProvidersOAuthAuthorizeResponse,
   ProvidersOAuthStatus,
   ProvidersTestResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { ConfirmPopover, DeviceCodePanel, SettingsRow, SettingsSection, toast } from '@felinic/ui'
 import { useProviderModelCatalog } from '@/composables/useProviderModelCatalog'

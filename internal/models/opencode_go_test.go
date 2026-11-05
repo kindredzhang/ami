@@ -65,7 +65,7 @@ func TestOpenCodeGoWire(t *testing.T) {
 					http.Error(w, "rejected", http.StatusBadRequest)
 				}))
 				defer srv.Close()
-				// A plain client, like the agent's, does not add Memoh's User-Agent itself.
+				// A plain client, like the agent's, does not add Ami's User-Agent itself.
 				cfg := SDKModelConfig{ModelID: tc.model, ClientType: string(ClientTypeOpenCodeGo), BaseURL: srv.URL + "/zen/go/v1", HTTPClient: srv.Client(), ReasoningConfig: &ReasoningConfig{Active: true, Effort: "high"}}
 				model := NewSDKChatModel(cfg)
 				if ResolveClientType(model) != tc.protocol || ResolveModelClientType(cfg.ClientType, tc.model) != tc.protocol {

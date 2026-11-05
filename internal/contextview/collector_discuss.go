@@ -7,10 +7,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/messageconv"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/messageconv"
 )
 
 const (

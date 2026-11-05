@@ -15,22 +15,22 @@ import (
 
 const (
 	ToolHeaderAuthorization      = "Authorization" //nolint:gosec // G101: HTTP header name, not a credential.
-	ToolHeaderBotID              = "X-Memoh-Bot-Id"
-	ToolHeaderChatID             = "X-Memoh-Chat-Id"
-	ToolHeaderRuntimeID          = "X-Memoh-Runtime-Id"
-	ToolHeaderRuntimeToken       = "X-Memoh-Runtime-Token" //nolint:gosec // G101: HTTP header name, not a credential.
-	ToolHeaderSessionID          = "X-Memoh-Session-Id"
-	ToolHeaderRunID              = "X-Memoh-Run-Id"
-	ToolHeaderSessionType        = "X-Memoh-Session-Type"
-	ToolHeaderRouteID            = "X-Memoh-Route-Id"
-	ToolHeaderChannelIdentityID  = "X-Memoh-Channel-Identity-Id"
-	ToolHeaderSessionToken       = "X-Memoh-Session-Token" //nolint:gosec // G101: HTTP header name, not a credential.
-	ToolHeaderCurrentPlatform    = "X-Memoh-Current-Platform"
-	ToolHeaderReplyTarget        = "X-Memoh-Reply-Target"
-	ToolHeaderConversationType   = "X-Memoh-Conversation-Type"
-	ToolHeaderIsSubagent         = "X-Memoh-Is-Subagent"
-	ToolHeaderSupportsImageInput = "X-Memoh-Supports-Image-Input"
-	ToolHeaderSupportsFileInput  = "X-Memoh-Supports-File-Input"
+	ToolHeaderBotID              = "X-Ami-Bot-Id"
+	ToolHeaderChatID             = "X-Ami-Chat-Id"
+	ToolHeaderRuntimeID          = "X-Ami-Runtime-Id"
+	ToolHeaderRuntimeToken       = "X-Ami-Runtime-Token" //nolint:gosec // G101: HTTP header name, not a credential.
+	ToolHeaderSessionID          = "X-Ami-Session-Id"
+	ToolHeaderRunID              = "X-Ami-Run-Id"
+	ToolHeaderSessionType        = "X-Ami-Session-Type"
+	ToolHeaderRouteID            = "X-Ami-Route-Id"
+	ToolHeaderChannelIdentityID  = "X-Ami-Channel-Identity-Id"
+	ToolHeaderSessionToken       = "X-Ami-Session-Token" //nolint:gosec // G101: HTTP header name, not a credential.
+	ToolHeaderCurrentPlatform    = "X-Ami-Current-Platform"
+	ToolHeaderReplyTarget        = "X-Ami-Reply-Target"
+	ToolHeaderConversationType   = "X-Ami-Conversation-Type"
+	ToolHeaderIsSubagent         = "X-Ami-Is-Subagent"
+	ToolHeaderSupportsImageInput = "X-Ami-Supports-Image-Input"
+	ToolHeaderSupportsFileInput  = "X-Ami-Supports-File-Input"
 )
 
 const (
@@ -139,7 +139,7 @@ func BuildToolMCPServer(gateway *ToolGatewayService, contexts *ToolSessionContex
 	}
 	server := sdkmcp.NewServer(
 		&sdkmcp.Implementation{
-			Name:    "memoh-tools-gateway",
+			Name:    "ami-tools-gateway",
 			Version: "1.0.0",
 		},
 		&sdkmcp.ServerOptions{

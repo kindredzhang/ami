@@ -5,9 +5,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 func (s *Store) CreateWorkdir(ctx context.Context, input dbstore.CreateBotWorkdirInput) (dbstore.BotWorkdirRecord, error) {

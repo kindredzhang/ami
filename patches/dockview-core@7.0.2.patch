@@ -248,7 +248,7 @@ index 47d091027d89b9da241bdbc53d72f32c1e173719..2e121eae968abea7b58f1a9d376f1e7e
              // 30/-10 matches the HTML5 setDragImage offset that has been
              // shipped for years; pointer backend wraps in PointerGhost,
              // HTML5 backend feeds into setDragImage.
-+            // Memoh patch: align the single-tab drag chip with the pointer
++            // Ami patch: align the single-tab drag chip with the pointer
 +            // horizontally. dockview-core hard-codes this value and does not expose
 +            // a single-tab ghost offset option.
              createGhost: () => ({

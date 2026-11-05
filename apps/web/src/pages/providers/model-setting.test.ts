@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, nextTick, ref } from 'vue'
 import type { Slots } from 'vue'
-import type { ProvidersGetResponse } from '@memohai/sdk'
+import type { ProvidersGetResponse } from '@ami/sdk'
 
 const mocks = vi.hoisted(() => ({
   postProviders: vi.fn(),
@@ -42,7 +42,7 @@ vi.mock('@pinia/colada', async () => {
   }
 })
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   deleteModelsById: mocks.deleteModelsById,
   deleteProvidersById: mocks.deleteProvidersById,
   getProvidersByIdModels: mocks.getProvidersByIdModels,

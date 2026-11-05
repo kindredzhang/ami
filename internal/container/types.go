@@ -36,7 +36,7 @@ func IsRuntime(err error) bool {
 const (
 	// StorageKeyLabel stores the runtime-specific active storage key on backends
 	// whose container metadata does not expose one natively.
-	StorageKeyLabel = "memoh.storage_key"
+	StorageKeyLabel = "ami.storage_key"
 )
 
 type TaskStatus int

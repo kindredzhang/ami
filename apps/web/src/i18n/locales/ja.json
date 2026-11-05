@@ -154,7 +154,7 @@
       "provider_quota_exhausted": "モデルプロバイダーのアカウントに残高またはクォータが残っていません。",
       "provider_rate_limited": "モデルプロバイダーのレート制限に達しました。少し待ってから送信してください。",
       "provider_request_rejected": "モデルプロバイダーがリクエストを拒否しました。モデル設定を確認するか、別のモデルをお試しください。",
-      "provider_unreachable": "Memoh からモデルプロバイダーに接続できませんでした。プロバイダーのアドレスとサービスが稼働中か確認してください。",
+      "provider_unreachable": "Ami からモデルプロバイダーに接続できませんでした。プロバイダーのアドレスとサービスが稼働中か確認してください。",
       "response_interrupted": "モデルの応答が中断されました。もう一度お試しください。",
       "response_timeout": "モデルから時間内に応答がありませんでした。もう一度お試しください。",
       "tool_timeout": "ツールの進捗が途絶えました。保存済みの結果を確認してから再試行してください。"
@@ -263,7 +263,7 @@
     },
     "elicitation_declined": "ツールが要求した対話を表示できなかったため、その要求は拒否されました。",
     "external_agent": {
-      "account_unbound": "この IM アカウントはまだ Memoh アカウントと連携されていないため、この Bot のワークスペースを利用できません。あなたが所有者の場合は、Memoh の Web 画面で「プロフィール → 連携済みアカウント」からリンクコードを取得し、ここで {link} <コード> を送信してください。",
+      "account_unbound": "この IM アカウントはまだ Ami アカウントと連携されていないため、この Bot のワークスペースを利用できません。あなたが所有者の場合は、Ami の Web 画面で「プロフィール → 連携済みアカウント」からリンクコードを取得し、ここで {link} <コード> を送信してください。",
       "container_workspace_required": "この Agent ランタイムにはコンテナワークスペースが必要です。Bot をコンテナワークスペースに切り替えてから、もう一度お試しください。",
       "turn_replacement_unsupported": "外部 Agent のセッションでは再試行とメッセージの編集は利用できません。代わりに新しいメッセージを送信してください。"
     },
@@ -281,7 +281,7 @@
       "usage_limited": "外部 Agent のアカウントの利用枠を使い切りました。上限がリセットされてからもう一度お試しいただくか、アカウントのプランと請求情報をご確認ください。"
     },
     "fetch_provider": {
-      "native_managed": "組み込みの取得プロバイダーは Memoh が管理しており、この方法では変更できません。",
+      "native_managed": "組み込みの取得プロバイダーは Ami が管理しており、この方法では変更できません。",
       "not_found": "この取得プロバイダーは存在しなくなりました。一覧を更新して選び直してください。"
     },
     "group_chat_acp_unsupported": "グループチャットではチャットモードの外部Agent Sessionを作成できません。/new <Agent名> または /new discuss <Agent名> を使用してください。",
@@ -442,7 +442,7 @@
       "reasoning_options_unavailable": "チャットModelの推論オプションを確認できませんでした。しばらくしてからもう一度お試しください。"
     },
     "skill": {
-      "builtin_read_only": "Memoh 組み込みの Skill はシステムによって管理されているため、編集または削除できません。",
+      "builtin_read_only": "Ami 組み込みの Skill はシステムによって管理されているため、編集または削除できません。",
       "directory_shared": "この Skill のフォルダには他の Skill も含まれているため、ここでは名前の変更や削除ができません。ファイルからこの SKILL.md を削除してください。",
       "name_invalid": "Skill の YAML frontmatter に有効な名前が必要です。",
       "name_taken": "同じ名前の Skill がすでに存在します。別の名前を使用してください。",
@@ -477,7 +477,7 @@
       "operation_failed": "承認の回答を処理できませんでした。",
       "request_invalid": "承認の回答形式が無効です。更新してからもう一度お試しください。"
     },
-    "tools_unavailable": "この会話では Memoh のツールを利用できません。新しい会話を開始して再試行してください。",
+    "tools_unavailable": "この会話では Ami のツールを利用できません。新しい会話を開始して再試行してください。",
     "transcription_model": {
       "not_found": "この文字起こしモデルは存在しなくなりました。一覧を更新して選び直してください。"
     },
@@ -587,7 +587,7 @@
   "auth": {
     "welcome": "おかえり",
     "pageTitle": "サインイン",
-    "pageSubtitle": "Memoh で構築を始めましょう",
+    "pageSubtitle": "Ami で構築を始めましょう",
     "continue": "続ける",
     "username": "ユーザー名",
     "password": "パスワード",
@@ -602,12 +602,12 @@
     "retryHint": "認証情報を確認して再試行してください"
   },
   "desktopConnection": {
-    "title": "Memoh に接続",
-    "subtitle": "Memoh Server のアドレスを入力してください",
-    "fullInstallLead": "完全な Memoh を利用するには、",
+    "title": "Ami に接続",
+    "subtitle": "Ami Server のアドレスを入力してください",
+    "fullInstallLead": "完全な Ami を利用するには、",
     "fullInstallAction": "Docker でインストールしてください。",
-    "fullInstallHint": "Desktop は既存の Memoh Server に接続するクライアントです。",
-    "placeholder": "https://memoh.example.com",
+    "fullInstallHint": "Desktop は既存の Ami Server に接続するクライアントです。",
+    "placeholder": "https://ami.example.com",
     "connect": "接続",
     "failed": "接続できませんでした",
     "errors": {
@@ -617,7 +617,7 @@
       "timeout": "Server からの応答がタイムアウトしました",
       "unreachable": "Server に接続できません",
       "http": "Server が HTTP {status} を返しました",
-      "invalid-response": "このアドレスから Memoh Server の応答を確認できませんでした"
+      "invalid-response": "このアドレスから Ami Server の応答を確認できませんでした"
     }
   },
   "sidebar": {
@@ -650,7 +650,7 @@
     "appearance": "外観",
     "keyboard": "キーボードショートカット",
     "supermarket": "マーケットプレイス",
-    "about": "Memoh について",
+    "about": "Ami について",
     "userMenu": "アカウントメニュー",
     "switchBot": "Botを切り替え",
     "manageBots": "Botを管理"
@@ -665,7 +665,7 @@
     "loadFailedDescription": "Server への接続を確認して、もう一度お試しください。",
     "retry": "再試行",
     "emptyTitle": "接続済みのコンピューターはありません",
-    "emptyDescription": "接続コマンドを作成し、Memoh で使用するコンピューター上で実行してください。",
+    "emptyDescription": "接続コマンドを作成し、Ami で使用するコンピューター上で実行してください。",
     "emptyOtherTitle": "他のコンピューターは接続されていません",
     "emptyOtherDescription": "Bot で別の端末を使う場合は、もう一台接続してください。",
     "copyCommand": "接続コマンドをコピー",
@@ -687,13 +687,13 @@
       "description": "オンにすると、このコンピューターに名前を付けて接続し、各 Bot に追加できるようになります。",
       "enabledDescription": "許可した Bot だけが、ホームフォルダーにアクセスし、あなたとしてコマンドを実行できます。",
       "pausedDescription": "一時停止中です。Bot は今は使用できませんが、付与したアクセス権は保持されます。",
-      "fallbackName": "Memoh Desktop",
+      "fallbackName": "Ami Desktop",
       "dialogTitle": "このコンピューターを使用可能にする",
       "dialogDescription": "この名前は Bot の設定、承認、チャット履歴に表示されます。",
       "confirm": "使用可能にする",
       "loading": "このコンピューターを読み込んでいます...",
       "loadFailed": "このコンピューターの接続状態を読み込めませんでした",
-      "loadFailedDescription": "Memoh Desktop を再起動して、もう一度お試しください。",
+      "loadFailedDescription": "Ami Desktop を再起動して、もう一度お試しください。",
       "invalidCredential": "Server から有効な接続情報が返されませんでした。",
       "enableFailed": "Bot にこのコンピューターの使用を許可できませんでした",
       "disableFailed": "このコンピューターの使用許可をオフにできませんでした",
@@ -790,7 +790,7 @@
       "interfaceDescription": "これらの設定はローカルに保存され、すぐに適用されます。",
       "colorScheme": "配色",
       "showExamplesEntry": "サイドバーの使用例",
-      "showExamplesEntryDescription": "サイドバー左下に「Memoh でできること」を表示します",
+      "showExamplesEntryDescription": "サイドバー左下に「Ami でできること」を表示します",
       "colorSchemeDescription": "ブランド、ステータス、UI 要素に使うパレットを選択します。",
       "typography": "タイポグラフィ",
       "uiFontFamily": "UI フォント",
@@ -805,14 +805,14 @@
       "shikiThemeSearch": "テーマを検索…",
       "shikiThemeEmpty": "該当するテーマがありません。",
       "colorSchemes": {
-        "memoh": "Memoh",
+        "ami": "Ami",
         "ocean": "海",
         "forest": "森",
         "rose": "薔薇",
         "amber": "アンバー"
       },
       "colorSchemeDescriptions": {
-        "memoh": "スタンダードなパープルパレット",
+        "ami": "スタンダードなパープルパレット",
         "ocean": "視認性の高いクールなブルー",
         "forest": "控えめなグリーントーン",
         "rose": "温かみのあるアクセントと柔らかなコントラスト",
@@ -957,7 +957,7 @@
     "updateReadyPaused": "更新の準備ができました。自動インストールはオフです。再起動して適用できます。",
     "preparingUpdate": "更新を準備中…",
     "installingUpdate": "再起動中…",
-    "autoUpdateDescription": "バックグラウンドでダウンロードし、Memoh の終了時にインストールします。",
+    "autoUpdateDescription": "バックグラウンドでダウンロードし、Ami の終了時にインストールします。",
     "autoUpdate": "自動更新",
     "tagline": "オープンソースのマルチエージェント プラットフォーム",
     "description": "複数の AI エージェントが、それぞれ専用のコンピューターと長期記憶を持ちます。",
@@ -978,7 +978,7 @@
     "desktopUpdatesUnavailable": "自動アップデートを利用できません",
     "desktopUpdatesUnavailableDesc": "このビルドにはアップデート配信元が設定されていません。",
     "downloadingUpdate": "ダウンロード中… {progress}%",
-    "desktopUpdateDownloadedDesc": "更新の準備ができました。今すぐ再起動するか、Memoh の終了時に自動でインストールします。",
+    "desktopUpdateDownloadedDesc": "更新の準備ができました。今すぐ再起動するか、Ami の終了時に自動でインストールします。",
     "restartToUpdate": "再起動して更新",
     "retryUpdate": "更新を再試行",
     "desktopUpdateFailed": "Desktop のアップデートに失敗しました",
@@ -988,12 +988,12 @@
     "advanced": "詳細設定",
     "advancedDescription": "Desktop 接続など、通常は変更しない設定です。",
     "serverConnection": "Server 接続",
-    "serverConnectionDescription": "Desktop を別の Memoh Server に接続します。",
+    "serverConnectionDescription": "Desktop を別の Ami Server に接続します。",
     "configureServer": "設定",
     "license": "AGPLv3 · © 2026 MemohAI"
   },
   "chat": {
-    "workspaceLinkUnavailable": "ここではワークスペースのリンクを開けません。ワークスペースへのアクセス権がある Memoh の会話で開いてください。",
+    "workspaceLinkUnavailable": "ここではワークスペースのリンクを開けません。ワークスペースへのアクセス権がある Ami の会話で開いてください。",
     "runtimeStatus": {
       "compacting": "コンテキストを圧縮中…",
       "api_retry": "{seconds} 秒後に再試行（{attempt}/{max_retries}）…"
@@ -1487,7 +1487,7 @@
     "sessionTypeDiscuss": "話し合う",
     "sessionTypeChat": "チャット",
     "sessionTypeACPAgent": "エージェント",
-    "agentMemoh": "Memoh",
+    "agentAmi": "Ami",
     "agentCodex": "コーデックス",
     "agentSwitchFailed": "エージェントの切り替えに失敗しました",
     "modelSwitchFailed": "モデルの切り替えに失敗しました",
@@ -1513,7 +1513,7 @@
       "codexAuthTokenMissing": "このBotワークスペースのCodex認証が不足しているか不完全です。",
       "agentAuthInvalid": "外部Agentの認証が無効です。Agent設定を更新してからもう一度お試しください。",
       "noWorkspaceExec": "このBotのWorkspaceコマンドを実行する権限がありません。",
-      "accountUnbound": "この IM アカウントはまだ Memoh アカウントと連携されていないため、この Bot のワークスペースを利用できません。あなたが所有者の場合は、Memoh の Web 画面で「プロフィール → 連携済みアカウント」からリンクコードを取得し、ここで {link} <コード> を送信してください。",
+      "accountUnbound": "この IM アカウントはまだ Ami アカウントと連携されていないため、この Bot のワークスペースを利用できません。あなたが所有者の場合は、Ami の Web 画面で「プロフィール → 連携済みアカウント」からリンクコードを取得し、ここで {link} <コード> を送信してください。",
       "runtimeOwnerMissing": "この外部Agent Sessionには実行所有者がありません。新しいSessionを開始してください。",
       "discussUnsupported": "この外部Agentはディスカッションモードでは実行できません。",
       "groupChatUnsupported": "グループチャットではチャットモードの外部Agent Sessionを作成できません。/new <Agent名> または /new discuss <Agent名> を使用してください。",
@@ -1770,7 +1770,7 @@
       "choose": "プロジェクトを選択",
       "clear": "プロジェクトを使わない",
       "none": "プロジェクト未選択",
-      "workspace": "Memoh ワークスペース",
+      "workspace": "Ami ワークスペース",
       "empty": "サイドバーにフォルダを追加してから、プロジェクトを選択してください。"
     },
     "planMode": {
@@ -1818,12 +1818,12 @@
       "schedule": "スケジュール",
       "channel": "チャンネル"
     },
-    "sidebarEntry": "Memoh でできること",
+    "sidebarEntry": "Ami でできること",
     "hideSidebarEntry": "この入口を非表示",
     "sidebarEntryHidden": "非表示にしました。外観設定で戻せます",
     "undoHideSidebarEntry": "元に戻す",
     "sidebarEntrySaveFailed": "保存できませんでした。しばらくしてからもう一度お試しください。",
-    "galleryTitle": "Memoh でできること",
+    "galleryTitle": "Ami でできること",
     "galleryDescription": "例を選ぶと入力欄に入ります。送信前に編集できます。",
     "refresh": "他の候補",
     "refreshFailed": "新しい候補を取得できませんでした。しばらくしてからもう一度お試しください。",
@@ -1835,7 +1835,7 @@
       "confirm": "置き換える"
     },
     "share": {
-      "prompt": "Memoh で何を作りましたか？ #Memoh を付けて、活用事例を X でシェアしましょう。",
+      "prompt": "Ami で何を作りましたか？ #Ami を付けて、活用事例を X でシェアしましょう。",
       "action": "X でシェア"
     }
   },
@@ -2031,7 +2031,7 @@
   },
   "providerConnect": {
     "title": "プロバイダーを追加",
-    "description": "外部サービスが以下のプロバイダーを Memoh に追加しようとしています。確認するまで保存されません。",
+    "description": "外部サービスが以下のプロバイダーを Ami に追加しようとしています。確認するまで保存されません。",
     "name": "名前",
     "baseUrl": "ベース URL",
     "clientType": "クライアントタイプ",
@@ -2075,7 +2075,7 @@
     "addHeader": "Header を追加",
     "selectHint": "Web 検索プロバイダーを選択または作成します",
     "unsupportedProvider": "このプロバイダーには設定パネルがまだありません",
-    "nativeManaged": "ネイティブは Memoh によって管理され、常に有効になります。",
+    "nativeManaged": "ネイティブは Ami によって管理され、常に有効になります。",
     "saveSuccess": "Web 検索プロバイダーを保存しました",
     "deleteSuccess": "Web 検索プロバイダーを削除しました",
     "deleteFailed": "Web 検索プロバイダーの削除に失敗しました",
@@ -2407,7 +2407,7 @@
       "confirmReset": "すべてのツール承認ルールをデフォルト状態に戻しますか?",
       "resetWarningExtra": "カスタムのバイパスルールとレビュー必須ルールは失われます。",
       "title": "ツール呼び出しの承認",
-      "intro": "この Bot が Workspace と各接続済みコンピューターで実行できる操作を設定します。これらのルールは Memoh が提供するツールにのみ適用されます。Claude Code、Codex、Grok Build の組み込みツールはそれぞれの権限モードに従い、確認の要求はカードとして表示され、該当する Workspace 権限を持つユーザーが判断します。",
+      "intro": "この Bot が Workspace と各接続済みコンピューターで実行できる操作を設定します。これらのルールは Ami が提供するツールにのみ適用されます。Claude Code、Codex、Grok Build の組み込みツールはそれぞれの権限モードに従い、確認の要求はカードとして表示され、該当する Workspace 権限を持つユーザーが判断します。",
       "loading": "承認ルールを読み込んでいます...",
       "loadFailed": "Tool の承認設定を読み込めませんでした",
       "loadFailedDescription": "Server への接続を確認して、もう一度お試しください。",
@@ -2630,16 +2630,16 @@
       "exportBot": "エクスポートBot",
       "importBot": "インポートBot",
       "cardTitle": "Botのバックアップ",
-      "cardSubtitle": "完全なBotをポータブルな .memoh.zip バンドルとしてエクスポートまたはインポートします。",
+      "cardSubtitle": "完全なBotをポータブルな .ami.zip バンドルとしてエクスポートまたはインポートします。",
       "createMode": "新規作成",
       "importMode": "バックアップからインポート",
       "dropzoneTitle": "ここをクリックしてバックアップ ファイルを選択またはドラッグします",
-      "dropzoneHint": ".memoh.zip バックアップ ファイルをサポート",
+      "dropzoneHint": ".ami.zip バックアップ ファイルをサポート",
       "removeFile": "ファイルを削除する",
       "exportTitle": "エクスポートBot",
       "exportDescription": "Bot構成、履歴、添付ファイル、およびWorkspace ファイルをエクスポートして、復元、デバイス転送、または共有を行います。バンドルを暗号化するためのパスフレーズを設定します。それ以外の場合、認証情報は平文で保存されます。ファイルを安全に保管してください。",
       "importTitle": "インポートBot",
-      "importDescription": ".memoh.zip バックアップ ファイルをアップロードしてプレビューし、コピーを作成するか、現在のBotを上書きします。",
+      "importDescription": ".ami.zip バックアップ ファイルをアップロードしてプレビューし、コピーを作成するか、現在のBotを上書きします。",
       "reading": "バックアップを読み取り中…",
       "passphraseLabel": "パスフレーズ (オプション)",
       "passphrasePlaceholder": "暗号化しない場合は空のままにします",
@@ -2791,7 +2791,7 @@
       "namePlaceholder": "Agent 名を入力",
       "nameRequired": "Agent 名を入力してください。",
       "emptyTitle": "外部 Agent はまだありません",
-      "emptyDescription": "既定では Memoh 内蔵ランタイムが使用されます。外部 Agent を追加すると、この Bot で Codex、Claude Code、Grok Build、またはカスタム ACP Agent を利用できます。",
+      "emptyDescription": "既定では Ami 内蔵ランタイムが使用されます。外部 Agent を追加すると、この Bot で Codex、Claude Code、Grok Build、またはカスタム ACP Agent を利用できます。",
       "statusNeedsConfig": "設定が必要",
       "statusOff": "無効",
       "deleteTitle": "外部 Agent を削除しますか？",
@@ -2807,7 +2807,7 @@
       "authChatGPTDescription": "ChatGPT のサブスクリプションアカウントで Codex を認証します。",
       "authWorkspaceDescription": "この Bot の Workspace に保存済みの Claude Code ログインを使用します。",
       "authOAuthTokenDescription": "Claude Code の setup-token で作成した OAuth Token を使用します。",
-      "authApiKeyDescription": "Memoh に保存し、Runtime に渡す API Key を使用します。",
+      "authApiKeyDescription": "Ami に保存し、Runtime に渡す API Key を使用します。",
       "apiKey": "API Key",
       "apiKeyDescription": "API Key は暗号化して保存され、Runtime でのみこの Agent に渡されます。",
       "oauthToken": "OAuth Token",
@@ -2823,14 +2823,14 @@
       "enableToSignIn": "アカウントを確認・接続するには、この Agent を有効にしてください。",
       "signInCheckFailed": "サインイン状態を確認できませんでした。",
       "reconnect": "再接続",
-      "codexDeviceHint": "認証ページを開き、このワンタイムコードを入力してください。表示された OpenAI の認証ページ以外には入力しないでください。Memoh が認証を自動で完了します。",
+      "codexDeviceHint": "認証ページを開き、このワンタイムコードを入力してください。表示された OpenAI の認証ページ以外には入力しないでください。Ami が認証を自動で完了します。",
       "codexLoginSuccess": "Codex を ChatGPT アカウントに接続しました",
       "codexLoginFailed": "Codex アカウントを認証できませんでした。もう一度お試しください。",
       "authGrokAccountDescription": "Grok アカウントで Grok Build にサインインします。",
       "grokAccount": "Grok アカウント",
       "grokAccountDescription": "Grok がこの Agent の Workspace でサインインし、サインイン状態を自分で保持します。",
       "grokAccountConnectedDescription": "Grok はこの Agent の Workspace でサインインしています。",
-      "grokDeviceHint": "認証ページを開き、このワンタイムコードを確認してください。表示された accounts.x.ai のページ以外では確認しないでください。Memoh が認証を自動で完了します。",
+      "grokDeviceHint": "認証ページを開き、このワンタイムコードを確認してください。表示された accounts.x.ai のページ以外では確認しないでください。Ami が認証を自動で完了します。",
       "grokLoginSuccess": "Grok Build を Grok アカウントに接続しました",
       "grokLoginFailed": "Grok アカウントにサインインできませんでした。もう一度お試しください。",
       "signInAfterCreate": "Bot の作成後に Agent の設定からサインインしてください。アカウントは Agent 自身の Workspace 内でサインインします。",
@@ -2858,7 +2858,7 @@
       "authorizationCodePlaceholder": "認証コードをすべて貼り付けてください",
       "completeAuthorization": "認証を完了",
       "defaultPermissionMode": "デフォルトの権限モード",
-      "defaultPermissionModeDescription": "新しいセッションで使用するモードです。セッション内の選択が優先されます。このモードは Agent の組み込みツールにのみ適用され、Memoh が提供するツールは常に「ツール呼び出しの承認」ルールに従います。"
+      "defaultPermissionModeDescription": "新しいセッションで使用するモードです。セッション内の選択が優先されます。このモードは Agent の組み込みツールにのみ適用され、Ami が提供するツールは常に「ツール呼び出しの承認」ルールに従います。"
     },
     "dependencies": {
       "title": "Workspace の依存関係",
@@ -3024,7 +3024,7 @@
       "primarySaveFailed": "既定の場所を変更できませんでした",
       "defaultBadge": "既定",
       "nativeWorkspace": "クラウドコンピューター",
-      "serverDescription": "この Bot の組み込み Workspace（Memoh がホスト）。",
+      "serverDescription": "この Bot の組み込み Workspace（Ami がホスト）。",
       "thisComputerOff": "このコンピューターを使う",
       "thisComputerOffDescription": "先に「コンピューター」ページでこのコンピューターを許可し、ここでアクセスを有効にしてください。",
       "openComputerSettings": "コンピューター設定を開く",
@@ -3286,7 +3286,7 @@
         "storageSoftExceeded": "ストレージ使用量が設定されたソフト制限を超えています。",
         "recreatePrompt": "保存しました。CPU またはメモリのハード上限を適用するには Workspace の再構築が必要です。`/data` は保持されますが、実行中のプロセスとシェルセッションは停止します。",
         "recreateConfirmTitle": "Workspace を再構築",
-        "recreateConfirm": "Workspace を今すぐ再構築しますか？Memoh は `/data` を保持し、新しい上限を適用してからデータを復元します。",
+        "recreateConfirm": "Workspace を今すぐ再構築しますか？Ami は `/data` を保持し、新しい上限を適用してからデータを復元します。",
         "recreateNow": "再構築して適用する",
         "saveForLater": "後で使うために保存しておきます",
         "save": "保存制限",
@@ -3350,7 +3350,7 @@
       "defaultAgent": "デフォルトAgent",
       "defaultAgentDescription": "新しいローカルチャットにのみ適用されます。既存の会話では現在のAgentが引き続き使用されます。",
       "defaultAgentUnavailable": "利用できないAgent",
-      "defaultAgentUnavailableDescription": "現在のデフォルトAgentは利用できません。保存する前にMemohまたは利用可能なAgentを選択してください。",
+      "defaultAgentUnavailableDescription": "現在のデフォルトAgentは利用できません。保存する前にAmiまたは利用可能なAgentを選択してください。",
       "searchProvider": "ウェブ検索",
       "searchProviderPlaceholder": "ウェブ検索を選択",
       "fetchProvider": "ウェブフェッチ",
@@ -3373,7 +3373,7 @@
       "displayEnabled": "Workspace表示を有効にする",
       "displayEnabledDescription": "Workspace 内で Xvnc を起動します。この変更を反映するには Workspace を再起動してください。",
       "desktopEnabled": "Desktop",
-      "desktopEnabledDescription": "有効にするVNCDesktop。 Memoh は、Debian/Ubuntu または Alpine Workspaceが見つからない場合、自動的にプロビジョニングします。",
+      "desktopEnabledDescription": "有効にするVNCDesktop。 Ami は、Debian/Ubuntu または Alpine Workspaceが見つからない場合、自動的にプロビジョニングします。",
       "toolApproval": "Tool呼び出しの承認",
       "toolApprovalDescription": "安全なパスまたはコマンドのバイパス テンプレートを使用して、機密性の高い書き込み、編集、および実行Toolの呼び出しには人間の承認が必要です。",
       "acpLaunchSection": "起動設定",
@@ -3676,11 +3676,11 @@
       "deleteFailed": "プラットフォームの削除に失敗しました",
       "webhookCallback": "WebフックコールバックURL",
       "webhookCallbackHint": "これを使用してくださいURLWebhook コールバックとしてURLプラットフォームコンソールで。",
-      "lineWebhookCallbackHint": "この URL を LINE Developers の Messaging API Webhook 設定に入力します。Base URL は公開 HTTPS で、/channels/... を Memoh Channel サービスにルーティングする必要があります。",
+      "lineWebhookCallbackHint": "この URL を LINE Developers の Messaging API Webhook 設定に入力します。Base URL は公開 HTTPS で、/channels/... を Ami Channel サービスにルーティングする必要があります。",
       "wechatOAWebhookCallbackHint": "この URL を WeChat Official Account のコールバック URL として設定します。",
       "webhookCallbackPending": "このプラットフォーム構成を保存すると、コールバック URL が生成されます。",
       "webhookCallbackPublicBasePending": "プラットフォーム構成は保存済みです。公開 HTTPS webhook base を設定するか、トンネルが準備完了になるまで待ってください。",
-      "lineWebhookPublicBaseMissing": "LINE を設定する前に、server の MEMOH_WEBHOOK_PUBLIC_BASE_URL を設定するか、Cloudflare Quick Tunnel を有効にしてください。",
+      "lineWebhookPublicBaseMissing": "LINE を設定する前に、server の AMI_WEBHOOK_PUBLIC_BASE_URL を設定するか、Cloudflare Quick Tunnel を有効にしてください。",
       "lineWebhookPublicBaseInvalid": "LINE Webhook base は公開 HTTPS origin である必要があります。path、port、localhost、プライベート IP、userinfo、query、fragment は使えません。",
       "lineWebhookTunnelStarting": "Cloudflare Quick Tunnel を作成中です。公開コールバック URL はまもなく表示されます。",
       "lineWebhookTunnelUnavailable": "Cloudflare Quick Tunnel を利用できません。cloudflared 設定を確認するか、公開 HTTPS base URL を使用してください。",
@@ -4131,12 +4131,12 @@
     "skip": "スキップ",
     "start": "はじめる",
     "welcome": {
-      "title": "Memohへようこそ",
+      "title": "Amiへようこそ",
       "subtitle": "あなたのプライベートAIエージェントプラットフォーム",
       "description": "いくつかの手順でワークスペースをセットアップしましょう。"
     },
     "intro": {
-      "title": "Memohへようこそ",
+      "title": "Amiへようこそ",
       "description": "あなたのプライベートAI独自のインフラ上にあるエージェント プラットフォーム。\nゼロテレメトリ、完全に自己ホスト型。",
       "placeholder": "紹介ページのコンテンツは近日公開予定です。"
     },
@@ -4209,8 +4209,8 @@
     },
     "complete": {
       "title": "準備完了です",
-      "subtitle": "Memohを開いて最初の会話を始めてください",
-      "action": "Memohを開く",
+      "subtitle": "Amiを開いて最初の会話を始めてください",
+      "action": "Amiを開く",
       "saveFailed": "保存できませんでした。もう一度お試しください。",
       "navigationFailed": "Bot を開けませんでした。もう一度お試しください。",
       "noModelWarning": "Bot のモデルが選択されていないため、まだ応答できません。後で Bot の設定から構成できます。",
@@ -4378,7 +4378,7 @@
         },
         "bypassPermissions": {
           "name": "権限チェックをスキップ",
-          "description": "通常の承認をスキップします。明示的なルールと Memoh ツールの権限は引き続き適用されます。"
+          "description": "通常の承認をスキップします。明示的なルールと Ami ツールの権限は引き続き適用されます。"
         }
       },
       "commands": {
@@ -4454,7 +4454,7 @@
         },
         "alwaysApprove": {
           "name": "すべて承認",
-          "description": "すべての操作を確認なしで承認します。Memoh ツールの権限は引き続き適用されます。"
+          "description": "すべての操作を確認なしで承認します。Ami ツールの権限は引き続き適用されます。"
         }
       },
       "commands": {

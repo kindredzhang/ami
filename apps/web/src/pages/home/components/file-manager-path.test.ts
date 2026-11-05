@@ -14,7 +14,7 @@ describe('normalizeFileManagerPath', () => {
     // absolute path, so a tool call on a container-local file opened
     // '/data/home/user/...' and the read failed with "does not exist".
     expect(normalizeFileManagerPath('/home/user/project/package.json')).toBe('/home/user/project/package.json')
-    expect(normalizeFileManagerPath('/opt/memoh/toolkit/bin/node')).toBe('/opt/memoh/toolkit/bin/node')
+    expect(normalizeFileManagerPath('/opt/ami/toolkit/bin/node')).toBe('/opt/ami/toolkit/bin/node')
     expect(normalizeFileManagerPath('/datastore/a.md')).toBe('/datastore/a.md')
   })
 

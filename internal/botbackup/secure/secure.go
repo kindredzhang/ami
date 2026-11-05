@@ -1,7 +1,7 @@
 // Package secure provides passphrase-based authenticated encryption for bot
 // backup bundles.
 //
-// The container wraps an arbitrary plaintext stream (the .memoh.zip bytes) so a
+// The container wraps an arbitrary plaintext stream (the .ami.zip bytes) so a
 // bundle that carries credentials can be encrypted at rest. The construction is
 // deliberately small and dependency-light, using only the standard library and
 // golang.org/x/crypto/argon2:
@@ -38,7 +38,7 @@ import (
 const (
 	// Magic identifies the encrypted bundle format. Bump the trailing digit if
 	// the container layout ever changes incompatibly.
-	magic = "MEMOHbk1"
+	magic = "AMIbk1"
 
 	kdfArgon2id byte = 0x01
 

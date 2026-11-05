@@ -10,11 +10,11 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/jsonschema-go/jsonschema"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const testBackgroundSummaryPrefix = "[Background tasks]\n"

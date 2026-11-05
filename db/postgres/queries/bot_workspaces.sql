@@ -37,7 +37,7 @@ SET
   next_attempt_at     = now(),
   version             = version + 1,
   updated_at          = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND desired_state = 'absent'
   AND observed_state = 'failed'
@@ -46,7 +46,7 @@ RETURNING *;
 
 -- name: GetBotWorkspace :one
 SELECT * FROM bot_workspaces
-WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: ClaimBotWorkspaces :many
 -- Claim due rows for one reconcile pass. A row is due when it has not yet
@@ -70,7 +70,7 @@ SET
   updated_at  = now()
 WHERE bot_id = ANY(ARRAY(
   SELECT bot_id FROM bot_workspaces
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND next_attempt_at <= now()
     AND (lease_until IS NULL OR lease_until < now())
     AND (
@@ -95,7 +95,7 @@ SET
   lease_until = now() + make_interval(secs => sqlc.arg(lease_seconds)::double precision),
   version     = version + 1,
   updated_at  = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND (lease_until IS NULL OR lease_until < now())
 RETURNING *;
@@ -105,7 +105,7 @@ UPDATE bot_workspaces
 SET
   lease_until = now() + make_interval(secs => sqlc.arg(lease_seconds)::double precision),
   updated_at  = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND lease_owner = sqlc.arg(lease_owner);
 
@@ -127,7 +127,7 @@ SET
   lease_until         = CASE WHEN sqlc.arg(release_lease)::boolean THEN NULL ELSE lease_until END,
   version             = version + 1,
   updated_at          = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND lease_owner = sqlc.arg(lease_owner)
   AND version = sqlc.arg(expected_version)
@@ -139,13 +139,13 @@ SET
   lease_owner = '',
   lease_until = NULL,
   updated_at  = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND lease_owner = sqlc.arg(lease_owner);
 
 -- name: ListBotWorkspacesByObservedState :many
 SELECT * FROM bot_workspaces
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND observed_state = sqlc.arg(observed_state)
 ORDER BY updated_at DESC
 LIMIT sqlc.arg(lim)::int;
@@ -153,5 +153,5 @@ LIMIT sqlc.arg(lim)::int;
 -- name: CountBotWorkspacesByObservedState :many
 SELECT observed_state, COUNT(*)::bigint AS total
 FROM bot_workspaces
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
 GROUP BY observed_state;

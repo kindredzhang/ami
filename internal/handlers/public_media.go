@@ -16,13 +16,13 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/channel/publicmedia"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/webhooktunnel"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/channel/publicmedia"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/webhooktunnel"
 )
 
 type PublicMediaHandler struct {

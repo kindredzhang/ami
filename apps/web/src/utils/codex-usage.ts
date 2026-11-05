@@ -1,4 +1,4 @@
-import type { ExternalagentAgentQuotaResponse, ExternalagentAgentQuotaWindow } from '@memohai/sdk'
+import type { ExternalagentAgentQuotaResponse, ExternalagentAgentQuotaWindow } from '@ami/sdk'
 import { formatCalendarTime, formatRelativeTime } from './date-time'
 
 type Translate = (key: string, params?: Record<string, unknown>) => string

@@ -7,10 +7,10 @@ import (
 	"path"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
-const appRevisionMarker = ".memoh-app-revision"
+const appRevisionMarker = ".ami-app-revision"
 
 // AppArchive is one validated Skill member prepared for App publication.
 type AppArchive struct {

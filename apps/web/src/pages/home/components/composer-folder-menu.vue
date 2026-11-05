@@ -129,7 +129,7 @@ import {
   Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, toast,
 } from '@felinic/ui'
-import { getBotsByBotIdWorkdirsByWorkdirIdGitBranch, postBotsByBotIdWorkdirsByWorkdirIdGitBranch } from '@memohai/sdk'
+import { getBotsByBotIdWorkdirsByWorkdirIdGitBranch, postBotsByBotIdWorkdirsByWorkdirIdGitBranch } from '@ami/sdk'
 import type { BotWorkdir } from '@/composables/api/useWorkdirs'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 

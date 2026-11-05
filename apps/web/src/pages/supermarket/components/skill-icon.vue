@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Zap } from 'lucide-vue-next'
-import type { HandlersSupermarketSkillIcon, HandlersSupermarketSkillIconAsset } from '@memohai/sdk'
+import type { HandlersSupermarketSkillIcon, HandlersSupermarketSkillIconAsset } from '@ami/sdk'
 import { sdkApiUrl } from '@/lib/api-client'
 import { useSettingsStore } from '@/store/settings'
 

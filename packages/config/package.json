@@ -1,9 +1,9 @@
 {
-  "name": "@memohai/config",
+  "name": "@ami/config",
   "version": "1.0.1",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felinics/Memoh.git",
+    "url": "git+https://github.com/kindredzhang/ami.git",
     "directory": "packages/config"
   },
   "exports": {

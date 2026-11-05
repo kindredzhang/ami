@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	session "github.com/felinics/memoh/internal/chat/thread"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type fakeLister struct {
@@ -20,7 +20,7 @@ type fakeEnricher struct{}
 func (fakeEnricher) EnrichThreads(_ context.Context, _ string, threads []session.Thread) ([]session.Thread, error) {
 	out := append([]session.Thread(nil), threads...)
 	out[0].RouteConversationType = "group"
-	out[0].RouteMetadata = map[string]any{"conversation_name": "Memoh"}
+	out[0].RouteMetadata = map[string]any{"conversation_name": "Ami"}
 	return out, nil
 }
 
@@ -36,7 +36,7 @@ func TestListerProjectsRouteFields(t *testing.T) {
 	if len(got) != 1 || got[0].RouteConversationType != "group" {
 		t.Fatalf("ListByBot() = %#v", got)
 	}
-	if got[0].RouteMetadata["conversation_name"] != "Memoh" {
+	if got[0].RouteMetadata["conversation_name"] != "Ami" {
 		t.Fatalf("RouteMetadata = %#v", got[0].RouteMetadata)
 	}
 }

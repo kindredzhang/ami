@@ -9,9 +9,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 // TestSafeChannelErrorRoundTripsSentinelAndCause pins the split-mode error

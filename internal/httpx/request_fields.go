@@ -7,7 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // Binder is echo's DefaultBinder, except that a JSON value of the wrong type

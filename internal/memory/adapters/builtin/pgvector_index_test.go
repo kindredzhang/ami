@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/team"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestCheckedPGVectorInt32(t *testing.T) {

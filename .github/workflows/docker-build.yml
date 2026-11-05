@@ -179,7 +179,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           load: ${{ env.PUSH != 'true' && matrix.image == 'workspace' && matrix.platform == 'linux/amd64' }}
           # A local tag is only needed by the PR smoke-test; digest pushes must not include it.
-          tags: ${{ env.PUSH != 'true' && matrix.image == 'workspace' && matrix.platform == 'linux/amd64' && 'memoh-ci-workspace:debian' || '' }}
+          tags: ${{ env.PUSH != 'true' && matrix.image == 'workspace' && matrix.platform == 'linux/amd64' && 'ami-ci-workspace:debian' || '' }}
           outputs: ${{ env.PUSH == 'true' && format('type=image,"name={0}/{1}/{2}",push-by-digest=true,name-canonical=true,push=true,compression=zstd', env.REGISTRY, github.repository_owner, matrix.image) || '' }}
           build-contexts: ${{ matrix.image == 'server' && format('gomodcache={0}/.go-cache', github.workspace) || '' }}
           build-args: |
@@ -197,16 +197,16 @@ jobs:
       - name: Smoke-test workspace image
         if: steps.should-build.outputs.skip != 'true' && env.PUSH != 'true' && matrix.image == 'workspace' && matrix.platform == 'linux/amd64'
         run: |
-          docker run --rm memoh-ci-workspace:debian sh -eux -c '
+          docker run --rm ami-ci-workspace:debian sh -eux -c '
             ldd --version >/dev/null
             node --version
             python3 --version
             uv --version
-            flock -n -E 75 /tmp/memoh-workspace-lock-check true
-            test -x /opt/memoh/toolkit/display/bin/a11y-cli
-            sh -n /opt/memoh/scripts/display-prepare.sh
-            sh -n /opt/memoh/scripts/display-apply-style.sh
-            sh -n /opt/memoh/scripts/desktop-style.sh
+            flock -n -E 75 /tmp/ami-workspace-lock-check true
+            test -x /opt/ami/toolkit/display/bin/a11y-cli
+            sh -n /opt/ami/scripts/display-prepare.sh
+            sh -n /opt/ami/scripts/display-apply-style.sh
+            sh -n /opt/ami/scripts/desktop-style.sh
           '
 
       - name: Export digest
@@ -297,7 +297,7 @@ jobs:
         if: steps.should-publish.outputs.skip != 'true'
         id: publish
         run: |
-          IMAGE="memohai/${{ matrix.image }}"
+          IMAGE="amiai/${{ matrix.image }}"
           GHCR_IMAGE="ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}"
           REF_NAME="${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}"
           VERSION="${REF_NAME#v}"

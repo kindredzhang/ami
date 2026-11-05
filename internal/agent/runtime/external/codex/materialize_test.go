@@ -47,7 +47,7 @@ func TestMaterializeCodexConfig(t *testing.T) {
 	assertManagedCodexConfig(t, writer.writes[home+"/config.toml"], "")
 
 	for _, entry := range appServerEnv(home) {
-		if strings.HasPrefix(entry, "OPENAI_BASE_URL=") || strings.HasPrefix(entry, "OPENAI_API_KEY=") || strings.HasPrefix(entry, "MEMOH_CODEX_API_KEY=") {
+		if strings.HasPrefix(entry, "OPENAI_BASE_URL=") || strings.HasPrefix(entry, "OPENAI_API_KEY=") || strings.HasPrefix(entry, "AMI_CODEX_API_KEY=") {
 			t.Fatalf("Codex app-server environment leaks provider configuration or credentials: %q", entry)
 		}
 	}

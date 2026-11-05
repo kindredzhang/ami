@@ -5,19 +5,19 @@ import (
 	"testing"
 	"time"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 func TestRedisValkeyHandoffTerminalRetiresOnlyAnOlderSameRunReceipt(t *testing.T) {
-	url := os.Getenv("MEMOH_TEST_REDIS_URL")
+	url := os.Getenv("AMI_TEST_REDIS_URL")
 	if url == "" {
-		url = os.Getenv("MEMOH_TEST_VALKEY_URL")
+		url = os.Getenv("AMI_TEST_VALKEY_URL")
 	}
 	if url == "" {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL required")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL required")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL")
+		t.Skip("set AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL")
 	}
 	for _, token := range []int64{8, 9, 10} {
 		backend, err := NewRedisBackend(t.Context(), RedisOptions{URL: url, KeyPrefix: uniqueRuntimeBackendPrefix("handoff-projection"), StateTTL: time.Minute})

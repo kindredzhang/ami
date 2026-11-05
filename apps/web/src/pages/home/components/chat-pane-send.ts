@@ -118,7 +118,7 @@ export function carriedPairForSource(
 }
 
 export function composerPairDraftKey(botId: string): string {
-  return `memoh:composer-pair:${botId.trim()}`
+  return `ami:composer-pair:${botId.trim()}`
 }
 
 export interface ComposerPairDraft {

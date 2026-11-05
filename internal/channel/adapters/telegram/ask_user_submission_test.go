@@ -10,9 +10,9 @@ import (
 
 	tele "gopkg.in/telebot.v4"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/i18n"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 type submissionStore struct {

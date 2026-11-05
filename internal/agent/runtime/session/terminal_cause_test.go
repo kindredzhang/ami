@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 // recordTerminals installs a terminal observer and returns what it saw.

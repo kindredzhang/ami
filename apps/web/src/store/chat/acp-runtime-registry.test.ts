@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import type { AcpagentRuntimeStatus } from '@memohai/sdk'
+import type { AcpagentRuntimeStatus } from '@ami/sdk'
 import {
   createACPRuntimeRegistry,
   type ACPRuntimeRegistryTransport,

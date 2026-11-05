@@ -65,7 +65,7 @@ BEGIN
 END
 $$;
 
--- users: Memoh user principal
+-- users: Ami user principal
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   username TEXT,
@@ -1186,7 +1186,7 @@ $seed_default_team$;
 -- Add the fail-closed team context helper used by team-scoped queries and
 -- row-level security policies.
 
-CREATE OR REPLACE FUNCTION public.memoh_current_team_id()
+CREATE OR REPLACE FUNCTION public.ami_current_team_id()
 RETURNS uuid
 LANGUAGE plpgsql
 STABLE
@@ -1196,16 +1196,16 @@ AS $$
 DECLARE
   raw text;
 BEGIN
-  raw := pg_catalog.current_setting('memoh.team_id', true);
+  raw := pg_catalog.current_setting('ami.team_id', true);
   IF raw IS NULL OR pg_catalog.btrim(raw) = '' THEN
-    RAISE EXCEPTION 'memoh.team_id is not set'
+    RAISE EXCEPTION 'ami.team_id is not set'
       USING ERRCODE = '42501';
   END IF;
   BEGIN
     RETURN raw::uuid;
   EXCEPTION
     WHEN invalid_text_representation THEN
-      RAISE EXCEPTION 'memoh.team_id is invalid'
+      RAISE EXCEPTION 'ami.team_id is invalid'
         USING ERRCODE = '22P02';
   END;
 END;
@@ -1215,7 +1215,7 @@ $$;
 -- finalizer. Its presence tells the replay-safe 0112 logic that users are
 -- already global principals rather than legacy team-owned accounts.
 CREATE TABLE IF NOT EXISTS public.team_members (
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id(),
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id(),
     user_id    UUID        NOT NULL,
     role       user_role   NOT NULL DEFAULT 'member',
     is_active  BOOLEAN     NOT NULL DEFAULT true,
@@ -1242,7 +1242,7 @@ CREATE INDEX IF NOT EXISTS team_members_user_id_idx
 -- before team-scoped constraints are installed.
 --
 -- New incremental (existing migrations untouched). team_id is added NULLABLE,
--- given a DEFAULT of public.memoh_current_team_id() (so INSERTs auto-fill the current
+-- given a DEFAULT of public.ami_current_team_id() (so INSERTs auto-fill the current
 -- team), and backfilled to the default singleton; a later migration tightens
 -- it to NOT NULL after composite keys/FKs land. Existing installs upgrade in
 -- place (no wipe).
@@ -1313,52 +1313,52 @@ $users_legacy_team_column$;
 
 -- Give team_id a DEFAULT so any INSERT (sqlc-generated or raw) auto-fills the
 -- current team from the session/transaction GUC. Fail-closed: if the GUC is
--- unset, public.memoh_current_team_id() raises rather than inserting a NULL/guessed team.
-ALTER TABLE IF EXISTS public.bot_acl_rules ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_channel_admins ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_channel_configs ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_channel_routes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_history_message_assets ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_history_message_compacts ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_history_messages ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_remote_runtime_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_session_discuss_cursors ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_session_events ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_sessions ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_storage_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_user_grants ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_workspace_resource_limits ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bots ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.channel_identities ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.channel_link_codes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.container_versions ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.containers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.fetch_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.lifecycle_events ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.mcp_connections ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.mcp_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.media_assets ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.memory_edges ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.memory_nodes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.memory_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.model_variants ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.models ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.schedule ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.schedule_logs ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.search_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.snapshots ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.storage_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tasks ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tool_approval_requests ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tts_models ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tts_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_channel_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_channel_identity_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_input_requests ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_runtimes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
+-- unset, public.ami_current_team_id() raises rather than inserting a NULL/guessed team.
+ALTER TABLE IF EXISTS public.bot_acl_rules ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_channel_admins ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_channel_configs ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_channel_routes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_history_message_assets ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_history_message_compacts ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_history_messages ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_remote_runtime_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_session_discuss_cursors ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_session_events ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_sessions ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_storage_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_user_grants ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_workspace_resource_limits ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bots ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.channel_identities ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.channel_link_codes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.container_versions ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.containers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.fetch_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.lifecycle_events ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.mcp_connections ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.mcp_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.media_assets ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.memory_edges ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.memory_nodes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.memory_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.model_variants ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.models ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.schedule ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.schedule_logs ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.search_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.snapshots ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.storage_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tasks ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tool_approval_requests ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tts_models ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tts_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_channel_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_channel_identity_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_input_requests ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_runtimes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
 DO $users_legacy_team_default$
 BEGIN
     IF EXISTS (
@@ -1369,7 +1369,7 @@ BEGIN
            AND NOT attisdropped
     ) THEN
         ALTER TABLE public.users
-            ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
+            ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
     END IF;
 END
 $users_legacy_team_default$;
@@ -1395,7 +1395,7 @@ BEGIN
                 WHERE a.attrelid = c.oid
                   AND a.attname = 'team_id'
                   AND NOT a.attisdropped
-                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%'
+                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%'
            )
          ORDER BY c.relname
     LOOP
@@ -1443,7 +1443,7 @@ BEGIN
        AND c.relname <> 'team_members'
        AND a.attname = 'team_id'
        AND NOT a.attisdropped
-       AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%';
+       AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%';
 
     CREATE TEMP TABLE _fk_saved ON COMMIT DROP AS
     SELECT con.oid,
@@ -1511,11 +1511,11 @@ BEGIN
         IF NOT EXISTS (
             SELECT 1 FROM pg_constraint
              WHERE conrelid = rec.conrelid
-               AND conname = 'memoh_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12)
+               AND conname = 'ami_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12)
         ) THEN
             EXECUTE format('ALTER TABLE public.%I ADD CONSTRAINT %I UNIQUE (%s)',
                 rec.table_name,
-                'memoh_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12),
+                'ami_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12),
                 cols);
         END IF;
     END LOOP;
@@ -1530,7 +1530,7 @@ BEGIN
           JOIN pg_index i ON i.indexrelid = con.conindid
          WHERE con.contype = 'u' AND n.nspname = 'public'
            AND c.relname IN (SELECT table_name FROM _team_tables)
-           AND con.conname NOT LIKE 'memoh_team_key_%'
+           AND con.conname NOT LIKE 'ami_team_key_%'
     LOOP
         IF (SELECT attname FROM pg_attribute
               WHERE attrelid = rec.conrelid AND attnum = rec.conkey[1]) = 'team_id' THEN
@@ -1648,7 +1648,7 @@ CREATE UNIQUE INDEX idx_snapshots_container_runtime_name
 -- ---------------------------------------------------------------------------
 -- Team row-level security
 -- ---------------------------------------------------------------------------
--- Enable and force row-level security on Memoh team tables. Policies apply
+-- Enable and force row-level security on Ami team tables. Policies apply
 -- to the connecting role, so installations do not need cluster-wide roles or
 -- elevated CREATEROLE/BYPASSRLS privileges.
 
@@ -1678,24 +1678,24 @@ BEGIN
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_select', tbl);
         EXECUTE format(
-            'CREATE POLICY %I ON public.%I FOR SELECT USING (team_id = public.memoh_current_team_id())',
+            'CREATE POLICY %I ON public.%I FOR SELECT USING (team_id = public.ami_current_team_id())',
             tbl || '_team_select', tbl);
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_insert', tbl);
         EXECUTE format(
-            'CREATE POLICY %I ON public.%I FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id())',
+            'CREATE POLICY %I ON public.%I FOR INSERT WITH CHECK (team_id = public.ami_current_team_id())',
             tbl || '_team_insert', tbl);
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_update', tbl);
         EXECUTE format(
             'CREATE POLICY %I ON public.%I FOR UPDATE '
-            || 'USING (team_id = public.memoh_current_team_id()) '
-            || 'WITH CHECK (team_id = public.memoh_current_team_id())',
+            || 'USING (team_id = public.ami_current_team_id()) '
+            || 'WITH CHECK (team_id = public.ami_current_team_id())',
             tbl || '_team_update', tbl);
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_delete', tbl);
         EXECUTE format(
-            'CREATE POLICY %I ON public.%I FOR DELETE USING (team_id = public.memoh_current_team_id())',
+            'CREATE POLICY %I ON public.%I FOR DELETE USING (team_id = public.ami_current_team_id())',
             tbl || '_team_delete', tbl);
     END LOOP;
 END
@@ -1705,7 +1705,7 @@ ALTER TABLE public.teams ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.teams FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS teams_self_select ON public.teams;
 CREATE POLICY teams_self_select ON public.teams
-    FOR SELECT USING (id = public.memoh_current_team_id());
+    FOR SELECT USING (id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Team-safe history view
@@ -1759,7 +1759,7 @@ WHERE m.turn_visible = true
 -- ---------------------------------------------------------------------------
 -- Prepend team_id to every non-unique btree secondary index on a team table
 -- that does not already lead with it. Team queries filter by team_id (RLS +
--- explicit public.memoh_current_team_id()), so a team_id-leading index lets the
+-- explicit public.ami_current_team_id()), so a team_id-leading index lets the
 -- planner scan only the current team's slice. Purely a performance change.
 --
 -- New incremental (existing migrations untouched). Each index is dropped and
@@ -1994,7 +1994,7 @@ ALTER TABLE public.user_runtimes FORCE ROW LEVEL SECURITY;
 
 ALTER TABLE public.users
     DROP CONSTRAINT IF EXISTS users_team_id_fkey,
-    DROP CONSTRAINT IF EXISTS memoh_team_key_018c4edf45ca,
+    DROP CONSTRAINT IF EXISTS ami_team_key_018c4edf45ca,
     DROP CONSTRAINT IF EXISTS users_email_unique,
     DROP CONSTRAINT IF EXISTS users_username_unique;
 
@@ -2015,15 +2015,15 @@ DROP POLICY IF EXISTS team_members_team_insert ON public.team_members;
 DROP POLICY IF EXISTS team_members_team_update ON public.team_members;
 DROP POLICY IF EXISTS team_members_team_delete ON public.team_members;
 CREATE POLICY team_members_team_select ON public.team_members
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY team_members_team_insert ON public.team_members
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY team_members_team_update ON public.team_members
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY team_members_team_delete ON public.team_members
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Preserve the account-shaped query contract while sourcing authorization
 -- fields from the current team's membership.
@@ -2053,10 +2053,10 @@ SELECT
     tm.title_model_id
 FROM public.team_members tm
 JOIN public.users u ON u.id = tm.user_id
-WHERE tm.team_id = public.memoh_current_team_id();
+WHERE tm.team_id = public.ami_current_team_id();
 
 -- Serialize membership authority changes and keep one active admin per team.
-CREATE OR REPLACE FUNCTION public.memoh_guard_last_active_team_admin()
+CREATE OR REPLACE FUNCTION public.ami_guard_last_active_team_admin()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY INVOKER
@@ -2114,15 +2114,15 @@ DROP TRIGGER IF EXISTS team_members_last_active_admin_guard ON public.team_membe
 CREATE TRIGGER team_members_last_active_admin_guard
 BEFORE UPDATE OF role, is_active OR DELETE ON public.team_members
 FOR EACH ROW
-EXECUTE FUNCTION public.memoh_guard_last_active_team_admin();
+EXECUTE FUNCTION public.ami_guard_last_active_team_admin();
 
 -- A fresh install replays the historical incremental migrations on the same
 -- golang-migrate connection. Bind that short-lived connection to the singleton
 -- team so data-rewrite statements remain valid under the canonical FORCE RLS
 -- schema. The connection is closed after migration; ordinary runtime
--- connections still fail closed until they bind memoh.team_id themselves.
+-- connections still fail closed until they bind ami.team_id themselves.
 SELECT set_config(
-    'memoh.team_id',
+    'ami.team_id',
     '00000000-0000-0000-0000-000000000001',
     false
 );
@@ -2130,7 +2130,7 @@ SELECT set_config(
 -- Managed subagents pin their selected model. Forked model context is stored
 -- as scoped invisible rows in bot_history_messages.
 CREATE TABLE IF NOT EXISTS public.subagent_configs (
-    team_id         UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id         UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                 REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id      UUID        PRIMARY KEY,
     model_uuid      UUID,
@@ -2155,15 +2155,15 @@ ALTER TABLE public.subagent_configs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subagent_configs FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY subagent_configs_team_select ON public.subagent_configs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY subagent_configs_team_insert ON public.subagent_configs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY subagent_configs_team_update ON public.subagent_configs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY subagent_configs_team_delete ON public.subagent_configs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Session unread state
@@ -2175,7 +2175,7 @@ CREATE INDEX IF NOT EXISTS idx_bot_sessions_attention
     WHERE attention_at IS NOT NULL AND deleted_at IS NULL;
 
 CREATE TABLE IF NOT EXISTS public.session_reads (
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                            REFERENCES public.teams(id) ON DELETE RESTRICT,
     user_id    UUID        NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
     session_id UUID        NOT NULL,
@@ -2194,15 +2194,15 @@ ALTER TABLE public.session_reads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.session_reads FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY session_reads_team_select ON public.session_reads
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY session_reads_team_insert ON public.session_reads
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_reads_team_update ON public.session_reads
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_reads_team_delete ON public.session_reads
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Session run ledger
@@ -2214,7 +2214,7 @@ CREATE POLICY session_reads_team_delete ON public.session_reads
 
 CREATE TABLE IF NOT EXISTS public.session_runs (
     run_id             UUID        PRIMARY KEY,
-    team_id            UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id            UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                    REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id             UUID        NOT NULL,
     session_id         UUID        NOT NULL,
@@ -2288,15 +2288,15 @@ ALTER TABLE public.session_runs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.session_runs FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY session_runs_team_select ON public.session_runs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY session_runs_team_insert ON public.session_runs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_runs_team_update ON public.session_runs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_runs_team_delete ON public.session_runs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.tool_approval_requests
     ADD COLUMN IF NOT EXISTS run_id UUID,
@@ -2332,7 +2332,7 @@ CREATE INDEX IF NOT EXISTS idx_bot_history_messages_run
 -- points at the active one.
 CREATE TABLE IF NOT EXISTS public.bot_history_checkpoints (
     id               UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id          UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id          UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                  REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id       UUID        NOT NULL,
     parent_id        UUID,
@@ -2340,7 +2340,7 @@ CREATE TABLE IF NOT EXISTS public.bot_history_checkpoints (
     turn_message_seq BIGINT      NOT NULL,
     items            JSONB       NOT NULL DEFAULT '[]'::jsonb,
     created_at       TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
-    CONSTRAINT memoh_team_key_c3970c8700e1 UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_c3970c8700e1 UNIQUE (team_id, id),
     CONSTRAINT bot_history_checkpoints_position_check CHECK (turn_position >= 0 AND turn_message_seq >= 0),
     CONSTRAINT bot_history_checkpoints_items_check CHECK (pg_catalog.jsonb_typeof(items) = 'array'),
     CONSTRAINT bot_history_checkpoints_summary_check CHECK (pg_catalog.jsonb_path_exists(items, '$[*].summary')),
@@ -2363,18 +2363,18 @@ ALTER TABLE public.bot_history_checkpoints FORCE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS bot_history_checkpoints_team_select ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_select ON public.bot_history_checkpoints
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_history_checkpoints_team_insert ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_insert ON public.bot_history_checkpoints
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_history_checkpoints_team_update ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_update ON public.bot_history_checkpoints
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_history_checkpoints_team_delete ON public.bot_history_checkpoints;
 CREATE POLICY bot_history_checkpoints_team_delete ON public.bot_history_checkpoints
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.bot_sessions
   ADD CONSTRAINT bot_sessions_history_checkpoint_id_fkey
@@ -2382,12 +2382,12 @@ ALTER TABLE public.bot_sessions
   REFERENCES public.bot_history_checkpoints(team_id, id)
   ON DELETE SET NULL (history_checkpoint_id);
 
--- memoh_history_checkpoint_kept is the newest checkpoint on a session's active
+-- ami_history_checkpoint_kept is the newest checkpoint on a session's active
 -- chain that still holds once rows from a position on were removed (deleted,
 -- hidden or replaced). Its summary may have read any row up to its position,
 -- so a checkpoint holds only when it is before the position. NULL when no
 -- checkpoint holds.
-CREATE OR REPLACE FUNCTION public.memoh_history_checkpoint_kept(
+CREATE OR REPLACE FUNCTION public.ami_history_checkpoint_kept(
   p_session_id uuid,
   p_turn_position bigint,
   p_turn_message_seq bigint
@@ -2405,14 +2405,14 @@ AS $$
     JOIN public.bot_history_checkpoints checkpoint
       ON checkpoint.team_id = session.team_id
      AND checkpoint.id = session.history_checkpoint_id
-    WHERE session.team_id = public.memoh_current_team_id()
+    WHERE session.team_id = public.ami_current_team_id()
       AND session.id = p_session_id
     UNION ALL
     SELECT parent.id, parent.parent_id, parent.turn_position, parent.turn_message_seq,
       chain.depth + 1
     FROM chain
     JOIN public.bot_history_checkpoints parent
-      ON parent.team_id = public.memoh_current_team_id()
+      ON parent.team_id = public.ami_current_team_id()
      AND parent.id = chain.parent_id
   )
   SELECT chain.id
@@ -2422,14 +2422,14 @@ AS $$
   LIMIT 1
 $$;
 
--- memoh_rewind_history_checkpoint makes the newest checkpoint that still
+-- ami_rewind_history_checkpoint makes the newest checkpoint that still
 -- holds once rows of the session from a position on were removed, as
--- memoh_history_checkpoint_kept reads the removal, the session's active one,
+-- ami_history_checkpoint_kept reads the removal, the session's active one,
 -- and reports whether that moved it. The checkpoints it moves back past
 -- account for a removed row, so none holds again, and nothing else names
 -- them: a fork copies its own. It deletes them. The caller holds the session
 -- row lock.
-CREATE OR REPLACE FUNCTION public.memoh_rewind_history_checkpoint(
+CREATE OR REPLACE FUNCTION public.ami_rewind_history_checkpoint(
   p_session_id uuid,
   p_turn_position bigint,
   p_turn_message_seq bigint
@@ -2447,34 +2447,34 @@ BEGIN
   SELECT session.history_checkpoint_id
     INTO active
   FROM public.bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = p_session_id;
   IF active IS NULL THEN
     RETURN false;
   END IF;
-  kept := public.memoh_history_checkpoint_kept(p_session_id, p_turn_position, p_turn_message_seq);
+  kept := public.ami_history_checkpoint_kept(p_session_id, p_turn_position, p_turn_message_seq);
   IF kept IS NOT DISTINCT FROM active THEN
     RETURN false;
   END IF;
   UPDATE public.bot_sessions session
   SET history_checkpoint_id = kept
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = p_session_id;
   -- The first checkpoint after the kept one on the chain; deleting it
   -- deletes the rest through parent_id.
   DELETE FROM public.bot_history_checkpoints checkpoint
-  WHERE checkpoint.team_id = public.memoh_current_team_id()
+  WHERE checkpoint.team_id = public.ami_current_team_id()
     AND checkpoint.id = (
       WITH RECURSIVE chain AS (
         SELECT moved.id, moved.parent_id
         FROM public.bot_history_checkpoints moved
-        WHERE moved.team_id = public.memoh_current_team_id()
+        WHERE moved.team_id = public.ami_current_team_id()
           AND moved.id = active
         UNION ALL
         SELECT parent.id, parent.parent_id
         FROM chain
         JOIN public.bot_history_checkpoints parent
-          ON parent.team_id = public.memoh_current_team_id()
+          ON parent.team_id = public.ami_current_team_id()
          AND parent.id = chain.parent_id
         WHERE chain.parent_id IS DISTINCT FROM kept
       )
@@ -2488,11 +2488,11 @@ END;
 $$;
 
 -- Bot-scoped Connect-It bindings. Provider credentials and short-lived MCP
--- session tokens remain in Connect-It; Memoh stores only the durable
+-- session tokens remain in Connect-It; Ami stores only the durable
 -- connection reference and whether the bot currently exposes it. A co-hosted
 -- Connect-It deployment owns and migrates its own connect_it schema.
 CREATE TABLE IF NOT EXISTS public.connectors (
-    team_id       UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id       UUID        NOT NULL DEFAULT public.ami_current_team_id()
                               REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id        UUID        NOT NULL,
     connection_id TEXT        NOT NULL,
@@ -2516,15 +2516,15 @@ ALTER TABLE public.connectors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.connectors FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY connectors_team_select ON public.connectors
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY connectors_team_insert ON public.connectors
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY connectors_team_update ON public.connectors
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY connectors_team_delete ON public.connectors
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Run-keyed context lifecycle
@@ -2532,7 +2532,7 @@ CREATE POLICY connectors_team_delete ON public.connectors
 
 CREATE TABLE IF NOT EXISTS public.context_lifecycles (
     run_id     UUID        PRIMARY KEY,
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                             REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id     UUID        NOT NULL,
     session_id UUID        NOT NULL,
@@ -2560,22 +2560,22 @@ ALTER TABLE public.context_lifecycles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.context_lifecycles FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY context_lifecycles_team_select ON public.context_lifecycles
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY context_lifecycles_team_insert ON public.context_lifecycles
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY context_lifecycles_team_update ON public.context_lifecycles
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY context_lifecycles_team_delete ON public.context_lifecycles
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- App installations
 -- ---------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.bot_app_installations (
     id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id             UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id             UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                     REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id              UUID        NOT NULL,
     registry_id         TEXT        NOT NULL,
@@ -2594,7 +2594,7 @@ CREATE TABLE IF NOT EXISTS public.bot_app_installations (
     release             BYTEA       NOT NULL DEFAULT ''::bytea,
     installed_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_418800cc0ea5 UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_418800cc0ea5 UNIQUE (team_id, id),
     CONSTRAINT bot_app_installations_identity_key
         UNIQUE (team_id, bot_id, registry_id, app_id),
     CONSTRAINT bot_app_installations_revision_check
@@ -2632,15 +2632,15 @@ DROP POLICY IF EXISTS bot_app_installations_team_update ON public.bot_app_instal
 DROP POLICY IF EXISTS bot_app_installations_team_delete ON public.bot_app_installations;
 
 CREATE POLICY bot_app_installations_team_select ON public.bot_app_installations
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_installations_team_insert ON public.bot_app_installations
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_installations_team_update ON public.bot_app_installations
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_installations_team_delete ON public.bot_app_installations
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- An App installation references the workspace dependencies it needs.
 -- The dependency itself stays one record per (bot, target, dependency) in
@@ -2648,12 +2648,12 @@ CREATE POLICY bot_app_installations_team_delete ON public.bot_app_installations
 -- referencing installation goes away.
 CREATE TABLE IF NOT EXISTS public.bot_app_dependency_refs (
     id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id         UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id         UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                 REFERENCES public.teams(id) ON DELETE RESTRICT,
     installation_id UUID        NOT NULL,
     dependency_id   TEXT        NOT NULL,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_836f95d79b1b UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_836f95d79b1b UNIQUE (team_id, id),
     CONSTRAINT bot_app_dependency_refs_identity_key
         UNIQUE (team_id, installation_id, dependency_id),
     CONSTRAINT bot_app_dependency_refs_installation_id_fkey
@@ -2672,15 +2672,15 @@ DROP POLICY IF EXISTS bot_app_dependency_refs_team_update ON public.bot_app_depe
 DROP POLICY IF EXISTS bot_app_dependency_refs_team_delete ON public.bot_app_dependency_refs;
 
 CREATE POLICY bot_app_dependency_refs_team_select ON public.bot_app_dependency_refs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_dependency_refs_team_insert ON public.bot_app_dependency_refs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_dependency_refs_team_update ON public.bot_app_dependency_refs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_dependency_refs_team_delete ON public.bot_app_dependency_refs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- An App installation references the Connect-It connector types it uses.
 -- connection_id is empty until the user authorizes one; the connection itself
@@ -2688,7 +2688,7 @@ CREATE POLICY bot_app_dependency_refs_team_delete ON public.bot_app_dependency_r
 -- installation that references it.
 CREATE TABLE IF NOT EXISTS public.bot_app_connector_refs (
     id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id         UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id         UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                 REFERENCES public.teams(id) ON DELETE RESTRICT,
     installation_id UUID        NOT NULL,
     connector_type  TEXT        NOT NULL,
@@ -2696,7 +2696,7 @@ CREATE TABLE IF NOT EXISTS public.bot_app_connector_refs (
     required        BOOLEAN     NOT NULL DEFAULT true,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_56748bb759c8 UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_56748bb759c8 UNIQUE (team_id, id),
     CONSTRAINT bot_app_connector_refs_identity_key
         UNIQUE (team_id, installation_id, connector_type),
     CONSTRAINT bot_app_connector_refs_installation_id_fkey
@@ -2715,15 +2715,15 @@ DROP POLICY IF EXISTS bot_app_connector_refs_team_update ON public.bot_app_conne
 DROP POLICY IF EXISTS bot_app_connector_refs_team_delete ON public.bot_app_connector_refs;
 
 CREATE POLICY bot_app_connector_refs_team_select ON public.bot_app_connector_refs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_connector_refs_team_insert ON public.bot_app_connector_refs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_connector_refs_team_update ON public.bot_app_connector_refs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_app_connector_refs_team_delete ON public.bot_app_connector_refs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Bot workdirs
@@ -2740,7 +2740,7 @@ CREATE POLICY bot_app_connector_refs_team_delete ON public.bot_app_connector_ref
 
 CREATE TABLE IF NOT EXISTS public.bot_workdirs (
     id                 UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id            UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id            UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                    REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id             UUID        NOT NULL,
     name               TEXT        NOT NULL,
@@ -2789,15 +2789,15 @@ ALTER TABLE public.bot_workdirs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bot_workdirs FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY bot_workdirs_team_select ON public.bot_workdirs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workdirs_team_insert ON public.bot_workdirs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workdirs_team_update ON public.bot_workdirs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workdirs_team_delete ON public.bot_workdirs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Immutable per-session workdir binding. SET NULL only fires on the hard
 -- delete path (remote unbind cascade / bot deletion); the API archive path
@@ -2840,7 +2840,7 @@ ALTER TABLE public.schedule
 -- They now restore the agent's native session, and nothing reads or writes
 -- this table.
 CREATE TABLE IF NOT EXISTS public.agent_session_publications (
-    team_id          UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id          UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                  REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id       UUID        NOT NULL,
     run_id           UUID        NOT NULL,
@@ -2858,15 +2858,15 @@ ALTER TABLE public.agent_session_publications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.agent_session_publications FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY agent_session_publications_team_select ON public.agent_session_publications
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY agent_session_publications_team_insert ON public.agent_session_publications
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY agent_session_publications_team_update ON public.agent_session_publications
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY agent_session_publications_team_delete ON public.agent_session_publications
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Bot Agents
@@ -2877,7 +2877,7 @@ CREATE POLICY agent_session_publications_team_delete ON public.agent_session_pub
 -- metadata.provider until their dedicated Runtime is available.
 
 CREATE TABLE IF NOT EXISTS public.bot_agents (
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                             REFERENCES public.teams(id) ON DELETE RESTRICT,
     id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
     bot_id     UUID        NOT NULL,
@@ -2910,15 +2910,15 @@ ALTER TABLE public.bot_agents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bot_agents FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY bot_agents_team_select ON public.bot_agents
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_agents_team_insert ON public.bot_agents
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_agents_team_update ON public.bot_agents
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_agents_team_delete ON public.bot_agents
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.bots
     ADD COLUMN IF NOT EXISTS default_bot_agent_id UUID;
@@ -2964,7 +2964,7 @@ CREATE INDEX IF NOT EXISTS idx_schedule_bot_agent
 
 CREATE TABLE IF NOT EXISTS public.agent_credentials (
     id                   UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id              UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id              UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                      REFERENCES public.teams(id) ON DELETE RESTRICT,
     owner_user_id        UUID        NOT NULL,
     provider             TEXT        NOT NULL,
@@ -3000,14 +3000,14 @@ ALTER TABLE public.agent_credentials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.agent_credentials FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY agent_credentials_team_select ON public.agent_credentials
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY agent_credentials_team_insert ON public.agent_credentials
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY agent_credentials_team_update ON public.agent_credentials
-    FOR UPDATE USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR UPDATE USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY agent_credentials_team_delete ON public.agent_credentials
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- One credential per Bot Agent instance (the column lives here as an
 -- ALTER because agent_credentials did not exist when bot_agents was created
@@ -3033,7 +3033,7 @@ CREATE INDEX IF NOT EXISTS idx_bot_agents_agent_credential
 
 CREATE TABLE IF NOT EXISTS public.bot_dependency_installations (
     id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id             UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id             UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                     REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id              UUID        NOT NULL,
     dependency_id       TEXT        NOT NULL,
@@ -3051,7 +3051,7 @@ CREATE TABLE IF NOT EXISTS public.bot_dependency_installations (
     operation_id        TEXT        NOT NULL DEFAULT '',
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_07a3be5666c2 UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_07a3be5666c2 UNIQUE (team_id, id),
     CONSTRAINT bot_dependency_installations_identity_key
         UNIQUE (team_id, bot_id, dependency_id),
     CONSTRAINT bot_dependency_installations_bot_id_fkey
@@ -3082,25 +3082,25 @@ ALTER TABLE public.bot_dependency_installations FORCE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS bot_dependency_installations_team_select ON public.bot_dependency_installations;
 CREATE POLICY bot_dependency_installations_team_select ON public.bot_dependency_installations
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_dependency_installations_team_insert ON public.bot_dependency_installations;
 CREATE POLICY bot_dependency_installations_team_insert ON public.bot_dependency_installations
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_dependency_installations_team_update ON public.bot_dependency_installations;
 CREATE POLICY bot_dependency_installations_team_update ON public.bot_dependency_installations
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS bot_dependency_installations_team_delete ON public.bot_dependency_installations;
 CREATE POLICY bot_dependency_installations_team_delete ON public.bot_dependency_installations
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Immutable dependency definitions and the independently refreshed catalog.
 -- Entries are shared only within a team and one configured Supermarket origin.
 CREATE TABLE IF NOT EXISTS public.workspace_dependency_definitions (
-    team_id UUID NOT NULL DEFAULT public.memoh_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
+    team_id UUID NOT NULL DEFAULT public.ami_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
     source_url TEXT NOT NULL,
-    registry_id TEXT NOT NULL CHECK (registry_id = 'memoh'),
+    registry_id TEXT NOT NULL CHECK (registry_id = 'ami'),
     dependency_id TEXT NOT NULL,
     revision TEXT NOT NULL CHECK (revision ~ '^[a-f0-9]{64}$'),
     release_bytes BYTEA NOT NULL CHECK (octet_length(release_bytes) BETWEEN 1 AND 1048576),
@@ -3124,7 +3124,7 @@ CREATE INDEX IF NOT EXISTS idx_workspace_dependency_definitions_icon
     ON public.workspace_dependency_definitions (team_id, source_url, icon_digest);
 
 CREATE TABLE IF NOT EXISTS public.workspace_dependency_catalogs (
-    team_id UUID NOT NULL DEFAULT public.memoh_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
+    team_id UUID NOT NULL DEFAULT public.ami_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
     source_url TEXT NOT NULL,
     catalog_bytes BYTEA NOT NULL CHECK (octet_length(catalog_bytes) BETWEEN 1 AND 4194304),
     generation BIGINT NOT NULL DEFAULT 1 CHECK (generation > 0),
@@ -3136,36 +3136,36 @@ ALTER TABLE public.workspace_dependency_definitions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.workspace_dependency_definitions FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_select ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_select ON public.workspace_dependency_definitions
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_insert ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_insert ON public.workspace_dependency_definitions
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_update ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_update ON public.workspace_dependency_definitions
-    FOR UPDATE USING (team_id = public.memoh_current_team_id()) WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR UPDATE USING (team_id = public.ami_current_team_id()) WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_delete ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_delete ON public.workspace_dependency_definitions
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.workspace_dependency_catalogs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.workspace_dependency_catalogs FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_select ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_select ON public.workspace_dependency_catalogs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_insert ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_insert ON public.workspace_dependency_catalogs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_update ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_update ON public.workspace_dependency_catalogs
-    FOR UPDATE USING (team_id = public.memoh_current_team_id()) WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR UPDATE USING (team_id = public.ami_current_team_id()) WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_delete ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_delete ON public.workspace_dependency_catalogs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Temporary Agent authorization sessions, before a Bot exists.
 CREATE TABLE IF NOT EXISTS public.agent_authorizations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id UUID NOT NULL DEFAULT public.memoh_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
+    team_id UUID NOT NULL DEFAULT public.ami_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
     owner_user_id UUID NOT NULL,
     runtime TEXT NOT NULL CHECK (runtime IN ('codex', 'claude-code', 'grok-build')),
     auth_kind TEXT NOT NULL,
@@ -3186,8 +3186,8 @@ ALTER TABLE public.agent_authorizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.agent_authorizations FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS agent_authorizations_team ON public.agent_authorizations;
 CREATE POLICY agent_authorizations_team ON public.agent_authorizations
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 
 -- Declarative workspace state for bots, converged by the internal/botworkspace reconciler.
 -- desired_* is written only by the API layer; observed_* and the lease only by
@@ -3195,7 +3195,7 @@ CREATE POLICY agent_authorizations_team ON public.agent_authorizations
 -- workspace's data.
 CREATE TABLE IF NOT EXISTS public.bot_workspaces (
     bot_id              UUID        PRIMARY KEY,
-    team_id             UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id             UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                     REFERENCES public.teams(id) ON DELETE RESTRICT,
     desired_state       TEXT        NOT NULL,
     desired_generation  BIGINT      NOT NULL DEFAULT 1,
@@ -3214,7 +3214,7 @@ CREATE TABLE IF NOT EXISTS public.bot_workspaces (
     version             BIGINT      NOT NULL DEFAULT 1,
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_7443107a7495 UNIQUE (team_id, bot_id),
+    CONSTRAINT ami_team_key_7443107a7495 UNIQUE (team_id, bot_id),
     CONSTRAINT bot_workspaces_desired_state_check
         CHECK (desired_state IN ('present', 'absent')),
     CONSTRAINT bot_workspaces_observed_state_check
@@ -3243,28 +3243,28 @@ DROP POLICY IF EXISTS bot_workspaces_team_update ON public.bot_workspaces;
 DROP POLICY IF EXISTS bot_workspaces_team_delete ON public.bot_workspaces;
 
 CREATE POLICY bot_workspaces_team_select ON public.bot_workspaces
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workspaces_team_insert ON public.bot_workspaces
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workspaces_team_update ON public.bot_workspaces
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workspaces_team_delete ON public.bot_workspaces
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Usage ledger for memory LLM calls (extract / decide / compact), which never
 -- produce a chat message. bots.memory_llm_model_id picks their model.
 CREATE TABLE IF NOT EXISTS public.bot_memory_usage (
   id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+  team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                          REFERENCES public.teams(id) ON DELETE RESTRICT,
   bot_id     UUID        NOT NULL,
   model_id   UUID,
   operation  TEXT        NOT NULL,
   usage      JSONB       NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  CONSTRAINT memoh_team_key_cdc0b6740345 UNIQUE (team_id, id),
+  CONSTRAINT ami_team_key_cdc0b6740345 UNIQUE (team_id, id),
   CONSTRAINT bot_memory_usage_operation_check
     CHECK (operation IN ('extract', 'decide', 'compact'))
 );
@@ -3294,12 +3294,12 @@ DROP POLICY IF EXISTS bot_memory_usage_team_update ON public.bot_memory_usage;
 DROP POLICY IF EXISTS bot_memory_usage_team_delete ON public.bot_memory_usage;
 
 CREATE POLICY bot_memory_usage_team_select ON public.bot_memory_usage
-  FOR SELECT USING (team_id = public.memoh_current_team_id());
+  FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_memory_usage_team_insert ON public.bot_memory_usage
-  FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+  FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_memory_usage_team_update ON public.bot_memory_usage
   FOR UPDATE
-  USING (team_id = public.memoh_current_team_id())
-  WITH CHECK (team_id = public.memoh_current_team_id());
+  USING (team_id = public.ami_current_team_id())
+  WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_memory_usage_team_delete ON public.bot_memory_usage
-  FOR DELETE USING (team_id = public.memoh_current_team_id());
+  FOR DELETE USING (team_id = public.ami_current_team_id());

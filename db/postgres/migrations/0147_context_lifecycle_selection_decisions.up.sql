@@ -20,10 +20,10 @@ DECLARE
   previous_team_id text;
   migration_team_id uuid;
 BEGIN
-  previous_team_id := current_setting('memoh.team_id', true);
+  previous_team_id := current_setting('ami.team_id', true);
 
   FOR migration_team_id IN SELECT id FROM public.teams ORDER BY id LOOP
-    PERFORM set_config('memoh.team_id', migration_team_id::text, true);
+    PERFORM set_config('ami.team_id', migration_team_id::text, true);
 
     UPDATE public.context_lifecycles
     SET selection_decisions = snapshot -> 'selection_decisions',
@@ -70,8 +70,8 @@ BEGIN
       AND (rollup.trimmed > 0 OR rollup.drop_reason_tokens IS NOT NULL);
   END LOOP;
 
-  PERFORM set_config('memoh.team_id', COALESCE(previous_team_id, ''), true);
+  PERFORM set_config('ami.team_id', COALESCE(previous_team_id, ''), true);
 END $$;
 
 ALTER POLICY teams_self_select ON public.teams
-  USING (id = public.memoh_current_team_id());
+  USING (id = public.ami_current_team_id());

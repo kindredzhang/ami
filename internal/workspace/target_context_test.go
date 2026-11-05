@@ -7,9 +7,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/felinics/memoh/internal/config"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/userruntime"
+	"github.com/kindredzhang/ami/internal/config"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/userruntime"
 )
 
 func TestWorkspaceTargetContextIsRequestScoped(t *testing.T) {
@@ -196,7 +196,7 @@ func TestManagerWorkspaceTargetOverridePrecedenceAndConcurrentIsolation(t *testi
 		t.Fatalf("request target Stat: %v", err)
 	}
 	md := <-requestMetadata
-	if got := md.Get("x-memoh-workspace-path-bin"); len(got) != 0 {
+	if got := md.Get("x-ami-workspace-path-bin"); len(got) != 0 {
 		t.Fatalf("obsolete request workspace metadata = %v", got)
 	}
 

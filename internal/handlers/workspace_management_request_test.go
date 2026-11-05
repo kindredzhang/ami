@@ -8,7 +8,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 func TestWorkspaceManagementRejectsRemovedDeviceFields(t *testing.T) {

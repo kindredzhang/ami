@@ -23,14 +23,14 @@ services:
       - go_build_cache:/root/.cache/go-build
       - session_runtime_containerd_a:/var/lib/containerd
       - session_runtime_cni_a:/var/lib/cni
-      - session_runtime_memoh_data_a:/opt/memoh/data
+      - session_runtime_ami_data_a:/opt/ami/data
       - /etc/cdi:/etc/cdi:ro
       - /var/run/cdi:/var/run/cdi:ro
-      - ../.cache/memoh/workspace-debian.tar:/opt/memoh/dev-images/workspace-debian.tar:ro
+      - ../.cache/ami/workspace-debian.tar:/opt/ami/dev-images/workspace-debian.tar:ro
 
   server_b:
-    image: memoh-dev-server
-    container_name: memoh-runtime-server-b
+    image: ami-dev-server
+    container_name: ami-runtime-server-b
     working_dir: /workspace
     privileged: true
     pid: host
@@ -40,8 +40,8 @@ services:
     environment:
       CONFIG_PATH: /workspace/devenv/app.dev.toml
       GOFLAGS: -buildvcs=false
-      TZ: "${MEMOH_DEV_TZ:-UTC}"
-      MEMOH_DEV_WORKSPACE_IMAGE: "${MEMOH_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
+      TZ: "${AMI_DEV_TZ:-UTC}"
+      AMI_DEV_WORKSPACE_IMAGE: "${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
       NO_PROXY: "127.0.0.1,localhost,host.docker.internal,postgres,pgvector,server,server_b"
       no_proxy: "127.0.0.1,localhost,host.docker.internal,postgres,pgvector,server,server_b"
     volumes:
@@ -51,8 +51,8 @@ services:
       - go_build_cache:/root/.cache/go-build
       - session_runtime_containerd_b:/var/lib/containerd
       - session_runtime_cni_b:/var/lib/cni
-      - session_runtime_memoh_data_b:/opt/memoh/data
-      - ../.cache/memoh/workspace-debian.tar:/opt/memoh/dev-images/workspace-debian.tar:ro
+      - session_runtime_ami_data_b:/opt/ami/data
+      - ../.cache/ami/workspace-debian.tar:/opt/ami/dev-images/workspace-debian.tar:ro
     ports:
       - "18083:8080"
       - "19092:9090"
@@ -79,11 +79,11 @@ volumes:
     driver: local
   session_runtime_cni_a:
     driver: local
-  session_runtime_memoh_data_a:
+  session_runtime_ami_data_a:
     driver: local
   session_runtime_containerd_b:
     driver: local
   session_runtime_cni_b:
     driver: local
-  session_runtime_memoh_data_b:
+  session_runtime_ami_data_b:
     driver: local

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 func TestDiscussExhaustedRecoveryOnlyAttemptsAdmission(t *testing.T) {

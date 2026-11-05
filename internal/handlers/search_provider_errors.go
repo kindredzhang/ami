@@ -3,8 +3,8 @@ package handlers
 import (
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/searchproviders"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/searchproviders"
 )
 
 // searchProviderError translates a search provider failure the client can act

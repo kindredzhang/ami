@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/testutil/sessionledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/testutil/sessionledger"
 )
 
 type fakeLedger = sessionledger.Store

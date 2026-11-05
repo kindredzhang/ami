@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpagent "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpagent "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 func TestRuntimeControlErrorMapsSentinels(t *testing.T) {

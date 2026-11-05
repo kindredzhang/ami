@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 func TestStackOrigin(t *testing.T) {

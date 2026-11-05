@@ -14,7 +14,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 // historyCheckpointTables are the tables 0170 converts sessions in and the
@@ -46,7 +46,7 @@ func TestHistoryCheckpointMigration(t *testing.T) {
 		t.Fatalf("acquire connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("set team context: %v", err)
 	}
 	exec := func(label, query string, args ...any) {
@@ -331,7 +331,7 @@ func historyCheckpointSchema(t *testing.T, ctx context.Context, pool *pgxpool.Po
 		  SELECT pg_get_functiondef(p.oid)
 		  FROM pg_proc p
 		  WHERE p.pronamespace = 'public'::regnamespace
-		    AND p.proname IN ('memoh_history_checkpoint_kept', 'memoh_rewind_history_checkpoint')
+		    AND p.proname IN ('ami_history_checkpoint_kept', 'ami_rewind_history_checkpoint')
 		  ORDER BY p.proname
 		) || ARRAY(
 		  SELECT pg_get_triggerdef(tg.oid)

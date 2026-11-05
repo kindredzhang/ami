@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { putUsersMe } from '@memohai/sdk'
+import { putUsersMe } from '@ami/sdk'
 import { toast } from '@felinic/ui'
 import { useUserStore } from '@/store/user'
 import { ONBOARDING_KEYS } from '@/pages/onboarding/constants'

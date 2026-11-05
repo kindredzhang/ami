@@ -15,7 +15,7 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 // fakeTerminalStream is a PTY that prints nothing, or, with flood set, prints

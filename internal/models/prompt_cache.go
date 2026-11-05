@@ -3,8 +3,8 @@ package models
 import (
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // Prompt cache TTL options accepted in Provider config.
@@ -120,7 +120,7 @@ func PromptCacheKey(model *sdk.Model, ttl, sessionID string) string {
 	}
 	switch ResolveClientType(model) {
 	case string(ClientTypeOpenAIResponses), string(ClientTypeOpenAICompletions):
-		return "memoh-session-" + sessionID
+		return "ami-session-" + sessionID
 	default:
 		return ""
 	}

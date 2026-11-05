@@ -52,7 +52,7 @@ func TestViewDoesNotBypassRLS(t *testing.T) {
 	rc := rlsConn(t, pool, dsn)
 
 	// Bind runtime to team 2.
-	if _, err := rc.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", t2); err != nil {
+	if _, err := rc.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", t2); err != nil {
 		t.Fatalf("bind team2: %v", err)
 	}
 

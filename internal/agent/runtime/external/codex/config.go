@@ -3,7 +3,7 @@
 // codex CLI running inside the bot workspace, with no ACP adapter in between.
 //
 // Codex writes native rollouts under CODEX_HOME on the bot's data volume;
-// they are the only copy of its conversation. Memoh keeps the thread id and
+// they are the only copy of its conversation. Ami keeps the thread id and
 // rollout path in session metadata and resumes from them; a thread codex can
 // no longer resume starts over and says so.
 package codex
@@ -11,8 +11,8 @@ package codex
 import (
 	"path"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/codexcfg"
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/codexcfg"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 const (
@@ -33,7 +33,7 @@ const (
 	// no LauncherResolver is installed. The canonical workspace image does
 	// not ship an agent CLI, so this only resolves in custom images that
 	// provide one; with a resolver the copy to run is chosen per bot.
-	defaultLauncherPath = "/opt/memoh/toolkit/bin/codex"
+	defaultLauncherPath = "/opt/ami/toolkit/bin/codex"
 	// defaultProjectPath matches the workspace data volume root.
 	defaultProjectPath = "/data"
 )

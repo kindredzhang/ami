@@ -11,14 +11,14 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/agent/runtime/external/grok/grokcfg"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/botagents"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/grok/grokcfg"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/botagents"
 )
 
 // Driver runs Grok Build turns on the ACP core, as its Extension.
@@ -160,7 +160,7 @@ func (d *Driver) Launch(ctx context.Context, input acp.PromptInput) (acp.Launch,
 			}
 			// Grok can also serve through a shared leader process that
 			// outlives its stdio client; sessions and the login file must die
-			// with this process. Memoh composes Grok's whole environment: its
+			// with this process. Ami composes Grok's whole environment: its
 			// state lives in GROK_HOME.
 			proc, conn, err := acpclient.Launch(ctx, client, launcher.Path, []string{"agent", "--no-leader", "stdio"}, defaultProjectPath,
 				acpclient.ProcessOptions{Env: processEnv(grokHome(botAgentID), cfg.APIKey), CleanEnv: true, Logger: d.logger}, acpclient.ClientCapabilities{})
@@ -216,7 +216,7 @@ func (*Driver) Session(_ context.Context, proc *acp.Process, input acp.PromptInp
 // Opened implements acp.Extension; a Grok session needs nothing more.
 func (*Driver) Opened(context.Context, *acp.Binding, acp.PromptInput) error { return nil }
 
-// Configure implements acp.Extension: says whether Grok reached Memoh's tools,
+// Configure implements acp.Extension: says whether Grok reached Ami's tools,
 // then moves the session onto the turn's model and effort.
 func (d *Driver) Configure(ctx context.Context, b *acp.Binding, input acp.PromptInput) error {
 	state := grokState(b.Process())
@@ -224,7 +224,7 @@ func (d *Driver) Configure(ctx context.Context, b *acp.Binding, input acp.Prompt
 	// session opening; a report that never comes does not hold the turn.
 	if b.ToolsMounted() && input.Sink != nil {
 		if status, ok := state.gatewayStatus(ctx, b.Session().ID(), gatewayStatusTimeout); ok && status.Status == mcpStatusUnavailable {
-			toolmount.EmitUnavailableNotice(input.Sink, "Grok could not connect to Memoh tools: "+external.FirstNonEmpty(status.Reason, status.Detail, status.Status))
+			toolmount.EmitUnavailableNotice(input.Sink, "Grok could not connect to Ami tools: "+external.FirstNonEmpty(status.Reason, status.Detail, status.Status))
 		}
 	}
 	cfg, err := d.agentConfig(ctx, input.BotID, input.BotAgentID)

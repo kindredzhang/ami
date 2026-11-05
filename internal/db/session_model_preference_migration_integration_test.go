@@ -10,8 +10,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 // 0146 adds the session (model, effort) pair columns. The chain must step
@@ -45,7 +45,7 @@ func TestSessionModelPreferenceMigrationAndWriteFence(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer tx.Rollback(ctx)
-		if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", team.DefaultTeamID); err != nil {
+		if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", team.DefaultTeamID); err != nil {
 			t.Fatal(err)
 		}
 		var userID, providerID, modelID, botID pgtype.UUID

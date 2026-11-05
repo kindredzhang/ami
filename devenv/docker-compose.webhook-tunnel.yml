@@ -1,9 +1,9 @@
 services:
   channel:
     environment:
-      MEMOH_WEBHOOK_TUNNEL_MODE: external
-      MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR: ":18734"
-      MEMOH_WEBHOOK_TUNNEL_METRICS_URL: "http://webhook-tunnel:18735"
+      AMI_WEBHOOK_TUNNEL_MODE: external
+      AMI_WEBHOOK_TUNNEL_LISTEN_ADDR: ":18734"
+      AMI_WEBHOOK_TUNNEL_METRICS_URL: "http://webhook-tunnel:18735"
     expose:
       - "18734"
 
@@ -13,12 +13,12 @@ services:
     environment:
       HTTP_PROXY: "${HTTP_PROXY:-${http_proxy:-}}"
       HTTPS_PROXY: "${HTTPS_PROXY:-${https_proxy:-}}"
-      NO_PROXY: "${NO_PROXY:-127.0.0.1,localhost},channel,memoh-dev-channel"
+      NO_PROXY: "${NO_PROXY:-127.0.0.1,localhost},channel,ami-dev-channel"
       http_proxy: "${http_proxy:-${HTTP_PROXY:-}}"
       https_proxy: "${https_proxy:-${HTTPS_PROXY:-}}"
-      no_proxy: "${no_proxy:-${NO_PROXY:-127.0.0.1,localhost}},channel,memoh-dev-channel"
+      no_proxy: "${no_proxy:-${NO_PROXY:-127.0.0.1,localhost}},channel,ami-dev-channel"
     ports:
-      - "${MEMOH_DEV_WEBHOOK_TUNNEL_METRICS_PORT:-18735}:18735"
+      - "${AMI_DEV_WEBHOOK_TUNNEL_METRICS_PORT:-18735}:18735"
     depends_on:
       channel:
         condition: service_healthy

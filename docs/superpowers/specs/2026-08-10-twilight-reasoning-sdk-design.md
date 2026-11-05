@@ -1,7 +1,7 @@
 # Twilight SDK 的 reasoning 抽象:设计决策
 
 > 状态:**提案,等团队讨论**。同意了才动手。
-> 关联文档:[能力元数据架构提案](./2026-08-10-reasoning-capability-architecture-proposal.md)(为什么)、[收敛工程工作文档](./2026-08-10-reasoning-consolidation-workplan.md)(Memoh 侧怎么做)。本文档管 **Twilight SDK 侧**的 API 设计。
+> 关联文档:[能力元数据架构提案](./2026-08-10-reasoning-capability-architecture-proposal.md)(为什么)、[收敛工程工作文档](./2026-08-10-reasoning-consolidation-workplan.md)(Ami 侧怎么做)。本文档管 **Twilight SDK 侧**的 API 设计。
 > 依据:三份独立调研(官方 SDK 源码实测、产品 UX 实测、Go 类型设计论证),2026-08-10。
 
 ## TL;DR
@@ -33,7 +33,7 @@ Twilight 的 reasoning 分两层:
 1. **通用请求层**:`sdk.GenerateParams.ReasoningEffort *string` + `sdk.WithReasoningEffort(string)`。表达力 = "一个档位字符串或 nil"。**没有 ProviderOptions 之类的逃生舱。**
 2. **provider 私有构造层**:各 provider 自己的 Option,如 `provider/anthropic/messages.WithThinking(ThinkingConfig{Type, BudgetTokens})`,构造 Model 时注入。
 
-Anthropic 之所以能工作,是因为它两层都用:budget/adaptive 这种私有形状走第二层(Memoh 在 `NewSDKChatModel` 里按世代注入),档位走第一层。OpenAI 只用第一层。**Google 一层都没接**——这才是它断掉的确切原因,不是抽象逼它做了什么错事。
+Anthropic 之所以能工作,是因为它两层都用:budget/adaptive 这种私有形状走第二层(Ami 在 `NewSDKChatModel` 里按世代注入),档位走第一层。OpenAI 只用第一层。**Google 一层都没接**——这才是它断掉的确切原因,不是抽象逼它做了什么错事。
 
 ---
 
@@ -105,11 +105,11 @@ type ThinkingConfigParamUnion struct {
 
 调研过程推翻了我在讨论中提出的两个判断,值得留档:
 
-**① "可序列化性是 SDK 的硬约束"——错。** 全仓搜索确认 `sdk.GenerateParams` **从未被 Marshal**,那些 json tag 是遗留装饰(结构体里 `Model *Model` 持有 `Provider` interface 含 `*http.Client`、`ToolChoice any`,本来就不可能往返)。真正需要序列化的是 **Memoh 自己的 `native.RunConfig`**(要过 server↔channel 的 gRPC),那是我们的 DTO 约束。
+**① "可序列化性是 SDK 的硬约束"——错。** 全仓搜索确认 `sdk.GenerateParams` **从未被 Marshal**,那些 json tag 是遗留装饰(结构体里 `Model *Model` 持有 `Provider` interface 含 `*http.Client`、`ToolChoice any`,本来就不可能往返)。真正需要序列化的是 **Ami 自己的 `native.RunConfig`**(要过 server↔channel 的 gRPC),那是我们的 DTO 约束。
 
 推论:`service.go:751-755` 把 `ReasoningConfig` 拆成 5 个扁平字段穿过 RunConfig 是**过度反应**——直接放一个带 json tag 的 `*ReasoningConfig` 就行。这顺手解释了普查发现的 B1(spawn 路径只搬 `ReasoningEffort`、丢掉另外 4 个字段):**字段拆得越散,漏传的机会越多。**
 
-**② "那张 16000 的表该搬进 SDK"——不采纳。** 设计论证提议把 effort→budget 表搬进 SDK(带 `TierBudgets` 覆盖点),理由是"legacy Claude 只吃 budget"属于 wire 知识不该外泄。但实测显示:**官方 SDK 无一有换算表**;唯一有的 LiteLLM 是**网关角色**——它必须把一种输入形状翻译成 N 家形状。而在我们的架构里,**Memoh 才是那个网关角色**,Twilight 是 provider SDK。所以表留在 Memoh 是对的,只是形态要改(见 §3.7)。
+**② "那张 16000 的表该搬进 SDK"——不采纳。** 设计论证提议把 effort→budget 表搬进 SDK(带 `TierBudgets` 覆盖点),理由是"legacy Claude 只吃 budget"属于 wire 知识不该外泄。但实测显示:**官方 SDK 无一有换算表**;唯一有的 LiteLLM 是**网关角色**——它必须把一种输入形状翻译成 N 家形状。而在我们的架构里,**Ami 才是那个网关角色**,Twilight 是 provider SDK。所以表留在 Ami 是对的,只是形态要改(见 §3.7)。
 
 ---
 
@@ -171,7 +171,7 @@ const (
 
 判据(建议写进 Twilight 的贡献文档):**SDK 可以执行调用方的声明,不可以执行自己的猜测。**
 
-它是 exported 函数,但 Memoh 侧没有直接调用(我们有自己的 `openAIWireEffort`),实际影响为零。建议先留空壳一个版本再删。
+它是 exported 函数,但 Ami 侧没有直接调用(我们有自己的 `openAIWireEffort`),实际影响为零。建议先留空壳一个版本再删。
 
 **3.5 不做 model id 嗅探。**
 
@@ -185,9 +185,9 @@ const (
 
 建议 **provider 私有选项胜出**(表达力更强、意图更明确),**并写进 doc comment**——LangChain 靠 Pydantic alias 优先级隐式决定、只在 docstring 里补说明,是可避免的坑。
 
-### Memoh 侧
+### Ami 侧
 
-**3.8 换算表留在 Memoh,但从硬编码改成比例式。**
+**3.8 换算表留在 Ami,但从硬编码改成比例式。**
 
 这是三份调研里唯一**两个独立项目收敛出同一答案**的点:
 
@@ -234,7 +234,7 @@ budget = max(1024, floor((limit.max - limit.min) * ratio + limit.min))
 
 Anthropic 的 thinking 形状被钉在 **provider 构造期**(`WithThinking` 是 Model Option,构造一次),而档位在**请求期**(每次调用)。于是同一个逻辑决策("用户选了 high")被劈成两半:budget 在 `NewSDKChatModel`,effort 在 `BuildReasoningOptions`。这就是 `SDKModelConfig.ReasoningConfig` 要被消费两次的根源。
 
-**建议:把 provider thinking 选项从构造期移到请求期**,作为独立工作项。它不阻塞 Gemini 修复,但会让 Memoh 侧的 reasoning 决策收敛成真正的单点(和收敛工程工作文档的目标一致)。
+**建议:把 provider thinking 选项从构造期移到请求期**,作为独立工作项。它不阻塞 Gemini 修复,但会让 Ami 侧的 reasoning 决策收敛成真正的单点(和收敛工程工作文档的目标一致)。
 
 ---
 
@@ -245,14 +245,14 @@ Anthropic 的 thinking 形状被钉在 **provider 构造期**(`WithThinking` 是
 | 步 | 内容 | 仓库 | Breaking |
 |---|---|---|---|
 | 1 | Google provider 补 `thinkingConfig` 字段 + Option + `buildRequest` 消费;`-1`/`0` 具名常量 | Twilight | 否(纯新增) |
-| 2 | Memoh 侧填 Gemini 的方言声明,`BuildReasoningOptions` 接上 Google 分支 | Memoh | 否 → **Gemini 端到端打通** |
+| 2 | Ami 侧填 Gemini 的方言声明,`BuildReasoningOptions` 接上 Google 分支 | Ami | 否 → **Gemini 端到端打通** |
 | 3 | Anthropic `ThinkingConfig` 改 union;`NormalizeReasoningEffort` 留空壳标废弃 | Twilight | 否 |
-| 4 | 换算表改比例式 + 限制表按模型族分(理想:从 models.dev 拉) | Memoh | 否 |
-| 5 | `auto` 档位 + 按能力隐藏档位 + 失控成本可观测性 | Memoh | UI 可见变化 |
+| 4 | 换算表改比例式 + 限制表按模型族分(理想:从 models.dev 拉) | Ami | 否 |
+| 5 | `auto` 档位 + 按能力隐藏档位 + 失控成本可观测性 | Ami | UI 可见变化 |
 | 6 | thinking 选项从构造期移到请求期(§4) | 两边 | 需协调版本 |
 | 7 | 删 `NormalizeReasoningEffort` 空壳 | Twilight | 是(exported,但无调用方) |
 
-第 4/5 步与 Memoh 侧收敛工程(工作文档的 PR A/B)有重叠,实施时合并进那两个 PR 更省事。
+第 4/5 步与 Ami 侧收敛工程(工作文档的 PR A/B)有重叠,实施时合并进那两个 PR 更省事。
 
 ## 六、开放问题
 

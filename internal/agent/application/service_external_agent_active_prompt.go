@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
 )
 
 type externalAgentActivePromptHub struct {

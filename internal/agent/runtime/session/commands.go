@@ -14,9 +14,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func (m *Manager) RunRef(ctx context.Context, botID, sessionID, runID string) (RunRef, bool, error) {

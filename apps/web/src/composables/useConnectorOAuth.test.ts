@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => ({
   reauth: vi.fn(),
 }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsByBotIdConnectorsByConnectionId: mocks.getConnector,
   postBotsByBotIdConnectorsByConnectionIdReauth: mocks.reauth,
 }))
@@ -59,7 +59,7 @@ describe('waitForConnectorOAuth', () => {
 })
 
 const missingOAuthApp = {
-  type: 'urn:memoh:error:connector.oauth_client_not_configured', code: 'connector.oauth_client_not_configured',
+  type: 'urn:ami:error:connector.oauth_client_not_configured', code: 'connector.oauth_client_not_configured',
   status: 503, fault: 'dependency', detail: 'Connect-It has no OAuth App configured for this connector.', args: {},
 }
 const t = (key: string, params?: Record<string, unknown>) => params?.connector ? `${key}(${params.connector})` : key

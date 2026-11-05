@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 var (

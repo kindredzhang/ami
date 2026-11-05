@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func TestDecodeTurnResponseEntryUsesVisibleText(t *testing.T) {
@@ -493,7 +493,7 @@ func TestDecodeTurnResponseEntryDoesNotDuplicateHybridToolCall(t *testing.T) {
 		"type":       "tool-call",
 		"toolCallId": "call-hybrid",
 		"toolName":   "lookup",
-		"input":      map[string]any{"query": "memoh"},
+		"input":      map[string]any{"query": "ami"},
 	}})
 	if err != nil {
 		t.Fatalf("marshal content: %v", err)
@@ -505,7 +505,7 @@ func TestDecodeTurnResponseEntryDoesNotDuplicateHybridToolCall(t *testing.T) {
 			ID: "call-hybrid",
 			Function: turn.ToolCallFunction{
 				Name:      "lookup",
-				Arguments: `{"query":"memoh"}`,
+				Arguments: `{"query":"ami"}`,
 			},
 		}},
 	})

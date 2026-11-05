@@ -91,7 +91,7 @@ function materializeAppleApiKey() {
     throw new Error('APPLE_API_KEY must be a .p8 path, PEM text, or base64-encoded PEM')
   }
 
-  temporarySecretsDirectory = mkdtempSync(resolve(tmpdir(), 'memoh-desktop-signing-'))
+  temporarySecretsDirectory = mkdtempSync(resolve(tmpdir(), 'ami-desktop-signing-'))
   const keyPath = resolve(
     temporarySecretsDirectory,
     `AuthKey_${process.env.APPLE_API_KEY_ID || 'desktop'}.p8`,
@@ -115,7 +115,7 @@ function prepareSigningEnvironment() {
   }
 
   const missing = missingRequiredMacSigningEnv(process.env)
-  if (isEnabled(process.env.MEMOH_DESKTOP_REQUIRE_MAC_SIGNING) && missing.length > 0) {
+  if (isEnabled(process.env.AMI_DESKTOP_REQUIRE_MAC_SIGNING) && missing.length > 0) {
     throw new Error(`Missing required macOS signing/notarization environment variables:\n- ${missing.join('\n- ')}`)
   }
 
@@ -129,7 +129,7 @@ function prepareSigningEnvironment() {
 
 try {
   prepareSigningEnvironment()
-  runPnpm(['--filter', '@memohai/runtime', 'build'])
+  runPnpm(['--filter', '@ami/runtime', 'build'])
   runPnpm(['exec', 'electron-vite', 'build'])
   runPnpm(['exec', 'electron-builder', ...builderArgs], macToolchainEnv)
 } finally {

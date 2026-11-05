@@ -1,4 +1,4 @@
-import type { ProvidersGetResponse, ProvidertemplatesGetResponse } from '@memohai/sdk'
+import type { ProvidersGetResponse, ProvidertemplatesGetResponse } from '@ami/sdk'
 
 export interface ProviderConfigField {
   key: string

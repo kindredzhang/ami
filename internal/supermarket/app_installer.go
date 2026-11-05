@@ -7,10 +7,10 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/errs"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -353,7 +353,7 @@ func validateSkill(skill CatalogSkill, registryID, appID, skillID string) error 
 	if skill.RegistryID != registryID || skill.AppID != appID || skill.SkillID != skillID || skill.InstallID != strings.Join([]string{registryID, appID, skillID}, "+") || !skillset.IsValidName(skill.InstallID) {
 		return errs.NewDependency("registry Skill identity is invalid")
 	}
-	if artifact.Format != "memoh_skill_v1" || artifact.ContentType != "application/gzip" || !isCanonicalSHA256(artifact.Digest) || artifact.Size < 1 || artifact.Size > maxSkillArtifactCompressedBytes || artifact.UncompressedSize < 1 || artifact.UncompressedSize > maxSkillArtifactUncompressedBytes || artifact.ArchiveSize < 1 || artifact.ArchiveSize > maxSkillArtifactArchiveBytes || artifact.FileCount < 1 || artifact.FileCount > maxSkillArtifactFiles || strings.TrimSpace(artifact.DownloadURL) == "" {
+	if artifact.Format != "ami_skill_v1" || artifact.ContentType != "application/gzip" || !isCanonicalSHA256(artifact.Digest) || artifact.Size < 1 || artifact.Size > maxSkillArtifactCompressedBytes || artifact.UncompressedSize < 1 || artifact.UncompressedSize > maxSkillArtifactUncompressedBytes || artifact.ArchiveSize < 1 || artifact.ArchiveSize > maxSkillArtifactArchiveBytes || artifact.FileCount < 1 || artifact.FileCount > maxSkillArtifactFiles || strings.TrimSpace(artifact.DownloadURL) == "" {
 		return errs.NewDependency("registry Skill Artifact descriptor is invalid")
 	}
 	return nil

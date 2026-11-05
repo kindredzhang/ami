@@ -20,10 +20,10 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/gorilla/websocket"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	displaypkg "github.com/felinics/memoh/internal/display"
-	"github.com/felinics/memoh/internal/settings"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	displaypkg "github.com/kindredzhang/ami/internal/display"
+	"github.com/kindredzhang/ami/internal/settings"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -32,7 +32,7 @@ const (
 	browserToolTimeout                  = 45 * time.Second
 	browserStartupTimeout               = 12 * time.Second
 	computerDisplayStartupTimeout int32 = 1200
-	screenshotSubdir                    = ".memoh/screenshots"
+	screenshotSubdir                    = ".ami/screenshots"
 	defaultComputerWidth                = 1280
 	defaultComputerHeight               = 800
 	rfbButtonLeft                 byte  = 1
@@ -634,7 +634,7 @@ func (p *BrowserProvider) requireComputerDisplay(session SessionContext) (string
 	return botID, nil
 }
 
-const computerDisplayReadyCommand = `# memoh-computer-display-ready-probe
+const computerDisplayReadyCommand = `# ami-computer-display-ready-probe
 test -S /tmp/.X11-unix/X99 &&
 awk -v port="$(printf '%04X' 5999)" 'toupper($2) ~ ":" port "$" && $4 == "0A" { found = 1 } END { exit found ? 0 : 1 }' /proc/net/tcp /proc/net/tcp6 2>/dev/null`
 
@@ -650,7 +650,7 @@ func (p *BrowserProvider) ensureComputerDisplay(ctx context.Context, botID strin
 		return client, nil
 	}
 
-	result, err := client.Exec(ctx, "/bin/sh /opt/memoh/scripts/display-prepare.sh", "/", computerDisplayStartupTimeout)
+	result, err := client.Exec(ctx, "/bin/sh /opt/ami/scripts/display-prepare.sh", "/", computerDisplayStartupTimeout)
 	if err != nil {
 		return nil, fmt.Errorf("prepare workspace desktop: %w", err)
 	}
@@ -773,7 +773,7 @@ sleep 1
 for pid in $BROWSER_PIDS; do
   kill -9 "$pid" 2>/dev/null || true
 done
-rm -f /tmp/memoh-display-browser/SingletonLock /tmp/memoh-display-browser/SingletonSocket /tmp/memoh-display-browser/SingletonCookie
+rm -f /tmp/ami-display-browser/SingletonLock /tmp/ami-display-browser/SingletonSocket /tmp/ami-display-browser/SingletonCookie
 nohup "$BROWSER" \
   --no-sandbox \
   --disable-dev-shm-usage \
@@ -783,8 +783,8 @@ nohup "$BROWSER" \
   --remote-debugging-address=127.0.0.1 \
   --remote-debugging-port=9222 \
   --remote-allow-origins='*' \
-  --user-data-dir=/tmp/memoh-display-browser \
-  about:blank >/tmp/memoh-browser.log 2>&1 &
+  --user-data-dir=/tmp/ami-display-browser \
+  about:blank >/tmp/ami-browser.log 2>&1 &
 `
 	result, err := client.Exec(ctx, script, "/", 20)
 	if err != nil {
@@ -1797,12 +1797,12 @@ func (p *cdpPage) captureScreenshot(ctx context.Context, fullPage bool) (string,
 func (p *cdpPage) annotate(ctx context.Context) (any, error) {
 	return p.evaluate(ctx, `(() => {
 const result = [];
-for (const item of memohInteractiveElements()) {
+for (const item of amiInteractiveElements()) {
   const el = item.element;
   const rect = item.rect;
   result.push({ ref: item.ref, tag: item.tag, role: item.role, name: item.name });
   const label = document.createElement('div');
-  label.className = '__memoh_annotation__';
+  label.className = '__ami_annotation__';
   label.textContent = item.ref;
   label.style.cssText = 'position:fixed;left:' + rect.left + 'px;top:' + Math.max(0, rect.top - 18) + 'px;z-index:2147483647;background:#e63946;color:#fff;font:bold 11px/16px monospace;padding:0 4px;border-radius:3px;pointer-events:none;';
   document.body.appendChild(label);
@@ -1812,12 +1812,12 @@ return result;
 }
 
 func (p *cdpPage) removeAnnotations(ctx context.Context) error {
-	_, err := p.evaluate(ctx, `(() => { document.querySelectorAll('.__memoh_annotation__').forEach(el => el.remove()); return true })()`)
+	_, err := p.evaluate(ctx, `(() => { document.querySelectorAll('.__ami_annotation__').forEach(el => el.remove()); return true })()`)
 	return err
 }
 
 func (p *cdpPage) accessibilitySnapshot(ctx context.Context) (string, error) {
-	value, err := p.evaluate(ctx, `(() => memohInteractiveElements().slice(0, 300).map(({ ref, role, name, tag, selector }) => ({ ref, role, name, tag, selector })))()`)
+	value, err := p.evaluate(ctx, `(() => amiInteractiveElements().slice(0, 300).map(({ ref, role, name, tag, selector }) => ({ ref, role, name, tag, selector })))()`)
 	if err != nil {
 		return "", err
 	}
@@ -1859,7 +1859,7 @@ func (p *cdpPage) setInputFiles(ctx context.Context, target browserTarget, files
 	if target.Ref != "" {
 		value, err := p.evaluate(ctx, fmt.Sprintf(`(() => {
 const el = mustTarget("", %s);
-return memohCssPath(el);
+return amiCssPath(el);
 })()`, jsQuote(target.Ref)))
 		if err != nil {
 			return err
@@ -2444,7 +2444,7 @@ function mustElement(selector) {
   return el;
 }
 
-const memohInteractiveSelector = [
+const amiInteractiveSelector = [
   'a[href]',
   'button',
   'input',
@@ -2462,7 +2462,7 @@ const memohInteractiveSelector = [
   '[tabindex]:not([tabindex="-1"])'
 ].join(',');
 
-function memohVisible(el) {
+function amiVisible(el) {
   const rect = el.getBoundingClientRect();
   const style = getComputedStyle(el);
   if (rect.width === 0 || rect.height === 0) return null;
@@ -2470,7 +2470,7 @@ function memohVisible(el) {
   return rect;
 }
 
-function memohRole(el) {
+function amiRole(el) {
   const explicit = (el.getAttribute('role') || '').trim();
   if (explicit) return explicit;
   const tag = el.tagName.toLowerCase();
@@ -2489,7 +2489,7 @@ function memohRole(el) {
   return 'element';
 }
 
-function memohElementName(el) {
+function amiElementName(el) {
   const tag = el.tagName.toLowerCase();
   const type = (el.getAttribute('type') || '').toLowerCase();
   const candidates = [
@@ -2509,13 +2509,13 @@ function memohElementName(el) {
   return '';
 }
 
-function memohCssEscape(value) {
+function amiCssEscape(value) {
   if (globalThis.CSS && typeof CSS.escape === 'function') return CSS.escape(value);
   return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
 }
 
-function memohCssPath(el) {
-  if (el.id) return '#' + memohCssEscape(el.id);
+function amiCssPath(el) {
+  if (el.id) return '#' + amiCssEscape(el.id);
   const parts = [];
   let node = el;
   while (node && node.nodeType === Node.ELEMENT_NODE && node !== document.body && node !== document.documentElement) {
@@ -2532,13 +2532,13 @@ function memohCssPath(el) {
   return parts.length ? parts.join(' > ') : el.tagName.toLowerCase();
 }
 
-function memohInteractiveElements() {
+function amiInteractiveElements() {
   const result = [];
   const seen = new Set();
-  for (const el of document.querySelectorAll(memohInteractiveSelector)) {
+  for (const el of document.querySelectorAll(amiInteractiveSelector)) {
     if (seen.has(el)) continue;
     seen.add(el);
-    const rect = memohVisible(el);
+    const rect = amiVisible(el);
     if (!rect) continue;
     const ref = 'e' + (result.length + 1);
     result.push({
@@ -2546,9 +2546,9 @@ function memohInteractiveElements() {
       element: el,
       rect,
       tag: el.tagName.toLowerCase(),
-      role: memohRole(el),
-      name: memohElementName(el),
-      selector: memohCssPath(el)
+      role: amiRole(el),
+      name: amiElementName(el),
+      selector: amiCssPath(el)
     });
   }
   return result;
@@ -2558,7 +2558,7 @@ function elementByRef(ref) {
   const value = String(ref || '').trim().toLowerCase().replace(/^ref=/, '').replace(/^e/, '');
   const index = Number.parseInt(value, 10);
   if (!Number.isInteger(index) || index < 1) throw new Error('invalid element ref: ' + ref);
-  const item = memohInteractiveElements()[index - 1];
+  const item = amiInteractiveElements()[index - 1];
   if (!item) throw new Error('element ref not found: ' + ref + ' (observe again; the page may have changed)');
   return item.element;
 }

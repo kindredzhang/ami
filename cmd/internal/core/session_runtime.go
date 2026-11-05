@@ -8,14 +8,14 @@ import (
 
 	"go.uber.org/fx"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/chat/attention"
-	"github.com/felinics/memoh/internal/chat/event"
-	"github.com/felinics/memoh/internal/config"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/chat/attention"
+	"github.com/kindredzhang/ami/internal/chat/event"
+	"github.com/kindredzhang/ami/internal/config"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // provideSessionRunLedger returns the durable half of the session runtime. It

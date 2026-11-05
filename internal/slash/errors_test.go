@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // A refusal is answered with its catalog code at every boundary, and callers

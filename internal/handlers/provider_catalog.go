@@ -9,11 +9,11 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/modelcatalog"
-	"github.com/felinics/memoh/internal/providers"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/modelcatalog"
+	"github.com/kindredzhang/ami/internal/providers"
 )
 
 // CatalogModels godoc
@@ -22,7 +22,7 @@ import (
 // @Tags providers
 // @Produce json
 // @Param source query string true "models.dev provider ID"
-// @Param client_type query string true "Memoh client protocol"
+// @Param client_type query string true "Ami client protocol"
 // @Success 200 {object} modelcatalog.Response
 // @Failure 400 {object} server.Problem
 // @Failure 404 {object} server.Problem

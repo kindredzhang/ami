@@ -8,10 +8,10 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/errlog"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/errlog"
 )
 
 // SubagentTerminal is the terminal audit data returned to the application

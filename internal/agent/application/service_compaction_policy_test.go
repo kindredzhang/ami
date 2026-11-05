@@ -10,12 +10,12 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/agent/context/compaction"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/context/compaction"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type controllerQueries struct {

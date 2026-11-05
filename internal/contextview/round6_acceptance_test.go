@@ -9,9 +9,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
 )
 
 var round6NativeModes = []string{
@@ -321,7 +321,7 @@ func TestOversizedDynamicSystemSourcesPruneWithExplicitMarker(t *testing.T) {
 				workspace := round6PR7FragByID(frags, id)
 				if workspace == nil ||
 					!utf8.ValidString(workspace.Parts[0].Text) ||
-					!strings.Contains(workspace.Parts[0].Text, "[memoh pruned]") {
+					!strings.Contains(workspace.Parts[0].Text, "[ami pruned]") {
 					t.Fatalf("locally pruned workspace fragment = %#v", workspace)
 				}
 				return frags, []string{id}

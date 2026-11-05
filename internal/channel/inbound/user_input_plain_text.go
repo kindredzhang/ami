@@ -6,10 +6,10 @@ import (
 	"log/slog"
 	"strings"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/i18n"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // handlePlainTextUserInput accepts typed answers even on native button channels.

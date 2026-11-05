@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
 // retryEvent is the stream event announcing retry: its counters, the wait

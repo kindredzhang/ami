@@ -25,7 +25,7 @@ describe('trying an App from the bot', () => {
     expect(appCanTry(installed, { readonly: true })).toBe(false)
   })
 
-  it('is offered for Apps discovered in the workspace, which are usable without a Memoh installation', () => {
+  it('is offered for Apps discovered in the workspace, which are usable without an Ami installation', () => {
     expect(appCanTry({ status: 'discovered' }, { readonly: false })).toBe(true)
   })
 

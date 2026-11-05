@@ -34,7 +34,7 @@ END
 $duplicate_global_identities$;
 
 CREATE TABLE IF NOT EXISTS public.team_members (
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id(),
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id(),
     user_id    UUID        NOT NULL,
     role       user_role   NOT NULL DEFAULT 'member',
     is_active  BOOLEAN     NOT NULL DEFAULT true,
@@ -220,7 +220,7 @@ ALTER TABLE public.user_runtimes FORCE ROW LEVEL SECURITY;
 
 ALTER TABLE public.users
     DROP CONSTRAINT IF EXISTS users_team_id_fkey,
-    DROP CONSTRAINT IF EXISTS memoh_team_key_018c4edf45ca,
+    DROP CONSTRAINT IF EXISTS ami_team_key_018c4edf45ca,
     DROP CONSTRAINT IF EXISTS users_email_unique,
     DROP CONSTRAINT IF EXISTS users_username_unique;
 
@@ -241,15 +241,15 @@ DROP POLICY IF EXISTS team_members_team_insert ON public.team_members;
 DROP POLICY IF EXISTS team_members_team_update ON public.team_members;
 DROP POLICY IF EXISTS team_members_team_delete ON public.team_members;
 CREATE POLICY team_members_team_select ON public.team_members
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY team_members_team_insert ON public.team_members
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY team_members_team_update ON public.team_members
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY team_members_team_delete ON public.team_members
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Preserve the account-shaped query contract while sourcing authorization
 -- fields from the current team's membership.
@@ -282,10 +282,10 @@ SELECT
     (to_jsonb(tm) ->> 'title_model_id')::uuid AS title_model_id
 FROM public.team_members tm
 JOIN public.users u ON u.id = tm.user_id
-WHERE tm.team_id = public.memoh_current_team_id();
+WHERE tm.team_id = public.ami_current_team_id();
 
 -- Serialize membership authority changes and keep one active admin per team.
-CREATE OR REPLACE FUNCTION public.memoh_guard_last_active_team_admin()
+CREATE OR REPLACE FUNCTION public.ami_guard_last_active_team_admin()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY INVOKER
@@ -343,10 +343,10 @@ DROP TRIGGER IF EXISTS team_members_last_active_admin_guard ON public.team_membe
 CREATE TRIGGER team_members_last_active_admin_guard
 BEFORE UPDATE OF role, is_active OR DELETE ON public.team_members
 FOR EACH ROW
-EXECUTE FUNCTION public.memoh_guard_last_active_team_admin();
+EXECUTE FUNCTION public.ami_guard_last_active_team_admin();
 
 -- 0001 binds the short-lived fresh-install migration connection to the
 -- singleton team while historical migrations replay under FORCE RLS. Clear
 -- that bootstrap context at the chain tip so the connection is fail-closed
 -- even before golang-migrate releases it.
-SELECT set_config('memoh.team_id', '', false);
+SELECT set_config('ami.team_id', '', false);

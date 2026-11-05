@@ -8,14 +8,14 @@ import BotDetail from './detail.vue'
 const sdk = vi.hoisted(() => ({ getBot: vi.fn() }))
 const route = vi.hoisted(() => ({ value: null as null | { name: string, params: Record<string, string>, query: Record<string, string> } }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsById: sdk.getBot,
   putBotsById: vi.fn(),
   getBotsByIdChecks: vi.fn(async () => ({ data: { items: [] } })),
   getBotsByBotIdContainer: vi.fn(async () => ({ data: undefined })),
   getBotsByBotIdContainerSnapshots: vi.fn(async () => ({ data: { snapshots: [] } })),
 }))
-vi.mock('@memohai/sdk/colada', () => ({ getBotsQueryKey: () => ['bots'] }))
+vi.mock('@ami/sdk/colada', () => ({ getBotsQueryKey: () => ['bots'] }))
 vi.mock('vue-router', () => ({
   useRoute: () => route.value,
   useRouter: () => ({ replace: vi.fn(async () => {}), push: vi.fn(async () => {}), back: vi.fn() }),
@@ -38,7 +38,7 @@ vi.mock('@felinic/ui', async () => {
     toast: { success: vi.fn(), error: vi.fn() },
   }
 })
-vi.mock('@memohai/icon/ui', () => ({ SettingsIcon: 'svg' }))
+vi.mock('@ami/icon/ui', () => ({ SettingsIcon: 'svg' }))
 vi.mock('@/store/capabilities', () => ({ useCapabilitiesStore: () => ({ load: vi.fn(), loaded: true }) }))
 vi.mock('@/composables/api/useApps', async () => {
   const { ref } = await import('vue')

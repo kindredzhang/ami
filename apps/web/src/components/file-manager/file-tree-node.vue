@@ -22,7 +22,7 @@ import {
   ContextMenuTrigger,
   Spinner,
 } from '@felinic/ui'
-import type { HandlersFsFileInfo } from '@memohai/sdk'
+import type { HandlersFsFileInfo } from '@ami/sdk'
 import { isArchiveFile, sortDirsFirst } from './utils'
 import { resolveFileIcon } from './file-icon'
 import { FileTreeKey } from './file-tree-context'

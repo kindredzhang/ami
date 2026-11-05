@@ -13,16 +13,16 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 func TestDSN(t *testing.T) {
 	cfg := config.PostgresConfig{
 		Host:     "localhost",
 		Port:     5432,
-		User:     "memoh",
+		User:     "ami",
 		Password: "testpw1",
-		Database: "memoh",
+		Database: "ami",
 		SSLMode:  "disable",
 	}
 	// Build want dynamically to avoid gosec G101 false positive on literal URLs containing passwords.
@@ -37,9 +37,9 @@ func TestDSNEncodesSpecialCharacters(t *testing.T) {
 	cfg := config.PostgresConfig{
 		Host:     "localhost",
 		Port:     5432,
-		User:     "memoh@example",
+		User:     "ami@example",
 		Password: specialValue,
-		Database: "memoh",
+		Database: "ami",
 		SSLMode:  "disable",
 	}
 

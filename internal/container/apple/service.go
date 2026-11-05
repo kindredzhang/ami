@@ -13,9 +13,9 @@ import (
 	"github.com/felinics/acgo"
 	"github.com/felinics/acgo/socktainer"
 
-	"github.com/felinics/memoh/internal/config"
-	containerapi "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/config"
+	containerapi "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 var (

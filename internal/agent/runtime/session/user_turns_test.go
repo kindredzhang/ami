@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/turn"
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 func TestPublishQueueUserTurnsKeepsAppliedInputsOrderedAndIdempotent(t *testing.T) {

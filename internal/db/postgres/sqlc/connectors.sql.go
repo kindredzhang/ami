@@ -41,7 +41,7 @@ func (q *Queries) CreateConnector(ctx context.Context, arg CreateConnectorParams
 const deleteConnector = `-- name: DeleteConnector :exec
 WITH target AS MATERIALIZED (
     SELECT c.team_id, c.bot_id, c.connection_id FROM connectors c
-    WHERE c.team_id = public.memoh_current_team_id()
+    WHERE c.team_id = public.ami_current_team_id()
       AND c.bot_id = $1 AND c.connection_id = $2
 ), unlinked AS (
     UPDATE bot_app_connector_refs r
@@ -81,7 +81,7 @@ func (q *Queries) DeleteConnector(ctx context.Context, arg DeleteConnectorParams
 const getConnectorByConnectionID = `-- name: GetConnectorByConnectionID :one
 SELECT team_id, bot_id, connection_id, alias, enabled, created_at, updated_at
 FROM connectors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND connection_id = $2
 LIMIT 1
@@ -110,7 +110,7 @@ func (q *Queries) GetConnectorByConnectionID(ctx context.Context, arg GetConnect
 const listConnectorsByBotID = `-- name: ListConnectorsByBotID :many
 SELECT team_id, bot_id, connection_id, alias, enabled, created_at, updated_at
 FROM connectors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
 ORDER BY connection_id ASC
 `
@@ -147,7 +147,7 @@ const updateConnectorEnabled = `-- name: UpdateConnectorEnabled :execrows
 UPDATE connectors
 SET enabled = $3,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND connection_id = $2
 `

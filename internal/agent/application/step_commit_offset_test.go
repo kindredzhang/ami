@@ -5,11 +5,11 @@ import (
 	"strings"
 	"testing"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/step"
-	"github.com/felinics/memoh/internal/runtimefence"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // A decision continuation resumes a run whose earlier steps are persisted, so

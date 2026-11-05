@@ -17,8 +17,8 @@ conditionals.
 
 `Host` is the ACP core: it leases agent processes from the supervisor
 (`agentproc`), keeps each conversation's session on them (`Binding`), hands a
-conversation over between processes, runs turns (configuration, Memoh tool
-events, cancellation, failure), and mounts Memoh's tools into each
+conversation over between processes, runs turns (configuration, Ami tool
+events, cancellation, failure), and mounts Ami's tools into each
 conversation's session through `toolmount`, as Codex does. An `Extension`
 says what differs between kinds of ACP agent: how the process starts and
 what it starts from (`Launch`), which session a conversation continues and
@@ -65,7 +65,7 @@ A process's fingerprint covers what the process starts from — the instance's
 resolved launch command and setup, workspace backend and the bot's runtime
 configuration generation — so a change replaces the process on the next lease.
 What belongs to a conversation lives on its session, not the process: its
-project (the session's cwd), owner, configuration generation, Memoh tool
+project (the session's cwd), owner, configuration generation, Ami tool
 route and identity, and the lock that keeps its turns and configuration
 changes one at a time. A change to any of them reopens that session only.
 
@@ -83,7 +83,7 @@ Rules for a shared process:
   reset, as for a Codex thread: the next turn opens a new session.
 - A session at work is never replaced, though it no longer fits: the
   request fails as runtime busy instead of cancelling the turn.
-- A session that opened without Memoh's tools says so on every turn, and is
+- A session that opened without Ami's tools says so on every turn, and is
   opened again once they can be mounted.
 - A session is never continued on two processes at once. Measured on Grok
   Build: an old process left holding a session a new one resumed keeps
@@ -119,9 +119,9 @@ owns its own process environment and keeps its session id under its own key
 (see `docs/agent-runtime.md`).
 
 - A pool-started ACP process runs with `HOME=/data` (the workspace volume),
-  `NPM_CONFIG_CACHE=/tmp/memoh-acp-cache/npm`, and the PATH the workspace
+  `NPM_CONFIG_CACHE=/tmp/ami-acp-cache/npm`, and the PATH the workspace
   shell reports, so an agent installed from the workspace terminal is found.
-  Memoh prepares no directory for it and stages or syncs nothing: the agent
+  Ami prepares no directory for it and stages or syncs nothing: the agent
   owns its own files on `/data`.
 - Conversation continuity is the agent's own session files. Thread runtime
   metadata keeps only the native session ID and the thread it belongs to
@@ -161,7 +161,7 @@ owns its own process environment and keeps its session id under its own key
   (`category: model` / `thought_level`, set with `session/set_config_option`).
   The former `models` field and `session/set_model` are not read: an agent
   that offers only those runs on its own default model.
-- A custom agent is offered Memoh's tools over HTTP MCP whether or not it
+- A custom agent is offered Ami's tools over HTTP MCP whether or not it
   advertises `mcpCapabilities.http`; few adapters do, though most take it.
 
 ## Profiles
@@ -184,7 +184,7 @@ read-only and must not gain new writers.
 The ACP terminal/tool environment is the agent's environment: its working
 directory and `HOME` remain under `/data`.
 
-Shared package caches may live under `/tmp/memoh-acp-cache`. They must remain
+Shared package caches may live under `/tmp/ami-acp-cache`. They must remain
 container-local and contain no credentials or mutable agent session state.
 
 ## Verification

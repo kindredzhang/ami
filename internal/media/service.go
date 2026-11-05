@@ -14,7 +14,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/felinics/memoh/internal/storage"
+	"github.com/kindredzhang/ami/internal/storage"
 )
 
 // Service provides content-addressed media asset persistence.
@@ -346,7 +346,7 @@ func spoolAndHashWithLimit(reader io.Reader, maxBytes int64) (contentHash string
 	if maxBytes <= 0 {
 		return "", 0, nil, errors.New("max bytes must be greater than 0")
 	}
-	tmp, createErr := os.CreateTemp("", "memoh-media-*")
+	tmp, createErr := os.CreateTemp("", "ami-media-*")
 	if createErr != nil {
 		return "", 0, nil, fmt.Errorf("create temp file: %w", createErr)
 	}

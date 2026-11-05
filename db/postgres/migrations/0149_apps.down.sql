@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS public.bot_app_installations;
 
 CREATE TABLE IF NOT EXISTS public.bot_skill_package_installations (
     id                 UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id            UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id            UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                    REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id             UUID        NOT NULL,
     workspace_target_id TEXT       NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.bot_skill_package_installations (
     revision           TEXT        NOT NULL,
     installed_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_350bc98cf67e UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_350bc98cf67e UNIQUE (team_id, id),
     CONSTRAINT bot_skill_package_installations_identity_key
         UNIQUE (team_id, bot_id, workspace_target_id, registry_id, package_id),
     CONSTRAINT bot_skill_package_installations_bot_id_fkey
@@ -38,12 +38,12 @@ ALTER TABLE public.bot_skill_package_installations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bot_skill_package_installations FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY bot_skill_package_installations_team_select ON public.bot_skill_package_installations
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_skill_package_installations_team_insert ON public.bot_skill_package_installations
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_skill_package_installations_team_update ON public.bot_skill_package_installations
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_skill_package_installations_team_delete ON public.bot_skill_package_installations
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

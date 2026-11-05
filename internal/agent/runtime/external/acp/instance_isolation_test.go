@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type setupByInstance map[string]acpprofile.AgentSetup

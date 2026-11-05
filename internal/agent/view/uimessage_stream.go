@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	agentevent "github.com/felinics/memoh/internal/agent/event"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
 )
 
 type uiTextStreamState struct {

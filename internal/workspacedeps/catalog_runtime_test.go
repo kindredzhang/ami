@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func TestColdRuntimeQueuesMissingDependencyWithoutFetchingOnTurn(t *testing.T) {

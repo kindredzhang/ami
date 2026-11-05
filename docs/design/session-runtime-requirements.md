@@ -250,7 +250,7 @@ Redis 或 Valkey 不应成为单实例 OSS 部署的强制依赖。
 
 当前黑盒代码包含基础执行、重连、多个订阅者、控制/决策重放、重复准入、busy、owner crash、decision restart、live backend loss，以及队列排序/连续消费和 steer 后决策续跑。`terminal proposal crash` 使用隔离数据库的单 invocation advisory-lock trigger，在已提交提案与最终状态更新之间阻塞，然后终止真实 owner 进程。
 
-owner/decision/terminal-proposal crash 用例由 `MEMOH_SESSION_RUNTIME_ACCEPTANCE_CRASH` 显式启用；backend-loss 用例另有开关。用例存在、编译通过或因未启用而跳过，不代表该验收已执行通过。
+owner/decision/terminal-proposal crash 用例由 `AMI_SESSION_RUNTIME_ACCEPTANCE_CRASH` 显式启用；backend-loss 用例另有开关。用例存在、编译通过或因未启用而跳过，不代表该验收已执行通过。
 
 ## 7. 通过标准
 

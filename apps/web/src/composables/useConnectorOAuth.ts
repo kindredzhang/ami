@@ -1,4 +1,4 @@
-import { getBotsByBotIdConnectorsByConnectionId, postBotsByBotIdConnectorsByConnectionIdReauth } from '@memohai/sdk'
+import { getBotsByBotIdConnectorsByConnectionId, postBotsByBotIdConnectorsByConnectionIdReauth } from '@ami/sdk'
 import { isApiErrorCode, resolveApiErrorMessage } from '@/utils/api-error'
 
 type Translate = (key: string, params?: Record<string, unknown>) => string

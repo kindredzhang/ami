@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/workspace"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 func TestSnapshotLineage(t *testing.T) {
@@ -202,7 +202,7 @@ func TestBuildSnapshotListResponseSynthesizesArchiveManagedSnapshot(t *testing.T
 		Info: ctr.ContainerInfo{
 			StorageRef: ctr.StorageRef{
 				Driver: "local",
-				Key:    "/tmp/memoh-workspace",
+				Key:    "/tmp/ami-workspace",
 				Kind:   "directory",
 			},
 		},
@@ -210,7 +210,7 @@ func TestBuildSnapshotListResponseSynthesizesArchiveManagedSnapshot(t *testing.T
 			"archive:bot-id/1.tar.gz": {
 				Source:                    workspace.SnapshotSourceManual,
 				Version:                   &version,
-				ParentRuntimeSnapshotName: "/tmp/memoh-workspace",
+				ParentRuntimeSnapshotName: "/tmp/ami-workspace",
 				Snapshotter:               "archive",
 				CreatedAt:                 created,
 			},
@@ -230,8 +230,8 @@ func TestBuildSnapshotListResponseSynthesizesArchiveManagedSnapshot(t *testing.T
 	if got.Kind != "archive" {
 		t.Fatalf("Kind = %q, want archive", got.Kind)
 	}
-	if got.Parent != "/tmp/memoh-workspace" {
-		t.Fatalf("Parent = %q, want /tmp/memoh-workspace", got.Parent)
+	if got.Parent != "/tmp/ami-workspace" {
+		t.Fatalf("Parent = %q, want /tmp/ami-workspace", got.Parent)
 	}
 	if !got.Managed {
 		t.Fatal("Managed = false, want true")

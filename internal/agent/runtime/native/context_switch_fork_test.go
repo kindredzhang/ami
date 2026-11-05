@@ -8,8 +8,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
 // A fork request streams through the run's model without the run's call

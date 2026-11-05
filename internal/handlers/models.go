@@ -10,15 +10,15 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/oauthctx"
-	"github.com/felinics/memoh/internal/providers"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/oauthctx"
+	"github.com/kindredzhang/ami/internal/providers"
 )
 
 type ModelsHandler struct {

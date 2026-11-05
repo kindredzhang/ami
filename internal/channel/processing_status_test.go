@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 type fakeStatusNotifier struct {

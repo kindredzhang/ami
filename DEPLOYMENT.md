@@ -1,4 +1,4 @@
-# Memoh Deployment Guide
+# Ami Deployment Guide
 
 ## One-Click Install
 
@@ -14,14 +14,14 @@ The one-click Docker Compose installer uses the `containerd` workspace backend. 
 ## Manual Install
 
 ```bash
-git clone --recurse-submodules https://github.com/felinics/Memoh.git
-cd Memoh
+git clone --recurse-submodules https://github.com/kindredzhang/ami.git
+cd Ami
 cp conf/app.docker.toml config.toml
 nano config.toml   # Change passwords and JWT secret
 ```
 
 GitHub's automatic “Source code” archives omit submodule contents. Use a recursive clone or the
-complete `Memoh-<version>-source.zip` / `.tar.gz` asset attached to each release. Existing setup
+complete `Ami-<version>-source.zip` / `.tar.gz` asset attached to each release. Existing setup
 checkouts can continue using `git pull`; run `mise run submodule-init` once only if the post-merge
 hook was never installed.
 
@@ -51,7 +51,7 @@ keep the local graph store only and do not run vector search.
 
 ### China Mainland Mirror
 
-Uncomment `registry = "memoh.cn"` in `config.toml` under `[container]`, then add the CN overlay:
+Uncomment `registry = "ami.cn"` in `config.toml` under `[container]`, then add the CN overlay:
 
 ```bash
 docker compose -f docker-compose.yml -f docker/docker-compose.cn.yml up -d

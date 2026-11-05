@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // CodeOf maps a failure of this package to the catalog code a user sees, or

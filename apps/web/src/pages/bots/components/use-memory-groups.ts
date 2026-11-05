@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import type { ComputedRef } from 'vue'
-import type { AdaptersMemoryItem } from '@memohai/sdk'
+import type { AdaptersMemoryItem } from '@ami/sdk'
 
 export interface MemoryGroup<T extends AdaptersMemoryItem = AdaptersMemoryItem> {
   /** ISO date string: yyyy-MM-dd */

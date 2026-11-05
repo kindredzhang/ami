@@ -10,7 +10,7 @@ import (
 	openroutervideos "github.com/felinics/twilight/provider/openrouter/videos"
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 type ProviderFactory func(config map[string]any) (sdk.VideoProvider, error)

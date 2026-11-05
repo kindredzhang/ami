@@ -8,7 +8,7 @@
 //   pwa-512.png           512x512  manifest icon, purpose "any"
 //   pwa-maskable-512.png  512x512  manifest icon, purpose "maskable"
 //
-// Run: pnpm --filter @memohai/web icons
+// Run: pnpm --filter @ami/web icons
 //
 // Every icon is opaque: iOS fills transparent pixels with black, and Android
 // launchers draw "any" icons on their own plate. The logo sits on the same white

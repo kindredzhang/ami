@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/background"
 )
 
 // ValidateOperationSession ensures optional result delivery cannot cross bots.

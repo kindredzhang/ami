@@ -71,6 +71,6 @@ describe('queue slash routing', () => {
     const commands = [{ name: 'steer' }, { name: 'queue' }]
     expect(parseSessionQueueCommand('/steer agent args', commands)).toBeNull()
     expect(parseSessionQueueCommand('/queue agent args', commands)).toBeNull()
-    expect(parseSessionQueueCommand('/STEER memoh args', commands)?.mode).toBe('steer')
+    expect(parseSessionQueueCommand('/STEER ami args', commands)?.mode).toBe('steer')
   })
 })

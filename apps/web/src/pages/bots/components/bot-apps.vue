@@ -264,7 +264,7 @@ import {
   patchBotsByBotIdConnectorsByConnectionId,
   postBotsByBotIdContainerStart,
   type ConnectorsConnector,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import DependencyConfirmDialog from './dependency-confirm-dialog.vue'
 import DependencyProgressDialog from './dependency-progress-dialog.vue'
 import DependencyRollbackDialog from './dependency-rollback-dialog.vue'

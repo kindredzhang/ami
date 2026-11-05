@@ -1,4 +1,4 @@
-import type { ContextfragKind, ContextfragKindBreakdown } from '@memohai/sdk'
+import type { ContextfragKind, ContextfragKindBreakdown } from '@ami/sdk'
 
 export const CONTEXT_CATEGORY_IDS = ['system', 'rules', 'tools', 'skills', 'memory', 'summary', 'conversation', 'other'] as const
 export type ContextCategoryId = (typeof CONTEXT_CATEGORY_IDS)[number]

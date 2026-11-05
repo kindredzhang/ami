@@ -1,6 +1,6 @@
 package timeline
 
-import "github.com/felinics/memoh/internal/agent/turn"
+import "github.com/kindredzhang/ami/internal/agent/turn"
 
 func renderedMessageSource(segment RenderedSegment) *turn.ContextMessageSource {
 	kind := "external"

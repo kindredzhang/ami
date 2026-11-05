@@ -5,7 +5,7 @@ SELECT id, connection_id, resource_metadata_url, authorization_server_url,
        token_type, expires_at, scope, pkce_code_verifier, state_param,
        resource_uri, redirect_uri, created_at, updated_at, team_id
 FROM mcp_oauth_tokens
-WHERE team_id = public.memoh_current_team_id() AND connection_id = $1
+WHERE team_id = public.ami_current_team_id() AND connection_id = $1
 LIMIT 1;
 
 -- name: GetMCPOAuthTokenByState :one
@@ -15,7 +15,7 @@ SELECT id, connection_id, resource_metadata_url, authorization_server_url,
        token_type, expires_at, scope, pkce_code_verifier, state_param,
        resource_uri, redirect_uri, created_at, updated_at, team_id
 FROM mcp_oauth_tokens
-WHERE team_id = public.memoh_current_team_id() AND state_param = $1
+WHERE team_id = public.ami_current_team_id() AND state_param = $1
 LIMIT 1;
 
 -- name: UpsertMCPOAuthDiscovery :one
@@ -45,7 +45,7 @@ SET pkce_code_verifier = $2,
     client_id = $4,
     redirect_uri = $5,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND connection_id = $1;
+WHERE team_id = public.ami_current_team_id() AND connection_id = $1;
 
 -- name: UpdateMCPOAuthTokens :exec
 UPDATE mcp_oauth_tokens
@@ -57,7 +57,7 @@ SET access_token = $2,
     pkce_code_verifier = '',
     state_param = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND connection_id = $1;
+WHERE team_id = public.ami_current_team_id() AND connection_id = $1;
 
 -- name: ClearMCPOAuthTokens :exec
 UPDATE mcp_oauth_tokens
@@ -69,14 +69,14 @@ SET access_token = '',
     state_param = '',
     redirect_uri = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND connection_id = $1;
+WHERE team_id = public.ami_current_team_id() AND connection_id = $1;
 
 -- name: UpdateMCPOAuthClientSecret :exec
 UPDATE mcp_oauth_tokens
 SET client_secret = $2,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND connection_id = $1;
+WHERE team_id = public.ami_current_team_id() AND connection_id = $1;
 
 -- name: DeleteMCPOAuthToken :exec
 DELETE FROM mcp_oauth_tokens
-WHERE team_id = public.memoh_current_team_id() AND connection_id = $1;
+WHERE team_id = public.ami_current_team_id() AND connection_id = $1;

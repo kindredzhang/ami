@@ -14,13 +14,13 @@ import (
 	"github.com/labstack/echo/v4"
 	"golang.org/x/time/rate"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/server"
-	"github.com/felinics/memoh/internal/workspacedeps"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/server"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 var workspaceDependencyIDPattern = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)

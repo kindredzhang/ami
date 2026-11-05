@@ -30,7 +30,7 @@ const props = defineProps<{
   customId?: LinkNodeProps['customId']
 }>()
 
-// The shared Memoh tooltip owns link hints. markstream's injected
+// The shared Ami tooltip owns link hints. markstream's injected
 // `markstreamShowTooltips` overrides LinkNode's own prop, so disabling its
 // popover has to go through the same key. With the popover off, LinkNode puts
 // the URL in a native title instead (attrs cannot override it); remove it, or
@@ -43,13 +43,13 @@ const vWithoutNativeTitle = { mounted: removeNativeTitle, updated: removeNativeT
 
 const attrs = useAttrs()
 const openWorkspaceLink = useWorkspaceLink()
-// Destinations Memoh routes itself carry an icon; in-page and mail links keep
+// Destinations Ami routes itself carry an icon; in-page and mail links keep
 // the plain link look.
 const LINK_ICONS: Partial<Record<WorkspaceLink['kind'], Component>> = { file: FileText, browser: Globe, external: Globe }
 
 const link = computed(() => props.node.loading ? null : classifyWorkspaceLink(props.node.href, props.node.text))
 const icon = computed(() => link.value ? LINK_ICONS[link.value.kind] : undefined)
-// A link Memoh cannot open renders as its label, so nothing on the page looks
+// A link Ami cannot open renders as its label, so nothing on the page looks
 // clickable without being able to open. Streaming links stay with LinkNode,
 // which owns their loading state until the destination is complete.
 const unopenable = computed(() => !props.node.loading && !link.value)

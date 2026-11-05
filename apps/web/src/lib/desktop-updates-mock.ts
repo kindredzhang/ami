@@ -97,5 +97,5 @@ export const mockDesktopUpdates: MockDesktopUpdates = {
 }
 
 if (import.meta.env.DEV) {
-  ;(window as unknown as { __memohMockUpdate?: MockDesktopUpdates }).__memohMockUpdate = mockDesktopUpdates
+  ;(window as unknown as { __amiMockUpdate?: MockDesktopUpdates }).__amiMockUpdate = mockDesktopUpdates
 }

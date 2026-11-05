@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestNormalizeMatrixMarkdownTaskList(t *testing.T) {

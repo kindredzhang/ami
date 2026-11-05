@@ -11,7 +11,7 @@ func TestBuildStepMessagesPreservesToolCallProviderMetadata(t *testing.T) {
 	msgs := BuildStepMessages("", nil, nil, []sdk.ToolCall{{
 		ToolCallID:       "call-1",
 		ToolName:         "lookup",
-		Input:            sdk.ParseToolArguments(`{"q":"memoh"}`),
+		Input:            sdk.ParseToolArguments(`{"q":"ami"}`),
 		ProviderMetadata: meta,
 	}}, nil, nil)
 

@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/channeltest"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/channeltest"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func sendPreparedQQ(t *testing.T, adapter *QQAdapter, cfg channel.ChannelConfig, store channel.OutboundAttachmentStore, msg channel.OutboundMessage) error {

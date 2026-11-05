@@ -10,8 +10,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // ChunkerMode selects the text chunking strategy.

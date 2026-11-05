@@ -13,12 +13,12 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/dbtest"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/dbtest"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // historyFixture is a bot whose sessions hold turn-bound history rows

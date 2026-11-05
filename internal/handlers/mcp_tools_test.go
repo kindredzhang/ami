@@ -13,8 +13,8 @@ import (
 	"github.com/labstack/echo/v4"
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/felinics/memoh/internal/apperror"
-	mcpgw "github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/apperror"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
 )
 
 func TestBuildToolCallPayloadFromRaw(t *testing.T) {
@@ -124,7 +124,7 @@ func TestHandleMCPToolsWithGatewayAcceptCompatibility(t *testing.T) {
 	listReq := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/bots/bot-1/tools", strings.NewReader(`{"jsonrpc":"2.0","id":"1","method":"tools/list"}`))
 	listReq.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	listReq.Header.Set("Accept", "application/json")
-	listReq.Header.Set("X-Memoh-Channel-Identity-Id", "user-1")
+	listReq.Header.Set("X-Ami-Channel-Identity-Id", "user-1")
 	listRec := httptest.NewRecorder()
 	listCtx := e.NewContext(listReq, listRec)
 
@@ -157,7 +157,7 @@ func TestHandleMCPToolsWithGatewayAcceptCompatibility(t *testing.T) {
 	callReq := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/bots/bot-1/tools", strings.NewReader(`{"jsonrpc":"2.0","id":"2","method":"tools/call","params":{"name":"echo_tool","arguments":{"input":"hello"}}}`))
 	callReq.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	callReq.Header.Set("Accept", "application/json")
-	callReq.Header.Set("X-Memoh-Channel-Identity-Id", "user-1")
+	callReq.Header.Set("X-Ami-Channel-Identity-Id", "user-1")
 	callRec := httptest.NewRecorder()
 	callCtx := e.NewContext(callReq, callRec)
 

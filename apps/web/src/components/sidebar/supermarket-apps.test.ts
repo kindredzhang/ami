@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import type { HandlersSupermarketAppSummary } from '@memohai/sdk'
+import type { HandlersSupermarketAppSummary } from '@ami/sdk'
 import { appKey } from '@/composables/api/useApps'
 import { filterInstalledApps, uninstalledApps } from './supermarket-apps'
 
 describe('sidebar supermarket lists', () => {
   it('keeps apps with the same ID in different registries distinct', () => {
-    const catalog = [{ registry_id: 'memoh', app_id: 'python' }, { registry_id: 'other', app_id: 'python' }] as HandlersSupermarketAppSummary[]
-    expect(uninstalledApps(catalog, [{ registry_id: 'memoh', app_id: 'python', status: 'installing' }])).toEqual([catalog[1]])
-    expect(appKey(catalog[0]!)).toBe('memoh/python')
+    const catalog = [{ registry_id: 'ami', app_id: 'python' }, { registry_id: 'other', app_id: 'python' }] as HandlersSupermarketAppSummary[]
+    expect(uninstalledApps(catalog, [{ registry_id: 'ami', app_id: 'python', status: 'installing' }])).toEqual([catalog[1]])
+    expect(appKey(catalog[0]!)).toBe('ami/python')
   })
 
   it('does not offer another install for a failed or discovered record', () => {
-    const catalog = [{ registry_id: 'memoh', app_id: 'python' }] as HandlersSupermarketAppSummary[]
+    const catalog = [{ registry_id: 'ami', app_id: 'python' }] as HandlersSupermarketAppSummary[]
     for (const status of ['failed', 'discovered', 'removing', 'installed'] as const) {
-      expect(uninstalledApps(catalog, [{ registry_id: 'memoh', app_id: 'python', status }])).toEqual([])
+      expect(uninstalledApps(catalog, [{ registry_id: 'ami', app_id: 'python', status }])).toEqual([])
     }
   })
 

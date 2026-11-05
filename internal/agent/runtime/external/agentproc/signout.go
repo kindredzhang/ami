@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // SignOut removes the login an Agent's runtime keeps in loginFile in the

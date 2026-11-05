@@ -6,9 +6,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/boot"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/version"
+	"github.com/kindredzhang/ami/internal/boot"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 type PingResponse struct {

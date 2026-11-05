@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const maxAppMetadataBytes = 8 * 1024 * 1024

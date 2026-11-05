@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func textSegment(id string, atMs int64, text string) RenderedSegment {

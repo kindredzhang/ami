@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 const (

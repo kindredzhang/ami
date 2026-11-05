@@ -1,8 +1,8 @@
 <template>
   <img
-    v-if="isMemohWeb"
+    v-if="isAmiWeb"
     src="/logo.svg"
-    alt="Memoh"
+    alt="Ami"
     :style="imageStyle"
     v-bind="$attrs"
   >
@@ -36,7 +36,7 @@ import {
   Matrix,
   Misskey,
   Line,
-} from '@memohai/icon'
+} from '@ami/icon'
 import { channelIconFallbackText } from '@/utils/channel-icon-fallback'
 
 const channelIcons: Record<string, Component> = {
@@ -72,7 +72,7 @@ const iconComponent = computed<Component | undefined>(() =>
   channelIcons[normalizedChannel.value],
 )
 
-const isMemohWeb = computed(() =>
+const isAmiWeb = computed(() =>
   normalizedChannel.value === 'web',
 )
 

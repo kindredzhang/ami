@@ -24,11 +24,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/redact"
-	"github.com/felinics/memoh/internal/searchproviders"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/redact"
+	"github.com/kindredzhang/ami/internal/searchproviders"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type WebProvider struct {

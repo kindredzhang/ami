@@ -27,17 +27,17 @@ describe.each(['web', 'desktop'] as const)('%s shared routes', (platform) => {
     await router.push({ name: 'supermarket' })
     await router.push({
       name: 'supermarket-app-detail',
-      params: { registryId: 'memoh', appId: 'github' },
+      params: { registryId: 'ami', appId: 'github' },
       query: { botId: 'my-bot' },
     })
-    expect(router.currentRoute.value.path).toBe('/settings/supermarket/memoh/github')
+    expect(router.currentRoute.value.path).toBe('/settings/supermarket/ami/github')
     expect(router.currentRoute.value.params.appId).toBe('github')
     await router.push({
       name: 'supermarket-app-detail',
-      params: { registryId: 'memoh', appId: 'git' },
+      params: { registryId: 'ami', appId: 'git' },
       query: router.currentRoute.value.query,
     })
-    expect(router.currentRoute.value.fullPath).toBe('/settings/supermarket/memoh/git?botId=my-bot')
+    expect(router.currentRoute.value.fullPath).toBe('/settings/supermarket/ami/git?botId=my-bot')
     await router.push({ name: 'supermarket-category', params: { categoryId: 'developer-tools' } })
     expect(router.currentRoute.value.path).toBe('/settings/supermarket/category/developer-tools')
   })

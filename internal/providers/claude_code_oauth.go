@@ -11,7 +11,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (

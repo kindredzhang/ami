@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 var errCleanupProbe = errors.New("injected cleanup failure")
@@ -114,14 +114,14 @@ func newCleanupFixture(t *testing.T) *cleanupFixture {
 	t.Helper()
 	h := newHarness()
 	h.connectors.connections = []connectors.Connector{{ConnectionID: "github-1", ConnectorType: "github", Status: "active"}}
-	v1 := release("memoh", "editor", "a", "1", nil, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
+	v1 := release("ami", "editor", "a", "1", nil, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
 	h.publish(v1)
 	installed, _ := h.install(t, v1)
 	f := &cleanupFixture{
 		harness: h, inst: installed.Installation,
 		storeFaults: &cleanupStore{Store: h.store},
 		depFaults:   &cleanupDeps{fakeDeps: h.deps},
-		v2:          release("memoh", "editor", "b", "2", nil, nil, nil),
+		v2:          release("ami", "editor", "b", "2", nil, nil, nil),
 	}
 	h.publish(f.v2)
 	f.restartService()
@@ -204,7 +204,7 @@ func TestUpdateCleanupReadFailuresPreserveSharedResources(t *testing.T) {
 	for _, failure := range []string{"dependency_refs", "connector_refs", "shared_dependencies"} {
 		t.Run(failure, func(t *testing.T) {
 			f := newCleanupFixture(t)
-			other := release("memoh", "other", "c", "1", nil, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
+			other := release("ami", "other", "c", "1", nil, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
 			f.publish(other)
 			f.install(t, other)
 			f.storeFaults.failure = failure
@@ -261,7 +261,7 @@ func TestUpdateCleanupMutationFailuresRemainRetryable(t *testing.T) {
 			f.depFaults.removeErr, f.storeFaults.failure = nil, ""
 			f.restartService()
 			rec = &recorder{}
-			if _, err := f.service.UpdateSelection(t.Context(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "editor", Release: true}, rec); err != nil {
+			if _, err := f.service.UpdateSelection(t.Context(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "editor", Release: true}, rec); err != nil {
 				t.Fatal(err)
 			}
 			assertCleanupDone(t, f, rec)
@@ -369,7 +369,7 @@ func TestMatchingReleaseStillCleansRetainedReferences(t *testing.T) {
 
 func TestSameRevisionUpdateOfPartialInstallationDoesNotRepublish(t *testing.T) {
 	h := newHarness()
-	v1 := release("memoh", "editor", "a", "1", []string{"edit"}, nil, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
+	v1 := release("ami", "editor", "a", "1", []string{"edit"}, nil, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
 	h.publish(v1)
 	installed, _ := h.install(t, v1)
 	if installed.Installation.Status != StatusPartial {
@@ -397,7 +397,7 @@ func TestFailedPublicationDoesNotSkipSameRevisionRetry(t *testing.T) {
 	f.publisher.publishErr = nil
 	f.restartService()
 	rec = &recorder{}
-	if _, err := f.service.UpdateSelection(t.Context(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "editor", Release: true}, rec); err != nil {
+	if _, err := f.service.UpdateSelection(t.Context(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "editor", Release: true}, rec); err != nil {
 		t.Fatal(err)
 	}
 	assertCleanupDone(t, f, rec)

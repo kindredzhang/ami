@@ -4,10 +4,10 @@ import {
   type RouteLocationNormalized,
   type RouteRecordRaw,
 } from 'vue-router'
-import { createAppRoutes } from '@memohai/web/routes'
-import { ensureOnboarding, hasOnboardingInProgress } from '@memohai/web/router-guards/onboarding'
-import { useUserStore } from '@memohai/web/store/user'
-import { installBackHistory } from '@memohai/web/composables/useBackOr'
+import { createAppRoutes } from '@ami/web/routes'
+import { ensureOnboarding, hasOnboardingInProgress } from '@ami/web/router-guards/onboarding'
+import { useUserStore } from '@ami/web/store/user'
+import { installBackHistory } from '@ami/web/composables/useBackOr'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -81,9 +81,9 @@ router.beforeEach(async (to: RouteLocationNormalized) => {
 })
 
 // Dev convenience: reach the component wall from devtools without a URL bar
-// (memory history). e.g. `window.__memohRouter.push('/dev/components')`.
+// (memory history). e.g. `window.__amiRouter.push('/dev/components')`.
 if (import.meta.env.DEV) {
-  ;(window as unknown as { __memohRouter?: typeof router }).__memohRouter = router
+  ;(window as unknown as { __amiRouter?: typeof router }).__amiRouter = router
 }
 
 export default router

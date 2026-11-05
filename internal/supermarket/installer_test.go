@@ -76,7 +76,7 @@ func TestValidateAppRejectsUnboundedArtifact(t *testing.T) {
 		RegistryID: "registry", AppID: "app", SkillID: "skill",
 		InstallID: "registry+app+skill",
 		Artifact: SkillArtifact{
-			Format: "memoh_skill_v1", ContentType: "application/gzip",
+			Format: "ami_skill_v1", ContentType: "application/gzip",
 			Digest: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 			Size:   1, UncompressedSize: 1, ArchiveSize: 1, FileCount: 0,
 			DownloadURL: "/api/artifacts/skill/digest",
@@ -100,7 +100,7 @@ func TestValidateAppRejectsIdentityCountAndDuplicates(t *testing.T) {
 			RegistryID: "registry", AppID: "app", SkillID: id,
 			InstallID: "registry+app+" + id,
 			Artifact: SkillArtifact{
-				Format: "memoh_skill_v1", ContentType: "application/gzip",
+				Format: "ami_skill_v1", ContentType: "application/gzip",
 				Digest: strings.Repeat("a", 64), Size: 1, UncompressedSize: 1,
 				ArchiveSize: 1, FileCount: 1, DownloadURL: "/api/artifacts/skill/digest",
 			},

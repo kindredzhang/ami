@@ -15,8 +15,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 var (
@@ -241,7 +241,7 @@ func (p *RemoteCatalog) fetchIndex(ctx context.Context) ([]catalog.Descriptor, e
 	var budget int64 = catalog.MaxCatalogBytes
 	seen := map[string]bool{}
 	for page := 1; ; page++ {
-		data, err := p.fetch(ctx, fmt.Sprintf("/api/dependencies?registry=memoh&page=%d&limit=%d", page, pageLimit), budget)
+		data, err := p.fetch(ctx, fmt.Sprintf("/api/dependencies?registry=ami&page=%d&limit=%d", page, pageLimit), budget)
 		if err != nil {
 			return nil, err
 		}
@@ -485,7 +485,7 @@ func (p *RemoteCatalog) Definition(ctx context.Context, id, revision string) (ca
 	if p.offline {
 		return catalog.Definition{}, ErrDefinitionUnavailable
 	}
-	metadata, err := p.fetch(ctx, "/api/registries/memoh/dependencies/"+url.PathEscape(id)+"/releases/"+revision, catalog.MaxArtifactBytes)
+	metadata, err := p.fetch(ctx, "/api/registries/ami/dependencies/"+url.PathEscape(id)+"/releases/"+revision, catalog.MaxArtifactBytes)
 	if err != nil {
 		return catalog.Definition{}, err
 	}

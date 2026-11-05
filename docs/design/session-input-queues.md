@@ -117,7 +117,7 @@ https://developers.openai.com/codex/app-server#steer-an-active-turn.
 
 This is not a claim that public Codex always cancels an in-flight HTTP request:
 `core/tests/suite/pending_input.rs::user_input_does_not_preempt_after_reasoning_item`
-explicitly preserves the original response and tool call. Memoh follows the
+explicitly preserves the original response and tool call. Ami follows the
 same run identity and safe tool boundaries, and additionally implements the
 requested force-steer behavior during native model sampling. External drivers
 and provider-specific Responses WebSocket steering are outside this mechanism.

@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
-	a11yCLIPath        = "/opt/memoh/toolkit/display/bin/a11y-cli"
+	a11yCLIPath        = "/opt/ami/toolkit/display/bin/a11y-cli"
 	a11yExecTimeoutSec = 15
 )
 

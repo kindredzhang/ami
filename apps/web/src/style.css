@@ -44,7 +44,7 @@
 
 /* Explicit `@source` paths (relative to this CSS file) — Tailwind v4's
  * auto-detection anchors on the Vite project root, so when a consumer
- * (e.g. @memohai/desktop) imports this stylesheet from a different root,
+ * (e.g. @ami/desktop) imports this stylesheet from a different root,
  * it needs these hints to still scan our templates. */
 @source "./";
 @source "../../../packages/ui/src";
@@ -578,7 +578,7 @@
  * through --chat-user-text-font (store/settings/typography.ts) — the tuning is
  * measured for Inter beside MiSans and does not transfer to other families. */
 @font-face {
-  font-family: "Memoh Chat Latin";
+  font-family: "Ami Chat Latin";
   src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2-variations");
   font-weight: 420;
   font-display: swap;
@@ -586,7 +586,7 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Memoh Chat Latin";
+  font-family: "Ami Chat Latin";
   src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
   font-weight: 420;
   font-display: swap;
@@ -596,7 +596,7 @@
 /* Unlayered so it beats the bubble's @layer components type and the Textarea's
  * type utilities. */
 [data-chat-content] .chat-user-text {
-  font-family: var(--chat-user-text-font, "Memoh Chat Latin", var(--font-sans));
+  font-family: var(--chat-user-text-font, "Ami Chat Latin", var(--font-sans));
   font-size: 1rem;
   font-weight: var(--chat-cjk-body);
   line-height: var(--chat-leading);
@@ -649,7 +649,7 @@
      * applied at runtime by overriding --font-sans / --font-mono inline
      * (see store/settings/typography.ts), so Tailwind's stock stacks stay
      * untouched by default. */
-    font-size: var(--memoh-ui-font-size, 1rem);
+    font-size: var(--ami-ui-font-size, 1rem);
   }
 }
 
@@ -666,10 +666,10 @@
    * store/settings/typography.ts (the runtime inline override, which wins
    * over this when the user customizes the code font). */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Noto Sans SC", monospace;
-  /* Pre-boot default for var(--memoh-code-font-family, …) consumers
+  /* Pre-boot default for var(--ami-code-font-family, …) consumers
    * (markstream code below); once settings apply, the inline variable
    * carries the same tail from typography.ts. */
-  --memoh-code-font-family-default: ui-monospace, "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Noto Sans SC", monospace;
+  --ami-code-font-family-default: ui-monospace, "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Noto Sans SC", monospace;
 }
 
 @layer components {
@@ -809,9 +809,9 @@
   color: var(--color-foreground);
 
   /* Typography scale */
-  --ms-font-sans: var(--memoh-ui-font-family, inherit);
-  --ms-font-mono: var(--memoh-code-font-family, var(--memoh-code-font-family-default));
-  --markstream-code-font-family: var(--memoh-code-font-family, var(--memoh-code-font-family-default));
+  --ms-font-sans: var(--ami-ui-font-family, inherit);
+  --ms-font-mono: var(--ami-code-font-family, var(--ami-code-font-family-default));
+  --markstream-code-font-family: var(--ami-code-font-family, var(--ami-code-font-family-default));
   --ms-text-body: inherit;
   --ms-leading-body: var(--chat-leading);
   /* Heading scale is em-relative (tracks the body) and restrained: headings sit
@@ -1093,7 +1093,7 @@
    * higher than the Latin mono glyph center — nudge the whole chip up so its
    * visual center matches CJK neighbors instead of the Latin baseline. */
   vertical-align: 0.08em;
-  font-family: var(--memoh-code-font-family, var(--memoh-code-font-family-default));
+  font-family: var(--ami-code-font-family, var(--ami-code-font-family-default));
 }
 
 /* Inline code inside bold text or a heading must visibly follow the emphasis —
@@ -1107,16 +1107,16 @@
 .markstream-vue .code-block-container {
   margin: 1rem 0;
   overflow: hidden;
-  font-size: var(--memoh-code-font-size, 13px);
-  font-family: var(--memoh-code-font-family, var(--memoh-code-font-family-default));
+  font-size: var(--ami-code-font-size, 13px);
+  font-family: var(--ami-code-font-family, var(--ami-code-font-family-default));
 }
 
 /* markstream renamed .code-block-content to .code-block-shell-content (folding
  * now uses a --collapsed modifier instead of max-height); retargeted so the
  * line-height override keeps applying. */
 .markstream-vue .code-block-container .code-block-shell-content {
-  font-size: var(--memoh-code-font-size, 13px);
-  font-family: var(--memoh-code-font-family, var(--memoh-code-font-family-default));
+  font-size: var(--ami-code-font-size, 13px);
+  font-family: var(--ami-code-font-family, var(--ami-code-font-family-default));
   line-height: 1.5;
 }
 

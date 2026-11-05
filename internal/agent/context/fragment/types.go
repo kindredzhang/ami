@@ -136,7 +136,7 @@ const (
 	CacheNever   CacheClass = "never"
 )
 
-// TrustLevel records whether a fragment comes from Memoh-controlled state or
+// TrustLevel records whether a fragment comes from Ami-controlled state or
 // untrusted external conversation content.
 type TrustLevel string
 
@@ -398,7 +398,7 @@ type KindBreakdown struct {
 
 // TrustBreakdown aggregates manifest items of one TrustLevel so consumers
 // can measure how much of the context window is attacker-influenceable
-// (external) versus Memoh-controlled, per turn.
+// (external) versus Ami-controlled, per turn.
 type TrustBreakdown struct {
 	Trust         TrustLevel `json:"trust"`
 	Fragments     int        `json:"fragments"`

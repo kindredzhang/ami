@@ -1,5 +1,5 @@
 import { computed, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
-import type { HandlersSiteIconResponse } from '@memohai/sdk'
+import type { HandlersSiteIconResponse } from '@ami/sdk'
 import { useSettingsStore } from '@/store/settings'
 import { lookupSiteIcon } from '@/utils/site-icon'
 

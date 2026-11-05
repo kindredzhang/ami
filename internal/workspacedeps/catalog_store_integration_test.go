@@ -13,9 +13,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/team"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestPostgresCatalogPersistsReleasesAndCompareAndSwap(t *testing.T) {
@@ -110,7 +110,7 @@ func TestPostgresCatalogTeamPolicies(t *testing.T) {
 	if _, err := scoped.GetCatalog(ctx, source); err != nil {
 		t.Fatalf("own team: %v", err)
 	}
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id',$1,true)", uuid.NewString()); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id',$1,true)", uuid.NewString()); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := scoped.GetCatalog(ctx, source); !errors.Is(err, ErrCatalogCacheMiss) {
@@ -130,11 +130,11 @@ func TestPostgresInstallationDefinitionProvenance(t *testing.T) {
 	store := newIntegrationStore(pool)
 	key := InstallationKey{BotID: botID, DependencyID: "codex"}
 	revision := "4111dba29084f12372fb90545b0e85f8fd5c6a87e74e9203068526bc69095ac2"
-	created, err := store.Upsert(ctx, UpsertInstallation{InstallationKey: key, Source: InstallationSourceManaged, Status: StatusInstalled, InstalledVersion: "1.0.0", SourceURL: "https://catalog.example", RegistryID: "memoh", DefinitionRevision: revision})
+	created, err := store.Upsert(ctx, UpsertInstallation{InstallationKey: key, Source: InstallationSourceManaged, Status: StatusInstalled, InstalledVersion: "1.0.0", SourceURL: "https://catalog.example", RegistryID: "ami", DefinitionRevision: revision})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if created.SourceURL != "https://catalog.example" || created.RegistryID != "memoh" || created.DefinitionRevision != revision {
+	if created.SourceURL != "https://catalog.example" || created.RegistryID != "ami" || created.DefinitionRevision != revision {
 		t.Fatalf("provenance not recorded: %+v", created)
 	}
 	next := "681df9a9fed994c0dca215f2a41ac108435e254ee1687c4f7e8cd71470258473"
@@ -164,7 +164,7 @@ func TestPostgresCatalogPrunesOnlyUnreferencedHistory(t *testing.T) {
 	// Current intent may use another registry while rollback state still
 	// references this source. Preserve every source for an installed identity.
 	codex := first.Catalog.MustGet("codex")
-	_, err = newIntegrationStore(pool).Upsert(ctx, UpsertInstallation{InstallationKey: InstallationKey{BotID: botID, DependencyID: "codex"}, Source: InstallationSourceManaged, Status: StatusInstalled, SourceURL: p.sourceURL + "/new-registry", RegistryID: "memoh", DefinitionRevision: codex.Revision})
+	_, err = newIntegrationStore(pool).Upsert(ctx, UpsertInstallation{InstallationKey: InstallationKey{BotID: botID, DependencyID: "codex"}, Source: InstallationSourceManaged, Status: StatusInstalled, SourceURL: p.sourceURL + "/new-registry", RegistryID: "ami", DefinitionRevision: codex.Revision})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -233,7 +233,7 @@ func TestPostgresIconLookupDoesNotParseUnrelatedRelease(t *testing.T) {
 		t.Fatal(err)
 	}
 	dep := result.Catalog.MustGet("codex")
-	if _, err := pool.Exec(ctx, `INSERT INTO workspace_dependency_definitions(source_url,registry_id,dependency_id,revision,release_bytes,artifact_bytes,icon_digest) VALUES($1,'memoh','corrupt-release',$2,$3,$3,'')`, p.sourceURL, strings.Repeat("a", 64), []byte("invalid JSON")); err != nil {
+	if _, err := pool.Exec(ctx, `INSERT INTO workspace_dependency_definitions(source_url,registry_id,dependency_id,revision,release_bytes,artifact_bytes,icon_digest) VALUES($1,'ami','corrupt-release',$2,$3,$3,'')`, p.sourceURL, strings.Repeat("a", 64), []byte("invalid JSON")); err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() {
@@ -255,7 +255,7 @@ func TestPostgresIconLookupDoesNotParseUnrelatedRelease(t *testing.T) {
 	if _, err := tx.Exec(ctx, "SET LOCAL enable_seqscan=off"); err != nil {
 		t.Fatal(err)
 	}
-	rows, err := tx.Query(ctx, `EXPLAIN SELECT release_bytes FROM workspace_dependency_definitions WHERE team_id=public.memoh_current_team_id() AND source_url=$1 AND icon_digest=$2 LIMIT 1`, p.sourceURL, dep.IconDigest)
+	rows, err := tx.Query(ctx, `EXPLAIN SELECT release_bytes FROM workspace_dependency_definitions WHERE team_id=public.ami_current_team_id() AND source_url=$1 AND icon_digest=$2 LIMIT 1`, p.sourceURL, dep.IconDigest)
 	if err != nil {
 		t.Fatal(err)
 	}

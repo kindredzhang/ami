@@ -20,7 +20,7 @@ func TestFetchAppReleaseHydratesArtifactURLs(t *testing.T) {
 			InstallID: "openai+docs+write-docs", Name: "Write docs", Description: "Write docs",
 			Author: Author{Name: "OpenAI", Email: "support@example.com"}, Tags: []string{}, Files: []string{"SKILL.md"},
 			Artifact: SkillArtifact{
-				Format: "memoh_skill_v1", Digest: strings.Repeat("b", 64), Size: 10,
+				Format: "ami_skill_v1", Digest: strings.Repeat("b", 64), Size: 10,
 				UncompressedSize: 10, ArchiveSize: 512, FileCount: 1, ContentType: "application/gzip",
 			},
 		}},

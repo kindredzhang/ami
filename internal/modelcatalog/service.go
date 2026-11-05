@@ -19,8 +19,8 @@ import (
 
 	"golang.org/x/sync/singleflight"
 
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (

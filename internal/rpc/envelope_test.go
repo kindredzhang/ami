@@ -11,10 +11,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/redact"
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/redact"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 var (
@@ -167,7 +167,7 @@ func TestEnvelopeCarriesTheServerFault(t *testing.T) {
 func TestEnvelopeWithoutFaultFromAnOlderServer(t *testing.T) {
 	st, err := status.New(codes.Unauthenticated, "old server").WithDetails(&errdetails.ErrorInfo{
 		Reason: string(apperror.CodeAgentProviderAuthFailed),
-		Domain: "memoh.internal",
+		Domain: "ami.internal",
 	})
 	if err != nil {
 		t.Fatal(err)

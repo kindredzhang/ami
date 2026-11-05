@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 // RequestIDMetadataKey carries the caller's request id, so that what the

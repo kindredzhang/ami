@@ -133,7 +133,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { getBotsByIdChecks, type BotsBotCheck } from '@memohai/sdk'
+import { getBotsByIdChecks, type BotsBotCheck } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import {
   Button,

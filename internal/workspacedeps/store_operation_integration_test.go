@@ -12,8 +12,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
 )
 
 func TestPostgresOperationClaimsFenceCompetingServersAndStaleReceipts(t *testing.T) {
@@ -24,7 +24,7 @@ func TestPostgresOperationClaimsFenceCompetingServersAndStaleReceipts(t *testing
 		t.Run(fmt.Sprintf("existing=%v", existing), func(t *testing.T) {
 			key := InstallationKey{BotID: createDependencyBot(t, ctx, pool), DependencyID: "codex"}
 			if existing {
-				_, err := store.Upsert(ctx, UpsertInstallation{InstallationKey: key, Source: InstallationSourceImage, Status: StatusInstalled, InstalledVersion: "old-version", ManifestDigest: "sha256:old", SourceURL: "https://old.example", RegistryID: "memoh", DefinitionRevision: "old-revision"})
+				_, err := store.Upsert(ctx, UpsertInstallation{InstallationKey: key, Source: InstallationSourceImage, Status: StatusInstalled, InstalledVersion: "old-version", ManifestDigest: "sha256:old", SourceURL: "https://old.example", RegistryID: "ami", DefinitionRevision: "old-revision"})
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -44,7 +44,7 @@ func TestPostgresOperationClaimsFenceCompetingServersAndStaleReceipts(t *testing
 				go func() {
 					token := fmt.Sprintf("%032x", i+1)
 					<-start
-					row, err := store.ClaimOperation(ctx, UpsertInstallation{InstallationKey: key, Source: InstallationSourceManaged, Status: StatusInstalling, InstalledVersion: "new-intent", ManifestDigest: "sha256:new", SourceURL: "https://new.example", RegistryID: "memoh", DefinitionRevision: "new-revision"}, token)
+					row, err := store.ClaimOperation(ctx, UpsertInstallation{InstallationKey: key, Source: InstallationSourceManaged, Status: StatusInstalling, InstalledVersion: "new-intent", ManifestDigest: "sha256:new", SourceURL: "https://new.example", RegistryID: "ami", DefinitionRevision: "new-revision"}, token)
 					results <- attempt{token: token, row: row, err: err}
 				}()
 			}
@@ -96,7 +96,7 @@ func TestPostgresOperationClaimsFenceCompetingServersAndStaleReceipts(t *testing
 				t.Fatalf("unowned write changed active operation: %+v", owned)
 			}
 			checked := time.Date(2026, 9, 8, 12, 0, 0, 0, time.UTC)
-			terminal := Installation{Source: InstallationSourceManaged, Status: StatusInstalled, InstalledVersion: "done-version", LatestVersion: "next-version", LastCheckedAt: &checked, ManifestDigest: "sha256:done", SourceURL: "https://done.example", RegistryID: "memoh", DefinitionRevision: "done-revision"}
+			terminal := Installation{Source: InstallationSourceManaged, Status: StatusInstalled, InstalledVersion: "done-version", LatestVersion: "next-version", LastCheckedAt: &checked, ManifestDigest: "sha256:done", SourceURL: "https://done.example", RegistryID: "ami", DefinitionRevision: "done-revision"}
 			done, err := store.FinishOperation(ctx, key, winner.token, &terminal)
 			if err != nil {
 				t.Fatal(err)
@@ -159,7 +159,7 @@ func TestPostgresOperationFinishCannotCrossTeam(t *testing.T) {
 	}
 	defer func() { _ = tx.Rollback(context.WithoutCancel(ctx)) }()
 	role := pgx.Identifier{"operation_scope_" + strings.ReplaceAll(key.BotID, "-", "")[:8]}.Sanitize()
-	for _, sql := range []string{"CREATE ROLE " + role + " NOLOGIN", "GRANT USAGE ON SCHEMA public TO " + role, "GRANT SELECT,UPDATE,DELETE ON bot_dependency_installations TO " + role, "SET LOCAL ROLE " + role, "SELECT set_config('memoh.team_id','ffffffff-ffff-4fff-8fff-ffffffffffff',true)"} {
+	for _, sql := range []string{"CREATE ROLE " + role + " NOLOGIN", "GRANT USAGE ON SCHEMA public TO " + role, "GRANT SELECT,UPDATE,DELETE ON bot_dependency_installations TO " + role, "SET LOCAL ROLE " + role, "SELECT set_config('ami.team_id','ffffffff-ffff-4fff-8fff-ffffffffffff',true)"} {
 		if _, err := tx.Exec(ctx, sql); err != nil {
 			t.Fatal(err)
 		}

@@ -3,7 +3,7 @@ package inbound
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // Queue command refusal codes for the local queue adapter, each the catalog

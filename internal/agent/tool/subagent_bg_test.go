@@ -15,13 +15,13 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type fakeSpawnAgent struct {

@@ -9,7 +9,7 @@
 //   resources/icon.png      512x512 runtime BrowserWindow.icon / dock.setIcon
 //   resources/tray-icon.png transparent runtime system tray/menu bar icon
 //
-// Run: pnpm --filter @memohai/desktop icons
+// Run: pnpm --filter @ami/desktop icons
 //
 // The app icon keeps the existing brand mark on a clean white enclosure, then
 // adds a restrained glass-like rim to the mark itself. The source logo remains
@@ -306,7 +306,7 @@ async function writeIconComposerSource(markLayer) {
                     value: ICON_COMPOSER_ASSET,
                   },
                 ],
-                name: 'Memoh mark',
+                name: 'Ami mark',
                 position: {
                   scale: ICON_COMPOSER_MARK_SCALE,
                   'translation-in-points': [0, 0],

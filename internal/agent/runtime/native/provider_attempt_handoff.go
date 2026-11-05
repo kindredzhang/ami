@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 var errProviderAttemptNotPrepared = errors.New("provider attempt was not prepared")
@@ -20,7 +20,7 @@ type preparedProviderAttempt struct {
 }
 
 // providerAttemptHandoff publishes successful attempt state at the last
-// Memoh-owned boundary before invoking the provider. Preparation may run well
+// Ami-owned boundary before invoking the provider. Preparation may run well
 // before that boundary, so it stages content-light metadata here instead of
 // advancing hash, fork, retry, or durable-input state early.
 type providerAttemptHandoff struct {

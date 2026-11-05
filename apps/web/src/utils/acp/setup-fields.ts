@@ -1,5 +1,5 @@
 import { isACPAgent, normalizeAgentID } from '@/utils/external-agent'
-import type { AcpprofileManagedField, AcpprofilePublicProfile } from '@memohai/sdk'
+import type { AcpprofileManagedField, AcpprofilePublicProfile } from '@ami/sdk'
 
 type Translate = (key: string) => string
 

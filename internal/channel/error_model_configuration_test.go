@@ -3,8 +3,8 @@ package channel
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 func TestMissingChatModelHasActionableChannelCopy(t *testing.T) {

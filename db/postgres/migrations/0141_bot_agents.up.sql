@@ -4,7 +4,7 @@
 -- not create Agent rows or populate the new nullable bindings.
 
 CREATE TABLE IF NOT EXISTS public.bot_agents (
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                             REFERENCES public.teams(id) ON DELETE RESTRICT,
     id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
     bot_id     UUID        NOT NULL,
@@ -39,15 +39,15 @@ DROP POLICY IF EXISTS bot_agents_team_update ON public.bot_agents;
 DROP POLICY IF EXISTS bot_agents_team_delete ON public.bot_agents;
 
 CREATE POLICY bot_agents_team_select ON public.bot_agents
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_agents_team_insert ON public.bot_agents
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_agents_team_update ON public.bot_agents
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_agents_team_delete ON public.bot_agents
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.bots
     ADD COLUMN IF NOT EXISTS default_bot_agent_id UUID;

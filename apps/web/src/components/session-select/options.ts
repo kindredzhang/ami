@@ -1,5 +1,5 @@
 import { externalAgentDisplayName } from '@/utils/external-agent'
-import type { BotagentsBotAgent, SessionSession } from '@memohai/sdk'
+import type { BotagentsBotAgent, SessionSession } from '@ami/sdk'
 import type { SearchableSelectOption } from '@/components/searchable-select-popover/index.vue'
 import type { BotWorkdir } from '@/composables/api/useWorkdirs'
 import type { SessionKind } from './session-kind-icon.vue'

@@ -23,7 +23,7 @@ import (
 // when the model omitted it. Constraints the tags cannot express — minimum,
 // maximum, enum — are applied by the shape functions (Range, Enum, ...).
 //
-// The inferred schema is trimmed to the form Memoh's hand-written schemas
+// The inferred schema is trimmed to the form Ami's hand-written schemas
 // used (see normalizeSchema), so a tool that moves onto a typed handler keeps
 // the definition the model has been reading. internal/agent/tool pins that
 // with a golden test per provider.

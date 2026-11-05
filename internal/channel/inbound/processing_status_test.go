@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/identities"
-	"github.com/felinics/memoh/internal/channel/route"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/identities"
+	"github.com/kindredzhang/ami/internal/channel/route"
 )
 
 // refreshingStatusAdapter is a channel whose processing indicator expires,

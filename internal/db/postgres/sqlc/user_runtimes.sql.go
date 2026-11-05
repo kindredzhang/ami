@@ -17,12 +17,12 @@ SET activated_at = COALESCE(runtime.activated_at, now()),
     pending_expires_at = NULL,
     updated_at = CASE WHEN runtime.activated_at IS NULL THEN now() ELSE runtime.updated_at END
 FROM team_members owner_membership, users owner
-WHERE runtime.team_id = public.memoh_current_team_id()
+WHERE runtime.team_id = public.ami_current_team_id()
   AND runtime.id = $1
   AND runtime.api_token = $2
   AND runtime.revoked_at IS NULL
   AND (runtime.activated_at IS NOT NULL OR runtime.pending_expires_at > now())
-  AND owner_membership.team_id = public.memoh_current_team_id()
+  AND owner_membership.team_id = public.ami_current_team_id()
   AND owner_membership.user_id = runtime.user_id
   AND owner_membership.is_active = TRUE
   AND owner.id = owner_membership.user_id
@@ -58,7 +58,7 @@ func (q *Queries) ActivateUserRuntime(ctx context.Context, arg ActivateUserRunti
 const backfillUserRuntimeName = `-- name: BackfillUserRuntimeName :execrows
 UPDATE user_runtimes
 SET name = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND user_id = $3
   AND revoked_at IS NULL
@@ -92,7 +92,7 @@ const clearBotRemoteRuntimePrimary = `-- name: ClearBotRemoteRuntimePrimary :exe
 UPDATE bot_remote_runtime_bindings
 SET is_primary = FALSE,
     updated_at = CASE WHEN is_primary THEN now() ELSE updated_at END
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
 `
 
@@ -107,16 +107,16 @@ SELECT b.id, r.id
 FROM bots b
 JOIN user_runtimes r
   ON r.id = $1
- AND r.team_id = public.memoh_current_team_id()
+ AND r.team_id = public.ami_current_team_id()
  AND r.user_id = b.owner_user_id
  AND r.revoked_at IS NULL
  AND r.activated_at IS NOT NULL
 JOIN team_members owner_membership
-  ON owner_membership.team_id = public.memoh_current_team_id()
+  ON owner_membership.team_id = public.ami_current_team_id()
  AND owner_membership.user_id = b.owner_user_id
  AND owner_membership.is_active = TRUE
 JOIN users owner ON owner.id = owner_membership.user_id AND owner.is_active = TRUE
-WHERE b.team_id = public.memoh_current_team_id()
+WHERE b.team_id = public.ami_current_team_id()
   AND b.id = $2
 ON CONFLICT (team_id, bot_id, runtime_id) DO UPDATE SET
   updated_at = now()
@@ -167,7 +167,7 @@ func (q *Queries) CreateUserRuntime(ctx context.Context, arg CreateUserRuntimePa
 
 const deleteBotRemoteRuntimeMount = `-- name: DeleteBotRemoteRuntimeMount :one
 DELETE FROM bot_remote_runtime_bindings AS binding
-WHERE binding.team_id = public.memoh_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND binding.bot_id = $1
   AND binding.id = $2
 RETURNING id
@@ -187,7 +187,7 @@ func (q *Queries) DeleteBotRemoteRuntimeMount(ctx context.Context, arg DeleteBot
 
 const deleteBotRemoteRuntimeMountsByRuntime = `-- name: DeleteBotRemoteRuntimeMountsByRuntime :exec
 DELETE FROM bot_remote_runtime_bindings AS binding
-WHERE binding.team_id = public.memoh_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND binding.runtime_id = $1
 `
 
@@ -202,7 +202,7 @@ const expirePendingUserRuntimes = `-- name: ExpirePendingUserRuntimes :exec
 WITH expired AS (
   UPDATE user_runtimes
   SET revoked_at = now(), updated_at = now()
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND user_id = $1
     AND revoked_at IS NULL
     AND activated_at IS NULL
@@ -211,7 +211,7 @@ WITH expired AS (
 )
 DELETE FROM bot_remote_runtime_bindings binding
 USING expired
-WHERE binding.team_id = public.memoh_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND binding.runtime_id = expired.id
 `
 
@@ -236,13 +236,13 @@ SELECT
   (runtime.revoked_at IS NOT NULL OR NOT owner.is_active OR NOT owner_membership.is_active) AS runtime_unavailable,
   bot.owner_user_id AS bot_owner_user_id
 FROM bot_remote_runtime_bindings binding
-JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.memoh_current_team_id()
-JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.memoh_current_team_id()
+JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.ami_current_team_id()
+JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.ami_current_team_id()
 JOIN team_members owner_membership
-  ON owner_membership.team_id = public.memoh_current_team_id()
+  ON owner_membership.team_id = public.ami_current_team_id()
  AND owner_membership.user_id = bot.owner_user_id
 JOIN users owner ON owner.id = owner_membership.user_id
-WHERE binding.team_id = public.memoh_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND binding.bot_id = $1
   AND binding.id = $2
 `
@@ -299,13 +299,13 @@ SELECT
   (runtime.revoked_at IS NOT NULL OR NOT owner.is_active OR NOT owner_membership.is_active) AS runtime_unavailable,
   bot.owner_user_id AS bot_owner_user_id
 FROM bot_remote_runtime_bindings binding
-JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.memoh_current_team_id()
-JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.memoh_current_team_id()
+JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.ami_current_team_id()
+JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.ami_current_team_id()
 JOIN team_members owner_membership
-  ON owner_membership.team_id = public.memoh_current_team_id()
+  ON owner_membership.team_id = public.ami_current_team_id()
  AND owner_membership.user_id = bot.owner_user_id
 JOIN users owner ON owner.id = owner_membership.user_id
-WHERE binding.team_id = public.memoh_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND binding.bot_id = $1
   AND binding.is_primary = TRUE
 `
@@ -347,11 +347,11 @@ const getUserRuntimeByAPIToken = `-- name: GetUserRuntimeByAPIToken :one
 SELECT runtime.id, runtime.user_id, runtime.name, runtime.api_token, runtime.revoked_at, runtime.activated_at, runtime.pending_expires_at, runtime.created_at, runtime.updated_at, runtime.team_id
 FROM user_runtimes runtime
 JOIN team_members owner_membership
-  ON owner_membership.team_id = public.memoh_current_team_id()
+  ON owner_membership.team_id = public.ami_current_team_id()
  AND owner_membership.user_id = runtime.user_id
  AND owner_membership.is_active = TRUE
 JOIN users owner ON owner.id = owner_membership.user_id AND owner.is_active = TRUE
-WHERE runtime.team_id = public.memoh_current_team_id()
+WHERE runtime.team_id = public.ami_current_team_id()
   AND runtime.api_token = $1
   AND runtime.revoked_at IS NULL
   AND (runtime.activated_at IS NOT NULL OR runtime.pending_expires_at > now())
@@ -382,9 +382,9 @@ SELECT
   binding.runtime_id,
   binding.is_primary
 FROM bot_remote_runtime_bindings binding
-JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.memoh_current_team_id()
-JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.memoh_current_team_id()
-WHERE binding.team_id = public.memoh_current_team_id()
+JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.ami_current_team_id()
+JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.ami_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND bot.owner_user_id = $1
   AND runtime.revoked_at IS NULL
 ORDER BY binding.created_at ASC, binding.id ASC
@@ -440,13 +440,13 @@ SELECT
   (runtime.revoked_at IS NOT NULL OR NOT owner.is_active OR NOT owner_membership.is_active) AS runtime_unavailable,
   bot.owner_user_id AS bot_owner_user_id
 FROM bot_remote_runtime_bindings binding
-JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.memoh_current_team_id()
-JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.memoh_current_team_id()
+JOIN user_runtimes runtime ON runtime.id = binding.runtime_id AND runtime.team_id = public.ami_current_team_id()
+JOIN bots bot ON bot.id = binding.bot_id AND bot.team_id = public.ami_current_team_id()
 JOIN team_members owner_membership
-  ON owner_membership.team_id = public.memoh_current_team_id()
+  ON owner_membership.team_id = public.ami_current_team_id()
  AND owner_membership.user_id = bot.owner_user_id
 JOIN users owner ON owner.id = owner_membership.user_id
-WHERE binding.team_id = public.memoh_current_team_id()
+WHERE binding.team_id = public.ami_current_team_id()
   AND binding.bot_id = $1
   AND runtime.revoked_at IS NULL
 ORDER BY binding.created_at ASC, binding.id ASC
@@ -500,7 +500,7 @@ func (q *Queries) ListBotRemoteRuntimeMounts(ctx context.Context, botID pgtype.U
 
 const listUserRuntimes = `-- name: ListUserRuntimes :many
 SELECT id, user_id, name, api_token, revoked_at, activated_at, pending_expires_at, created_at, updated_at, team_id FROM user_runtimes
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND user_id = $1 AND revoked_at IS NULL
 ORDER BY created_at ASC, id ASC
 `
@@ -539,7 +539,7 @@ func (q *Queries) ListUserRuntimes(ctx context.Context, userID pgtype.UUID) ([]U
 const revokeUserRuntime = `-- name: RevokeUserRuntime :one
 UPDATE user_runtimes
 SET revoked_at = now(), updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1 AND user_id = $2 AND revoked_at IS NULL
 RETURNING id, user_id, name, api_token, revoked_at, activated_at, pending_expires_at, created_at, updated_at, team_id
 `
@@ -571,7 +571,7 @@ const setBotRemoteRuntimePrimary = `-- name: SetBotRemoteRuntimePrimary :execrow
 UPDATE bot_remote_runtime_bindings
 SET is_primary = TRUE,
     updated_at = CASE WHEN is_primary THEN updated_at ELSE now() END
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 `
@@ -593,7 +593,7 @@ const updateBotRemoteRuntimeMountToolApproval = `-- name: UpdateBotRemoteRuntime
 UPDATE bot_remote_runtime_bindings
 SET tool_approval_config = $1,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $2
   AND id = $3
 RETURNING id

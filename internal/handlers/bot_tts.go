@@ -8,11 +8,11 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	audiopkg "github.com/felinics/memoh/internal/audio"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/apperror"
+	audiopkg "github.com/kindredzhang/ami/internal/audio"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // BotAudioHandler handles per-bot speech synthesis requests from the agent tool.

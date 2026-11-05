@@ -20,24 +20,24 @@ func TestParseInvocationAddressing(t *testing.T) {
 		wantRest     string
 		wantDirected bool
 	}{
-		{name: "plain", text: "/new discuss", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss"},
-		{name: "leading mention", text: "@memoh1bot /new discuss", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "leading mention comma", text: "@memoh1bot, /new discuss", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "plain", text: "/new discuss", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss"},
+		{name: "leading mention", text: "@ami1bot /new discuss", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "leading mention comma", text: "@ami1bot, /new discuss", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
 		{name: "wrapped mention colon", text: "<@123>: /new discuss", aliases: []string{"123"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "leading mention full width colon", text: "@memoh1bot： /new discuss", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "command suffix", text: "/new@memoh1bot discuss", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "action suffix", text: "/new discuss@memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "help action suffix", text: "/help model@memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/help model", wantAction: "model", wantRest: "model", wantDirected: true},
-		{name: "mention after command", text: "/new @memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/new", wantRest: "", wantDirected: true},
-		{name: "mention after action", text: "/new discuss @memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "repeated current mention", text: "@memoh1bot /new @memoh1bot discuss @memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "other mentions stay arguments", text: "/new discuss @alice @memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/new discuss @alice", wantAction: "discuss", wantArgs: []string{"@alice"}, wantRest: "discuss @alice", wantDirected: true},
-		{name: "quoted current mention stays data", text: `/schedule create "@memoh1bot" @memoh1bot`, aliases: []string{"memoh1bot"}, wantText: `/schedule create "@memoh1bot"`, wantAction: "create", wantArgs: []string{"@memoh1bot"}, wantRest: `create "@memoh1bot"`, wantDirected: true},
-		{name: "quoted attached mention stays data", text: `/schedule create "report@memoh1bot"`, aliases: []string{"memoh1bot"}, wantText: `/schedule create "report@memoh1bot"`, wantAction: "create", wantArgs: []string{"report@memoh1bot"}, wantRest: `create "report@memoh1bot"`},
-		{name: "later attached mention is addressing", text: "/schedule create report@memoh1bot", aliases: []string{"memoh1bot"}, wantText: "/schedule create report", wantAction: "create", wantArgs: []string{"report"}, wantRest: "create report", wantDirected: true},
-		{name: "other at suffix stays data", text: "/schedule create report@example.com", aliases: []string{"memoh1bot"}, wantText: "/schedule create report@example.com", wantAction: "create", wantArgs: []string{"report@example.com"}, wantRest: "create report@example.com"},
+		{name: "leading mention full width colon", text: "@ami1bot： /new discuss", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "command suffix", text: "/new@ami1bot discuss", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "action suffix", text: "/new discuss@ami1bot", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "help action suffix", text: "/help model@ami1bot", aliases: []string{"ami1bot"}, wantText: "/help model", wantAction: "model", wantRest: "model", wantDirected: true},
+		{name: "mention after command", text: "/new @ami1bot", aliases: []string{"ami1bot"}, wantText: "/new", wantRest: "", wantDirected: true},
+		{name: "mention after action", text: "/new discuss @ami1bot", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "repeated current mention", text: "@ami1bot /new @ami1bot discuss @ami1bot", aliases: []string{"ami1bot"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "other mentions stay arguments", text: "/new discuss @alice @ami1bot", aliases: []string{"ami1bot"}, wantText: "/new discuss @alice", wantAction: "discuss", wantArgs: []string{"@alice"}, wantRest: "discuss @alice", wantDirected: true},
+		{name: "quoted current mention stays data", text: `/schedule create "@ami1bot" @ami1bot`, aliases: []string{"ami1bot"}, wantText: `/schedule create "@ami1bot"`, wantAction: "create", wantArgs: []string{"@ami1bot"}, wantRest: `create "@ami1bot"`, wantDirected: true},
+		{name: "quoted attached mention stays data", text: `/schedule create "report@ami1bot"`, aliases: []string{"ami1bot"}, wantText: `/schedule create "report@ami1bot"`, wantAction: "create", wantArgs: []string{"report@ami1bot"}, wantRest: `create "report@ami1bot"`},
+		{name: "later attached mention is addressing", text: "/schedule create report@ami1bot", aliases: []string{"ami1bot"}, wantText: "/schedule create report", wantAction: "create", wantArgs: []string{"report"}, wantRest: "create report", wantDirected: true},
+		{name: "other at suffix stays data", text: "/schedule create report@example.com", aliases: []string{"ami1bot"}, wantText: "/schedule create report@example.com", wantAction: "create", wantArgs: []string{"report@example.com"}, wantRest: "create report@example.com"},
 		{name: "discord mention", text: "<@123> /new discuss <@!123>", aliases: []string{"123"}, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
-		{name: "metadata directed", text: "/new discuss", aliases: []string{"memoh1bot"}, directed: true, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
+		{name: "metadata directed", text: "/new discuss", aliases: []string{"ami1bot"}, directed: true, wantText: "/new discuss", wantAction: "discuss", wantRest: "discuss", wantDirected: true},
 	}
 
 	for _, tt := range tests {
@@ -76,7 +76,7 @@ func TestParseInvocationRejectsWrongAddressing(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			_, err := ParseInvocation(InvocationInput{Text: tt.text, BotAliases: []string{"memoh1bot"}})
+			_, err := ParseInvocation(InvocationInput{Text: tt.text, BotAliases: []string{"ami1bot"}})
 			if !errors.Is(err, tt.err) {
 				t.Fatalf("error = %v, want %v", err, tt.err)
 			}

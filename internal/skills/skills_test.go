@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 func TestParseFileFallbacks(t *testing.T) {
@@ -539,7 +539,7 @@ func TestDiscoveryRootsUseConfiguredCompatRoots(t *testing.T) {
 	roots := DiscoveryRoots([]string{
 		" /custom/skills ",
 		"/data/skills",
-		"/data/.memoh/skills",
+		"/data/.ami/skills",
 		"/custom/skills",
 		"relative/skills",
 		"/root/.openclaw/skills",
@@ -650,7 +650,7 @@ func TestContainerEnvUsesDataHomeAndXDGDirs(t *testing.T) {
 		"XDG_CONFIG_HOME=/data/.config",
 		"XDG_DATA_HOME=/data/.local/share",
 		"XDG_CACHE_HOME=/data/.cache",
-		"MEMOH_SKILL_DISCOVERY_ROOTS=/data/.agents/skills:/root/.agents/skills",
+		"AMI_SKILL_DISCOVERY_ROOTS=/data/.agents/skills:/root/.agents/skills",
 	} {
 		if !slices.Contains(env, want) {
 			t.Fatalf("env %+v does not contain %q", env, want)

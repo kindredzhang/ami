@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/adapters/local"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/adapters/local"
 )
 
 type recordingSendRuntime struct{ sends, reacts []channel.ChannelType }

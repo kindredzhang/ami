@@ -15,8 +15,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/pgvector/pgvector-go"
 
-	"github.com/felinics/memoh/internal/config"
-	pgvectorsqlc "github.com/felinics/memoh/internal/db/pgvector/sqlc"
+	"github.com/kindredzhang/ami/internal/config"
+	pgvectorsqlc "github.com/kindredzhang/ami/internal/db/pgvector/sqlc"
 )
 
 func TestPGVectorMigrationsAreVersioned(t *testing.T) {
@@ -60,7 +60,7 @@ func TestPGVectorMigrationAndQueriesIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect pgvector admin database: %v", err)
 	}
-	databaseName := fmt.Sprintf("memoh_pgvector_migration_test_%d", time.Now().UnixNano())
+	databaseName := fmt.Sprintf("ami_pgvector_migration_test_%d", time.Now().UnixNano())
 	quotedDatabase := pgx.Identifier{databaseName}.Sanitize()
 	if _, err := adminConn.Exec(ctx, "CREATE DATABASE "+quotedDatabase); err != nil {
 		_ = adminConn.Close(ctx)
@@ -215,7 +215,7 @@ INSERT INTO public.memory_node_embeddings (
 		t.Fatalf("seed other team: %v", err)
 	}
 	func() {
-		role := fmt.Sprintf("memoh_pgvector_rls_test_%d_%d", os.Getpid(), time.Now().UnixNano())
+		role := fmt.Sprintf("ami_pgvector_rls_test_%d_%d", os.Getpid(), time.Now().UnixNano())
 		quotedRole := pgx.Identifier{role}.Sanitize()
 		if _, err := conn.Exec(ctx, "CREATE ROLE "+quotedRole+" NOLOGIN NOSUPERUSER NOBYPASSRLS"); err != nil {
 			t.Fatalf("create RLS role: %v", err)
@@ -228,7 +228,7 @@ INSERT INTO public.memory_node_embeddings (
 		for _, grant := range []string{
 			"GRANT USAGE ON SCHEMA public TO " + quotedRole,
 			"GRANT SELECT ON public.memory_node_embeddings TO " + quotedRole,
-			"GRANT EXECUTE ON FUNCTION public.memoh_pgvector_current_team_id() TO " + quotedRole,
+			"GRANT EXECUTE ON FUNCTION public.ami_pgvector_current_team_id() TO " + quotedRole,
 		} {
 			if _, err := conn.Exec(ctx, grant); err != nil {
 				t.Fatalf("grant RLS role: %v", err)
@@ -237,7 +237,7 @@ INSERT INTO public.memory_node_embeddings (
 		if _, err := conn.Exec(ctx, "SET ROLE "+quotedRole); err != nil {
 			t.Fatalf("set RLS role: %v", err)
 		}
-		if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", teamID.String()); err != nil {
+		if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", teamID.String()); err != nil {
 			t.Fatalf("bind RLS team: %v", err)
 		}
 		rlsQueries := pgvectorsqlc.New(conn)

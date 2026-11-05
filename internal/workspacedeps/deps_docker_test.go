@@ -16,7 +16,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // TestDockerCatalogScripts drives every installable catalog dependency through
@@ -27,8 +27,8 @@ import (
 // in use (the re-install case: `current` must be valid afterwards
 // and no .previous-*/.staging-* residue may remain) → remove.
 //
-// It needs a Docker daemon with the workspace image (memohai/workspace:debian
-// by default, MEMOH_DEPS_TEST_IMAGE overrides it) and network access, and it
+// It needs a Docker daemon with the workspace image (amiai/workspace:debian
+// by default, AMI_DEPS_TEST_IMAGE overrides it) and network access, and it
 // takes several minutes per npm-based dependency:
 //
 //	go test -tags dockertest -run TestDockerCatalogScripts ./internal/workspacedeps/ -v -timeout 40m
@@ -39,16 +39,16 @@ func TestDockerCatalogScripts(t *testing.T) {
 	if _, err := exec.LookPath("docker"); err != nil {
 		t.Skip("docker not installed")
 	}
-	image := os.Getenv("MEMOH_DEPS_TEST_IMAGE")
+	image := os.Getenv("AMI_DEPS_TEST_IMAGE")
 	if image == "" {
 		image = dockerTestDefaultImage
 	}
 	platform := dockerImagePlatform(t, image)
 	t.Logf("workspace image %s: %s/%s %s", image, platform.OS, platform.Arch, platform.Libc)
 
-	source := os.Getenv("MEMOH_DEPENDENCY_CATALOG_URL")
+	source := os.Getenv("AMI_DEPENDENCY_CATALOG_URL")
 	if source == "" {
-		t.Skip("set MEMOH_DEPENDENCY_CATALOG_URL to a published Supermarket")
+		t.Skip("set AMI_DEPENDENCY_CATALOG_URL to a published Supermarket")
 	}
 	provider, err := NewRemoteCatalog(source, newMemoryCatalogStore(), nil, nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func TestDockerRemoveImageDependencies(t *testing.T) {
 	if _, err := exec.LookPath("docker"); err != nil {
 		t.Skip("docker not installed")
 	}
-	image := os.Getenv("MEMOH_DEPS_TEST_IMAGE")
+	image := os.Getenv("AMI_DEPS_TEST_IMAGE")
 	if image == "" {
 		image = dockerTestDefaultImage
 	}
@@ -91,14 +91,14 @@ func TestDockerRemoveImageDependencies(t *testing.T) {
 	} {
 		t.Run(dep.ID, func(t *testing.T) {
 			home := Home("/data", dep.ID)
-			script := "set -eu\nexport MEMOH_DEP_OS=linux\nexport MEMOH_DEP_WORKSPACE_TARGET=native\nexport MEMOH_DEP_HOME=" + shellQuote(home) + "\nexport MEMOH_DEP_BIN=" + shellQuote(ShimDir("/data")) + "\n"
+			script := "set -eu\nexport AMI_DEP_OS=linux\nexport AMI_DEP_WORKSPACE_TARGET=native\nexport AMI_DEP_HOME=" + shellQuote(home) + "\nexport AMI_DEP_BIN=" + shellQuote(ShimDir("/data")) + "\n"
 			script += "command -v " + shellQuote(dep.Provides[0]) + " >/dev/null\n"
-			script += "mkdir -p \"$MEMOH_DEP_HOME\"\nprintf '{}' > \"$MEMOH_DEP_HOME/state.json\"\n"
+			script += "mkdir -p \"$AMI_DEP_HOME\"\nprintf '{}' > \"$AMI_DEP_HOME/state.json\"\n"
 			script += "(\n" + WrapScript(actionScript(dep, catalog.ActionRemove, "exit 0")) + ")\nhash -r\n"
 			for _, command := range dep.Provides {
 				script += "if command -v " + shellQuote(command) + "; then exit 1; fi\n"
 			}
-			script += "[ ! -e \"$MEMOH_DEP_HOME\" ]\n"
+			script += "[ ! -e \"$AMI_DEP_HOME\" ]\n"
 			script += buildDiscoveryScript("/data", []catalog.Dependency{dep})
 			ctx, cancel := context.WithTimeout(t.Context(), time.Minute)
 			defer cancel()
@@ -118,7 +118,7 @@ func TestDockerRemoveImageDependencies(t *testing.T) {
 }
 
 const (
-	dockerTestDefaultImage = "memohai/workspace:debian"
+	dockerTestDefaultImage = "amiai/workspace:debian"
 	// dockerTestDepsRoot is where the per-dependency volume is mounted inside
 	// the container. It plays the role of DepsRoot(dataRoot), so the home is
 	// /tmp/deps/<id>, the shim dir /tmp/deps/bin, and the lock directory
@@ -155,7 +155,7 @@ func newDockerDep(t *testing.T, cat *catalog.Catalog, image string, platform Pla
 		t:        t,
 		cat:      cat,
 		image:    image,
-		volume:   "memoh-deps-test-" + dep.ID + "-" + hex.EncodeToString(nonce[:]),
+		volume:   "ami-deps-test-" + dep.ID + "-" + hex.EncodeToString(nonce[:]),
 		platform: platform,
 		dep:      dep,
 		home:     path.Join(dockerTestDepsRoot, dep.ID),

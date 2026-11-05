@@ -11,8 +11,8 @@ import (
 
 	"github.com/slack-go/slack"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 func TestSlackStreamErrorReply(t *testing.T) {

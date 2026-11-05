@@ -261,8 +261,8 @@ import {
   TooltipContent, TooltipProvider, TooltipTrigger,
 } from '@felinic/ui'
 import { ChevronLeft, ChevronRight, Globe, Plus, Search, Terminal, Upload } from 'lucide-vue-next'
-import { getBotsByBotIdMcp, putBotsByBotIdMcpOpsImport } from '@memohai/sdk'
-import type { McpImportRequest, McpToolDescriptor } from '@memohai/sdk'
+import { getBotsByBotIdMcp, putBotsByBotIdMcpOpsImport } from '@ami/sdk'
+import type { McpImportRequest, McpToolDescriptor } from '@ami/sdk'
 import { BackendCard, PageShell, SwapTransition } from '@felinic/ui'
 import McpServerDetail from './mcp-server-detail.vue'
 import type { McpItem } from './mcp-types'

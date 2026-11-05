@@ -39,7 +39,7 @@ import { useTitle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { getBotsByBotIdAgents, getBotsById } from '@memohai/sdk'
+import { getBotsByBotIdAgents, getBotsById } from '@ami/sdk'
 import { fetchBot } from '@/composables/api/useBot'
 import { Button, PanePlaceholder } from '@felinic/ui'
 import { CHAT_ROUTE_NAMES } from '@/constants/chat-routes'
@@ -154,12 +154,12 @@ function retryBotFromUrl() {
 // A first send's session is titled like the draft it came from until the
 // server confirms the send (see isSessionTentative).
 useTitle(() => {
-  const appTitle = unread.total ? `(${unread.total}) Memoh` : 'Memoh'
+  const appTitle = unread.total ? `(${unread.total}) Ami` : 'Ami'
   const session = activeSession.value
   if (!isChatRoute() || !currentBotId.value || !session || chatStore.isSessionTentative(session.id)) return appTitle
   const title = (session.title ?? '').trim() || routeConversationLabel(session) || t('chat.untitledSession')
   return `${appTitle} · ${title}`
-}, { restoreOnUnmount: () => 'Memoh' })
+}, { restoreOnUnmount: () => 'Ami' })
 
 // One-shot guard so concurrent syncStoreFromUrl() calls can't both start a
 // session for the same redirect. Set synchronously before the first await.

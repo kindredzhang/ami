@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 func TestQueueAdmissionFailureOf(t *testing.T) {

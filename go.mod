@@ -1,4 +1,4 @@
-module github.com/felinics/memoh
+module github.com/kindredzhang/ami
 
 go 1.26.10
 

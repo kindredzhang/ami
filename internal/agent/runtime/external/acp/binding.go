@@ -11,13 +11,13 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // errProcessClosed answers a caller waiting on a process that went away.
@@ -48,9 +48,9 @@ type Binding struct {
 
 	sess      *client.Session
 	stopTools func()
-	// toolsURL is where the session reaches Memoh's tools; empty without.
+	// toolsURL is where the session reaches Ami's tools; empty without.
 	toolsURL string
-	// toolsMissing says why the session opened without Memoh's tools; every
+	// toolsMissing says why the session opened without Ami's tools; every
 	// turn tells the user.
 	toolsMissing string
 
@@ -89,7 +89,7 @@ func (b *Binding) Process() *Process { return b.rt }
 // release, for an extension's own control of the session.
 func (b *Binding) Hold() func() { return b.lockOp() }
 
-// ToolsMounted reports whether the session opened with Memoh's tools.
+// ToolsMounted reports whether the session opened with Ami's tools.
 func (b *Binding) ToolsMounted() bool { return b.toolsURL != "" }
 
 func (b *Binding) lockOp() func() {
@@ -210,7 +210,7 @@ func (b *Binding) clearActive() {
 }
 
 // fits reports whether b can serve the conversation as spec describes it.
-// A session that opened without Memoh's tools is opened again once they can
+// A session that opened without Ami's tools is opened again once they can
 // be mounted.
 func (b *Binding) fits(spec SessionSpec, toolsMountable bool) bool {
 	b.mu.Lock()
@@ -369,13 +369,13 @@ func (r *Process) open(ctx context.Context, input PromptInput, spec SessionSpec,
 		cfg.ToolPreflightGateway = h.gateway.Tools
 		cfg.UserInput = h.userInput
 		if b.toolsURL = r.serveTools(ctx, b, input); b.toolsURL != "" {
-			cfg.McpServers = append(cfg.McpServers, client.MemohToolsHTTPMCPServer(b.toolsURL, b.stableToolIdentity()))
+			cfg.McpServers = append(cfg.McpServers, client.AmiToolsHTTPMCPServer(b.toolsURL, b.stableToolIdentity()))
 		}
 	}
 	if spec.Config != nil {
 		spec.Config(&cfg)
 	}
-	// Failing before a session exists: only Memoh's own route to release.
+	// Failing before a session exists: only Ami's own route to release.
 	fail := func(err error) (*Binding, error) {
 		if b.stopTools != nil {
 			b.stopTools()
@@ -430,7 +430,7 @@ func (r *Process) open(ctx context.Context, input PromptInput, spec SessionSpec,
 }
 
 // toolsMountable reports whether a session of input's conversation on r
-// could be given Memoh's tools.
+// could be given Ami's tools.
 func (r *Process) toolsMountable(input PromptInput) bool {
 	return r.host.gateway.Tools != nil && r.takesHTTPMCP() && toolmount.ResolveBaseURL(r.info, input.ToolHTTPURL) != ""
 }
@@ -439,10 +439,10 @@ func (r *Process) takesHTTPMCP() bool {
 	return r.conn.SupportsHTTPMCP() || r.forceHTTPMCP
 }
 
-// serveTools gives the conversation's session Memoh's tools and returns the
+// serveTools gives the conversation's session Ami's tools and returns the
 // URL the agent reaches them at. In a container they are served into the
 // workspace on a route of the session's own; elsewhere the agent reaches
-// Memoh's endpoint, which knows the session by the headers it was opened
+// Ami's endpoint, which knows the session by the headers it was opened
 // with. A session left without them records why.
 func (r *Process) serveTools(ctx context.Context, b *Binding, input PromptInput) string {
 	h := r.host
@@ -455,7 +455,7 @@ func (r *Process) serveTools(ctx context.Context, b *Binding, input PromptInput)
 	}
 	baseURL := toolmount.ResolveBaseURL(r.info, input.ToolHTTPURL)
 	if baseURL == "" {
-		b.toolsMissing = "the workspace has no Memoh tool gateway address"
+		b.toolsMissing = "the workspace has no Ami tool gateway address"
 		return ""
 	}
 	if backend := strings.TrimSpace(r.info.Backend); backend != "" && backend != bridge.WorkspaceBackendContainer {
@@ -465,7 +465,7 @@ func (r *Process) serveTools(ctx context.Context, b *Binding, input PromptInput)
 	// one that opened it; it ends with the session.
 	mount, err := toolmount.Serve(context.WithoutCancel(ctx), r.bridge, r.info, input.ToolHTTPURL, h.gateway, b.toolContext)
 	if err != nil {
-		h.logger.WarnContext(ctx, "Memoh tool gateway unavailable; opening ACP session without Memoh tools",
+		h.logger.WarnContext(ctx, "Ami tool gateway unavailable; opening ACP session without Ami tools",
 			slog.String("bot_id", r.key.BotID), slog.String("bot_agent_id", r.key.BotAgentID), slog.Any("error", err))
 		b.toolsMissing = "the tool bridge failed to start"
 		return ""

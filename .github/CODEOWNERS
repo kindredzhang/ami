@@ -1,4 +1,4 @@
-# Memoh code ownership
+# Ami code ownership
 #
 # Keep broad defaults above more specific rules. CODEOWNERS uses the last
 # matching pattern, so domain rules below override the backend defaults.

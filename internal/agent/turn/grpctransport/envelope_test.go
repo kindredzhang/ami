@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/agent/turn/turnpb"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/rpc"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn/turnpb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 // statusServer answers every unary call with err, as a peer that writes a
@@ -102,8 +102,8 @@ func TestTurnCatalogCodeSurvivesEnvelope(t *testing.T) {
 // feedback prefixes that servers sent before the envelope restore nothing.
 func TestPreEnvelopeEncodingIsNotRestored(t *testing.T) {
 	encodings := map[string]error{
-		"runtime control prefix": status.Error(codes.FailedPrecondition, "memoh-runtime-control:"+string(apperror.CodeBotNameTaken)),
-		"feedback prefix":        status.Error(codes.FailedPrecondition, `memoh-acp-feedback:{"code":"agent_dependency_missing","args":{"dep_id":"codex"}}`),
+		"runtime control prefix": status.Error(codes.FailedPrecondition, "ami-runtime-control:"+string(apperror.CodeBotNameTaken)),
+		"feedback prefix":        status.Error(codes.FailedPrecondition, `ami-acp-feedback:{"code":"agent_dependency_missing","args":{"dep_id":"codex"}}`),
 	}
 	for _, entry := range turnReasons {
 		encodings[entry.Reason+" status code"] = status.Error(entry.Code, entry.Message)

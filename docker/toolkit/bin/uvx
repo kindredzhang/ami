@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /opt/memoh/toolkit/uv tool run "$@"
+exec /opt/ami/toolkit/uv tool run "$@"

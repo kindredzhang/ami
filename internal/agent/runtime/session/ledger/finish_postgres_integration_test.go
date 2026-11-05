@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 func TestPostgresLedgerPreparedFinishSurvivesCompetingFinalization(t *testing.T) {

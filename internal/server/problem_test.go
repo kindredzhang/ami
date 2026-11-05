@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 func TestProblemFromUsesCatalogAndDoesNotExposeCause(t *testing.T) {
@@ -17,7 +17,7 @@ func TestProblemFromUsesCatalogAndDoesNotExposeCause(t *testing.T) {
 	if problem.Status != http.StatusServiceUnavailable {
 		t.Fatalf("status = %d, want %d", problem.Status, http.StatusServiceUnavailable)
 	}
-	if problem.Type != "urn:memoh:error:workspace.unreachable" {
+	if problem.Type != "urn:ami:error:workspace.unreachable" {
 		t.Fatalf("type = %q", problem.Type)
 	}
 	if problem.Detail != "The workspace could not be reached." {

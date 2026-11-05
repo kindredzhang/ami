@@ -39,7 +39,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Progress, SettingsRow, Skeleton } from '@felinic/ui'
-import type { ExternalagentAgentQuotaWindow } from '@memohai/sdk'
+import type { ExternalagentAgentQuotaWindow } from '@ami/sdk'
 import { useCodexUsage } from '@/composables/useCodexUsage'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { codexUsageResetTime, codexUsageWindowLabel } from '@/utils/codex-usage'

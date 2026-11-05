@@ -6,11 +6,11 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 const discussIdleTimeout = 10 * time.Minute

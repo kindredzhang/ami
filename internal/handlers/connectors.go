@@ -9,10 +9,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/connectors"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/connectors"
 )
 
 type ConnectorsHandler struct {
@@ -145,7 +145,7 @@ func (h *ConnectorsHandler) ListCatalog(c echo.Context) error {
 
 // SetEnabled godoc
 // @Summary Enable or disable a connector
-// @Description Disabled connectors are omitted when Memoh signs the bot's next aggregate MCP session.
+// @Description Disabled connectors are omitted when Ami signs the bot's next aggregate MCP session.
 // @Tags connectors
 // @Param bot_id path string true "Bot ID"
 // @Param connection_id path string true "Connect-It connection ID"

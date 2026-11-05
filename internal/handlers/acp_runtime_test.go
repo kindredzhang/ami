@@ -16,16 +16,16 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	acpagent "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/bots"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/server"
+	acpagent "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/bots"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 type acpRuntimeQueries struct {
@@ -170,7 +170,7 @@ func TestACPRuntimeHandlerReturnsIdleStatus(t *testing.T) {
 }
 
 func TestACPRuntimeHandlerEnsureStartsRuntimeAndReturnsModels(t *testing.T) {
-	t.Setenv("MEMOH_ACP_MCP_HTTP_BASE_URL", "http://example.com")
+	t.Setenv("AMI_ACP_MCP_HTTP_BASE_URL", "http://example.com")
 
 	botID := "11111111-1111-1111-1111-111111111111"
 	sessionID := "44444444-4444-4444-4444-444444444444"
@@ -391,7 +391,7 @@ func TestAuthorizeACPRuntimeSessionAccess(t *testing.T) {
 }
 
 func TestACPRuntimeHandlerSetModel(t *testing.T) {
-	t.Setenv("MEMOH_ACP_MCP_HTTP_BASE_URL", "http://example.com")
+	t.Setenv("AMI_ACP_MCP_HTTP_BASE_URL", "http://example.com")
 
 	botID := "11111111-1111-1111-1111-111111111111"
 	sessionID := "55555555-5555-5555-5555-555555555555"
@@ -478,7 +478,7 @@ func TestACPRuntimeHandlerSetModel(t *testing.T) {
 }
 
 func TestACPRuntimeHandlerSetReasoning(t *testing.T) {
-	t.Setenv("MEMOH_ACP_MCP_HTTP_BASE_URL", "http://example.com")
+	t.Setenv("AMI_ACP_MCP_HTTP_BASE_URL", "http://example.com")
 
 	botID := "11111111-1111-1111-1111-111111111111"
 	sessionID := "55555555-5555-5555-5555-555555555555"
@@ -556,7 +556,7 @@ func acpEnabledBotMetadata() map[string]any {
 }
 
 func TestACPRuntimeHandlerGetAgentOptions(t *testing.T) {
-	t.Setenv("MEMOH_ACP_MCP_HTTP_BASE_URL", "http://example.com")
+	t.Setenv("AMI_ACP_MCP_HTTP_BASE_URL", "http://example.com")
 
 	botID := "11111111-1111-1111-1111-111111111111"
 	queries := acpRuntimeQueries{
@@ -743,7 +743,7 @@ func TestRuntimePoolMissingCommandNamesTheCommand(t *testing.T) {
 	if got := apperror.ArgsOf(err)["command"]; got != "devin" {
 		t.Fatalf("runtimePoolError() command arg = %q, want the command the user must install", got)
 	}
-	if strings.Contains(problem.Detail, "/opt/memoh") {
+	if strings.Contains(problem.Detail, "/opt/ami") {
 		t.Fatalf("missing command problem leaked the private diagnostic: %q", problem.Detail)
 	}
 	if got := apperror.CauseOf(err); !errors.Is(got, cause) {
@@ -841,11 +841,11 @@ func TestBuildACPMCPToolsURLUsesOnlyExplicitOrLoopbackBaseURL(t *testing.T) {
 	botID := "11111111-1111-1111-1111-111111111111"
 
 	t.Run("explicit base URL", func(t *testing.T) {
-		t.Setenv("MEMOH_ACP_MCP_HTTP_BASE_URL", "https://memoh.example")
+		t.Setenv("AMI_ACP_MCP_HTTP_BASE_URL", "https://ami.example")
 		req := httptest.NewRequest(http.MethodPost, "http://127.0.0.1/acp-runtime", nil)
 		req.Header.Set("X-Forwarded-Host", "evil.example")
 		got := buildExternalAgentToolsURLFromRequest(req, botID)
-		want := "https://memoh.example/bots/" + botID + "/tools"
+		want := "https://ami.example/bots/" + botID + "/tools"
 		if got != want {
 			t.Fatalf("tools URL = %q, want %q", got, want)
 		}
@@ -863,7 +863,7 @@ func TestBuildACPMCPToolsURLUsesOnlyExplicitOrLoopbackBaseURL(t *testing.T) {
 	})
 
 	t.Run("non-loopback request host", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "https://memoh.example/acp-runtime", nil)
+		req := httptest.NewRequest(http.MethodPost, "https://ami.example/acp-runtime", nil)
 		req.Header.Set("X-Forwarded-Host", "evil.example")
 		if got := buildExternalAgentToolsURLFromRequest(req, botID); got != "" {
 			t.Fatalf("tools URL = %q, want empty", got)
@@ -897,7 +897,7 @@ func (q acpRuntimeInstanceQueries) GetBotAgentByID(context.Context, sqlc.GetBotA
 }
 
 func TestACPRuntimeHandlerGetAgentOptionsAdmitsOnlyActiveACPInstances(t *testing.T) {
-	t.Setenv("MEMOH_ACP_MCP_HTTP_BASE_URL", "http://example.com")
+	t.Setenv("AMI_ACP_MCP_HTTP_BASE_URL", "http://example.com")
 
 	const (
 		botID      = "11111111-1111-1111-1111-111111111111"

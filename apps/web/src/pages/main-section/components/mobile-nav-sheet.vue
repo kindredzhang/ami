@@ -85,7 +85,7 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { Calendar, Files, MessageCircle } from 'lucide-vue-next'
-import { SettingsIcon as Settings } from '@memohai/icon/ui'
+import { SettingsIcon as Settings } from '@ami/icon/ui'
 import {
   Sheet,
   SheetContent,

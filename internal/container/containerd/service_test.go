@@ -10,8 +10,8 @@ import (
 	"github.com/containerd/errdefs"
 	"github.com/opencontainers/runtime-spec/specs-go"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func TestSpecOptsFromResourceLimitsSetsLinuxResources(t *testing.T) {

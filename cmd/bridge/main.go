@@ -16,13 +16,13 @@ import (
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/felinics/memoh/internal/logger"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/logger"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 const (
-	defaultSocketPath = "/run/memoh/bridge.sock"
+	defaultSocketPath = "/run/ami/bridge.sock"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func runBridge(log *slog.Logger) int {
 
 	// Append toolkit to PATH so child processes (via /bin/sh -c) can find npx/uvx.
 	// Container-native tools take priority since toolkit is appended at the end.
-	_ = os.Setenv("PATH", os.Getenv("PATH")+":/opt/memoh/toolkit/bin")
+	_ = os.Setenv("PATH", os.Getenv("PATH")+":/opt/ami/toolkit/bin")
 
 	reverseHTTP := bridgesvc.NewReverseHTTPBroker()
 	startDisplaySupervisor(ctx, log)

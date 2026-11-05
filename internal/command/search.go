@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func (h *Handler) buildSearchGroup() *CommandGroup {

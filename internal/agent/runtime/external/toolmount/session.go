@@ -4,10 +4,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // IdleSession is the identity of a mount between turns: the bot alone. The

@@ -171,7 +171,7 @@ func TestClipboardSyncSupportsApplicationPasteWithoutInjectingKeys(t *testing.T)
 	}
 	conn.Reset()
 	// A remote menu Paste reads the advertised text through this request;
-	// it does not need a simulated Control+V from Memoh.
+	// it does not need a simulated Control+V from Ami.
 	if _, _, err := c.handleExtendedClipboard(clipboardPayload(clipboardRequest|clipboardText, nil)); err != nil {
 		t.Fatal(err)
 	}

@@ -106,7 +106,7 @@ const dialogName = ref('')
           <AccordionItem value="item-3">
             <AccordionTrigger>Can I run it locally?</AccordionTrigger>
             <AccordionContent>
-              Yes — the desktop app connects to Memoh Cloud or a self-hosted server via MEMOH_DESKTOP_BASE_URL.
+              Yes — the desktop app connects to Ami Cloud or a self-hosted server via AMI_DESKTOP_BASE_URL.
             </AccordionContent>
           </AccordionItem>
         </Accordion>

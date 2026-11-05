@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // runShellcheck feeds script to `shellcheck -s sh -` and fails the test on
@@ -50,7 +50,7 @@ func TestDiscoveryScriptShellcheck(t *testing.T) {
 }
 
 func TestShimScriptShellcheck(t *testing.T) {
-	runShellcheck(t, "agent shim", ShimScript("/data/.memoh/deps/codex/current/bin/codex", true))
+	runShellcheck(t, "agent shim", ShimScript("/data/.ami/deps/codex/current/bin/codex", true))
 	runShellcheck(t, "plain shim", ShimScript("/data/it's here/bin/tool", false))
 }
 

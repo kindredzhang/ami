@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/step"
+	"github.com/kindredzhang/ami/internal/agent/step"
 )
 
 type providerAttemptState struct {

@@ -16,7 +16,7 @@ func TestLimitToolResultCapsFullMCPResult(t *testing.T) {
 
 	assertJSONBytesAtMost(t, result, 512)
 	text := toolResultText(result)
-	if !strings.Contains(text, "[memoh pruned]") {
+	if !strings.Contains(text, "[ami pruned]") {
 		t.Fatalf("limited MCP result missing prune marker: %#v", result)
 	}
 	if !strings.Contains(text, "HEAD") || !strings.Contains(text, "TAIL") {
@@ -34,7 +34,7 @@ func TestLimitToolResultPreservesErrorSignal(t *testing.T) {
 		t.Fatalf("limited MCP error result lost isError: %#v", result)
 	}
 	text := toolResultText(result)
-	if !strings.Contains(text, "[memoh pruned]") {
+	if !strings.Contains(text, "[ami pruned]") {
 		t.Fatalf("limited MCP error missing prune marker: %#v", result)
 	}
 	if !strings.Contains(text, "HEAD") || !strings.Contains(text, "TAIL") {
@@ -70,7 +70,7 @@ func TestLimitToolResultCapsLineOnlyMCPText(t *testing.T) {
 			if countLines(limited) > 20 {
 				t.Fatalf("MCP text lines = %d, want <= 20\n%s", countLines(limited), limited)
 			}
-			if !strings.Contains(limited, "[memoh pruned]") {
+			if !strings.Contains(limited, "[ami pruned]") {
 				t.Fatalf("line-only MCP result missing prune marker: %#v", result)
 			}
 			if tc.error {
@@ -92,7 +92,7 @@ func TestLimitToolResultBoundsOversizedStructuredContent(t *testing.T) {
 
 	assertJSONBytesAtMost(t, result, 512)
 	text := toolResultText(result)
-	for _, want := range []string{"[memoh pruned]", "HEAD", "TAIL"} {
+	for _, want := range []string{"[ami pruned]", "HEAD", "TAIL"} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("structured result text missing %q:\n%s", want, text)
 		}

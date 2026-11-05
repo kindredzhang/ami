@@ -128,7 +128,7 @@ import {
   putBotsByBotIdWorkspaceTargetsByTargetIdToolApproval,
   type WorkspaceUpdateWorkspaceTargetToolApprovalRequest,
   type WorkspaceWorkspaceTarget,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import {
   Button,
   SegmentedControl,

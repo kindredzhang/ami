@@ -14,9 +14,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
 )
 
 func TestPostgresTurnResponseSourcesProjectMetadataAndPreserveWindow(t *testing.T) {
@@ -135,7 +135,7 @@ func TestPostgresTurnResponseSourcesProjectMetadataAndPreserveWindow(t *testing.
 		}
 	}
 	// Explicit query scoping must also hold when the test connection bypasses RLS.
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", uuid.NewString()); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", uuid.NewString()); err != nil {
 		t.Fatal(err)
 	}
 	leaked, err := svc.ListTurnResponseSourcesWithinBytes(ctx, postgresMessageTestSessionID, HistoryPosition{}, 1<<20)

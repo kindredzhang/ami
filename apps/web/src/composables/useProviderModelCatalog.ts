@@ -1,7 +1,7 @@
 import { useQueryCache } from '@pinia/colada'
 import { useI18n } from 'vue-i18n'
 import { toast } from '@felinic/ui'
-import { postProvidersByIdImportCatalogModels, postProvidersByIdImportModels } from '@memohai/sdk'
+import { postProvidersByIdImportCatalogModels, postProvidersByIdImportModels } from '@ami/sdk'
 import { suggestedModelCompatibilities } from '@/constants/client-types'
 import { providerSource } from '@/constants/model-sources'
 

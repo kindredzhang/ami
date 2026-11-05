@@ -8,8 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/team"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestConnectorDisconnectFinalizationIsAtomicAndScoped(t *testing.T) {
@@ -39,7 +39,7 @@ func TestConnectorDisconnectFinalizationIsAtomicAndScoped(t *testing.T) {
 		id := uuid.NewString()
 		apps = append(apps, id)
 		exec(`INSERT INTO bot_app_installations(id,team_id,bot_id,registry_id,app_id,revision,status)
-		 VALUES ($1,$2,$3,'memoh',$4,repeat('a',64),'installed')`, id, pair[0], pair[1], id)
+		 VALUES ($1,$2,$3,'ami',$4,repeat('a',64),'installed')`, id, pair[0], pair[1], id)
 		exec(`INSERT INTO bot_app_connector_refs(team_id,installation_id,connector_type,connection_id,required)
 		 VALUES ($1,$2,'github','shared-id',$3)`, pair[0], id, index != 1)
 	}
@@ -48,7 +48,7 @@ func TestConnectorDisconnectFinalizationIsAtomicAndScoped(t *testing.T) {
 	 BEGIN IF NEW.status = 'partial' THEN RAISE EXCEPTION 'injected status failure'; END IF; RETURN NEW; END $$`)
 	exec("CREATE TRIGGER reject_disconnect BEFORE UPDATE ON bot_app_installations FOR EACH ROW EXECUTE FUNCTION reject_disconnect_status()")
 	rc := rlsConn(t, pool, teamMigrationDSN(t))
-	if _, err := rc.Exec(ctx, "SELECT set_config('memoh.team_id',$1,false)", teamA); err != nil {
+	if _, err := rc.Exec(ctx, "SELECT set_config('ami.team_id',$1,false)", teamA); err != nil {
 		t.Fatal(err)
 	}
 	q := dbsqlc.New(rc)

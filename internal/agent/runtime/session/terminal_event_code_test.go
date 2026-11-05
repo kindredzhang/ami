@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 // A terminal event that carries a code proposes the run's outcome with that

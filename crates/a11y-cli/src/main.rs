@@ -1,4 +1,4 @@
-//! `a11y-cli` is a small AT-SPI2 helper invoked by the Memoh workspace
+//! `a11y-cli` is a small AT-SPI2 helper invoked by the Ami workspace
 //! Computer Use tools. It probes the accessibility bus, walks the desktop
 //! accessibility tree to produce a flat ref list (`e1..eN`), and performs
 //! ref-based click/type/fill actions on the focused desktop. When an action
@@ -16,7 +16,7 @@ mod snapshot;
 
 /// Top-level CLI definition.
 #[derive(Parser)]
-#[command(name = "a11y-cli", about = "Memoh workspace AT-SPI2 helper", version)]
+#[command(name = "a11y-cli", about = "Ami workspace AT-SPI2 helper", version)]
 struct Cli {
     #[command(subcommand)]
     command: Command,

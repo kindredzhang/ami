@@ -146,7 +146,7 @@ const router = useRouter()
 const headingId = useId()
 const listId = useId()
 /** Folded or not is a per-device sidebar preference, like the Recents section. */
-const collapsed = useLocalStorage('memoh-needs-you-collapsed', false)
+const collapsed = useLocalStorage('ami-needs-you-collapsed', false)
 const expanded = ref(false)
 const count = useTemplateRef('count')
 const now = useNow({ interval: 30_000 })

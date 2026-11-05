@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { getBotsByBotIdMemoryGraph } from '@memohai/sdk'
+import { getBotsByBotIdMemoryGraph } from '@ami/sdk'
 import {
   normalizeGraph,
   selectVisibleGraphEdges,

@@ -26,11 +26,11 @@
 #   DEBIAN_MIRROR       Default: https://deb.debian.org/debian
 #   DEBIAN_VERSION      Default: bookworm
 #   UV_MIRROR           Default: https://github.com/astral-sh/uv/releases/latest/download
-#   MEMOH_DISPLAY_OUTDIR
+#   AMI_DISPLAY_OUTDIR
 #                       Optional override for display_output_dir.
-#   MEMOH_TOOLKIT_GLIBC_ONLY
+#   AMI_TOOLKIT_GLIBC_ONLY
 #                       Set to 1 for the official Debian workspace image.
-#   MEMOH_TOOLKIT_SKIP_DISPLAY
+#   AMI_TOOLKIT_SKIP_DISPLAY
 #                       Set to 1 when the image provides display packages itself.
 #
 set -eu
@@ -49,7 +49,7 @@ fi
 
 OUTDIR="$1"
 ARCH="${2:-}"
-DISPLAY_OUTDIR="${MEMOH_DISPLAY_OUTDIR:-${3:-$OUTDIR/display}}"
+DISPLAY_OUTDIR="${AMI_DISPLAY_OUTDIR:-${3:-$OUTDIR/display}}"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
 if [ -z "$ARCH" ]; then
@@ -505,7 +505,7 @@ install_python_runtime() {
   link_default="$3"
   triple="${python_arch}-unknown-linux-$libc"
   dest_dir="$OUTDIR/python-$libc-$python_arch"
-  marker="$dest_dir/.memoh-python-version"
+  marker="$dest_dir/.ami-python-version"
 
   if [ -x "$dest_dir/bin/python3" ] &&
     [ -f "$marker" ] &&
@@ -764,10 +764,10 @@ install_a11y_cli() {
 
   # Honor an explicit override so cross-arch release pipelines can drop a
   # prebuilt Linux binary into place.
-  if [ -n "${MEMOH_A11Y_CLI_BINARY:-}" ] && is_linux_elf "$MEMOH_A11Y_CLI_BINARY"; then
-    cp "$MEMOH_A11Y_CLI_BINARY" "$dest_path"
+  if [ -n "${AMI_A11Y_CLI_BINARY:-}" ] && is_linux_elf "$AMI_A11Y_CLI_BINARY"; then
+    cp "$AMI_A11Y_CLI_BINARY" "$dest_path"
     chmod +x "$dest_path"
-    echo "a11y-cli installed from $MEMOH_A11Y_CLI_BINARY"
+    echo "a11y-cli installed from $AMI_A11Y_CLI_BINARY"
     return
   fi
 
@@ -791,7 +791,7 @@ install_a11y_cli() {
   done
 
   echo "warning: no Linux a11y-cli release binary found." >&2
-  echo "         Run 'mise run a11y-cli:build' or set MEMOH_A11Y_CLI_BINARY to a Linux ELF." >&2
+  echo "         Run 'mise run a11y-cli:build' or set AMI_A11Y_CLI_BINARY to a Linux ELF." >&2
 }
 
 mkdir -p "$OUTDIR/node-glibc"
@@ -808,7 +808,7 @@ for extra_arch in ${PYTHON_EXTRA_ARCHES:-}; do
 done
 install_pinned_npm node-glibc
 
-if [ "${MEMOH_TOOLKIT_GLIBC_ONLY:-0}" != "1" ]; then
+if [ "${AMI_TOOLKIT_GLIBC_ONLY:-0}" != "1" ]; then
   mkdir -p "$OUTDIR/node-musl"
   install_node_musl
   install_musl_runtime_libs
@@ -828,7 +828,7 @@ sh "$SCRIPT_DIR/install-wrappers.sh" "$OUTDIR"
 install_ca_bundle
 
 echo "Toolkit installed to $OUTDIR"
-if [ "${MEMOH_TOOLKIT_SKIP_DISPLAY:-0}" != "1" ]; then
+if [ "${AMI_TOOLKIT_SKIP_DISPLAY:-0}" != "1" ]; then
   install_display_bundle
   install_a11y_cli
 fi

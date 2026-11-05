@@ -6,7 +6,7 @@ import { PiniaColada } from '@pinia/colada'
 import BotHooks from './bot-hooks.vue'
 
 const api = vi.hoisted(() => ({ read: vi.fn(), events: vi.fn(), write: vi.fn(), test: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsByBotIdContainerFsRead: api.read,
   getBotsByBotIdHooksEvents: api.events,
   postBotsByBotIdContainerFsWrite: api.write,

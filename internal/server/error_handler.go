@@ -10,15 +10,15 @@ import (
 	"github.com/labstack/echo/v4"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
 )
 
 // resultErrorKey holds the error a request was answered with, so that the
 // result record attributes the same error the response was rendered from.
-const resultErrorKey = "memoh.result_error"
+const resultErrorKey = "ami.result_error"
 
 // NewHTTPErrorHandler renders every error a request ends with as a Problem.
 // It does not log the error: the access log writes the one result record for

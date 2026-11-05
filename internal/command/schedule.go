@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/schedule"
+	"github.com/kindredzhang/ami/internal/schedule"
 )
 
 func (h *Handler) buildScheduleGroup() *CommandGroup {

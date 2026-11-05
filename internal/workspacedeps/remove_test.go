@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func TestRemovalScriptDeletesWorkspaceCopies(t *testing.T) {
@@ -121,7 +121,7 @@ func writeRemovalFixture(t *testing.T, name string) {
 func runRemovalFixture(t *testing.T, body, home, target string) ([]byte, error) {
 	cmd := exec.CommandContext(t.Context(), "sh", "-s")
 	cmd.Stdin = strings.NewReader("set -eu\n" + body)
-	cmd.Env = append(os.Environ(), "MEMOH_DEP_HOME="+home, "MEMOH_DEP_WORKSPACE_TARGET="+target)
+	cmd.Env = append(os.Environ(), "AMI_DEP_HOME="+home, "AMI_DEP_WORKSPACE_TARGET="+target)
 	return cmd.CombinedOutput()
 }
 

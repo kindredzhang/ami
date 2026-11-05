@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
 )
 
 func TestSignInHandsOutTheDeviceURLWhileGrokWaits(t *testing.T) {

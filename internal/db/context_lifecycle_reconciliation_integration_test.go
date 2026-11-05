@@ -8,8 +8,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestListTerminalSessionRunsNeedingContextLifecycle(t *testing.T) {
@@ -127,7 +127,7 @@ VALUES ($1, $2, $3, $4, 'team-two-missing', gen_random_uuid(), 1,
 	}
 
 	rls := rlsConn(t, pool, dsn)
-	if _, err := rls.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := rls.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("bind reconciliation team one: %v", err)
 	}
 	queries := sqlc.New(rls)
@@ -179,7 +179,7 @@ VALUES ($1, $2, $3, $4, 'team-two-missing', gen_random_uuid(), 1,
 		t.Fatalf("rich lost reconciliation candidate = %#v", all[6])
 	}
 
-	if _, err := rls.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", teamTwo); err != nil {
+	if _, err := rls.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", teamTwo); err != nil {
 		t.Fatalf("bind reconciliation team two: %v", err)
 	}
 	teamTwoRows, err := queries.ListTerminalSessionRunsNeedingContextLifecycle(ctx, 10)

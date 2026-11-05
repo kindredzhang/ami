@@ -85,7 +85,7 @@ describe('dependencyStatusBadge', () => {
     expect(dependencyStatusBadge(item({ status: 'installed', installed_version: '0.147.0' })))
       .toEqual({ variant: 'success', key: 'bots.dependencies.status.installed', spinner: false })
     expect(dependencyStatusBadge(imageCopy())).toMatchObject({ variant: 'success' })
-    expect(dependencyStatusBadge(imageCopy({ id: 'codex', overlay: true, install_path: '/data/.memoh/deps/codex' }))).toMatchObject({ variant: 'success' })
+    expect(dependencyStatusBadge(imageCopy({ id: 'codex', overlay: true, install_path: '/data/.ami/deps/codex' }))).toMatchObject({ variant: 'success' })
   })
 
   it('falls back to not-installed when the catalog has no record', () => {

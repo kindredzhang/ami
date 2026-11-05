@@ -34,7 +34,7 @@ func TestFoldUnfoldPreservesStoredShape(t *testing.T) {
 		t.Fatalf("approval not claimed for %s: %#v", Namespace, meta)
 	}
 	if _, ok := meta["execution_location"]; ok {
-		t.Fatal("an owned key with all-string values must still fold into the memoh namespace")
+		t.Fatal("an owned key with all-string values must still fold into the ami namespace")
 	}
 	if meta.Get("anthropic", "signature") != "sig" || meta.Get("openai", "item") != "rs_1" {
 		t.Fatalf("provider namespaces: %#v", meta)

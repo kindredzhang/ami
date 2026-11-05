@@ -12,7 +12,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocolgen"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocolgen"
 )
 
 func main() {

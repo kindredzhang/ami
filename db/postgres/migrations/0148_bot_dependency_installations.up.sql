@@ -6,7 +6,7 @@
 
 CREATE TABLE IF NOT EXISTS public.bot_dependency_installations (
     id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id             UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id             UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                     REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id              UUID        NOT NULL,
     workspace_target_id TEXT        NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.bot_dependency_installations (
     operation_id        TEXT        NOT NULL DEFAULT '',
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_07a3be5666c2 UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_07a3be5666c2 UNIQUE (team_id, id),
     CONSTRAINT bot_dependency_installations_identity_key
         UNIQUE (team_id, bot_id, workspace_target_id, dependency_id),
     CONSTRAINT bot_dependency_installations_dependency_id_check
@@ -66,22 +66,22 @@ DROP POLICY IF EXISTS bot_dependency_installations_team_update ON public.bot_dep
 DROP POLICY IF EXISTS bot_dependency_installations_team_delete ON public.bot_dependency_installations;
 
 CREATE POLICY bot_dependency_installations_team_select ON public.bot_dependency_installations
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_dependency_installations_team_insert ON public.bot_dependency_installations
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_dependency_installations_team_update ON public.bot_dependency_installations
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_dependency_installations_team_delete ON public.bot_dependency_installations
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Immutable dependency definitions and the independently refreshed catalog.
 -- Entries are shared only within a team and one configured Supermarket origin.
 CREATE TABLE IF NOT EXISTS public.workspace_dependency_definitions (
-    team_id UUID NOT NULL DEFAULT public.memoh_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
+    team_id UUID NOT NULL DEFAULT public.ami_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
     source_url TEXT NOT NULL,
-    registry_id TEXT NOT NULL CHECK (registry_id = 'memoh'),
+    registry_id TEXT NOT NULL CHECK (registry_id = 'ami'),
     dependency_id TEXT NOT NULL,
     revision TEXT NOT NULL CHECK (revision ~ '^[a-f0-9]{64}$'),
     release_bytes BYTEA NOT NULL CHECK (octet_length(release_bytes) BETWEEN 1 AND 1048576),
@@ -105,7 +105,7 @@ CREATE INDEX IF NOT EXISTS idx_workspace_dependency_definitions_icon
     ON public.workspace_dependency_definitions (team_id, source_url, icon_digest);
 
 CREATE TABLE IF NOT EXISTS public.workspace_dependency_catalogs (
-    team_id UUID NOT NULL DEFAULT public.memoh_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
+    team_id UUID NOT NULL DEFAULT public.ami_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
     source_url TEXT NOT NULL,
     catalog_bytes BYTEA NOT NULL CHECK (octet_length(catalog_bytes) BETWEEN 1 AND 4194304),
     generation BIGINT NOT NULL DEFAULT 1 CHECK (generation > 0),
@@ -117,28 +117,28 @@ ALTER TABLE public.workspace_dependency_definitions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.workspace_dependency_definitions FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_select ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_select ON public.workspace_dependency_definitions
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_insert ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_insert ON public.workspace_dependency_definitions
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_update ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_update ON public.workspace_dependency_definitions
-    FOR UPDATE USING (team_id = public.memoh_current_team_id()) WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR UPDATE USING (team_id = public.ami_current_team_id()) WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_definitions_team_delete ON public.workspace_dependency_definitions;
 CREATE POLICY workspace_dependency_definitions_team_delete ON public.workspace_dependency_definitions
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.workspace_dependency_catalogs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.workspace_dependency_catalogs FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_select ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_select ON public.workspace_dependency_catalogs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_insert ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_insert ON public.workspace_dependency_catalogs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_update ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_update ON public.workspace_dependency_catalogs
-    FOR UPDATE USING (team_id = public.memoh_current_team_id()) WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR UPDATE USING (team_id = public.ami_current_team_id()) WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS workspace_dependency_catalogs_team_delete ON public.workspace_dependency_catalogs;
 CREATE POLICY workspace_dependency_catalogs_team_delete ON public.workspace_dependency_catalogs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

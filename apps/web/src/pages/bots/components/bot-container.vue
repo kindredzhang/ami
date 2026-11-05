@@ -22,7 +22,7 @@ import {
   type HandlersGetContainerResponse,
   type HandlersUpdateContainerMetricsRequest,
   type HandlersListSnapshotsResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useBotQuery } from '@/composables/api/useBot'
 import {
   postBotsByBotIdContainerStream,

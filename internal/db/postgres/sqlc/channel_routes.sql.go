@@ -99,13 +99,13 @@ const deleteChatRoute = `-- name: DeleteChatRoute :exec
 WITH route_sessions AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.route_id = $1
   ORDER BY session.id
   FOR UPDATE
 )
 DELETE FROM bot_channel_routes route
-WHERE route.team_id = public.memoh_current_team_id()
+WHERE route.team_id = public.ami_current_team_id()
   AND route.id = $1
   AND (SELECT count(*) FROM route_sessions) >= 0
 `
@@ -130,7 +130,7 @@ SELECT
   created_at,
   updated_at
 FROM bot_channel_routes
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND channel_type = $2
   AND external_conversation_id = $3
@@ -200,7 +200,7 @@ SELECT
   created_at,
   updated_at
 FROM bot_channel_routes
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 type GetChatRouteByIDRow struct {
@@ -244,7 +244,7 @@ SELECT
   conversation_type,
   metadata
 FROM bot_channel_routes
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = ANY($2::uuid[])
 `
@@ -295,7 +295,7 @@ SELECT
   created_at,
   updated_at
 FROM bot_channel_routes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY created_at ASC
 `
 
@@ -351,7 +351,7 @@ const setRouteActiveSession = `-- name: SetRouteActiveSession :exec
 WITH destination_session AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = $1::uuid
   FOR KEY SHARE
 )
@@ -361,7 +361,7 @@ SET active_session_id = COALESCE(
       $1::uuid
     ),
     updated_at = now()
-WHERE route.team_id = public.memoh_current_team_id()
+WHERE route.team_id = public.ami_current_team_id()
   AND route.id = $2
 `
 
@@ -378,7 +378,7 @@ func (q *Queries) SetRouteActiveSession(ctx context.Context, arg SetRouteActiveS
 const updateChatRouteMetadata = `-- name: UpdateChatRouteMetadata :exec
 UPDATE bot_channel_routes
 SET metadata = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $2
+WHERE team_id = public.ami_current_team_id() AND id = $2
 `
 
 type UpdateChatRouteMetadataParams struct {
@@ -394,7 +394,7 @@ func (q *Queries) UpdateChatRouteMetadata(ctx context.Context, arg UpdateChatRou
 const updateChatRouteReplyTarget = `-- name: UpdateChatRouteReplyTarget :exec
 UPDATE bot_channel_routes
 SET default_reply_target = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $2
+WHERE team_id = public.ami_current_team_id() AND id = $2
 `
 
 type UpdateChatRouteReplyTargetParams struct {

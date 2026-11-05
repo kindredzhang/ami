@@ -8,8 +8,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/robfig/cron/v3"
 
-	messageevent "github.com/felinics/memoh/internal/chat/event"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	messageevent "github.com/kindredzhang/ami/internal/chat/event"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 type createQueries struct {

@@ -1,6 +1,6 @@
-// Package toolmount serves the Memoh tool gateway (HTTP MCP) into a bot
+// Package toolmount serves the Ami tool gateway (HTTP MCP) into a bot
 // workspace over the bridge's reverse-HTTP stream, so an external agent runtime
-// inside the container reaches Memoh tools at the workspace-local proxy URL.
+// inside the container reaches Ami tools at the workspace-local proxy URL.
 // Each mount owns one unguessable route; the tool session identity resolves
 // live per request, so one mount can outlive many turns.
 package toolmount
@@ -16,14 +16,14 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
-// Gateway is the Memoh MCP tool surface a mount serves.
+// Gateway is the Ami MCP tool surface a mount serves.
 type Gateway struct {
 	Tools    *mcp.ToolGatewayService
 	Contexts *mcp.ToolSessionContextStore
@@ -73,7 +73,7 @@ func (m *Mount) Stop() {
 func Serve(ctx context.Context, client *bridge.Client, info bridge.WorkspaceInfo, inputURL string, gateway Gateway, session func() mcp.ToolSessionContext) (*Mount, error) {
 	baseURL := ResolveBaseURL(info, inputURL)
 	if baseURL == "" {
-		return nil, errs.New(fmt.Sprintf("resolve Memoh tool gateway URL for %s workspace", info.Backend))
+		return nil, errs.New(fmt.Sprintf("resolve Ami tool gateway URL for %s workspace", info.Backend))
 	}
 	guardedURL, guardedPath, err := mintRouteURL(baseURL)
 	if err != nil {
@@ -88,7 +88,7 @@ func Serve(ctx context.Context, client *bridge.Client, info bridge.WorkspaceInfo
 	})
 	stop, err := client.ServeReverseHTTPRoute(ctx, guardedPath, handler)
 	if err != nil {
-		return nil, errs.WrapDependency(err, "mount Memoh tool gateway")
+		return nil, errs.WrapDependency(err, "mount Ami tool gateway")
 	}
 	return &Mount{URL: guardedURL, stop: stop}, nil
 }
@@ -101,7 +101,7 @@ func mintRouteURL(rawURL string) (string, string, error) {
 		return "", "", err
 	}
 	if u.Scheme == "" || u.Host == "" {
-		return "", "", errs.New(fmt.Sprintf("invalid Memoh tools URL %q", rawURL))
+		return "", "", errs.New(fmt.Sprintf("invalid Ami tools URL %q", rawURL))
 	}
 	basePath := strings.TrimRight(u.Path, "/")
 	if basePath == "" {
@@ -120,12 +120,12 @@ func EmitUnavailableNotice(sink external.EventSink, reason string) {
 	sink.EmitStreamEvent(event.StreamEvent{
 		Type:       event.RuntimeNotice,
 		NoticeKind: event.NoticeToolsUnavailable,
-		Delta:      "Memoh tools are unavailable for this turn: " + reason,
+		Delta:      "Ami tools are unavailable for this turn: " + reason,
 	})
 }
 
 // RegisterTurnSink routes gateway tool events (tool cards, approval requests,
-// ask_user prompts from Memoh MCP tools) for one turn into its stream and
+// ask_user prompts from Ami MCP tools) for one turn into its stream and
 // returns the unregister func. Without this registration the approval flow
 // sees every request as undeliverable and rejects it.
 func RegisterTurnSink(contexts *mcp.ToolSessionContextStore, botID, sessionID, runID string, emit func(event.StreamEvent)) func() {

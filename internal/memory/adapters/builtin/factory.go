@@ -5,11 +5,11 @@ import (
 	"errors"
 	"log/slog"
 
-	pgvectordb "github.com/felinics/memoh/internal/db/pgvector"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	storefs "github.com/felinics/memoh/internal/memory/storefs"
-	"github.com/felinics/memoh/internal/memory/wikistore"
+	pgvectordb "github.com/kindredzhang/ami/internal/db/pgvector"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	storefs "github.com/kindredzhang/ami/internal/memory/storefs"
+	"github.com/kindredzhang/ami/internal/memory/wikistore"
 )
 
 // NewBuiltinRuntimeFromConfig returns the graph Runtime for the provider's

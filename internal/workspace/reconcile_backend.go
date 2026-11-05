@@ -10,11 +10,11 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/felinics/memoh/internal/botworkspace"
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/botworkspace"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // The Manager is the botworkspace.Backend for every native container runtime.

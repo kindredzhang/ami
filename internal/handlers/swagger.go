@@ -1,6 +1,6 @@
 package handlers
 
-// @title Memoh API
+// @title Ami API
 // @version 1.0.0
 
 import (
@@ -11,9 +11,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/swaggo/swag"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 	// Register the generated swagger document for swag.ReadDoc.
-	_ "github.com/felinics/memoh/spec"
+	_ "github.com/kindredzhang/ami/spec"
 )
 
 //go:generate go tool swag init -g swagger.go -o ../../spec --parseDependency --parseInternal
@@ -59,7 +59,7 @@ const swaggerUIHTML = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>memoh-go Swagger UI</title>
+    <title>ami-go Swagger UI</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
   </head>
   <body>

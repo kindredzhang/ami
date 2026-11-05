@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 func startToolsProxy(ctx context.Context, log *slog.Logger, handler http.Handler) {
@@ -18,7 +18,7 @@ func startToolsProxy(ctx context.Context, log *slog.Logger, handler http.Handler
 		return
 	}
 	// Keep the legacy environment key for existing workspace configurations.
-	addr := strings.TrimSpace(os.Getenv("MEMOH_ACP_TOOLS_PROXY_ADDR"))
+	addr := strings.TrimSpace(os.Getenv("AMI_ACP_TOOLS_PROXY_ADDR"))
 	if addr == "" {
 		addr = bridge.ToolsProxyAddr
 	}

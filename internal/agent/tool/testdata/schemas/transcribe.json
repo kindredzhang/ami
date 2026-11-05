@@ -10,7 +10,7 @@
         "type": "string"
       },
       "path": {
-        "description": "Audio file path from the message context, usually under /data/.memoh/media/...",
+        "description": "Audio file path from the message context, usually under /data/.ami/media/...",
         "type": "string"
       },
       "prompt": {

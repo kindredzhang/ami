@@ -32,7 +32,7 @@ import {
   Spinner,
   Switch,
 } from '@felinic/ui'
-import type { ConnectitConnector, ConnectorsConnector } from '@memohai/sdk'
+import type { ConnectitConnector, ConnectorsConnector } from '@ami/sdk'
 import ProviderIcon from '@/components/provider-icon/index.vue'
 import SkillIcon from '@/pages/supermarket/components/skill-icon.vue'
 import {

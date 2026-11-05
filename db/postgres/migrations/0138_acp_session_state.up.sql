@@ -27,7 +27,7 @@ END
 $add_session_runs_team_session_run_key$;
 
 CREATE TABLE IF NOT EXISTS public.acp_session_states (
-    team_id               UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id               UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                       REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id            UUID        NOT NULL,
     through_run_id        UUID        NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS public.acp_session_states (
 -- because versions share them; version membership is defined by the header's
 -- file_shapes.
 CREATE TABLE IF NOT EXISTS public.acp_session_state_lines (
-    team_id       UUID   NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id       UUID   NOT NULL DEFAULT public.ami_current_team_id()
                           REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id    UUID   NOT NULL,
     file_path     TEXT COLLATE "C" NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS public.acp_session_state_lines (
 -- means the head is canonical but nothing is resumable (the profile cannot
 -- snapshot, or the runtime deliberately started fresh).
 CREATE TABLE IF NOT EXISTS public.acp_session_publications (
-    team_id          UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id          UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                  REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id       UUID        NOT NULL,
     run_id           UUID        NOT NULL,
@@ -149,15 +149,15 @@ DROP POLICY IF EXISTS acp_session_publications_team_update ON public.acp_session
 DROP POLICY IF EXISTS acp_session_publications_team_delete ON public.acp_session_publications;
 
 CREATE POLICY acp_session_publications_team_select ON public.acp_session_publications
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_publications_team_insert ON public.acp_session_publications
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_publications_team_update ON public.acp_session_publications
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_publications_team_delete ON public.acp_session_publications
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.acp_session_states ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.acp_session_states FORCE ROW LEVEL SECURITY;
@@ -174,23 +174,23 @@ DROP POLICY IF EXISTS acp_session_state_lines_team_update ON public.acp_session_
 DROP POLICY IF EXISTS acp_session_state_lines_team_delete ON public.acp_session_state_lines;
 
 CREATE POLICY acp_session_states_team_select ON public.acp_session_states
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_states_team_insert ON public.acp_session_states
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_states_team_update ON public.acp_session_states
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_states_team_delete ON public.acp_session_states
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 CREATE POLICY acp_session_state_lines_team_select ON public.acp_session_state_lines
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_state_lines_team_insert ON public.acp_session_state_lines
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_state_lines_team_update ON public.acp_session_state_lines
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY acp_session_state_lines_team_delete ON public.acp_session_state_lines
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

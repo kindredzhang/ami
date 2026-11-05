@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { compileTemplate } from 'vue/compiler-sfc'
-import * as icons from '@memohai/icon/ui'
+import * as icons from '@ami/icon/ui'
 
 describe('shared UI icon contract', () => {
   it('uses one default stroke and forwards SVG attributes for every UI glyph', async () => {

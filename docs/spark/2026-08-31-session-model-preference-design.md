@@ -1,6 +1,6 @@
 # Session 模型+推理强度持久化 · 设计稿(v3)
 
-- **Issue:** memohai/Memoh#879 — [Web] Chat session 模型切换未持久化,刷新后回退 bot 默认模型
+- **Issue:** amiai/Ami#879 — [Web] Chat session 模型切换未持久化,刷新后回退 bot 默认模型
 - **v3 边界（2026-09-05）:** 重新进入先显示缓存并刷新；刷新期间允许按显示值发送，迟到读取不得覆盖该发送或新选择；持久化覆盖 native、generic ACP、Codex、Claude Code。
 - **状态:** v3 行为已确认，修复及相关自动验证已完成；全量前端类型检查尚未通过，真人 QA 尚未完成。v1→v2 历史见附录 A。
 - **参照:** lobe-chat PR #15933 / #18178(独立同构演化,见 §5)
@@ -168,7 +168,7 @@ reconcile = `PatchSessionModelPreference` 现有逻辑:目标模型必须存在�
 
 发送规则：已确认的 `user/session` 对携带；刷新期间发送也携带显示对，并转成显式来源。正常 `default/unset` 省略，以继续跟随 bot 默认。
 
-草稿:localStorage 键 `memoh:composer-pair:<botId>`,值 `{model_id, reasoning_effort}`,首发即清;与 `useComposerDrafts` 并列,不合并(它按 tab 键,对按 bot 键)。
+草稿:localStorage 键 `ami:composer-pair:<botId>`,值 `{model_id, reasoning_effort}`,首发即清;与 `useComposerDrafts` 并列,不合并(它按 tab 键,对按 bot 键)。
 
 种子端点 `GET /bots/:bot_id/sessions/model-preference-seed`:该 bot、`created_by_user_id = 当前用户`、`runtime_type='model'`、`type='chat'`、`visibility='user'`、`deleted_at IS NULL`、两列非 NULL,按 `updated_at DESC` 取 1。无结果返回空对象。
 
@@ -299,7 +299,7 @@ S1–S6 每条被 §1.2 覆盖;P1′–P11′ 每条能沿 §3 推出唯一确�
 | 解析链:session 记忆 vs subagent pin | §3.4"它自己的对 > pin" | 保持这个优先级,但要**修解析顺序**:现状 `applySubagentThreadDefaults` 在 `resolve` 内、`buildBaseRunConfig` 之前把 pin 填进 `req.Model`,请求省略字段时 pin 先占位,session 记忆永远查不到。改为 pin 只在 session 记忆为空时填 | 实现分支的解析侧与 §3.4 倒置 |
 | 解析链:effort 记忆的位置 | 记忆当作 requested 传入 `ResolveConfig` | 记忆作为 `reasoning` 包 `pickEffort` 里 **stored 之上、requested 之下的新一级**,不冒充请求值 | `RunConfig.ReasoningRequestedEffort` 会传给 spawn 出来的子代理当"本轮显式选择";记忆走 requested 位会串到子代理 |
 | `bot_history_messages.reasoning_effort` 列 | 新增,服务"存量 session 的历史对兜底" | **删除,不加** | 存量 session 在修复前从未记录过 effort,没有历史可兜;向前它只服务"逐条投影",而那是 §3.6 非目标。模型侧历史兜底 `GetLatestSessionModelID` 已存在,保留 |
-| ACP 持久化 | 与 native 同两列;冷启动经 `applyPromptConfig` 回灌 | ACP 的对写进 session 的 **`runtime_metadata`**(`acp_model_id` / `acp_reasoning_effort`),不进两列;spawn 完成后按它覆盖 profile 默认 effort;`PATCH acp-runtime/model|reasoning` 端点同步双写 | ACP 模型 id 是 agent 命名空间字符串,进不了 `preferred_chat_model_id` 的 UUID 外键。P5 根因已定位:`client/session.go` 每次 spawn 都把 `profile.DefaultReasoningEffort` 应用一遍,Memoh 侧零持久化。ACP 配置本来就集中在 `runtime_metadata`,顺着结构走 |
+| ACP 持久化 | 与 native 同两列;冷启动经 `applyPromptConfig` 回灌 | ACP 的对写进 session 的 **`runtime_metadata`**(`acp_model_id` / `acp_reasoning_effort`),不进两列;spawn 完成后按它覆盖 profile 默认 effort;`PATCH acp-runtime/model|reasoning` 端点同步双写 | ACP 模型 id 是 agent 命名空间字符串,进不了 `preferred_chat_model_id` 的 UUID 外键。P5 根因已定位:`client/session.go` 每次 spawn 都把 `profile.DefaultReasoningEffort` 应用一遍,Ami 侧零持久化。ACP 配置本来就集中在 `runtime_metadata`,顺着结构走 |
 | schedule / heartbeat 触发轮 | 未提 | **排除**:`SessionType` 为 schedule/heartbeat 的轮不读 session 记忆 | "记忆 > bot 默认"会让被 web 续聊过的 schedule session 在 payload 未带模型时改用记忆值,是未声明的行为变化 |
 | fork | 未提 | fork 继承源 session 的对(实现分支已如此) | 同一对话的延续,打开时应长得一样 |
 | 种子查询 | 按 `bot_id` | 加 `created_by_user_id` 条件 | 见 A.1 |
@@ -337,7 +337,7 @@ S1–S6 每条被 §1.2 覆盖;P1′–P11′ 每条能沿 §3 推出唯一确�
 - 证据:`bot_history_messages` 现有 `model_id`(`0001_init.up.sql:617`)无 effort;修复前从未有任何路径记录 effort,存量数据不可能有值可兜。模型侧兜底 `GetLatestSessionModelID`(`session_info.sql:17–23`)已存在。原稿 §3.6 已把"逐条投影"列为非目标,该列失去唯一的向前用途。顺带发现:该查询无 team_id 过滤,独立问题。
 
 **H. ACP(A.2 第 7 行)**
-- P5 根因证据链:`acp/profile/profile.go` 中 codex `DefaultReasoningEffort: "medium"`(≈213)、claude-code `"high"`(≈251);`session_pool.go:1617` 把它放进 `StartRequest`;`acp/client/session.go:403` 在**每次 spawn** 后无条件 `SetReasoningEffort(默认)`。picker 的选择只经 `PATCH acp-runtime/reasoning` 打到活体进程,Memoh 侧无任何持久化;进程重建即回退。
+- P5 根因证据链:`acp/profile/profile.go` 中 codex `DefaultReasoningEffort: "medium"`(≈213)、claude-code `"high"`(≈251);`session_pool.go:1617` 把它放进 `StartRequest`;`acp/client/session.go:403` 在**每次 spawn** 后无条件 `SetReasoningEffort(默认)`。picker 的选择只经 `PATCH acp-runtime/reasoning` 打到活体进程,Ami 侧无任何持久化;进程重建即回退。
 - 不能进两列的证据:ACP 模型 id 是 agent 命名空间字符串(`acpRuntimeModelRequest.ModelID`,`acp_runtime.go:55`;schedule 亦区分 `ModelID` 与 `ACPModelID`,`schedule/execution.go:51,58`),`preferred_chat_model_id` 是 `models(id)` UUID 外键。
 - 选 `runtime_metadata` 的依据:ACP 会话配置(`acp_agent_id`/`project_path`/`acp_project_mode`/`runtime_owner_account_id`)已全部集中在此(`thread/service.go:1602–1604 mergeACPMetadata`),读侧 `service_acp.go:76,115` 已按此取值。否决 `acp_session_states`:它是 JSONL 转录快照的索引表(迁移 0138),按 run 版本化,不是会话配置的家。
 

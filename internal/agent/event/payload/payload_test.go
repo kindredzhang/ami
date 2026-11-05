@@ -5,7 +5,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/background"
 )
 
 // TestBackgroundTaskHasTopLevelSessionID pins the wire shape the SSE

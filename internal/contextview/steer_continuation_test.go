@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	native "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/step"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	native "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/step"
 )
 
 func TestFinalSteerSurvivesProductionContextCompilationAndStepCapture(t *testing.T) {

@@ -7,9 +7,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/team"
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/team"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 // openInstrumented opens a pool with the query tracer installed and its
@@ -42,19 +42,19 @@ func OpenPostgres(ctx context.Context, cfg config.PostgresConfig) (*pgxpool.Pool
 		return nil, err
 	}
 	// Bind the singleton team on every new connection. Team business queries
-	// scope themselves with public.memoh_current_team_id(), which fail-closed raises if
-	// memoh.team_id is unset. Upstream is single-team, so we set the default
+	// scope themselves with public.ami_current_team_id(), which fail-closed raises if
+	// ami.team_id is unset. Upstream is single-team, so we set the default
 	// team at the session level here.
 	poolCfg.AfterConnect = SetDefaultTeamOnConnect
 	return openInstrumented(ctx, poolCfg)
 }
 
 // SetDefaultTeamOnConnect is a pgxpool AfterConnect hook that binds the
-// singleton team GUC (memoh.team_id) at the session level. It is exported so
+// singleton team GUC (ami.team_id) at the session level. It is exported so
 // single-team test harnesses can install it on their own pools, matching the
 // production connection setup.
 func SetDefaultTeamOnConnect(ctx context.Context, conn *pgx.Conn) error {
-	_, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID)
+	_, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID)
 	return err
 }
 

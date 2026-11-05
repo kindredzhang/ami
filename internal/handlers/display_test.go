@@ -67,7 +67,7 @@ func readDisplayScript(t *testing.T, name string) string {
 func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 	t.Parallel()
 
-	if got := displayPrepareCommand(); got != "/bin/sh /opt/memoh/scripts/display-prepare.sh" {
+	if got := displayPrepareCommand(); got != "/bin/sh /opt/ami/scripts/display-prepare.sh" {
 		t.Fatalf("displayPrepareCommand() = %q", got)
 	}
 	prepareScript := readDisplayScript(t, "display-prepare.sh")
@@ -75,7 +75,7 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 	installScript := readDisplayScript(t, "desktop-install.sh")
 	applyScript := readDisplayScript(t, "display-apply-style.sh")
 	cmd := strings.Join([]string{prepareScript, styleScript, installScript, applyScript}, "\n")
-	if strings.Contains(prepareScript, "cat >/tmp/memoh-") {
+	if strings.Contains(prepareScript, "cat >/tmp/ami-") {
 		t.Fatal("display prepare must not inject scripts at runtime")
 	}
 	if strings.Contains(prepareScript, "desktop-install.sh") || strings.Contains(prepareScript, "apt-get install") || strings.Contains(prepareScript, "apk add") {
@@ -90,14 +90,14 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 	if !strings.Contains(cmd, "configure_topbar()") || !strings.Contains(cmd, "windowck-plugin") || !strings.Contains(cmd, "appmenu") {
 		t.Fatal("injected style script must define macOS-like topbar styling")
 	}
-	if !strings.Contains(cmd, "memoh-logo-white") || strings.Contains(cmd, "memoh-apple-symbol") {
-		t.Fatal("injected style script must use the white Memoh logo for the topbar menu icon")
+	if !strings.Contains(cmd, "ami-logo-white") || strings.Contains(cmd, "ami-apple-symbol") {
+		t.Fatal("injected style script must use the white Ami logo for the topbar menu icon")
 	}
-	if !strings.Contains(cmd, "memoh_logo_png_base64()") ||
-		!strings.Contains(cmd, "memoh-logo-white.png") ||
+	if !strings.Contains(cmd, "ami_logo_png_base64()") ||
+		!strings.Contains(cmd, "ami-logo-white.png") ||
 		!strings.Contains(cmd, "/usr/share/icons/hicolor/48x48/apps") ||
 		!strings.Contains(cmd, "base64 -d") {
-		t.Fatal("injected style script must install a PNG Memoh logo fallback for panels without SVG icon loading")
+		t.Fatal("injected style script must install a PNG Ami logo fallback for panels without SVG icon loading")
 	}
 	if !strings.Contains(cmd, "xfconf_replace_int_array xfce4-panel /panels 1") || !strings.Contains(cmd, "restart_xfce_panel()") {
 		t.Fatal("injected style script must remove the default Xfce bottom panel")
@@ -128,7 +128,7 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 	filesLauncherIndex := strings.Index(cmd, `write_desktop_file "$file" "Files" "$icon"`)
 	thunarFallbackIndex := strings.Index(cmd, `/usr/share/applications/thunar.desktop`)
 	if filesIndex < 0 || filesLauncherIndex < filesIndex || thunarFallbackIndex < filesLauncherIndex ||
-		!strings.Contains(cmd, "Memoh-WhiteSur-dark") ||
+		!strings.Contains(cmd, "Ami-WhiteSur-dark") ||
 		!strings.Contains(cmd, "global_theme_dir") ||
 		!strings.Contains(cmd, "install_file_manager_icon_aliases") ||
 		!strings.Contains(cmd, "file_manager_icon_path()") ||
@@ -137,24 +137,24 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 		!strings.Contains(cmd, "org.xfce.thunar") ||
 		!strings.Contains(cmd, "inode-directory") ||
 		!strings.Contains(cmd, "text-x-generic.svg") ||
-		!strings.Contains(cmd, `require_xfconf_value xsettings /Net/IconThemeName Memoh-WhiteSur-dark`) ||
+		!strings.Contains(cmd, `require_xfconf_value xsettings /Net/IconThemeName Ami-WhiteSur-dark`) ||
 		!strings.Contains(cmd, "restart_file_manager()") ||
-		strings.Contains(cmd, "memoh_files_icon_png_base64") ||
-		strings.Contains(cmd, "write_memoh_files_icon_png") {
+		strings.Contains(cmd, "ami_files_icon_png_base64") ||
+		strings.Contains(cmd, "write_ami_files_icon_png") {
 		t.Fatal("injected style script must use a custom Files launcher and a WhiteSur-backed icon theme overlay")
 	}
 	if !strings.Contains(installScript, "install_style_extras_for_current_os") {
 		t.Fatal("image build installer must include styling assets")
 	}
-	if !strings.Contains(prepareScript, "/opt/memoh/scripts/display-apply-style.sh --check") ||
-		!strings.Contains(prepareScript, "/opt/memoh/scripts/display-apply-style.sh --ensure") {
+	if !strings.Contains(prepareScript, "/opt/ami/scripts/display-apply-style.sh --check") ||
+		!strings.Contains(prepareScript, "/opt/ami/scripts/display-apply-style.sh --ensure") {
 		t.Fatal("display prepare must call the image-provided style helper")
 	}
 	if !strings.Contains(prepareScript, `desktop_style_current()`) ||
-		!strings.Contains(prepareScript, `/bin/sh /opt/memoh/scripts/display-apply-style.sh --check`) {
+		!strings.Contains(prepareScript, `/bin/sh /opt/ami/scripts/display-apply-style.sh --check`) {
 		t.Fatal("display prepare readiness must include the desktop style marker")
 	}
-	if strings.Contains(prepareScript, `nohup /bin/sh /opt/memoh/scripts/desktop-style.sh`) {
+	if strings.Contains(prepareScript, `nohup /bin/sh /opt/ami/scripts/desktop-style.sh`) {
 		t.Fatal("display prepare must not apply desktop style asynchronously")
 	}
 	styleIndex := strings.Index(prepareScript, `progress 90 styling "Applying desktop style"`)
@@ -163,13 +163,13 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 	if styleIndex < 0 || browserIndex < 0 || styleIndex > browserIndex || browserIndex > completeIndex {
 		t.Fatal("display prepare must apply desktop style synchronously before browser launch and completion")
 	}
-	if !strings.Contains(prepareScript, `/bin/sh /opt/memoh/scripts/display-apply-style.sh --ensure`) {
+	if !strings.Contains(prepareScript, `/bin/sh /opt/ami/scripts/display-apply-style.sh --ensure`) {
 		t.Fatal("display prepare must ensure the current style version before reporting ready")
 	}
 	if !strings.Contains(cmd, "SUDO_USER") || !strings.Contains(cmd, "sudo git unzip bash") {
 		t.Fatal("display prepare must support WhiteSur's installer in non-login root containers")
 	}
-	if !strings.Contains(cmd, "MEMOH_DISPLAY_INSTALL_ASSETS_GLOBAL") ||
+	if !strings.Contains(cmd, "AMI_DISPLAY_INSTALL_ASSETS_GLOBAL") ||
 		!strings.Contains(cmd, "/usr/local/share/themes") ||
 		!strings.Contains(cmd, "/usr/local/share/icons") ||
 		!strings.Contains(cmd, "/usr/local/share/backgrounds/WhiteSur") ||
@@ -225,7 +225,7 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 	if !strings.Contains(prepareScript, "-localhost -rfbport \"$RFB_PORT\"") {
 		t.Fatal("display prepare must keep VNC on container loopback")
 	}
-	if !strings.Contains(prepareScript, `XVNC_GEOMETRY="${MEMOH_DISPLAY_GEOMETRY:-1280x960}"`) {
+	if !strings.Contains(prepareScript, `XVNC_GEOMETRY="${AMI_DISPLAY_GEOMETRY:-1280x960}"`) {
 		t.Fatal("display prepare must default to the 4:3 desktop geometry")
 	}
 	if !strings.Contains(prepareScript, `-geometry "$XVNC_GEOMETRY"`) {
@@ -236,16 +236,16 @@ func TestDisplayPrepareCommandUsesImageScripts(t *testing.T) {
 func TestDisplayApplyStyleCommandUsesImageScripts(t *testing.T) {
 	t.Parallel()
 
-	if got := displayApplyStyleCommand(); got != "/bin/sh /opt/memoh/scripts/display-apply-style.sh --if-needed" {
+	if got := displayApplyStyleCommand(); got != "/bin/sh /opt/ami/scripts/display-apply-style.sh --if-needed" {
 		t.Fatalf("displayApplyStyleCommand() = %q", got)
 	}
 	applyScript := readDisplayScript(t, "display-apply-style.sh")
 	styleScript := readDisplayScript(t, "desktop-style.sh")
 	cmd := applyScript + "\n" + styleScript
-	if strings.Contains(cmd, "cat >/tmp/memoh-") || strings.Contains(cmd, "desktop-install.sh") {
+	if strings.Contains(cmd, "cat >/tmp/ami-") || strings.Contains(cmd, "desktop-install.sh") {
 		t.Fatal("display style apply must not inject scripts or install packages at runtime")
 	}
-	if !strings.Contains(applyScript, `desktop_style_script="${MEMOH_DESKTOP_STYLE_SCRIPT:-/opt/memoh/scripts/desktop-style.sh}"`) ||
+	if !strings.Contains(applyScript, `desktop_style_script="${AMI_DESKTOP_STYLE_SCRIPT:-/opt/ami/scripts/desktop-style.sh}"`) ||
 		!strings.Contains(applyScript, `/bin/sh "$desktop_style_script"`) {
 		t.Fatal("display style command must run the image-provided desktop style script")
 	}
@@ -254,7 +254,7 @@ func TestDisplayApplyStyleCommandUsesImageScripts(t *testing.T) {
 		!strings.Contains(cmd, "style_is_current") {
 		t.Fatal("display style command must gate retries with a versioned marker")
 	}
-	if !strings.Contains(cmd, "style_lock=/tmp/memoh-desktop-style.lock") ||
+	if !strings.Contains(cmd, "style_lock=/tmp/ami-desktop-style.lock") ||
 		!strings.Contains(cmd, "acquire_style_lock") {
 		t.Fatal("display style command must serialize style application with a lock")
 	}
@@ -285,14 +285,14 @@ func TestDisplayApplyStyleCommandUsesImageScripts(t *testing.T) {
 	if strings.Contains(applyScript, "apt-get install") || strings.Contains(applyScript, "apk add") {
 		t.Fatal("display style helper must rely on image-baked assets")
 	}
-	if !strings.Contains(cmd, "memoh-logo-white") || strings.Contains(cmd, "memoh-apple-symbol") {
-		t.Fatal("display style command must use the white Memoh logo for the topbar menu icon")
+	if !strings.Contains(cmd, "ami-logo-white") || strings.Contains(cmd, "ami-apple-symbol") {
+		t.Fatal("display style command must use the white Ami logo for the topbar menu icon")
 	}
-	if !strings.Contains(cmd, "memoh_logo_png_base64()") ||
-		!strings.Contains(cmd, "memoh-logo-white.png") ||
+	if !strings.Contains(cmd, "ami_logo_png_base64()") ||
+		!strings.Contains(cmd, "ami-logo-white.png") ||
 		!strings.Contains(cmd, "/usr/share/icons/hicolor/48x48/apps") ||
 		!strings.Contains(cmd, "base64 -d") {
-		t.Fatal("display style command must install a PNG Memoh logo fallback for panels without SVG icon loading")
+		t.Fatal("display style command must install a PNG Ami logo fallback for panels without SVG icon loading")
 	}
 	if !strings.Contains(cmd, "xfconf_replace_int_array xfce4-panel /panels 1") || !strings.Contains(cmd, "restart_xfce_panel()") {
 		t.Fatal("display style command must remove the default Xfce bottom panel")
@@ -313,7 +313,7 @@ func TestDisplayApplyStyleCommandUsesImageScripts(t *testing.T) {
 		t.Fatal("display style command must pin the dock browser launcher to a Chromium wrapper with an isolated profile")
 	}
 	if !strings.Contains(cmd, `write_desktop_file "$file" "Files" "$icon"`) ||
-		!strings.Contains(cmd, "Memoh-WhiteSur-dark") ||
+		!strings.Contains(cmd, "Ami-WhiteSur-dark") ||
 		!strings.Contains(cmd, "global_theme_dir") ||
 		!strings.Contains(cmd, "install_file_manager_icon_aliases") ||
 		!strings.Contains(cmd, "file_manager_icon_path()") ||
@@ -324,8 +324,8 @@ func TestDisplayApplyStyleCommandUsesImageScripts(t *testing.T) {
 		!strings.Contains(cmd, "text-x-generic.svg") ||
 		!strings.Contains(cmd, "verify_file_manager_style()") ||
 		!strings.Contains(cmd, "restart_file_manager()") ||
-		strings.Contains(cmd, "memoh_files_icon_png_base64") ||
-		strings.Contains(cmd, "write_memoh_files_icon_png") {
+		strings.Contains(cmd, "ami_files_icon_png_base64") ||
+		strings.Contains(cmd, "write_ami_files_icon_png") {
 		t.Fatal("display style command must configure the Files launcher and file-manager icon theme")
 	}
 }
@@ -333,7 +333,7 @@ func TestDisplayApplyStyleCommandUsesImageScripts(t *testing.T) {
 func TestDisplayStyleStatusCommandChecksVersionMarker(t *testing.T) {
 	t.Parallel()
 
-	if got := displayStyleStatusCommand(); got != "/bin/sh /opt/memoh/scripts/display-apply-style.sh --check" {
+	if got := displayStyleStatusCommand(); got != "/bin/sh /opt/ami/scripts/display-apply-style.sh --check" {
 		t.Fatalf("displayStyleStatusCommand() = %q", got)
 	}
 	cmd := readDisplayScript(t, "display-apply-style.sh")
@@ -343,7 +343,7 @@ func TestDisplayStyleStatusCommandChecksVersionMarker(t *testing.T) {
 	if !strings.Contains(cmd, "style_version='2026-07-22.1'") {
 		t.Fatal("style status command must check the current style version")
 	}
-	if !strings.Contains(cmd, "MEMOH_DISPLAY_DESKTOP_STYLE") {
+	if !strings.Contains(cmd, "AMI_DISPLAY_DESKTOP_STYLE") {
 		t.Fatal("style status command must treat disabled desktop styling as current")
 	}
 }
@@ -356,17 +356,17 @@ func TestWorkspaceDockerfileInstallsDisplayAssetsGlobally(t *testing.T) {
 		t.Fatalf("read workspace Dockerfile: %v", err)
 	}
 	dockerfile := string(data)
-	if !strings.Contains(dockerfile, "COPY scripts/desktop-install.sh /tmp/memoh-desktop-install.sh") {
+	if !strings.Contains(dockerfile, "COPY scripts/desktop-install.sh /tmp/ami-desktop-install.sh") {
 		t.Fatal("workspace Dockerfile must install display assets through the shared install script")
 	}
-	if !strings.Contains(dockerfile, "MEMOH_DISPLAY_INSTALL_ASSETS_GLOBAL=1") {
+	if !strings.Contains(dockerfile, "AMI_DISPLAY_INSTALL_ASSETS_GLOBAL=1") {
 		t.Fatal("workspace Dockerfile must bake static display style assets into global image paths")
 	}
-	if !strings.Contains(dockerfile, "MEMOH_TOOLKIT_GLIBC_ONLY=1") ||
-		!strings.Contains(dockerfile, "COPY --from=toolkit-builder /opt/memoh/toolkit /opt/memoh/toolkit") {
+	if !strings.Contains(dockerfile, "AMI_TOOLKIT_GLIBC_ONLY=1") ||
+		!strings.Contains(dockerfile, "COPY --from=toolkit-builder /opt/ami/toolkit /opt/ami/toolkit") {
 		t.Fatal("workspace Dockerfile must own the canonical glibc toolkit")
 	}
-	if !strings.Contains(dockerfile, "COPY scripts/desktop-style.sh scripts/display-apply-style.sh scripts/display-prepare.sh /opt/memoh/scripts/") {
+	if !strings.Contains(dockerfile, "COPY scripts/desktop-style.sh scripts/display-apply-style.sh scripts/display-prepare.sh /opt/ami/scripts/") {
 		t.Fatal("workspace Dockerfile must provide immutable display scripts")
 	}
 }

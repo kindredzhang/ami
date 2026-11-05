@@ -13,7 +13,7 @@ rpc_listen_addr = ":9091"
 
 [internal_rpc]
 # Docker compose runs the split deployment: the secret arrives via
-# MEMOH_INTERNAL_RPC_SHARED_SECRET (see docker-compose.yml). An empty value
+# AMI_INTERNAL_RPC_SHARED_SECRET (see docker-compose.yml). An empty value
 # here would fall back to the embedded all-in-one mode.
 server_target = "server:9090"
 channel_target = "channel:9091"
@@ -32,7 +32,7 @@ metrics_url = ""
 [admin]
 username = "admin"
 password = "admin123"
-email = "admin@memoh.local"
+email = "admin@ami.local"
 
 ## Auth configuration
 [auth]
@@ -43,7 +43,7 @@ agent_credentials_encryption_key = ""
 timezone = "UTC"
 
 [database]
-# Memoh now supports PostgreSQL only.
+# Ami now supports PostgreSQL only.
 driver = "postgres"
 
 [container]
@@ -51,17 +51,17 @@ driver = "postgres"
 # change this to "docker" inside Compose unless you also provide host-valid
 # runtime bind mounts and Docker socket access.
 backend = "containerd"
-# registry = "memoh.cn"  # Uncomment for China mainland mirror
-default_image = "memohai/workspace:debian-latest"
+# registry = "ami.cn"  # Uncomment for China mainland mirror
+default_image = "amiai/workspace:debian-latest"
 image_pull_policy = "if_not_present"
 # containerd snapshotter and CNI settings for bot workspace containers.
 snapshotter = "overlayfs"
-data_root = "/opt/memoh/data"
-bridge_path = "/opt/memoh/runtime/bridge"
+data_root = "/opt/ami/data"
+bridge_path = "/opt/ami/runtime/bridge"
 
 ## Workspace containerd configuration
 [containerd]
-# Embedded containerd socket inside the memoh-server container.
+# Embedded containerd socket inside the ami-server container.
 socket_path = "/run/containerd/containerd.sock"
 namespace = "default"
 
@@ -73,7 +73,7 @@ host = ""
 # Docker-backend server and its workspace containers. Requires
 # [bridge_tls].mode = "strict".
 network = ""
-# Container ID or unique name of this Memoh server on the configured Docker
+# Container ID or unique name of this Ami server on the configured Docker
 # daemon. Required together with network.
 server_container = ""
 
@@ -81,9 +81,9 @@ server_container = ""
 [postgres]
 host = "postgres"
 port = 5432
-user = "memoh"
-password = "memoh123"
-database = "memoh"
+user = "ami"
+password = "ami123"
+database = "ami"
 sslmode = "disable"
 
 ## pgvector auxiliary index database. The main Postgres service remains the
@@ -92,9 +92,9 @@ sslmode = "disable"
 enabled = true
 host = "pgvector"
 port = 5432
-user = "memoh"
-password = "memoh123"
-database = "memoh_vector"
+user = "ami"
+password = "ami123"
+database = "ami_vector"
 sslmode = "disable"
 
 [registry]
@@ -106,7 +106,7 @@ base_url = "https://supermarket.memoh.ai"
 [connect_it]
 # Co-hosted Connect-It (docker compose --profile connectors). The install
 # script generates the credentials and the Compose environment overrides
-# these values via MEMOH_CONNECT_IT_BASE_URL / MEMOH_CONNECT_IT_API_TOKEN;
+# these values via AMI_CONNECT_IT_BASE_URL / AMI_CONNECT_IT_API_TOKEN;
 # leave both empty to disable the connectors feature.
 base_url = ""
 api_token = ""

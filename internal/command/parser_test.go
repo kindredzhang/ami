@@ -21,7 +21,7 @@ func TestParse_Basic(t *testing.T) {
 		{"  /settings  ", "settings", "", nil},
 		{"/HELP", "help", "", nil},
 		{"/Schedule List", "schedule", "list", nil},
-		{"/help@MemohBot", "help", "", nil},
+		{"/help@AmiBot", "help", "", nil},
 		{"/schedule@BotName list", "schedule", "list", nil},
 	}
 	for _, tt := range tests {

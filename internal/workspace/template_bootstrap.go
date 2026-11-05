@@ -8,14 +8,14 @@ import (
 	"path"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
 	defaultWorkspaceBootstrapRoot = "/data"
 	workspaceAgentsFileName       = "AGENTS.md"
 	legacyIdentityFileName        = "IDENTITY.md"
-	managedWorkspaceSkillsDir     = ".memoh/skills"
+	managedWorkspaceSkillsDir     = ".ami/skills"
 	templateKeepFileName          = ".gitkeep"
 )
 
@@ -32,7 +32,7 @@ type WorkspaceFileInfo struct {
 
 // WorkspaceFileSystem is the minimal filesystem contract needed to seed a
 // workspace. Container workspaces adapt bridge.Client; future providers such as
-// E2B can implement this contract directly without running the Memoh bridge.
+// E2B can implement this contract directly without running the Ami bridge.
 // Implementations must return an error matching fs.ErrNotExist for a missing
 // path and make Mkdir recursive.
 type WorkspaceFileSystem interface {

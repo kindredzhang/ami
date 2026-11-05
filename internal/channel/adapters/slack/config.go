@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // Config holds the Slack bot credentials extracted from a channel configuration.

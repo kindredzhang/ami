@@ -677,7 +677,7 @@ import SearchableSelectPopover from '@/components/searchable-select-popover/inde
 import BotUserAccess from './bot-user-access.vue'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { channelTypeDisplayName } from '@/utils/channel-type-label'
-import type { AclObservedConversationCandidate, AclRule, AclSourceScope, ChannelaccessManager, HandlersChannelMeta } from '@memohai/sdk'
+import type { AclObservedConversationCandidate, AclRule, AclSourceScope, ChannelaccessManager, HandlersChannelMeta } from '@ami/sdk'
 import {
   getChannels,
   getBotsByBotIdAclRules,
@@ -691,7 +691,7 @@ import {
   getBotsByBotIdChannelManagers,
   postBotsByBotIdChannelManagers,
   deleteBotsByBotIdChannelManagersByChannelIdentityId,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 const props = defineProps<{
   botId: string

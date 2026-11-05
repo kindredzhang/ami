@@ -13,11 +13,11 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/dbtest"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/dbtest"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 var (
@@ -449,21 +449,21 @@ func openRuntimeFencePostgresPool(t *testing.T, ctx context.Context) *pgxpool.Po
 	t.Helper()
 	dsn := os.Getenv("TEST_POSTGRES_DSN")
 	if dsn == "" {
-		if os.Getenv("MEMOH_TEST_POSTGRES_REQUIRED") == "1" {
+		if os.Getenv("AMI_TEST_POSTGRES_REQUIRED") == "1" {
 			t.Fatal("postgres runtime fence tests are required, but TEST_POSTGRES_DSN is not set")
 		}
 		t.Skip("skip postgres runtime fence test: TEST_POSTGRES_DSN is not set")
 	}
 	pool, err := dbpkg.OpenPostgresDSN(ctx, dsn)
 	if err != nil {
-		if os.Getenv("MEMOH_TEST_POSTGRES_REQUIRED") == "1" {
+		if os.Getenv("AMI_TEST_POSTGRES_REQUIRED") == "1" {
 			t.Fatalf("create required postgres pool: %v", err)
 		}
 		t.Skipf("skip postgres runtime fence test: cannot connect to database: %v", err)
 	}
 	t.Cleanup(pool.Close)
 	if err := pool.Ping(ctx); err != nil {
-		if os.Getenv("MEMOH_TEST_POSTGRES_REQUIRED") == "1" {
+		if os.Getenv("AMI_TEST_POSTGRES_REQUIRED") == "1" {
 			t.Fatalf("required postgres ping failed: %v", err)
 		}
 		t.Skipf("skip postgres runtime fence test: database ping failed: %v", err)

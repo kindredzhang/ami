@@ -12,16 +12,16 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-// TLSOptions 配置 Memoh Server → bridge 的 TCP gRPC mTLS（设计 §8.2）。
+// TLSOptions 配置 Ami Server → bridge 的 TCP gRPC mTLS（设计 §8.2）。
 // nil 表示 disabled（开源/本地默认）。strict 下握手或身份校验失败一律拒绝，
 // 不回退明文；UDS target 不论 mode 始终走本地信任模型（insecure）。
 type TLSOptions struct {
-	// ServerName 是 synthetic TLS ServerName（memoh-bridge.<instance-id>.bridge.memoh.internal）。
+	// ServerName 是 synthetic TLS ServerName（ami-bridge.<instance-id>.bridge.ami.internal）。
 	// 连接目标是 PodIP（或 port-forward 的 localhost），证书校验必须用稳定名字
 	// 而不是关闭 hostname verification。
 	ServerName string
 	// ExpectedServerURI 是 bridge server cert 必须携带的 URI SAN
-	// （spiffe://memoh/instance/<instance-id>/bridge）。
+	// （spiffe://ami/instance/<instance-id>/bridge）。
 	ExpectedServerURI string
 	ClientCertFile    string
 	ClientKeyFile     string

@@ -62,7 +62,7 @@ $schedule_acp_fields_check$;
 -- Native model runtime, remove scheduled execution, archive the old sessions,
 -- and tombstone persisted Agent rows. Generic/custom ACP Agents are untouched.
 --
--- These tables use FORCE RLS keyed on memoh.team_id, which a migration
+-- These tables use FORCE RLS keyed on ami.team_id, which a migration
 -- connection never sets. Lift the policies for the cleanup and restore them
 -- before leaving the migration.
 ALTER TABLE bot_agents NO FORCE ROW LEVEL SECURITY;

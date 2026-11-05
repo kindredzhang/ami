@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/apps"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/apps"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 // Capability messages explain the structured result to the model. Stable

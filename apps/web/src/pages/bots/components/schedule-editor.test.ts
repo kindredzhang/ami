@@ -4,7 +4,7 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, nextTick, type App } from 'vue'
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key, locale: { value: 'en' } }) }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsByBotIdSettings: vi.fn().mockResolvedValue({ data: {} }),
   postBotsByBotIdSchedule: vi.fn().mockResolvedValue({}),
   putBotsByBotIdScheduleById: vi.fn().mockResolvedValue({}),
@@ -34,7 +34,7 @@ vi.mock('@felinic/ui', () => {
 })
 
 import ScheduleEditor from './schedule-editor.vue'
-import { postBotsByBotIdSchedule, putBotsByBotIdScheduleById } from '@memohai/sdk'
+import { postBotsByBotIdSchedule, putBotsByBotIdScheduleById } from '@ami/sdk'
 let app: App
 let root: HTMLDivElement
 afterEach(() => { app?.unmount(); root?.remove(); vi.clearAllMocks() })

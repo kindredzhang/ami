@@ -85,7 +85,7 @@ test('classification failure does not invent a format error or remove prior scop
   assert.ok(!m.calls.some(c=>c.name==='addLabels' && c.args.labels.includes('needs:format')));
 });
 test('fixed descriptions update the existing bot comment instead of posting another',async()=>{
-  const m=mock({comments:[{id:5,user:{login:'github-actions[bot]'},body:'<!-- memoh-contribution-format:v1 -->\nPrevious error'}]});
+  const m=mock({comments:[{id:5,user:{login:'github-actions[bot]'},body:'<!-- ami-contribution-format:v1 -->\nPrevious error'}]});
   await inspectPR(m,1);
   assert.equal(m.calls.filter(c=>c.name==='updateComment').length,1);
   assert.equal(m.calls.filter(c=>c.name==='createComment').length,0);
@@ -113,7 +113,7 @@ test('legacy gate requires no API status, body validation, or controller wait', 
 
 test('format feedback uses English for invalid and corrected PRs', async () => {
   for (const fresh of [{...pr, body: ''}, pr]) {
-    const m = mock({fresh, comments: [{id: 5, user: {login: 'github-actions[bot]'}, body: '<!-- memoh-contribution-format:v1 -->\nPrevious feedback'}]});
+    const m = mock({fresh, comments: [{id: 5, user: {login: 'github-actions[bot]'}, body: '<!-- ami-contribution-format:v1 -->\nPrevious feedback'}]});
     await inspectPR(m, 1);
     const comment = m.calls.find(call => call.name === 'updateComment').args.body;
     assert.match(comment, fresh.body ? /Format check passed/ : /Please complete/);

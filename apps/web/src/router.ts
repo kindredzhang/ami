@@ -41,7 +41,7 @@ router.beforeEach(async (to) => {
   // Dev component wall: only reachable in dev builds with the flag set.
   if (to.path.startsWith('/dev/')) {
     return import.meta.env.DEV
-      && localStorage.getItem('memoh:dev-tools') === '1'
+      && localStorage.getItem('ami:dev-tools') === '1'
       ? true
       : { path: '/' }
   }

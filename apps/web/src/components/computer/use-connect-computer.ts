@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@pinia/colada'
-import { postUsersMeRuntimes, type UserruntimeRuntime } from '@memohai/sdk'
+import { postUsersMeRuntimes, type UserruntimeRuntime } from '@ami/sdk'
 import { toast } from '@felinic/ui'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { useAccountRuntimes } from './use-computer-access'

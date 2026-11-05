@@ -2,7 +2,7 @@ import {
   postBotsByBotIdDependenciesByDepIdInstall,
   postBotsByBotIdDependenciesByDepIdReinstall,
   postBotsByBotIdDependenciesByDepIdUpdate,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import {
   fetchSSEProblem,
   isSSEErrorEvent,

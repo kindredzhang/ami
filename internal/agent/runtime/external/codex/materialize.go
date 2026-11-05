@@ -9,10 +9,10 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
-const codexManagedConfigHeader = "# Managed by Memoh. Changes are overwritten when this Agent starts.\n"
+const codexManagedConfigHeader = "# Managed by Ami. Changes are overwritten when this Agent starts.\n"
 
 type codexConfigWriter interface {
 	WriteFile(ctx context.Context, path string, content []byte) error

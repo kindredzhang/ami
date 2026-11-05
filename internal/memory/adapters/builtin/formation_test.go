@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 // fakeLLM implements adapters.LLM for testing the formation pipeline.

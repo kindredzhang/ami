@@ -1,6 +1,6 @@
 package slash
 
-import "github.com/felinics/memoh/internal/apperror"
+import "github.com/kindredzhang/ami/internal/apperror"
 
 // Refusals of a slash request. Each is the catalog code the refusal is
 // answered with, on the Web composer and in IM channels alike.

@@ -49,7 +49,7 @@ vi.mock('@pinia/colada', async () => {
   }
 })
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   deleteModelsById: mocks.deleteModel,
   getProvidersByIdModels: mocks.getProviderModels,
   getProvidersNameByName: mocks.getProviderByName,

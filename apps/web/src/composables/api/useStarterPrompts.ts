@@ -6,7 +6,7 @@ import {
   postBotsByBotIdStarterPromptsRefresh,
   type HandlersStarterPrompt,
   type HandlersStarterPromptsResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 export type StarterPrompt = HandlersStarterPrompt
 

@@ -103,7 +103,7 @@ import {
   postBotsByBotIdAgents,
   type AcpprofilePublicProfile,
   type BotagentsBotAgent,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import SearchableSelectPopover from '@/components/searchable-select-popover/index.vue'
 import { useDialogMutation } from '@/composables/useDialogMutation'
 import { UserFacingError } from '@/utils/api-error'

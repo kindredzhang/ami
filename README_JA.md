@@ -5,15 +5,15 @@
 </div>
 
 <div align="center">
-  <img src="./assets/logo.png" alt="Memoh" height="80">
-  <h1>Memoh</h1>
+  <img src="./assets/logo.png" alt="Ami" height="80">
+  <h1>Ami</h1>
   <p>すべての AI Agent に専用のクラウドコンピューターを。オープンソース。<br>
   Desktop、Browser、ネットワーク、長期記憶 — ノートパソコンを閉じても Agent は止まりません。</p>
   <div align="center">
-    <img src="https://img.shields.io/github/package-json/v/felinics/Memoh" alt="Version" />
-    <img src="https://img.shields.io/github/stars/felinics/Memoh?style=social" alt="Stars" />
-    <img src="https://img.shields.io/github/forks/felinics/Memoh?style=social" alt="Forks" />
-    <a href="https://deepwiki.com/felinics/Memoh">
+    <img src="https://img.shields.io/github/package-json/v/kindredzhang/ami" alt="Version" />
+    <img src="https://img.shields.io/github/stars/kindredzhang/ami?style=social" alt="Stars" />
+    <img src="https://img.shields.io/github/forks/kindredzhang/ami?style=social" alt="Forks" />
+    <a href="https://deepwiki.com/kindredzhang/ami">
       <img src="https://deepwiki.com/badge.svg" alt="DeepWiki" />
     </a>
     <a href="https://t.me/memohai">
@@ -23,20 +23,20 @@
   <h3>
     <a href="https://app.memoh.net">Login</a> · <a href="#self-hosted">Self-hosted</a> · <a href="https://docs.memoh.ai">Docs</a> · <a href="https://memoh.ai">Website</a> · <a href="https://x.com/memoh_ai">X</a>
   </h3>
-  <img src="./assets/hero.png" alt="Memoh" width="1000">
+  <img src="./assets/hero.png" alt="Ami" width="1000">
 </div>
 
-## Memoh とは？
+## Ami とは？
 
-Memoh はオープンソースのマルチ Agent プラットフォームです。各 Agent には専用のクラウドコンピューターが割り当てられます — ファイルシステム、Desktop、Browser、ネットワーク、長期記憶を備えた独立した Workspace です。ノートパソコンを閉じても Agent は 24 時間稼働し続けます。
+Ami はオープンソースのマルチ Agent プラットフォームです。各 Agent には専用のクラウドコンピューターが割り当てられます — ファイルシステム、Desktop、Browser、ネットワーク、長期記憶を備えた独立した Workspace です。ノートパソコンを閉じても Agent は 24 時間稼働し続けます。
 
-自分の API Key で Memoh 組み込みの Agent を動かすだけでなく、既存の Claude Code や Codex Agent を Memoh Workspace にホストすることもできます。
+自分の API Key で Ami 組み込みの Agent を動かすだけでなく、既存の Claude Code や Codex Agent を Ami Workspace にホストすることもできます。
 
 Telegram、Discord、Lark、WeChat、Web UI などから Agent と会話できます。セッションやプラットフォームをまたいで文脈を記憶し、Browser を操作し、MCP ツールを呼び出し、スケジュールタスクを実行します。自分用に 1 つ、チームメンバーごとに 1 つ、あるいは複数の Agent をまとめて起動できます。
 
 ## はじめに
 
-### Memoh Cloud
+### Ami Cloud
 
 [app.memoh.net](https://app.memoh.net) で、今すぐアカウントを登録・ログインできます。
 
@@ -54,11 +54,11 @@ curl -fsSL https://memoh.sh | sh
 手動でデプロイする場合:
 
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/felinics/Memoh.git
-cd Memoh
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/kindredzhang/ami.git
+cd Ami
 cp conf/app.docker.toml config.toml
 # config.toml を編集
-export MEMOH_INTERNAL_RPC_SHARED_SECRET="$(openssl rand -hex 32)"
+export AMI_INTERNAL_RPC_SHARED_SECRET="$(openssl rand -hex 32)"
 docker compose up -d
 ```
 
@@ -66,14 +66,14 @@ Compose は Server と Channel を別々のサービスとして起動します�
 
 分離デプロイでは、Channel は認証付きの内部 Storage RPC を通じてメディアをストリーミングで読み書きします。Workspace とメディアストレージへのアクセスが必要なのは Server だけです。アップグレード時は Server、Channel の順に更新し、Storage サービスが利用できる状態にしてください。
 
-Docker を使わない場合（既存のベアメタル環境からのアップグレードを含む）は、`config.toml` の `internal_rpc.shared_secret` を空のままにしてください。Server が Channel ランタイムを内蔵し、外部チャネル・webhook エンドポイントを含めて単一プロセスの all-in-one として動作し続けます。`memoh-channel` プロセスは不要です。secret を設定すると 2 プロセスの分離デプロイに切り替わります。
+Docker を使わない場合（既存のベアメタル環境からのアップグレードを含む）は、`config.toml` の `internal_rpc.shared_secret` を空のままにしてください。Server が Channel ランタイムを内蔵し、外部チャネル・webhook エンドポイントを含めて単一プロセスの all-in-one として動作し続けます。`ami-channel` プロセスは不要です。secret を設定すると 2 プロセスの分離デプロイに切り替わります。
 
 setup 済みの既存 checkout では、引き続き `git pull` を使用できます。post-merge hook
 が新しい submodule を初期化し、setup がそれ以降の pull で再帰更新を有効にします。
 hook が未導入の場合だけ、更新後に `mise run submodule-init` を一度実行してください。
 GitHub が自動生成する「Source code」
 アーカイブには submodule が含まれないため、Release に添付された
-`Memoh-<version>-source.zip` または `.tar.gz` を使用してください。
+`Ami-<version>-source.zip` または `.tar.gz` を使用してください。
 
 > **イメージの pull が遅い場合は CN mirror を利用できます:**
 > ```bash
@@ -86,11 +86,11 @@ GitHub が自動生成する「Source code」
 
 </details>
 
-## Memoh を選ぶ理由
+## Ami を選ぶ理由
 
 - **すべての Agent に専用コンピューター**: 専用のファイルシステム、ネットワーク、Desktop、Browser を備えた隔離された Workspace。
 - **Multi-user, multi-bot**: 自分用に 1 つ、家族やチームメンバーごとに 1 つ、または 1 台のマシンで複数の Bot をまとめて運用できます。
-- **軽量**: 自分のインフラにセルフホストすることも、Memoh Cloud に接続することもできます。
+- **軽量**: 自分のインフラにセルフホストすることも、Ami Cloud に接続することもできます。
 
 ## Sub-projects
 
@@ -100,16 +100,16 @@ GitHub が自動生成する「Source code」
 
 ## Project Status
 
-![License](https://img.shields.io/github/license/felinics/Memoh) ![Last Commit](https://img.shields.io/github/last-commit/felinics/Memoh) ![Commit Activity](https://img.shields.io/github/commit-activity/m/felinics/Memoh) ![Issues](https://img.shields.io/github/issues/felinics/Memoh) ![Pull Requests](https://img.shields.io/github/issues-pr/felinics/Memoh)
+![License](https://img.shields.io/github/license/kindredzhang/ami) ![Last Commit](https://img.shields.io/github/last-commit/kindredzhang/ami) ![Commit Activity](https://img.shields.io/github/commit-activity/m/kindredzhang/ami) ![Issues](https://img.shields.io/github/issues/kindredzhang/ami) ![Pull Requests](https://img.shields.io/github/issues-pr/kindredzhang/ami)
 
 ## Star History
 
-[![Star History Chart](https://star-history.dera.page/svg?repos=felinics/Memoh&type=date&legend=top-left)](https://star-history.dera.page/#felinics/Memoh&type=date&legend=top-left)
+[![Star History Chart](https://star-history.dera.page/svg?repos=kindredzhang/ami&type=date&legend=top-left)](https://star-history.dera.page/#kindredzhang/ami&type=date&legend=top-left)
 
 ## Contributors
 
-<a href="https://github.com/felinics/Memoh/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=felinics/Memoh" />
+<a href="https://github.com/kindredzhang/ami/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=kindredzhang/ami" />
 </a>
 
 ## Community

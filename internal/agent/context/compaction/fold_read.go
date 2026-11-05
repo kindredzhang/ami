@@ -8,8 +8,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
 )
 
 // forkRead is what a pass sends its summarizer of the request before the

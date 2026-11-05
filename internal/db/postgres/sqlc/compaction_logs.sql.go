@@ -20,7 +20,7 @@ SET status = $1,
     usage = $5,
     model_id = $6,
     completed_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $7
   AND status = 'pending'
 RETURNING id, bot_id, session_id, status, summary, message_count, error_message, usage, model_id, started_at, completed_at, team_id
@@ -75,10 +75,10 @@ SELECT fork.bot_id, fork.id, fork.team_id, 'ok', $1::text, source.message_count,
   source.model_id, source.started_at, source.completed_at
 FROM bot_history_message_compacts source
 JOIN bot_sessions fork
-  ON fork.team_id = public.memoh_current_team_id()
+  ON fork.team_id = public.ami_current_team_id()
  AND fork.id = $2
  AND fork.bot_id = source.bot_id
-WHERE source.team_id = public.memoh_current_team_id()
+WHERE source.team_id = public.ami_current_team_id()
   AND source.id = $3
   AND source.status = 'ok'
 RETURNING id
@@ -102,7 +102,7 @@ func (q *Queries) CopyCompactionSummary(ctx context.Context, arg CopyCompactionS
 }
 
 const countCompactionLogsByBot = `-- name: CountCompactionLogsByBot :one
-SELECT count(*) FROM bot_history_message_compacts WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+SELECT count(*) FROM bot_history_message_compacts WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 `
 
 func (q *Queries) CountCompactionLogsByBot(ctx context.Context, botID pgtype.UUID) (int64, error) {
@@ -116,7 +116,7 @@ const createCompactionLog = `-- name: CreateCompactionLog :one
 INSERT INTO bot_history_message_compacts (bot_id, session_id, team_id)
 SELECT session.bot_id, session.id, session.team_id
 FROM bot_sessions session
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = $1
   AND session.bot_id = $2
 RETURNING id, bot_id, session_id, status, summary, message_count, error_message, usage, model_id, started_at, completed_at, team_id
@@ -152,7 +152,7 @@ func (q *Queries) CreateCompactionLog(ctx context.Context, arg CreateCompactionL
 const listCompactionLogsByBot = `-- name: ListCompactionLogsByBot :many
 SELECT id, bot_id, session_id, status, summary, message_count, error_message, usage, model_id, started_at, completed_at, team_id
 FROM bot_history_message_compacts
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY started_at DESC
 LIMIT $2 OFFSET $3
 `
@@ -201,7 +201,7 @@ UPDATE bot_history_message_compacts
 SET status = 'error',
     error_message = 'claimant lost runtime ownership',
     completed_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND session_id = $2
   AND status = 'pending'

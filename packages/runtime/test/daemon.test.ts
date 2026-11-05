@@ -23,8 +23,8 @@ describe('native service definitions', () => {
     expect(unit).toContain(`ExecStart="${spec.nodePath}" "${spec.entryPath}" run --config "${spec.configPath}"`)
     expect(unit).toContain('WorkingDirectory=/home/a &b\n')
     expect(unit).toContain('Restart=always')
-    const plist = renderLaunchdPlist(spec, '/home/a &b/service/Memoh Runtime')
-    expect(plist).toContain('<string>/home/a &amp;b/service/Memoh Runtime</string>')
+    const plist = renderLaunchdPlist(spec, '/home/a &b/service/Ami Runtime')
+    expect(plist).toContain('<string>/home/a &amp;b/service/Ami Runtime</string>')
     expect(plist).not.toContain('<string>/home/a &amp;b/node</string>')
     expect(plist).toContain('<string>run</string>')
     expect(plist).toContain('<key>KeepAlive</key>')
@@ -32,9 +32,9 @@ describe('native service definitions', () => {
       const result = spawnSync('/usr/bin/plutil', ['-lint', '-'], { input: plist, encoding: 'utf8' })
       expect(result.status, result.stderr).toBe(0)
     }
-    const xml = renderWindowsTaskXML({ ...spec, nodePath: 'C:\\Program Files\\nodejs\\node.exe', entryPath: 'C:\\Memoh Runtime\\cli.mjs' }, 'S-1-5-21-123')
+    const xml = renderWindowsTaskXML({ ...spec, nodePath: 'C:\\Program Files\\nodejs\\node.exe', entryPath: 'C:\\Ami Runtime\\cli.mjs' }, 'S-1-5-21-123')
     expect(xml).toContain('<Command>C:\\Program Files\\nodejs\\node.exe</Command>')
-    expect(xml).toContain('&quot;C:\\Memoh Runtime\\cli.mjs&quot; run --config')
+    expect(xml).toContain('&quot;C:\\Ami Runtime\\cli.mjs&quot; run --config')
     expect(xml).toContain('--log')
     expect(xml).toContain('<LogonType>InteractiveToken</LogonType>')
     expect(xml).toContain('<ExecutionTimeLimit>PT0S</ExecutionTimeLimit>')
@@ -66,7 +66,7 @@ describe('native service definitions', () => {
     const manager = createLaunchdServiceManager(paths, runner, 501)
     const spec = { ...serviceSpec(root), nodePath, entryPath, configPath }
     await manager.register(spec)
-    const launcherPath = join(paths.serviceDir, 'Memoh Runtime')
+    const launcherPath = join(paths.serviceDir, 'Ami Runtime')
     expect((await stat(launcherPath)).mode & 0o777).toBe(0o700)
     expect(await readFile(paths.launchdPlistPath, 'utf8')).toContain(`<string>${launcherPath}</string>`)
     const args = ['run', '--config', configPath]
@@ -102,7 +102,7 @@ describe('native service lifecycle', () => {
     expect((await manager.status()).state).toBe('stopped')
     await manager.uninstall()
     expect((await manager.status()).state).toBe('not-installed')
-    await expect(stat(join(paths.serviceDir, 'Memoh Runtime'))).rejects.toMatchObject({ code: 'ENOENT' })
+    await expect(stat(join(paths.serviceDir, 'Ami Runtime'))).rejects.toMatchObject({ code: 'ENOENT' })
     expect(await readFile(paths.configPath, 'utf8')).toBe('saved enrollment')
     expect(runner).toHaveBeenCalledWith('/bin/launchctl', ['bootstrap', 'gui/501', paths.launchdPlistPath], expect.any(Object))
   })
@@ -120,11 +120,11 @@ describe('native service lifecycle', () => {
       ['systemd-analyze', ['--user', 'verify', paths.systemdUnitPath]],
       ['systemctl', ['--user', 'daemon-reload']],
       ['systemctl', ['--user', 'enable', paths.systemdUnitPath]],
-      ['systemctl', ['--user', 'start', 'memoh-runtime.service']],
-      ['systemctl', ['--user', 'stop', 'memoh-runtime.service']],
-      ['systemctl', ['--user', 'disable', '--now', 'memoh-runtime.service']],
+      ['systemctl', ['--user', 'start', 'ami-runtime.service']],
+      ['systemctl', ['--user', 'stop', 'ami-runtime.service']],
+      ['systemctl', ['--user', 'disable', '--now', 'ami-runtime.service']],
       ['systemctl', ['--user', 'daemon-reload']],
-      ['systemctl', ['--user', 'reset-failed', 'memoh-runtime.service']],
+      ['systemctl', ['--user', 'reset-failed', 'ami-runtime.service']],
     ])
     runner.mockResolvedValueOnce({ code: 1, stdout: '', stderr: 'Failed to connect to bus' })
     await expect(manager.start()).rejects.toThrow('Failed to connect to bus')
@@ -137,7 +137,7 @@ describe('native service lifecycle', () => {
       code: 0, stdout: command === 'whoami.exe' ? '"alice","S-1-5-21-123"' : command === 'powershell.exe' ? 'Running' : '', stderr: '',
     }))
     const manager = createWindowsTaskServiceManager(paths, runner)
-    await manager.register({ ...serviceSpec('C:\\Memoh'), logsDir: paths.logsDir })
+    await manager.register({ ...serviceSpec('C:\\Ami'), logsDir: paths.logsDir })
     expect((await readFile(paths.windowsTaskXMLPath)).subarray(0, 2)).toEqual(Buffer.from([0xff, 0xfe]))
     await manager.start()
     expect((await manager.status()).state).toBe('running')
@@ -145,7 +145,7 @@ describe('native service lifecycle', () => {
     await manager.uninstall()
     const commands = runner.mock.calls.filter(([command]) => command === 'schtasks.exe')
     expect(commands.map(([, args]) => args[0])).toEqual(['/create', '/run', '/end', '/end', '/delete'])
-    for (const [, args] of commands) expect(args.at(-1)).toBe('\\Memoh\\Runtime-S-1-5-21-123')
+    for (const [, args] of commands) expect(args.at(-1)).toBe('\\Ami\\Runtime-S-1-5-21-123')
     for (const [, , options] of runner.mock.calls.filter(([command]) => command === 'powershell.exe')) {
       expect(options?.env).not.toHaveProperty('PSModulePath')
     }
@@ -153,12 +153,12 @@ describe('native service lifecycle', () => {
 })
 
 function serviceSpec(home: string): RuntimeServiceSpec {
-  return { nodePath: `${home}/node`, entryPath: `${home}/cli.mjs`, configPath: `${home}/.memoh/runtime.json`,
-    logsDir: `${home}/.memoh/runtime/logs`, workingDirectory: home, servicePath: '/usr/local/bin:/usr/bin:/bin' }
+  return { nodePath: `${home}/node`, entryPath: `${home}/cli.mjs`, configPath: `${home}/.ami/runtime.json`,
+    logsDir: `${home}/.ami/runtime/logs`, workingDirectory: home, servicePath: '/usr/local/bin:/usr/bin:/bin' }
 }
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'memoh-daemon-'))
+  const root = await mkdtemp(join(tmpdir(), 'ami-daemon-'))
   roots.push(root)
   return { root, paths: resolveRuntimePaths({ home: root }) }
 }

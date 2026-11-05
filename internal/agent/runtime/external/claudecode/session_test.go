@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
 )
 
 // pipeProcess is a CLI whose output the test writes line by line.

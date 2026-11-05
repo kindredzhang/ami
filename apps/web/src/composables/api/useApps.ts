@@ -15,7 +15,7 @@ import {
   type HandlersAppSkillItem,
   type HandlersSupermarketAppCategory,
   type HandlersSupermarketAppTranslation,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { renderI18nMessage, UserFacingError } from '@/utils/api-error'
 import { dependencyUpdateAvailable } from '@/utils/workspace-dependency'
 

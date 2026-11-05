@@ -9,11 +9,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/workdir"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/workdir"
 )
 
 var (
@@ -284,7 +284,7 @@ func (s *Service) requireResolvableModel(ctx context.Context, botID string, exec
 		runtimekind.ResolvesOwnModel(exec.RuntimeType) ||
 		targetIsAgent {
 		// Agent runtimes resolve their model inside the agent; only the
-		// native model runtime needs a resolvable Memoh model row.
+		// native model runtime needs a resolvable Ami model row.
 		return nil
 	}
 	if exec.ModelID != "" {

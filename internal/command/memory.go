@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // buildMemoryGroup exposes the bot's single Built-in Memory switch.

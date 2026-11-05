@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 // The web transcript pairs a live or optimistic turn with its settled twin by

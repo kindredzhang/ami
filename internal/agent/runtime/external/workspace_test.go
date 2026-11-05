@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 func TestDirectRuntimeRejectsRemoteWorkspaceBeforeExecution(t *testing.T) {

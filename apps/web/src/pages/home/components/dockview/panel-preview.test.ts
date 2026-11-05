@@ -11,8 +11,8 @@ const sdk = vi.hoisted(() => ({
   getBotsByBotIdContainerFsRead: vi.fn(),
 }))
 
-vi.mock('@memohai/sdk', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@memohai/sdk')>()
+vi.mock('@ami/sdk', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@ami/sdk')>()
   return { ...original, ...sdk }
 })
 vi.mock('vue-i18n', () => ({

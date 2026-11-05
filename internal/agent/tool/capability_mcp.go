@@ -8,8 +8,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 func (p *CapabilityProvider) manageMCP(ctx *toolexec.ToolExecContext, session SessionContext, args map[string]any) (any, error) {

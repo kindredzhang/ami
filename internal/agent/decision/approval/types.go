@@ -48,7 +48,7 @@ var (
 // agent's id, display name, and kind are preserved verbatim: the user picks
 // among them and the agent receives its own option id back, so agent-side
 // semantics (once vs session vs always scopes) survive the round trip without
-// Memoh interpreting them.
+// Ami interpreting them.
 type PermissionOption struct {
 	ID   string `json:"id"`
 	Name string `json:"name,omitempty"`

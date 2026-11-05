@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // runFixture bundles a real bridge client with a throwaway data root and a
@@ -62,7 +62,7 @@ func (f *runFixture) assertNoLeftovers(t *testing.T, depID string) {
 		t.Fatalf("read tmp dir: %v", err)
 	}
 	for _, entry := range entries {
-		if strings.HasPrefix(entry.Name(), "memoh-dep-") {
+		if strings.HasPrefix(entry.Name(), "ami-dep-") {
 			t.Errorf("result file %s was not removed", entry.Name())
 		}
 	}
@@ -70,7 +70,7 @@ func (f *runFixture) assertNoLeftovers(t *testing.T, depID string) {
 	if err != nil || !info.Mode().IsRegular() {
 		t.Fatalf("stable kernel lock file must remain: %v", err)
 	}
-	result, err := f.client.Exec(testContext(t), lockProbeHelpers+"\nif memoh_lock_active "+shellQuote(f.lockDir(depID))+"; then exit 1; fi", "", 5)
+	result, err := f.client.Exec(testContext(t), lockProbeHelpers+"\nif ami_lock_active "+shellQuote(f.lockDir(depID))+"; then exit 1; fi", "", 5)
 	if err != nil || result.ExitCode != 0 {
 		t.Errorf("kernel lock remained held after exit: %v", err)
 	}
@@ -84,7 +84,7 @@ func TestRunForwardsLogsAndReadsResult(t *testing.T) {
 		`printf x | cat`,
 		`read v || v=eof`,
 		`dep_log "read=$v"`,
-		`dep_log "home=$MEMOH_DEP_HOME bin=$MEMOH_DEP_BIN version=$MEMOH_DEP_VERSION os=$MEMOH_DEP_OS"`,
+		`dep_log "home=$AMI_DEP_HOME bin=$AMI_DEP_BIN version=$AMI_DEP_VERSION os=$AMI_DEP_OS"`,
 		`dep_result '{"version":"1.2.3","entrypoints":{"foo":"/tmp/x"}}'`,
 	}, "\n")
 
@@ -130,7 +130,7 @@ func TestRunForwardsLogsAndReadsResult(t *testing.T) {
 
 func TestRunWithoutResultFileAndNilSink(t *testing.T) {
 	f := newRunFixture(t)
-	spec := f.spec("plain", "dep_log removing\nrm -rf \"$MEMOH_DEP_HOME\"\n")
+	spec := f.spec("plain", "dep_log removing\nrm -rf \"$AMI_DEP_HOME\"\n")
 	spec.Action = catalog.ActionRemove
 
 	result, err := Run(testContext(t), f.client, spec, nil)
@@ -248,9 +248,9 @@ func TestRunDepSwitchReplacesCurrentAndKeepsOldVersion(t *testing.T) {
 	f := newRunFixture(t)
 	home := Home(f.dataRoot, "switch")
 	script := strings.Join([]string{
-		`mkdir -p "$MEMOH_DEP_HOME/versions/1.0.0" "$MEMOH_DEP_HOME/versions/2.0.0"`,
-		`dep_switch "$MEMOH_DEP_HOME/versions/1.0.0"`,
-		`dep_switch "$MEMOH_DEP_HOME/versions/2.0.0"`,
+		`mkdir -p "$AMI_DEP_HOME/versions/1.0.0" "$AMI_DEP_HOME/versions/2.0.0"`,
+		`dep_switch "$AMI_DEP_HOME/versions/1.0.0"`,
+		`dep_switch "$AMI_DEP_HOME/versions/2.0.0"`,
 	}, "\n")
 
 	if _, err := Run(testContext(t), f.client, f.spec("switch", script), nil); err != nil {
@@ -385,28 +385,28 @@ func TestBuildEnvIncludesDesignVariables(t *testing.T) {
 	spec := RunSpec{
 		DepID:          "codex",
 		Action:         catalog.ActionUpdate,
-		Home:           "/data/.memoh/deps/codex",
-		ShimDir:        "/data/.memoh/deps/bin",
+		Home:           "/data/.ami/deps/codex",
+		ShimDir:        "/data/.ami/deps/bin",
 		Version:        "0.151.0",
 		CurrentVersion: "0.147.0",
 		Candidate:      "/usr/bin/codex",
 		Platform:       Platform{OS: "linux", Arch: "amd64", Libc: "glibc", TmpDir: "/tmp"},
 		ExtraEnv:       []string{"NPM_MIRROR=https://mirror"},
 	}
-	env := strings.Join(buildEnv(spec, "/tmp/memoh-dep-codex-abc.json", 10*time.Minute), "\n")
+	env := strings.Join(buildEnv(spec, "/tmp/ami-dep-codex-abc.json", 10*time.Minute), "\n")
 	for _, want := range []string{
-		"MEMOH_DEP_ID=codex",
-		"MEMOH_DEP_ACTION=update",
-		"MEMOH_DEP_HOME=/data/.memoh/deps/codex",
-		"MEMOH_DEP_BIN=/data/.memoh/deps/bin",
-		"MEMOH_DEP_VERSION=0.151.0",
-		"MEMOH_DEP_CURRENT_VERSION=0.147.0",
-		"MEMOH_DEP_RESULT=/tmp/memoh-dep-codex-abc.json",
-		"MEMOH_DEP_CANDIDATE=/usr/bin/codex",
-		"MEMOH_DEP_TIMEOUT_SECONDS=600",
-		"MEMOH_DEP_OS=linux",
-		"MEMOH_DEP_ARCH=amd64",
-		"MEMOH_DEP_LIBC=glibc",
+		"AMI_DEP_ID=codex",
+		"AMI_DEP_ACTION=update",
+		"AMI_DEP_HOME=/data/.ami/deps/codex",
+		"AMI_DEP_BIN=/data/.ami/deps/bin",
+		"AMI_DEP_VERSION=0.151.0",
+		"AMI_DEP_CURRENT_VERSION=0.147.0",
+		"AMI_DEP_RESULT=/tmp/ami-dep-codex-abc.json",
+		"AMI_DEP_CANDIDATE=/usr/bin/codex",
+		"AMI_DEP_TIMEOUT_SECONDS=600",
+		"AMI_DEP_OS=linux",
+		"AMI_DEP_ARCH=amd64",
+		"AMI_DEP_LIBC=glibc",
 		"DEBIAN_FRONTEND=noninteractive",
 		"CI=1",
 		"NPM_MIRROR=https://mirror",
@@ -493,7 +493,7 @@ func TestMirrorEnvironmentIsExplicitlyAllowlisted(t *testing.T) {
 	t.Setenv("UV_PYTHON_INSTALL_MIRROR", "https://python.example")
 	t.Setenv("UNRELATED_SERVER_SECRET", "must-not-forward")
 	env := buildEnv(RunSpec{DepID: "tool", ExtraEnv: []string{
-		"NPM_MIRROR=https://override.example", "MEMOH_DEP_HOME=/attacker", "UNRELATED_SERVER_SECRET=override",
+		"NPM_MIRROR=https://override.example", "AMI_DEP_HOME=/attacker", "UNRELATED_SERVER_SECRET=override",
 	}}, "/tmp/result", time.Minute)
 	joined := strings.Join(env, "\n")
 	for _, want := range []string{"NODEJS_MIRROR=https://node.example", "UV_RELEASES_URL=https://uv.example", "NPM_MIRROR=https://override.example", "UV_PYTHON_INSTALL_MIRROR=https://python.example"} {
@@ -508,7 +508,7 @@ func TestMirrorEnvironmentIsExplicitlyAllowlisted(t *testing.T) {
 
 func TestRunReceiptSurvivesRemovingDependencyHome(t *testing.T) {
 	f := newRunFixture(t)
-	spec := f.spec("remove-receipt", "rm -rf \"$MEMOH_DEP_HOME\"\ndep_result '{}'\n")
+	spec := f.spec("remove-receipt", "rm -rf \"$AMI_DEP_HOME\"\ndep_result '{}'\n")
 	spec.Action = catalog.ActionRemove
 	spec.Receipt = &OperationReceipt{
 		ID:                 strings.Repeat("c", 32),
@@ -589,7 +589,7 @@ func TestCancelledClaimCannotExecuteAfterNewOperation(t *testing.T) {
 	// fences that ID under the kernel lock before making room for a new claim.
 	fenceScript := "mkdir -p " + shellQuote(root) + "\n: > " + shellQuote(marker) + "\n"
 	fenced, err := f.client.ExecWithOptions(ctx, scriptExecCommand, defaultWorkDir, 5, []byte(fenceScript), bridge.ExecOptions{Env: []string{
-		"MEMOH_DEP_HOME=" + old.Home, "MEMOH_DEP_ID=" + old.DepID,
+		"AMI_DEP_HOME=" + old.Home, "AMI_DEP_ID=" + old.DepID,
 	}})
 	if err != nil || fenced.ExitCode != 0 {
 		t.Fatalf("reaper did not establish its fence: %v", err)

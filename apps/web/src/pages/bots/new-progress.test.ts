@@ -40,7 +40,7 @@ vi.mock('@pinia/colada', () => ({
   }),
 }))
 
-vi.mock('@memohai/sdk/colada', () => ({
+vi.mock('@ami/sdk/colada', () => ({
   getBotsQueryKey: () => ['bots'],
 }))
 
@@ -77,7 +77,7 @@ const getBotChecks = vi.fn()
 const putSettings = vi.fn()
 vi.mock('@/composables/useOnboarding', () => ({ useOnboarding: () => ({ nextStep, prevStep }) }))
 vi.mock('@/store/install-created-agent', () => ({ installCreatedAgent: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsById: (...args: unknown[]) => getBot(...args),
   getBotsByIdChecks: (...args: unknown[]) => getBotChecks(...args),
   putBotsByBotIdSettings: (...args: unknown[]) => putSettings(...args),
@@ -295,7 +295,7 @@ describe('bot create progress route', () => {
     await nextTick()
     expect(nextStep).toHaveBeenCalledTimes(1)
     expect(routerReplace).not.toHaveBeenCalled()
-    expect(JSON.parse(sessionStorage.getItem('memoh:onboarding:bot-result') ?? 'null')).toMatchObject({ botId: 'bot-1', modelConfigured: false })
+    expect(JSON.parse(sessionStorage.getItem('ami:onboarding:bot-result') ?? 'null')).toMatchObject({ botId: 'bot-1', modelConfigured: false })
     expect(mounted.store.status).toBe('idle')
     mounted.app.unmount(); mounted.root.remove()
   })
@@ -327,7 +327,7 @@ describe('bot create progress route', () => {
   })
 
   it('resumes the persisted Bot after a refresh instead of returning to the form', async () => {
-    sessionStorage.setItem('memoh:new-bot:authorization', JSON.stringify({ botId: 'bot-1', botName: 'prog', displayName: 'Prog', setupError: null, settings: { chat_model_id: 'm1' } }))
+    sessionStorage.setItem('ami:new-bot:authorization', JSON.stringify({ botId: 'bot-1', botName: 'prog', displayName: 'Prog', setupError: null, settings: { chat_model_id: 'm1' } }))
     const mounted = await mountIdleProgress()
     expect(routerReplace).not.toHaveBeenCalledWith({ name: 'bot-new' })
     expect(getBot).toHaveBeenCalledWith(expect.objectContaining({ path: { id: 'bot-1' } }))
@@ -340,7 +340,7 @@ describe('bot create progress route', () => {
   })
 
   it('shows the failed workspace after an onboarding refresh without creating again', async () => {
-    sessionStorage.setItem('memoh:onboarding:creation', JSON.stringify({ botId: 'bot-1', botName: 'prog', displayName: 'Prog', setupError: null }))
+    sessionStorage.setItem('ami:onboarding:creation', JSON.stringify({ botId: 'bot-1', botName: 'prog', displayName: 'Prog', setupError: null }))
     getBot.mockResolvedValue({ data: { id: 'bot-1', name: 'prog', display_name: 'Prog', status: 'failed' } })
     getBotChecks.mockResolvedValue({ data: { items: [{ type: 'container.init', status: 'error', detail: 'image pull failed' }] } })
     const mounted = await mountIdleProgress(true)

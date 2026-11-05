@@ -5,7 +5,7 @@ const api = vi.hoisted(() => ({
   authorize: vi.fn(), poll: vi.fn(), cancel: vi.fn(), patch: vi.fn(),
   invalidate: vi.fn(), toastSuccess: vi.fn(), toastError: vi.fn(),
 }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   postBotsByBotIdAgentsByIdLoginDeviceAuthorize: api.authorize, postBotsByBotIdAgentsByIdLoginDevicePoll: api.poll,
   postBotsByBotIdAgentsByIdLoginDeviceCancel: api.cancel, patchBotsByBotIdAgentsById: api.patch,
 }))

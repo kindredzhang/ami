@@ -1,5 +1,5 @@
 import { useQuery } from '@pinia/colada'
-import { getProvidersCatalogModels } from '@memohai/sdk'
+import { getProvidersCatalogModels } from '@ami/sdk'
 
 // The browser caches only the server's normalized preview. Source validation,
 // upstream freshness and protocol conversion are owned by the server.

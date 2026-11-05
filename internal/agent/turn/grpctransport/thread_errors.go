@@ -3,8 +3,8 @@ package grpctransport
 import (
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/apperror"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 // threadError gives the External Agent thread sentinels their catalog codes

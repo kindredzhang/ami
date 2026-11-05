@@ -5,9 +5,9 @@ import (
 	"errors"
 	"log/slog"
 
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // ContextViewApplier rebuilds provider-facing fields from the authoritative

@@ -6,7 +6,7 @@ import {
   getUsersMeRuntimes,
   putBotsByBotIdWorkspaceTargetsRemotesByRuntimeId,
   type WorkspaceWorkspaceTargetGrant,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 // Account-level Computer ACL: the grants query is the single read model behind
 // the /runtimes badge, the access dialog (both directions), and the bot

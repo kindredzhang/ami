@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // fakeLauncherResolver scripts one ResolveLauncher answer and records the
@@ -49,7 +49,7 @@ func newTestAppServer(launcher external.Launcher) *appServer {
 func TestAppServerCommandQuotesTheLauncher(t *testing.T) {
 	for path, want := range map[string]string{
 		"/data/it's/codex": `'/data/it'\''s/codex' app-server -c features.goals=true -c features.request_permissions_tool=true`,
-		"  ":               "'/opt/memoh/toolkit/bin/codex' app-server -c features.goals=true -c features.request_permissions_tool=true",
+		"  ":               "'/opt/ami/toolkit/bin/codex' app-server -c features.goals=true -c features.request_permissions_tool=true",
 	} {
 		if got := appServerCommand(path); got != want {
 			t.Errorf("appServerCommand(%q) = %q, want %q", path, got, want)
@@ -83,7 +83,7 @@ func TestThreadWithoutGatewayRunsToollessAndSaysSoEveryTurn(t *testing.T) {
 
 func TestFingerprintChangesOnlyWithWhatTheProcessStartsFrom(t *testing.T) {
 	cfg := Config{Auth: AuthAPIKey, APIKey: "sk-1", BaseURL: "https://relay.example", Model: "gpt-a", PermissionMode: "strict"}
-	managed := external.Launcher{Path: "/data/.memoh/deps/codex/current/bin/codex", Version: "0.150.0", Source: external.LauncherSourceManaged}
+	managed := external.Launcher{Path: "/data/.ami/deps/codex/current/bin/codex", Version: "0.150.0", Source: external.LauncherSourceManaged}
 	base := fingerprint(cfg, managed)
 
 	perTurn := cfg

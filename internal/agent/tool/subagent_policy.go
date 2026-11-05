@@ -1,7 +1,7 @@
 package tools
 
 import (
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // FilterSubagentTools applies the small denylist for capabilities that require

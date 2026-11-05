@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 func TestDecisionOutputConcurrentRetriesAndEarlyAcknowledgement(t *testing.T) {
@@ -260,9 +260,9 @@ func TestDecisionOutputStopsAfterOwnerRunTerminates(t *testing.T) {
 }
 
 func TestDecisionOutputRedisRecoveryAndClaimOptional(t *testing.T) {
-	url := os.Getenv("MEMOH_TEST_REDIS_URL")
+	url := os.Getenv("AMI_TEST_REDIS_URL")
 	if url == "" {
-		t.Skip("set MEMOH_TEST_REDIS_URL for two-client Redis recovery")
+		t.Skip("set AMI_TEST_REDIS_URL for two-client Redis recovery")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

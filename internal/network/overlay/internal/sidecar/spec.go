@@ -5,14 +5,14 @@ import (
 	"encoding/hex"
 	"sort"
 
-	ctr "github.com/felinics/memoh/internal/container"
+	ctr "github.com/kindredzhang/ami/internal/container"
 )
 
 const (
-	LabelManaged    = "memoh.network.managed"
-	LabelBotID      = "memoh.network.bot_id"
-	LabelKind       = "memoh.network.provider_kind"
-	LabelConfigHash = "memoh.network.config_hash"
+	LabelManaged    = "ami.network.managed"
+	LabelBotID      = "ami.network.bot_id"
+	LabelKind       = "ami.network.provider_kind"
+	LabelConfigHash = "ami.network.config_hash"
 )
 
 // Spec describes the official client sidecar container to run in a workspace

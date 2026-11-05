@@ -30,7 +30,7 @@ vi.mock('@pinia/colada', () => ({
   }),
 }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getProviders: mocks.getProviders,
   postProviders: mocks.postProviders,
   postProvidersByIdImportModels: mocks.postProvidersByIdImportModels,
@@ -66,7 +66,7 @@ function encode(obj: unknown): string {
 function linkFor(over: Record<string, unknown>): string {
   return `#payload=${encode({
     v: 1,
-    kind: 'memoh-provider-import',
+    kind: 'ami-provider-import',
     base_url: 'https://gateway.example.com/v1',
     api_key: 'sk-aaaa-1111',
     client_type: 'openai-completions',
@@ -149,7 +149,7 @@ describe('provider connect page', () => {
     await followLink(linkFor({ name: 'Gateway B' }))
     expect(window.location.hash).toBe(`#payload=${encode({
       v: 1,
-      kind: 'memoh-provider-import',
+      kind: 'ami-provider-import',
       base_url: 'https://gateway.example.com/v1',
       api_key: 'sk-aaaa-1111',
       client_type: 'openai-completions',

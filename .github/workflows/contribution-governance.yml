@@ -31,7 +31,7 @@ concurrency:
 
 jobs:
   govern:
-    if: github.repository == 'felinics/Memoh'
+    if: github.repository == 'kindredzhang/ami'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

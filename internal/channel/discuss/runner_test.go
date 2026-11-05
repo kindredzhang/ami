@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 func runDiscussTurn(t *testing.T, ctx context.Context, service turn.Service) (discussRunOutcome, map[string]any) {

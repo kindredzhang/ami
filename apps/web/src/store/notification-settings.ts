@@ -6,7 +6,7 @@ import { useLocalStorage } from '@vueuse/core'
 export const useNotificationSettings = defineStore('notification-settings', () => {
   const desktop = typeof window !== 'undefined' && !!window.api?.desktop?.notify
   const supported = desktop || (typeof Notification !== 'undefined' && window.isSecureContext)
-  const enabled = useLocalStorage('memoh-system-notifications', desktop)
+  const enabled = useLocalStorage('ami-system-notifications', desktop)
   const permission = ref<NotificationPermission>(typeof Notification === 'undefined' ? 'default' : Notification.permission)
   const pending = ref(false)
   const active = computed(() => enabled.value && supported && (desktop || permission.value === 'granted'))

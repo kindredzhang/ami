@@ -110,7 +110,7 @@ import {
   Spinner,
   Switch,
 } from '@felinic/ui'
-import type { ScheduleSchedule } from '@memohai/sdk'
+import type { ScheduleSchedule } from '@ami/sdk'
 
 withDefaults(defineProps<{
   item: ScheduleSchedule

@@ -13,18 +13,18 @@ import (
 
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 // DependencyRegistryID is the only registry whose Apps may reference
 // workspace dependencies and connectors.
-const DependencyRegistryID = "memoh"
+const DependencyRegistryID = "ami"
 
 // Sentinel errors returned by Service.
 var (

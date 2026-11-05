@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestTokensFromBytes(t *testing.T) {
@@ -134,7 +134,7 @@ func TestEstimateSDKMessageTokensAddsToolCallToText(t *testing.T) {
 	call := sdk.ToolCallPart{
 		ToolCallID: "call-1",
 		ToolName:   "read_file",
-		Input:      toolexec.ArgumentsFromValue(map[string]any{"path": "/data/projects/memoh/internal/agent/runtime/native/agent.go"}),
+		Input:      toolexec.ArgumentsFromValue(map[string]any{"path": "/data/projects/ami/internal/agent/runtime/native/agent.go"}),
 	}
 	msg := sdk.Message{Role: sdk.MessageRoleAssistant, Content: []sdk.MessagePart{sdk.TextPart{Text: text}, call}}
 
@@ -202,7 +202,7 @@ func TestEstimateFragTokensTextPart(t *testing.T) {
 		ID:   "system.prompt",
 		Kind: KindSystemPrompt,
 		Slot: SlotSystem,
-		Text: "You are an AI agent running inside a private Memoh workspace.",
+		Text: "You are an AI agent running inside a private Ami workspace.",
 	})
 	if got, want := EstimateFragTokens(frag), len(frag.Parts[0].Text)/4; got != want {
 		t.Fatalf("EstimateFragTokens = %d, want %d", got, want)

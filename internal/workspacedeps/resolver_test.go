@@ -6,14 +6,14 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 const (
-	managedPath = "/data/.memoh/deps/agent-x/current/bin/agent-x"
-	toolkitPath = "/opt/memoh/toolkit/bin/agent-x"
+	managedPath = "/data/.ami/deps/agent-x/current/bin/agent-x"
+	toolkitPath = "/opt/ami/toolkit/bin/agent-x"
 	pathCopy    = "/usr/local/bin/agent-x"
 )
 

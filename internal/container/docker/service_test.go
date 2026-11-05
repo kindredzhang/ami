@@ -15,10 +15,10 @@ import (
 	dockernetwork "github.com/docker/docker/api/types/network"
 	dockerclient "github.com/docker/docker/client"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/config"
-	containerapi "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/config"
+	containerapi "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func TestDockerSnapshotImageRefSanitizesRuntimeName(t *testing.T) {
@@ -255,7 +255,7 @@ func TestNewServiceRejectsWorkspaceNetworkForHostServer(t *testing.T) {
 		t.Skip("test requires a host process")
 	}
 	_, err := NewService(context.Background(), slog.New(slog.DiscardHandler), config.Config{
-		Docker: config.DockerConfig{Network: "memoh-workspace"},
+		Docker: config.DockerConfig{Network: "ami-workspace"},
 	})
 	if err == nil {
 		t.Fatal("NewService() accepted Docker workspace networking from a host process")
@@ -266,7 +266,7 @@ func TestNewServiceRejectsWorkspaceNetworkForHostServer(t *testing.T) {
 }
 
 func TestValidateWorkspaceNetworkRequiresStrictBridgeTLS(t *testing.T) {
-	const networkName = "memoh-workspace"
+	const networkName = "ami-workspace"
 	if err := validateWorkspaceNetwork(networkName, "server-id", true, false); err == nil || !strings.Contains(err.Error(), `[bridge_tls].mode = "strict"`) {
 		t.Fatalf("validateWorkspaceNetwork() error = %v, want strict bridge TLS guidance", err)
 	}
@@ -276,14 +276,14 @@ func TestValidateWorkspaceNetworkRequiresStrictBridgeTLS(t *testing.T) {
 }
 
 func TestValidateWorkspaceNetworkRequiresServerContainer(t *testing.T) {
-	err := validateWorkspaceNetwork("memoh-workspace", "", true, true)
+	err := validateWorkspaceNetwork("ami-workspace", "", true, true)
 	if err == nil || !strings.Contains(err.Error(), "[docker].server_container") {
 		t.Fatalf("validateWorkspaceNetwork() error = %v, want server container guidance", err)
 	}
 }
 
 func TestValidateServerNetworkMembership(t *testing.T) {
-	const networkName = "memoh-workspace"
+	const networkName = "ami-workspace"
 	tests := []struct {
 		name        string
 		containerID string
@@ -303,7 +303,7 @@ func TestValidateServerNetworkMembership(t *testing.T) {
 			containerID: "server-id",
 			networks:    map[string]*dockernetwork.EndpointSettings{"bridge": {}},
 			status:      http.StatusOK,
-			wantError:   `server container "server-id" is not attached to Docker network "memoh-workspace"`,
+			wantError:   `server container "server-id" is not attached to Docker network "ami-workspace"`,
 		},
 		{
 			name:        "configured container does not exist",
@@ -315,7 +315,7 @@ func TestValidateServerNetworkMembership(t *testing.T) {
 			name:        "daemon error",
 			containerID: "server-id",
 			status:      http.StatusInternalServerError,
-			wantError:   `inspect Memoh server container "server-id" on Docker daemon`,
+			wantError:   `inspect Ami server container "server-id" on Docker daemon`,
 			wantRuntime: true,
 		},
 	}
@@ -358,12 +358,12 @@ func TestValidateServerNetworkMembership(t *testing.T) {
 }
 
 func TestValidateServerNetworkMembershipPreservesCancellation(t *testing.T) {
-	svc := newTestService(t, "memoh-workspace", func(_ http.ResponseWriter, r *http.Request) {
+	svc := newTestService(t, "ami-workspace", func(_ http.ResponseWriter, r *http.Request) {
 		t.Errorf("unexpected Docker API request after cancellation: %s %s", r.Method, r.URL.Path)
 	})
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	err := validateServerNetworkMembership(ctx, svc.client, "server-id", "memoh-workspace")
+	err := validateServerNetworkMembership(ctx, svc.client, "server-id", "ami-workspace")
 	if !errors.Is(err, context.Canceled) || !errors.Is(err, containerapi.ErrRuntime) {
 		t.Fatalf("validateServerNetworkMembership() error = %v, want context.Canceled and ErrRuntime", err)
 	}
@@ -371,7 +371,7 @@ func TestValidateServerNetworkMembershipPreservesCancellation(t *testing.T) {
 
 func TestCreateContainerUsesWorkspaceNetworkWithoutPublishingBridge(t *testing.T) {
 	var createRequest dockercontainer.CreateRequest
-	svc := newTestService(t, "memoh-workspace", func(w http.ResponseWriter, r *http.Request) {
+	svc := newTestService(t, "ami-workspace", func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/containers/create"):
 			if err := json.NewDecoder(r.Body).Decode(&createRequest); err != nil {
@@ -396,19 +396,19 @@ func TestCreateContainerUsesWorkspaceNetworkWithoutPublishingBridge(t *testing.T
 	if err != nil {
 		t.Fatalf("CreateContainer() error = %v", err)
 	}
-	if got := string(createRequest.HostConfig.NetworkMode); got != "memoh-workspace" {
-		t.Fatalf("NetworkMode = %q, want memoh-workspace", got)
+	if got := string(createRequest.HostConfig.NetworkMode); got != "ami-workspace" {
+		t.Fatalf("NetworkMode = %q, want ami-workspace", got)
 	}
 	if len(createRequest.HostConfig.PortBindings) != 0 {
 		t.Fatalf("PortBindings = %#v, want no host bridge publication", createRequest.HostConfig.PortBindings)
 	}
-	if createRequest.NetworkingConfig == nil || createRequest.NetworkingConfig.EndpointsConfig["memoh-workspace"] == nil {
-		t.Fatalf("NetworkingConfig = %#v, want memoh-workspace endpoint", createRequest.NetworkingConfig)
+	if createRequest.NetworkingConfig == nil || createRequest.NetworkingConfig.EndpointsConfig["ami-workspace"] == nil {
+		t.Fatalf("NetworkingConfig = %#v, want ami-workspace endpoint", createRequest.NetworkingConfig)
 	}
 }
 
 func TestBridgeTargetUsesWorkspaceContainerDNS(t *testing.T) {
-	svc := newTestService(t, "memoh-workspace", func(w http.ResponseWriter, r *http.Request) {
+	svc := newTestService(t, "ami-workspace", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet || !strings.HasSuffix(r.URL.Path, "/containers/workspace-bot-1/json") {
 			t.Errorf("unexpected Docker API request: %s %s", r.Method, r.URL.Path)
 			http.NotFound(w, r)
@@ -417,7 +417,7 @@ func TestBridgeTargetUsesWorkspaceContainerDNS(t *testing.T) {
 		writeDockerJSON(t, w, dockercontainer.InspectResponse{
 			NetworkSettings: &dockercontainer.NetworkSettings{
 				Networks: map[string]*dockernetwork.EndpointSettings{
-					"memoh-workspace": {IPAddress: "172.20.0.3"},
+					"ami-workspace": {IPAddress: "172.20.0.3"},
 				},
 			},
 		})
@@ -430,19 +430,19 @@ func TestBridgeTargetUsesWorkspaceContainerDNS(t *testing.T) {
 
 func TestSetupNetworkAttachesExistingWorkspace(t *testing.T) {
 	connected := false
-	svc := newTestService(t, "memoh-workspace", func(w http.ResponseWriter, r *http.Request) {
+	svc := newTestService(t, "ami-workspace", func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/containers/workspace-bot-1/json"):
 			networks := map[string]*dockernetwork.EndpointSettings{
 				"bridge": {IPAddress: "172.17.0.2"},
 			}
 			if connected {
-				networks["memoh-workspace"] = &dockernetwork.EndpointSettings{IPAddress: "172.20.0.4"}
+				networks["ami-workspace"] = &dockernetwork.EndpointSettings{IPAddress: "172.20.0.4"}
 			}
 			writeDockerJSON(t, w, dockercontainer.InspectResponse{
 				NetworkSettings: &dockercontainer.NetworkSettings{Networks: networks},
 			})
-		case r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/networks/memoh-workspace/connect"):
+		case r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/networks/ami-workspace/connect"):
 			var request struct {
 				Container string `json:"Container"`
 			}
@@ -475,17 +475,17 @@ func TestSetupNetworkAttachesExistingWorkspace(t *testing.T) {
 func TestRemoveNetworkDetachesWorkspaceIdempotently(t *testing.T) {
 	connected := true
 	disconnects := 0
-	svc := newTestService(t, "memoh-workspace", func(w http.ResponseWriter, r *http.Request) {
+	svc := newTestService(t, "ami-workspace", func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/containers/workspace-bot-1/json"):
 			networks := map[string]*dockernetwork.EndpointSettings{}
 			if connected {
-				networks["memoh-workspace"] = &dockernetwork.EndpointSettings{}
+				networks["ami-workspace"] = &dockernetwork.EndpointSettings{}
 			}
 			writeDockerJSON(t, w, dockercontainer.InspectResponse{
 				NetworkSettings: &dockercontainer.NetworkSettings{Networks: networks},
 			})
-		case r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/networks/memoh-workspace/disconnect"):
+		case r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/networks/ami-workspace/disconnect"):
 			var request struct {
 				Container string `json:"Container"`
 				Force     bool   `json:"Force"`

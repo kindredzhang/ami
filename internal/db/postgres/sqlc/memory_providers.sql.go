@@ -12,7 +12,7 @@ import (
 )
 
 const countMemoryProvidersByDefault = `-- name: CountMemoryProvidersByDefault :one
-SELECT COUNT(*) FROM memory_providers WHERE team_id = public.memoh_current_team_id() AND is_default = true
+SELECT COUNT(*) FROM memory_providers WHERE team_id = public.ami_current_team_id() AND is_default = true
 `
 
 func (q *Queries) CountMemoryProvidersByDefault(ctx context.Context) (int64, error) {
@@ -58,7 +58,7 @@ func (q *Queries) CreateMemoryProvider(ctx context.Context, arg CreateMemoryProv
 
 const getBuiltinMemoryProvider = `-- name: GetBuiltinMemoryProvider :one
 SELECT id, name, provider, config, is_default, created_at, updated_at, team_id FROM memory_providers
-WHERE team_id = public.memoh_current_team_id() AND provider = 'builtin'
+WHERE team_id = public.ami_current_team_id() AND provider = 'builtin'
 ORDER BY created_at ASC, id ASC
 LIMIT 1
 `
@@ -82,7 +82,7 @@ func (q *Queries) GetBuiltinMemoryProvider(ctx context.Context) (MemoryProvider,
 }
 
 const getMemoryProviderByID = `-- name: GetMemoryProviderByID :one
-SELECT id, name, provider, config, is_default, created_at, updated_at, team_id FROM memory_providers WHERE team_id = public.memoh_current_team_id() AND id = $1
+SELECT id, name, provider, config, is_default, created_at, updated_at, team_id FROM memory_providers WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 func (q *Queries) GetMemoryProviderByID(ctx context.Context, id pgtype.UUID) (MemoryProvider, error) {
@@ -102,7 +102,7 @@ func (q *Queries) GetMemoryProviderByID(ctx context.Context, id pgtype.UUID) (Me
 }
 
 const listMemoryProviders = `-- name: ListMemoryProviders :many
-SELECT id, name, provider, config, is_default, created_at, updated_at, team_id FROM memory_providers WHERE team_id = public.memoh_current_team_id() ORDER BY created_at ASC
+SELECT id, name, provider, config, is_default, created_at, updated_at, team_id FROM memory_providers WHERE team_id = public.ami_current_team_id() ORDER BY created_at ASC
 `
 
 func (q *Queries) ListMemoryProviders(ctx context.Context) ([]MemoryProvider, error) {
@@ -139,7 +139,7 @@ UPDATE memory_providers
 SET name = $2,
     config = $3,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING id, name, provider, config, is_default, created_at, updated_at, team_id
 `
 

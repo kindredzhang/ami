@@ -48,7 +48,7 @@ import type {
   ModelsModelType,
   ProvidersGetResponse,
   VideoProviderResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 interface MultimediaRow {
   field: 'tts_model_id' | 'transcription_model_id' | 'image_model_id' | 'video_model_id'

@@ -7,8 +7,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 func appendDiscoveryRoots(roots []Root, extra ...Root) []Root {

@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 func TestMemoryRuntimesRejectForeignAndMissingScopeBeforeMutation(t *testing.T) {

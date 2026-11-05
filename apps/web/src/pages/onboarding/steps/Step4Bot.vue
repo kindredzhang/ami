@@ -23,7 +23,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { FieldStack, InlineLoadingRow, toast } from '@felinic/ui'
 import { useI18n } from 'vue-i18n'
 import { useQuery, useQueryCache } from '@pinia/colada'
-import { getBots, getBotsByBotIdSettings, getModels, getProviders, getProvidersByIdModels, putModelsById } from '@memohai/sdk'
+import { getBots, getBotsByBotIdSettings, getModels, getProviders, getProvidersByIdModels, putModelsById } from '@ami/sdk'
 import { markOnboardingCompleted, useOnboarding } from '@/composables/useOnboarding'
 import { useUserStore } from '@/store/user'
 import { readCreatedBotSession } from '@/pages/bots/created-bot-session'
@@ -41,7 +41,7 @@ import ModelSelect from '@/pages/bots/components/model-select.vue'
 import AgentTypePill from '@/pages/bots/components/agent-type-pill.vue'
 import AgentAuthorization from '@/pages/bots/components/agent-authorization.vue'
 import { readAgentAuthorizationDraft } from '@/composables/useAgentAuthorization'
-import { MEMOH_AGENT_VALUE } from '@/pages/bots/components/agent-type'
+import { AMI_AGENT_VALUE } from '@/pages/bots/components/agent-type'
 import { useStepTransition } from '../useStepTransition'
 import {
   clearOnboardingBotResult,
@@ -122,8 +122,8 @@ async function adoptExistingBot() {
   }
 }
 
-const authorizationKey = 'memoh:onboarding:agent-authorization'
-const agentType = ref(readAgentAuthorizationDraft(authorizationKey)?.runtime ?? MEMOH_AGENT_VALUE)
+const authorizationKey = 'ami:onboarding:agent-authorization'
+const agentType = ref(readAgentAuthorizationDraft(authorizationKey)?.runtime ?? AMI_AGENT_VALUE)
 const account = ref({ ready: false, busy: false, id: '', auth: '' })
 const accountPanel = ref<InstanceType<typeof AgentAuthorization> | null>(null)
 const selectedDirectRuntime = computed(() => {
@@ -189,7 +189,7 @@ const providers = computed(() => providerData.value ?? [])
 const canSubmit = computed(() => {
   if (selectedDirectRuntime.value && (!account.value.ready || account.value.busy)) return false
   if (!form.display_name.trim()) return false
-  // Agent runtimes resolve their own model; only a Memoh-model bot needs one.
+  // Agent runtimes resolve their own model; only an Ami-model bot needs one.
   if (selectedDirectRuntime.value || !onboardingProviderId) return true
   if (onboardingModelsStatus.value !== 'success') return false
   return !!form.chat_model_id
@@ -365,7 +365,7 @@ async function handleSubmit() {
                   @status="account = $event"
                 />
               </SettingsSection>
-              <template v-if="agentType === MEMOH_AGENT_VALUE">
+              <template v-if="agentType === AMI_AGENT_VALUE">
                 <div class="mb-2 flex items-center gap-2">
                   <Label>{{ $t('bots.settings.chatModel') }}</Label>
                   <Tooltip>

@@ -1,7 +1,7 @@
 -- 0002_team_isolation
 -- Scope semantic-memory embeddings to a team and enforce fail-closed RLS.
 
-CREATE OR REPLACE FUNCTION public.memoh_pgvector_current_team_id()
+CREATE OR REPLACE FUNCTION public.ami_pgvector_current_team_id()
 RETURNS UUID
 LANGUAGE plpgsql
 STABLE
@@ -11,16 +11,16 @@ AS $current_team$
 DECLARE
     raw TEXT;
 BEGIN
-    raw := pg_catalog.current_setting('memoh.team_id', true);
+    raw := pg_catalog.current_setting('ami.team_id', true);
     IF raw IS NULL OR pg_catalog.btrim(raw) = '' THEN
-        RAISE EXCEPTION 'memoh.team_id is not set'
+        RAISE EXCEPTION 'ami.team_id is not set'
             USING ERRCODE = '42501';
     END IF;
     BEGIN
         RETURN raw::UUID;
     EXCEPTION
         WHEN invalid_text_representation THEN
-            RAISE EXCEPTION 'memoh.team_id is invalid'
+            RAISE EXCEPTION 'ami.team_id is invalid'
                 USING ERRCODE = '22P02';
     END;
 END;
@@ -34,7 +34,7 @@ SET team_id = '00000000-0000-0000-0000-000000000001'
 WHERE team_id IS NULL;
 
 ALTER TABLE public.memory_node_embeddings
-    ALTER COLUMN team_id SET DEFAULT public.memoh_pgvector_current_team_id(),
+    ALTER COLUMN team_id SET DEFAULT public.ami_pgvector_current_team_id(),
     ALTER COLUMN team_id SET NOT NULL;
 
 DO $memory_embeddings_pk$
@@ -77,26 +77,26 @@ DROP POLICY IF EXISTS memory_node_embeddings_team_select
 CREATE POLICY memory_node_embeddings_team_select
     ON public.memory_node_embeddings
     FOR SELECT
-    USING (team_id = public.memoh_pgvector_current_team_id());
+    USING (team_id = public.ami_pgvector_current_team_id());
 
 DROP POLICY IF EXISTS memory_node_embeddings_team_insert
     ON public.memory_node_embeddings;
 CREATE POLICY memory_node_embeddings_team_insert
     ON public.memory_node_embeddings
     FOR INSERT
-    WITH CHECK (team_id = public.memoh_pgvector_current_team_id());
+    WITH CHECK (team_id = public.ami_pgvector_current_team_id());
 
 DROP POLICY IF EXISTS memory_node_embeddings_team_update
     ON public.memory_node_embeddings;
 CREATE POLICY memory_node_embeddings_team_update
     ON public.memory_node_embeddings
     FOR UPDATE
-    USING (team_id = public.memoh_pgvector_current_team_id())
-    WITH CHECK (team_id = public.memoh_pgvector_current_team_id());
+    USING (team_id = public.ami_pgvector_current_team_id())
+    WITH CHECK (team_id = public.ami_pgvector_current_team_id());
 
 DROP POLICY IF EXISTS memory_node_embeddings_team_delete
     ON public.memory_node_embeddings;
 CREATE POLICY memory_node_embeddings_team_delete
     ON public.memory_node_embeddings
     FOR DELETE
-    USING (team_id = public.memoh_pgvector_current_team_id());
+    USING (team_id = public.ami_pgvector_current_team_id());

@@ -1,4 +1,4 @@
-import type { ScheduleSchedule } from '@memohai/sdk'
+import type { ScheduleSchedule } from '@ami/sdk'
 
 /**
  * The i18n key for the delete-schedule confirmation. A schedule that opens a

@@ -14,7 +14,7 @@
 -- run.
 
 -- Every table this migration reads or writes is under FORCE row level security
--- keyed on memoh.team_id, which a migration connection never sets. Lift the
+-- keyed on ami.team_id, which a migration connection never sets. Lift the
 -- policy for the data steps and restore it after, as 0165 does.
 ALTER TABLE session_runs NO FORCE ROW LEVEL SECURITY;
 ALTER TABLE session_runs DISABLE ROW LEVEL SECURITY;

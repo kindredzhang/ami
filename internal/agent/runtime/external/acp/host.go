@@ -10,16 +10,16 @@ import (
 	"sync"
 	"time"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/runtimefence"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 const (
@@ -78,7 +78,7 @@ type HistoryResetWaiter interface {
 type HostDeps struct {
 	Logger *slog.Logger
 	Procs  *agentproc.Supervisor
-	// Gateway serves Memoh's tools to the sessions.
+	// Gateway serves Ami's tools to the sessions.
 	Gateway   toolmount.Gateway
 	Approval  client.ToolApprovalService
 	UserInput client.UserInputService

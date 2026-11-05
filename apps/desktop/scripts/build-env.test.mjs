@@ -29,14 +29,14 @@ test('applyEnvFile fills gaps without overriding the invoking environment', () =
 
 test('buildElectronBuilderArgs validates and maps desktop build settings', () => {
   assert.deepEqual(buildElectronBuilderArgs({
-    MEMOH_DESKTOP_VERSION: 'v1.2.3',
-    MEMOH_DESKTOP_APP_ID: 'ai.memoh.cloud.desktop',
-    MEMOH_DESKTOP_UPDATE_BASE_URL: 'https://downloads.example.com/memoh/',
+    AMI_DESKTOP_VERSION: 'v1.2.3',
+    AMI_DESKTOP_APP_ID: 'ai.ami.cloud.desktop',
+    AMI_DESKTOP_UPDATE_BASE_URL: 'https://downloads.example.com/ami/',
   }), [
     '-c.extraMetadata.version=1.2.3',
-    '-c.appId=ai.memoh.cloud.desktop',
+    '-c.appId=ai.ami.cloud.desktop',
     '-c.publish.provider=generic',
-    '-c.publish.url=https://downloads.example.com/memoh',
+    '-c.publish.url=https://downloads.example.com/ami',
     '--publish',
     'never',
   ])
@@ -45,8 +45,8 @@ test('buildElectronBuilderArgs validates and maps desktop build settings', () =>
 test('normalizers reject malformed release metadata', () => {
   assert.equal(normalizeDesktopVersion('v2.0.1-beta.1'), '2.0.1-beta.1')
   assert.throws(() => normalizeDesktopVersion('release-2'), /semantic version/)
-  assert.equal(normalizeDesktopAppId('ai.memoh.desktop'), 'ai.memoh.desktop')
-  assert.throws(() => normalizeDesktopAppId('Memoh Desktop'), /reverse-DNS/)
+  assert.equal(normalizeDesktopAppId('ai.ami.desktop'), 'ai.ami.desktop')
+  assert.throws(() => normalizeDesktopAppId('Ami Desktop'), /reverse-DNS/)
   assert.equal(normalizeUpdateBaseUrl('https://cdn.example.com/releases///'), 'https://cdn.example.com/releases')
   assert.throws(() => normalizeUpdateBaseUrl('s3://bucket/releases'), /HTTP\(S\)/)
   assert.throws(() => normalizeUpdateBaseUrl('https://token@example.com/releases'), /without credentials/)

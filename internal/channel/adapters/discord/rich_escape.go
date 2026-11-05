@@ -1,6 +1,6 @@
 package discord
 
-import "github.com/felinics/memoh/internal/channel"
+import "github.com/kindredzhang/ami/internal/channel"
 
 // discordEscapeLinkURL strips characters that would prematurely terminate a
 // markdown link URL, then percent-encodes the few that Discord still parses

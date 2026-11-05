@@ -17,12 +17,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/hooks"
-	workspacepkg "github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/hooks"
+	workspacepkg "github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const (
@@ -36,7 +36,7 @@ var blockedSleepPattern = regexp.MustCompile(`^sleep\s+(\d+(?:\.\d+)?)(?:\s*[;&]
 
 const (
 	defaultContainerExecWorkDir  = "/data"
-	remoteBackgroundOutputLogDir = "/data/.memoh/background"
+	remoteBackgroundOutputLogDir = "/data/.ami/background"
 	minCommandExecBudgetSeconds  = 30
 )
 
@@ -164,10 +164,10 @@ func (*ContainerProvider) Usage(_ context.Context, session SessionContext, avail
 	// open these links.
 	if (session.CurrentPlatform == "local" || session.CurrentPlatform == "web") && !sessionUsesRemoteWorkspaceTarget(session) {
 		if len(available.Refs(ToolRead(), ToolWrite(), ToolEdit(), ToolApplyPatch())) > 0 {
-			parts = append(parts, "In Memoh Web/Desktop, link to files on the native Server Workspace using Markdown with the real absolute path, for example [View source](/data/project/index.html). Always start the link destination with /; relative destinations such as summary.md or ./out/report.md cannot be opened. Encode spaces in link destinations. Memoh renders link icons; do not add emoji or icon characters to link labels. These links open the workspace file viewer, not a running web page. Do not prefix paths with the Memoh site URL or file://, and do not use this format for files on another computer. When you name a workspace file in prose without linking it, wrap the name in backticks, for example `summary.md`.")
+			parts = append(parts, "In Ami Web/Desktop, link to files on the native Server Workspace using Markdown with the real absolute path, for example [View source](/data/project/index.html). Always start the link destination with /; relative destinations such as summary.md or ./out/report.md cannot be opened. Encode spaces in link destinations. Ami renders link icons; do not add emoji or icon characters to link labels. These links open the workspace file viewer, not a running web page. Do not prefix paths with the Ami site URL or file://, and do not use this format for files on another computer. When you name a workspace file in prose without linking it, wrap the name in backticks, for example `summary.md`.")
 		}
 		if _, ok := available.Ref(ToolExec()); ok {
-			parts = append(parts, "When delivering a web app running on the native Server Workspace, provide a Markdown link with its verified HTTP localhost URL and explicit port, for example [Try it](http://localhost:5173/). Memoh opens it through its workspace preview proxy; the user does not need to configure port forwarding for this in-app preview. Public HTTP(S) links open in the user's browser. Workspace links are not public share URLs; never invent a proxy address or claim a service is running without checking it.")
+			parts = append(parts, "When delivering a web app running on the native Server Workspace, provide a Markdown link with its verified HTTP localhost URL and explicit port, for example [Try it](http://localhost:5173/). Ami opens it through its workspace preview proxy; the user does not need to configure port forwarding for this in-app preview. Public HTTP(S) links open in the user's browser. Workspace links are not public share URLs; never invent a proxy address or claim a service is running without checking it.")
 		}
 		if len(available.Refs(ToolRead(), ToolWrite(), ToolEdit(), ToolApplyPatch(), ToolExec())) > 0 {
 			parts = append(parts, "Lead with what was delivered. For a simple result, weave Markdown links into one or two natural sentences, using labels such as \"Try it\", \"View source\", or \"Download report\" instead of \"click here\" or bare paths. Include checks and limitations only when useful; only claim checks actually performed. Avoid headings and setup details unless they help the user. Keep preview, source, and download links for the same deliverable in the same sentence by default, not in separate list items. Use a list only when introducing multiple independent deliverables.")
@@ -226,7 +226,7 @@ func (p *ContainerProvider) Tools(ctx context.Context, session SessionContext) (
 		),
 		{
 			Name: ToolApplyPatch().String(),
-			Description: fmt.Sprintf(`Apply a structured patch %s. This is a Memoh/Codex-style patch format, not a standard unified diff or git patch.
+			Description: fmt.Sprintf(`Apply a structured patch %s. This is a Ami/Codex-style patch format, not a standard unified diff or git patch.
 
 Use this tool for multi-file edits, structured code changes, file creation, file deletion, or file moves.
 

@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"slices"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
 )
 
 // signInErrors are the categories Claude Code tags a failed API call with

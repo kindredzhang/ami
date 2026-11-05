@@ -1,4 +1,4 @@
-import type { HandlersSupermarketAppCategory } from '@memohai/sdk'
+import type { HandlersSupermarketAppCategory } from '@ami/sdk'
 
 /** Apps shown per category on the Supermarket front page before "View all". */
 export const SECTION_PREVIEW_LIMIT = 8

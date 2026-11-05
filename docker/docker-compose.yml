@@ -1,22 +1,22 @@
-name: "memoh"
+name: "ami"
 services:
   migrate:
     build:
       context: .
       dockerfile: docker/Dockerfile.server
       args:
-        - VERSION=${MEMOH_VERSION:-dev}
-        - COMMIT_HASH=${MEMOH_COMMIT:-unknown}
-        - BUILD_TIME=${MEMOH_BUILD_TIME:-unknown}
+        - VERSION=${AMI_VERSION:-dev}
+        - COMMIT_HASH=${AMI_COMMIT:-unknown}
+        - BUILD_TIME=${AMI_BUILD_TIME:-unknown}
 
   server:
     build:
       context: .
       dockerfile: docker/Dockerfile.server
       args:
-        - VERSION=${MEMOH_VERSION:-dev}
-        - COMMIT_HASH=${MEMOH_COMMIT:-unknown}
-        - BUILD_TIME=${MEMOH_BUILD_TIME:-unknown}
+        - VERSION=${AMI_VERSION:-dev}
+        - COMMIT_HASH=${AMI_COMMIT:-unknown}
+        - BUILD_TIME=${AMI_BUILD_TIME:-unknown}
 
   web:
     build:

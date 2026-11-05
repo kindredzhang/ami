@@ -4,7 +4,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/felinics/memoh/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // ToolSessionContextStore registers per-run tool event sinks so gateway HTTP

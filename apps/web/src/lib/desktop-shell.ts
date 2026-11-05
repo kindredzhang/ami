@@ -3,7 +3,7 @@ import type { InjectionKey } from 'vue'
 // Provided by the Electron desktop shell to enable a macOS-style top inset
 // (traffic-light reserve + custom TopBar) inside reusable web sidebars.
 // Web (browser) does not provide this key, so consumers fall back to false.
-export const DesktopShellKey: InjectionKey<boolean> = Symbol('memohai:desktop-shell')
+export const DesktopShellKey: InjectionKey<boolean> = Symbol('ami:desktop-shell')
 
 export type DesktopRuntimeStatus =
   | 'disabled'
@@ -29,7 +29,7 @@ export interface DesktopRuntimeBridge {
   onRuntimeStateChanged(listener: (state: DesktopRuntimeState) => void): () => void
 }
 
-export const DesktopRuntimeKey: InjectionKey<DesktopRuntimeBridge | undefined> = Symbol('memohai:desktop-runtime')
+export const DesktopRuntimeKey: InjectionKey<DesktopRuntimeBridge | undefined> = Symbol('ami:desktop-runtime')
 
 // Window chrome state the renderer cannot observe on its own. Fullscreen
 // matters on macOS: the traffic lights hide in fullscreen, so layouts that
@@ -40,7 +40,7 @@ export interface DesktopWindowBridge {
   setIgnoreMenuShortcuts?(ignore: boolean): Promise<void>
 }
 
-export const DesktopWindowKey: InjectionKey<DesktopWindowBridge | undefined> = Symbol('memohai:desktop-window')
+export const DesktopWindowKey: InjectionKey<DesktopWindowBridge | undefined> = Symbol('ami:desktop-window')
 
 export type DesktopUpdateStatus =
   | 'idle'
@@ -79,4 +79,4 @@ export interface DesktopUpdateBridge {
   onStateChanged(listener: (state: DesktopUpdateState) => void): () => void
 }
 
-export const DesktopUpdatesKey: InjectionKey<DesktopUpdateBridge | undefined> = Symbol('memohai:desktop-updates')
+export const DesktopUpdatesKey: InjectionKey<DesktopUpdateBridge | undefined> = Symbol('ami:desktop-updates')

@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 // subagentThreadService is the slice of the thread service the direct-chat

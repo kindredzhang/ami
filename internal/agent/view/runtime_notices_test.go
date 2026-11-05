@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 func TestTerminalNoticesKeepTheirLiveIdentity(t *testing.T) {

@@ -3,7 +3,7 @@ package models
 import (
 	"slices"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // This file projects the stored ModelReasoning onto the inputs the reasoning

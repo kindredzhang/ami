@@ -16,11 +16,11 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/bots"
-	ctr "github.com/felinics/memoh/internal/container"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/bots"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 func TestReadZipEntriesRejectsZipSlip(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"github.com/felinics/twilight/sdk"
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 type modelSessionKey struct{}
@@ -34,17 +34,17 @@ func ResolveModelClientType(clientType, modelID string) string {
 		return clientType
 	}
 	// Twilight routes models outside its exception table to Completions and only
-	// fails on an invalid route override, which Memoh never configures.
+	// fails on an invalid route override, which Ami never configures.
 	protocol, _ := openCodeGoRoutes.ProtocolForModel(modelID)
 	return string(protocol)
 }
 
 // newOpenCodeGoModel sends requests through Twilight's Go provider rather than a
-// protocol adapter of Memoh's own, because the provider also adapts requests to
+// protocol adapter of Ami's own, because the provider also adapts requests to
 // how Go's routes behave. Claude-specific thinking configuration therefore does
 // not apply; their controls come from the Go model catalog.
 func newOpenCodeGoModel(cfg SDKModelConfig) *sdk.Model {
-	// Memoh reads the wire protocol from the provider name for reasoning, prompt
+	// Ami reads the wire protocol from the provider name for reasoning, prompt
 	// caching, and media handling.
 	name := ResolveModelClientType(cfg.ClientType, cfg.ModelID)
 	provider := newOpenCodeGoProvider(cfg.BaseURL, cfg.APIKey, cfg.HTTPClient, name)
@@ -85,7 +85,7 @@ func applyOpenCodeGoThinking(req *sdk.Request, cfg SDKModelConfig) {
 	case rc.Disabled:
 		options = json.RawMessage(`{"thinking":{"type":"disabled"}}`)
 	case rc.Active && cfg.ReasoningDialect == reasoning.DialectBudget:
-		// Reuse Memoh's established budget allowances; these are not native
+		// Reuse Ami's established budget allowances; these are not native
 		// effort tiers. Bounds come from the model catalog, not its name.
 		budget := legacyAnthropicBudgetFor(rc.Effort)
 		if cfg.ThinkingBudgetMin != nil {
@@ -100,7 +100,7 @@ func applyOpenCodeGoThinking(req *sdk.Request, cfg SDKModelConfig) {
 	default:
 		return
 	}
-	// Memoh owns this namespace; Twilight forwards it to the selected protocol.
+	// Ami owns this namespace; Twilight forwards it to the selected protocol.
 	// Clone the outer map because a request may share options with another turn.
 	req.ProviderOptions = maps.Clone(req.ProviderOptions)
 	if req.ProviderOptions == nil {
@@ -113,7 +113,7 @@ func newOpenCodeGoProvider(baseURL, apiKey string, httpClient *http.Client, name
 	opts := []opencodego.Option{
 		opencodego.WithAPIKey(apiKey),
 		opencodego.WithHTTPClient(httpClient),
-		// The agent's HTTP clients do not add Memoh's User-Agent.
+		// The agent's HTTP clients do not add Ami's User-Agent.
 		opencodego.WithHeaders(map[string]string{"User-Agent": DefaultProviderUserAgent()}),
 	}
 	if baseURL != "" {

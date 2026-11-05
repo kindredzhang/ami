@@ -23,15 +23,15 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 
-	"github.com/felinics/memoh/internal/config"
-	containerapi "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/config"
+	containerapi "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (
-	snapshotImageRepository = "memoh-workspace-snapshot"
-	snapshotParentLabel     = "memoh.snapshot_parent"
+	snapshotImageRepository = "ami-workspace-snapshot"
+	snapshotParentLabel     = "ami.snapshot_parent"
 	bridgeTCPPort           = "9090"
 	workspaceContainerPref  = "workspace-"
 )
@@ -302,13 +302,13 @@ func validateWorkspaceNetwork(name, serverContainer string, serverInContainer, b
 		return fmt.Errorf("docker network %q does not provide container-name DNS; configure a user-defined network", name)
 	}
 	if !serverInContainer {
-		return fmt.Errorf("docker network %q requires the Memoh server to run in a container; host deployments use the loopback workspace bridge", name)
+		return fmt.Errorf("docker network %q requires the Ami server to run in a container; host deployments use the loopback workspace bridge", name)
 	}
 	if !bridgeTLSStrict {
 		return fmt.Errorf("docker network %q requires [bridge_tls].mode = %q to isolate workspace bridge access", name, config.BridgeTLSModeStrict)
 	}
 	if strings.TrimSpace(serverContainer) == "" {
-		return fmt.Errorf("docker network %q requires [docker].server_container to identify this Memoh server on the configured Docker daemon", name)
+		return fmt.Errorf("docker network %q requires [docker].server_container to identify this Ami server on the configured Docker daemon", name)
 	}
 	return nil
 }
@@ -319,20 +319,20 @@ func validateServerNetworkMembership(ctx context.Context, cli *client.Client, se
 		mappedErr := mapDockerErr(err)
 		if containerapi.IsNotFound(mappedErr) {
 			return fmt.Errorf(
-				"%w: Memoh server container %q does not exist on Docker daemon %q: %w",
+				"%w: Ami server container %q does not exist on Docker daemon %q: %w",
 				containerapi.ErrInvalidArgument,
 				serverContainer,
 				cli.DaemonHost(),
 				err,
 			)
 		}
-		return fmt.Errorf("inspect Memoh server container %q on Docker daemon %q: %w", serverContainer, cli.DaemonHost(), mappedErr)
+		return fmt.Errorf("inspect Ami server container %q on Docker daemon %q: %w", serverContainer, cli.DaemonHost(), mappedErr)
 	}
 	if containerNetworkEndpoint(info, networkName) != nil {
 		return nil
 	}
 	return fmt.Errorf(
-		"%w: Memoh server container %q is not attached to Docker network %q on Docker daemon %q",
+		"%w: Ami server container %q is not attached to Docker network %q on Docker daemon %q",
 		containerapi.ErrInvalidArgument,
 		serverContainer,
 		networkName,
@@ -594,7 +594,7 @@ func (s *Service) CommitSnapshot(ctx context.Context, req containerapi.CommitSna
 	}
 	_, err = s.client.ContainerCommit(ctx, key, container.CommitOptions{
 		Reference: dockerSnapshotImageRef(name),
-		Comment:   "memoh workspace snapshot",
+		Comment:   "ami workspace snapshot",
 		Config: &container.Config{
 			Labels: map[string]string{
 				containerapi.StorageKeyLabel: name,

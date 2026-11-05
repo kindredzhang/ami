@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // resetRacingLedger is the run ledger with a hook that runs right after an
@@ -229,15 +229,15 @@ func TestBeginHistoryResetSnapshotWriteFailureIsDependencyFault(t *testing.T) {
 // that release, the finish still clears the lease and its index entry, so no
 // reaper later mistakes the finished run for an abandoned one.
 func TestRedisFinishRunAfterResetDroppedTheProjection(t *testing.T) {
-	url := os.Getenv("MEMOH_TEST_REDIS_URL")
+	url := os.Getenv("AMI_TEST_REDIS_URL")
 	if url == "" {
-		url = os.Getenv("MEMOH_TEST_VALKEY_URL")
+		url = os.Getenv("AMI_TEST_VALKEY_URL")
 	}
 	if url == "" {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL required")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL required")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL")
+		t.Skip("set AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL")
 	}
 	ctx := context.Background()
 	backend, err := NewRedisBackend(ctx, RedisOptions{URL: url, KeyPrefix: uniqueRuntimeBackendPrefix("reset-finish"), StateTTL: time.Minute})

@@ -57,7 +57,7 @@ vi.mock('@pinia/colada', async () => {
   }
 })
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsNameAvailability: (...args: unknown[]) => mocks.getBotsNameAvailability(...args),
   getAcpProfiles: vi.fn(async () => ({ data: { items: mocks.acpProfiles } })),
   getModels: vi.fn(async () => ({ data: [] })),
@@ -161,7 +161,7 @@ vi.mock('./components/agent-type-pill.vue', async () => {
         return () => h('button', {
           'data-select-oauth-agent': '',
           type: 'button',
-          onClick: () => emit('update:modelValue', (props.profiles as Array<{ id: string }>)[0]?.id ?? 'memoh'),
+          onClick: () => emit('update:modelValue', (props.profiles as Array<{ id: string }>)[0]?.id ?? 'ami'),
         })
       },
     }),

@@ -6,7 +6,7 @@ func TestParseConfig(t *testing.T) {
 	cfg, err := parseConfig(map[string]any{
 		"homeserverUrl":      "https://matrix.example.com/",
 		"accessToken":        "tok",
-		"userId":             "@memoh:example.com",
+		"userId":             "@ami:example.com",
 		"syncTimeoutSeconds": 15,
 		"autoJoinInvites":    false,
 	})
@@ -16,7 +16,7 @@ func TestParseConfig(t *testing.T) {
 	if cfg.HomeserverURL != "https://matrix.example.com" {
 		t.Fatalf("unexpected homeserver url: %q", cfg.HomeserverURL)
 	}
-	if cfg.UserID != "@memoh:example.com" {
+	if cfg.UserID != "@ami:example.com" {
 		t.Fatalf("unexpected user id: %q", cfg.UserID)
 	}
 	if cfg.SyncTimeoutSeconds != 15 {
@@ -31,7 +31,7 @@ func TestParseConfigDefaultsAutoJoinInvites(t *testing.T) {
 	cfg, err := parseConfig(map[string]any{
 		"homeserverUrl": "https://matrix.example.com",
 		"accessToken":   "tok",
-		"userId":        "@memoh:example.com",
+		"userId":        "@ami:example.com",
 	})
 	if err != nil {
 		t.Fatalf("parseConfig returned error: %v", err)

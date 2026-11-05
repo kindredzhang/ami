@@ -11,12 +11,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/botbackup/secure"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/botbackup/secure"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
-// buildSampleBundle assembles a complete plaintext .memoh.zip the way Export
+// buildSampleBundle assembles a complete plaintext .ami.zip the way Export
 // would, covering every section, so the preview/import readers can be exercised
 // without a database.
 func buildSampleBundle(t *testing.T) []byte {

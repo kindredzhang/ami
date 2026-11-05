@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
 )
 
 type fakeResolver struct {
@@ -39,7 +39,7 @@ func TestResolveLauncher(t *testing.T) {
 		t.Fatalf("without a resolver: %+v, %v", l, err)
 	}
 
-	managed := external.Launcher{Path: "/data/.memoh/deps/codex/current/bin/codex", Source: external.LauncherSourceManaged}
+	managed := external.Launcher{Path: "/data/.ami/deps/codex/current/bin/codex", Source: external.LauncherSourceManaged}
 	if l, err := ResolveLauncher(ctx, &fakeResolver{launcher: managed}, "bot", "codex", ""); err != nil || l != managed {
 		t.Fatalf("managed: %+v, %v", l, err)
 	}
@@ -52,7 +52,7 @@ func TestResolveLauncher(t *testing.T) {
 		t.Fatalf("missing dependency: %v", err)
 	}
 
-	// Anything else is Memoh's own failure, kept as it is.
+	// Anything else is Ami's own failure, kept as it is.
 	cause := errors.New("bridge down")
 	_, err = ResolveLauncher(ctx, &fakeResolver{err: cause}, "bot", "codex", "")
 	if !errors.Is(err, cause) || external.IsFailure(err) {

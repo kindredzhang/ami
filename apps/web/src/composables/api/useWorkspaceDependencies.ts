@@ -14,7 +14,7 @@ import {
   type HandlersWorkspaceDependencyPreflightResponse,
   type HandlersWorkspaceDependencyScriptEnv,
   type HandlersWorkspaceDependencyScriptResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 // Domain aliases over the generated SDK types. The generated names carry the
 // Go handler prefix; the panel, its dialogs, and the enable flow speak in

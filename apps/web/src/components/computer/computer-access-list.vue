@@ -120,8 +120,8 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@pinia/colada'
-import type { BotsBot } from '@memohai/sdk'
-import { getBotsQuery } from '@memohai/sdk/colada'
+import type { BotsBot } from '@ami/sdk'
+import { getBotsQuery } from '@ami/sdk/colada'
 import {
   Avatar,
   AvatarFallback,
@@ -133,7 +133,7 @@ import {
   Switch,
   toast,
 } from '@felinic/ui'
-import { CloudIcon, ComputerIcon } from '@memohai/icon/ui'
+import { CloudIcon, ComputerIcon } from '@ami/icon/ui'
 import { avatarInitials } from '@/composables/useAvatarInitials'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { useAccountRuntimes, useComputerAccessActions, useComputerAccessGrants } from './use-computer-access'

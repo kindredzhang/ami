@@ -6,7 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"github.com/felinics/memoh/internal/db"
+	"github.com/kindredzhang/ami/internal/db"
 )
 
 func TestMapQueryErrRecognizesLastActiveAdminConstraint(t *testing.T) {

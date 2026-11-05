@@ -13,13 +13,13 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	displaypkg "github.com/felinics/memoh/internal/display"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/server"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	displaypkg "github.com/kindredzhang/ami/internal/display"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/server"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 type displayInfoResponse struct {
@@ -231,9 +231,9 @@ func (h *ContainerdHandler) CloseDisplaySession(c echo.Context) error {
 }
 
 const (
-	displayPrepareProgressPrefix = "__MEMOH_DISPLAY_PROGRESS__"
-	displayPrepareScriptPath     = "/opt/memoh/scripts/display-prepare.sh"
-	displayApplyStyleScriptPath  = "/opt/memoh/scripts/display-apply-style.sh"
+	displayPrepareProgressPrefix = "__AMI_DISPLAY_PROGRESS__"
+	displayPrepareScriptPath     = "/opt/ami/scripts/display-prepare.sh"
+	displayApplyStyleScriptPath  = "/opt/ami/scripts/display-apply-style.sh"
 )
 
 // displayPrepareStreamEvent is a progress or complete event of display
@@ -376,7 +376,7 @@ func (h *ContainerdHandler) PrepareDisplay(c echo.Context) error {
 		// the SSE `error` event carries the stable
 		// `workspace.display_prepare_failed` code — identical to the mid-stream
 		// recvErr path above — instead of the legacy underscore string that the
-		// frontend's parseMemohError/isApiErrorCode branches can't match.
+		// frontend's parseAmiError/isApiErrorCode branches can't match.
 		// The event renders only the catalog detail and the private cause
 		// (exit code + stderr) goes to the request's result record, so the
 		// diagnostic never leaks into the user-facing response.
@@ -457,7 +457,7 @@ func displayStyleStatusCommand() string {
 }
 
 func displayStyleLogTailCommand() string {
-	return "tail -n 80 /tmp/memoh-desktop-style.log 2>/dev/null || true"
+	return "tail -n 80 /tmp/ami-desktop-style.log 2>/dev/null || true"
 }
 
 func trimDisplayLog(text string) string {
@@ -556,10 +556,10 @@ if [ -r /etc/os-release ]; then
   os_like="${ID:-} ${ID_LIKE:-}"
 fi
 has_toolkit() {
-  has_exec /opt/memoh/toolkit/display/bin/Xvnc ||
-    has_exec /opt/memoh/toolkit/display/bin/twm ||
-    has_exec /opt/memoh/toolkit/display/root/usr/bin/Xvnc ||
-    has_exec /opt/memoh/toolkit/display/root/usr/bin/twm
+  has_exec /opt/ami/toolkit/display/bin/Xvnc ||
+    has_exec /opt/ami/toolkit/display/bin/twm ||
+    has_exec /opt/ami/toolkit/display/root/usr/bin/Xvnc ||
+    has_exec /opt/ami/toolkit/display/root/usr/bin/twm
 }
 has_prepare() {
   case " $os_like " in
@@ -569,8 +569,8 @@ has_prepare() {
 }
 has_vnc() {
   has_cmd Xvnc ||
-    has_exec /opt/memoh/toolkit/display/bin/Xvnc ||
-    has_exec /opt/memoh/toolkit/display/root/usr/bin/Xvnc ||
+    has_exec /opt/ami/toolkit/display/bin/Xvnc ||
+    has_exec /opt/ami/toolkit/display/root/usr/bin/Xvnc ||
     has_exec /usr/bin/Xvnc ||
     has_exec /usr/local/bin/Xvnc
 }
@@ -578,8 +578,8 @@ has_desktop() {
   has_cmd startxfce4 ||
     has_cmd xfce4-session ||
     has_cmd xfwm4 ||
-    has_exec /opt/memoh/toolkit/display/bin/twm ||
-    has_exec /opt/memoh/toolkit/display/root/usr/bin/twm ||
+    has_exec /opt/ami/toolkit/display/bin/twm ||
+    has_exec /opt/ami/toolkit/display/root/usr/bin/twm ||
     has_process 'xfce4-session|xfwm4|twm'
 }
 has_browser() {
@@ -590,7 +590,7 @@ has_browser() {
     has_process 'google-chrome|chromium'
 }
 has_a11y() {
-  a11y=/opt/memoh/toolkit/display/bin/a11y-cli
+  a11y=/opt/ami/toolkit/display/bin/a11y-cli
   [ -x "$a11y" ] || return 1
   DISPLAY=:99 "$a11y" probe 2>/dev/null | grep -q '"ok":true'
 }

@@ -8,7 +8,7 @@ package protocol
 // PinnedCodexVersion is the codex CLI version these generated types came from.
 const PinnedCodexVersion = "0.166.0"
 
-// Client request methods (Memoh → app-server).
+// Client request methods (Ami → app-server).
 const (
 	MethodInitialize                         = "initialize"
 	MethodThreadStart                        = "thread/start"
@@ -34,7 +34,7 @@ const (
 	MethodAccountLogout                      = "account/logout"
 )
 
-// Server request methods (app-server → Memoh, expect a response).
+// Server request methods (app-server → Ami, expect a response).
 const (
 	MethodItemCommandExecutionRequestApproval = "item/commandExecution/requestApproval"
 	MethodItemFileChangeRequestApproval       = "item/fileChange/requestApproval"
@@ -125,7 +125,7 @@ func NewResponseForMethod(method string) (resp any, ok bool) {
 	return nil, false
 }
 
-// DecodeServerRequestParams decodes the params of an app-server → Memoh
+// DecodeServerRequestParams decodes the params of an app-server → Ami
 // request into its generated type. ok is false for unknown methods; the
 // caller keeps the raw envelope in that case.
 func DecodeServerRequestParams(method string, params []byte) (decoded any, ok bool, err error) {

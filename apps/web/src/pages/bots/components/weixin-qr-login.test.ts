@@ -4,7 +4,7 @@ import { createApp, h, nextTick, type App, type Slots } from 'vue'
 import WeixinQrLogin from './weixin-qr-login.vue'
 
 const api = vi.hoisted(() => ({ post: vi.fn() }))
-vi.mock('@memohai/sdk/client', () => ({ client: { post: api.post } }))
+vi.mock('@ami/sdk/client', () => ({ client: { post: api.post } }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 vi.mock('@felinic/ui', () => ({
   Button: (_props: unknown, { slots, attrs }: { slots: Slots, attrs: Record<string, unknown> }) => h('button', attrs, slots.default?.()),

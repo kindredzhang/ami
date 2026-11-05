@@ -15,14 +15,14 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const (
-	reverseHTTPRouteMetadata = "x-memoh-reverse-http-route"
+	reverseHTTPRouteMetadata = "x-ami-reverse-http-route"
 )
 
-// ReverseHTTPTimeout caps one proxied tools request end to end. Memoh tools
+// ReverseHTTPTimeout caps one proxied tools request end to end. Ami tools
 // can legitimately block on a human decision (approval cards, ask_user) for
 // up to their 10-minute wait windows, so the tunnel ceiling sits above the
 // longest decision wait (pinned by the toolmount timeout-ladder guard test);
@@ -61,7 +61,7 @@ func NewReverseHTTPBroker() *ReverseHTTPBroker {
 
 func (b *ReverseHTTPBroker) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if b == nil {
-		http.Error(w, "Memoh tools proxy is not configured", http.StatusServiceUnavailable)
+		http.Error(w, "Ami tools proxy is not configured", http.StatusServiceUnavailable)
 		return
 	}
 	body, err := io.ReadAll(req.Body)
@@ -91,7 +91,7 @@ func (b *ReverseHTTPBroker) ServeHTTP(w http.ResponseWriter, req *http.Request) 
 			},
 		},
 	}); err != nil {
-		http.Error(w, "forward Memoh tools request failed", http.StatusBadGateway)
+		http.Error(w, "forward Ami tools request failed", http.StatusBadGateway)
 		return
 	}
 
@@ -105,7 +105,7 @@ func (b *ReverseHTTPBroker) ServeHTTP(w http.ResponseWriter, req *http.Request) 
 		}
 		response := frame.GetResponse()
 		if response == nil {
-			http.Error(w, "invalid Memoh tools response", http.StatusBadGateway)
+			http.Error(w, "invalid Ami tools response", http.StatusBadGateway)
 			return
 		}
 		copyProtoHeaders(w.Header(), response.GetHeaders())
@@ -118,7 +118,7 @@ func (b *ReverseHTTPBroker) ServeHTTP(w http.ResponseWriter, req *http.Request) 
 	case <-req.Context().Done():
 		return
 	case <-timer.C:
-		http.Error(w, "Memoh tools request timed out", http.StatusGatewayTimeout)
+		http.Error(w, "Ami tools request timed out", http.StatusGatewayTimeout)
 	}
 }
 
@@ -169,7 +169,7 @@ func (b *ReverseHTTPBroker) registerPending(ctx context.Context, route, id strin
 		select {
 		case <-registered:
 		case <-timer.C:
-			return nil, errors.New("memoh tools proxy is not connected")
+			return nil, errors.New("ami tools proxy is not connected")
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		}

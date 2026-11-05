@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { HandlersFsFileInfo } from '@memohai/sdk'
+import type { HandlersFsFileInfo } from '@ami/sdk'
 import FileViewer from '@/components/file-manager/file-viewer.vue'
 import { useChatStore } from '@/store/chat-list'
 import { useWorkspaceTabsStore } from '@/store/workspace-tabs'

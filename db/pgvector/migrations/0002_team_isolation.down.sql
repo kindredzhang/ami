@@ -44,4 +44,4 @@ ALTER TABLE public.memory_node_embeddings
 CREATE INDEX IF NOT EXISTS idx_memory_node_embeddings_bot_model
     ON public.memory_node_embeddings (bot_id, model_id);
 
-DROP FUNCTION IF EXISTS public.memoh_pgvector_current_team_id();
+DROP FUNCTION IF EXISTS public.ami_pgvector_current_team_id();

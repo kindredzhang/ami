@@ -76,7 +76,7 @@ import type {
   SettingsSettings,
   FetchprovidersGetResponse,
   SearchprovidersGetResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 const props = defineProps<{
   form: SettingsSettings

@@ -10,18 +10,18 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/team"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestUserInputFencedChannelInteractionPostgres(t *testing.T) {
 	ctx := context.Background()
 	basePool := freshMigratedDB(t)
 	cfg := basePool.Config()
-	cfg.ConnConfig.RuntimeParams["memoh.team_id"] = team.DefaultTeamID
+	cfg.ConnConfig.RuntimeParams["ami.team_id"] = team.DefaultTeamID
 	pool, err := pgxpool.NewWithConfig(ctx, cfg)
 	if err != nil {
 		t.Fatal(err)

@@ -1,5 +1,5 @@
 -- name: GetBotWorkspaceResourceLimits :one
-SELECT * FROM bot_workspace_resource_limits WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+SELECT * FROM bot_workspace_resource_limits WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: UpsertBotWorkspaceResourceLimits :one
 INSERT INTO bot_workspace_resource_limits (

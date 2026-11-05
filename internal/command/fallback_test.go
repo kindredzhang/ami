@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 func TestItemActionTypeable(t *testing.T) {

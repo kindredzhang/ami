@@ -8,9 +8,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 func TestDiscussEquivalence_BasicRCAndTR(t *testing.T) {

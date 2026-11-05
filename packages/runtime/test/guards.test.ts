@@ -20,7 +20,7 @@ describe('runtime guards', () => {
     'WINDIR',
     'PATHEXT',
     'IFS',
-    'MEMOH_RUNTIME_KEY',
+    'AMI_RUNTIME_KEY',
   ])(
     'rejects dangerous environment variable %s',
     name => {
@@ -36,7 +36,7 @@ describe('runtime guards', () => {
       LC_TIME: 'C',
       TMPDIR: '/tmp/alice',
       PATH: '/custom/bin::relative:/usr/bin',
-      MEMOH_RUNTIME_KEY: 'mrk_secret',
+      AMI_RUNTIME_KEY: 'mrk_secret',
       node_options: '--require malware.js',
       Bash_Env: '/tmp/startup.sh',
       LD_PRELOAD: '/tmp/inject.so',
@@ -59,7 +59,7 @@ describe('runtime guards', () => {
     expect(environment.PATH).toContain('/custom/bin')
     expect(environment.PATH).not.toContain('relative')
     for (const name of [
-      'MEMOH_RUNTIME_KEY',
+      'AMI_RUNTIME_KEY',
       'node_options',
       'Bash_Env',
       'LD_PRELOAD',
@@ -82,7 +82,7 @@ describe('runtime guards', () => {
       ComSpec: String.raw`C:\Windows\System32\cmd.exe`,
       PATHEXT: '.COM;.EXE;.BAT;.CMD',
       USERPROFILE: String.raw`C:\Users\alice`,
-      MEMOH_RUNTIME_KEY: 'mrk_secret',
+      AMI_RUNTIME_KEY: 'mrk_secret',
       GITHUB_TOKEN: 'secret',
     }, 'win32')
 
@@ -94,7 +94,7 @@ describe('runtime guards', () => {
       USERPROFILE: String.raw`C:\Users\alice`,
       SHELL: 'cmd.exe',
     })
-    expect(environment).not.toHaveProperty('MEMOH_RUNTIME_KEY')
+    expect(environment).not.toHaveProperty('AMI_RUNTIME_KEY')
     expect(environment).not.toHaveProperty('GITHUB_TOKEN')
   })
 })

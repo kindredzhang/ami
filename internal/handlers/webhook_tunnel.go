@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/webhooktunnel"
+	"github.com/kindredzhang/ami/internal/webhooktunnel"
 )
 
 type WebhookTunnelHandler struct {

@@ -12,16 +12,16 @@ import (
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/apps"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/server"
-	supermarketclient "github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apps"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/server"
+	supermarketclient "github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 var appConnectorTypePattern = regexp.MustCompile(`^[a-z][a-z0-9_]*$`)

@@ -12,10 +12,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/step"
-	"github.com/felinics/memoh/internal/hooks"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	"github.com/kindredzhang/ami/internal/hooks"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 // turnHookRecorder runs every hook command as a success with no decision and

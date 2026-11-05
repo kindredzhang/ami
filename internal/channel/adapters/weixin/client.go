@@ -19,8 +19,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/version"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 const (
@@ -67,7 +67,7 @@ func buildBaseInfo() BaseInfo {
 // grammar (`name "/" version`, each 1-32 chars of [A-Za-z0-9_.+-]). Upstream
 // drops tokens that don't parse, so the build version is squeezed into that
 // charset rather than sent verbatim.
-var botAgent = "Memoh/" + sanitizeBotAgentVersion(version.Version)
+var botAgent = "Ami/" + sanitizeBotAgentVersion(version.Version)
 
 func sanitizeBotAgentVersion(v string) string {
 	var b strings.Builder

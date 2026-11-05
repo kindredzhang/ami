@@ -4,7 +4,7 @@ import {
   patchBotsByBotIdWorkdirsByWorkdirId,
   postBotsByBotIdWorkdirs,
   type WorkdirWorkdir,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 // A bot workdir: a named (workspace target, directory) pair. Sessions bind to
 // one immutably at creation; the backend derives their working directory from

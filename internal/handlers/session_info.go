@@ -10,17 +10,17 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/accounts"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type SessionInfoHandler struct {
@@ -65,7 +65,7 @@ type ContextUsage struct {
 }
 
 // CompactionInfo reports where automatic compaction fires for this session.
-// It is omitted for runtimes Memoh never compacts, and the mark is omitted
+// It is omitted for runtimes Ami never compacts, and the mark is omitted
 // until a turn has persisted a budget plan, so the UI never draws a guess.
 type CompactionInfo struct {
 	Enabled    bool  `json:"enabled"`

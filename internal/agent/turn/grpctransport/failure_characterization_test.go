@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 func runErrorOverTransport(t *testing.T, runErr error) error {

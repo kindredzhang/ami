@@ -1,10 +1,10 @@
 -- 0124_connect_it
 -- Add bot-scoped Connect-It connection bindings. A co-hosted Connect-It
--- deployment owns and migrates its own connect_it schema; Memoh stores only
+-- deployment owns and migrates its own connect_it schema; Ami stores only
 -- the durable connection reference and whether the bot currently exposes it.
 
 CREATE TABLE IF NOT EXISTS public.connectors (
-    team_id       UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id       UUID        NOT NULL DEFAULT public.ami_current_team_id()
                               REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id        UUID        NOT NULL,
     connection_id TEXT        NOT NULL,
@@ -33,12 +33,12 @@ DROP POLICY IF EXISTS connectors_team_update ON public.connectors;
 DROP POLICY IF EXISTS connectors_team_delete ON public.connectors;
 
 CREATE POLICY connectors_team_select ON public.connectors
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY connectors_team_insert ON public.connectors
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY connectors_team_update ON public.connectors
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY connectors_team_delete ON public.connectors
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

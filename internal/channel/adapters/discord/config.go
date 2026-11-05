@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 type Config struct {

@@ -9,7 +9,7 @@ overrides:
   '@esbuild-kit/core-utils>esbuild': ^0.25.0
   '@humanfs/node@<0.16.8': ^0.16.8
   '@isaacs/brace-expansion@<5.0.1': ^5.0.1
-  '@memohai/icon': workspace:*
+  '@ami/icon': workspace:*
   ajv@>=8 <8.18.0: ^8.18.0
   axios@>=1 <1.20.0: ^1.20.0
   baseline-browser-mapping@<2.11.0: ^2.11.0
@@ -35,10 +35,10 @@ overrides:
 
 patchedDependencies:
   dockview-core@7.0.2:
-    hash: 8195455b5e4bc151ac7c9ca7beae0706d3f9bc46cddcceb43d4ece5ca47f6f61
+    hash: 639f33f45e24a2902c78d410c959a65825fbb26f57fcbc4aee20b766a279da06
     path: patches/dockview-core@7.0.2.patch
   dockview-vue@7.0.2:
-    hash: ed0eefdb14161c24622f84cfcd1f3470577cc96fd973705c7e09d1c643452b07
+    hash: 3878c85eedfb0bcb964a5dc8859a6688bd3c1c14b852a648ded64c86a2ad57cc
     path: patches/dockview-vue@7.0.2.patch
   reka-ui@2.10.1:
     hash: b58f2bf789485626044d40b71d083765570a7d66b6ec1a3e05e8ae6920c9f840
@@ -55,12 +55,12 @@ importers:
         specifier: ^0.31.8
         version: 0.31.8
     devDependencies:
+      '@ami/runtime':
+        specifier: workspace:*
+        version: link:packages/runtime
       '@hey-api/openapi-ts':
         specifier: 0.99.0
         version: 0.99.0(typescript@6.0.3)
-      '@memohai/runtime':
-        specifier: workspace:*
-        version: link:packages/runtime
       '@types/node':
         specifier: ^25.9.5
         version: 25.9.5
@@ -97,6 +97,9 @@ importers:
 
   apps/desktop:
     dependencies:
+      '@ami/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
       '@electron-toolkit/preload':
         specifier: ^3.0.1
         version: 3.0.2(electron@42.11.18)
@@ -106,9 +109,6 @@ importers:
       '@fontsource-variable/inter':
         specifier: ^5.2.8
         version: 5.2.8
-      '@memohai/runtime':
-        specifier: workspace:*
-        version: link:../../packages/runtime
       builder-util-runtime:
         specifier: 9.7.0
         version: 9.7.0
@@ -116,24 +116,24 @@ importers:
         specifier: ^6.8.9
         version: 6.8.9
     devDependencies:
+      '@ami/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@ami/icon':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@ami/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
+      '@ami/web':
+        specifier: workspace:*
+        version: link:../web
       '@electron-toolkit/tsconfig':
         specifier: ^1.0.1
         version: 1.0.1(@types/node@25.9.5)
       '@felinic/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@memohai/config':
-        specifier: workspace:*
-        version: link:../../packages/config
-      '@memohai/icon':
-        specifier: workspace:*
-        version: link:../../packages/icons
-      '@memohai/sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
-      '@memohai/web':
-        specifier: workspace:*
-        version: link:../web
       '@pinia/colada':
         specifier: ^0.21.2
         version: 0.21.2(pinia@3.0.4(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3)))(vue@3.5.44(typescript@6.0.3))
@@ -221,6 +221,12 @@ importers:
 
   apps/web:
     dependencies:
+      '@ami/icon':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@ami/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
       '@felinic/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -236,12 +242,6 @@ importers:
       '@lisse/vue':
         specifier: ^0.4.0
         version: 0.4.0(vue@3.5.44(typescript@6.0.3))
-      '@memohai/icon':
-        specifier: workspace:*
-        version: link:../../packages/icons
-      '@memohai/sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
       '@pinia/colada':
         specifier: ^0.21.2
         version: 0.21.2(pinia@3.0.4(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3)))(vue@3.5.44(typescript@6.0.3))
@@ -283,7 +283,7 @@ importers:
         version: 3.24.0
       dockview-vue:
         specifier: ^7.0.2
-        version: 7.0.2(patch_hash=ed0eefdb14161c24622f84cfcd1f3470577cc96fd973705c7e09d1c643452b07)(vue@3.5.44(typescript@6.0.3))
+        version: 7.0.2(patch_hash=3878c85eedfb0bcb964a5dc8859a6688bd3c1c14b852a648ded64c86a2ad57cc)(vue@3.5.44(typescript@6.0.3))
       echarts:
         specifier: ^6.1.0
         version: 6.1.0
@@ -354,7 +354,7 @@ importers:
         specifier: ^4.3.5
         version: 4.3.6
     devDependencies:
-      '@memohai/config':
+      '@ami/config':
         specifier: workspace:*
         version: link:../../packages/config
       '@types/node':
@@ -434,12 +434,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@ami/icon':
+        specifier: workspace:*
+        version: link:../icons
       '@internationalized/date':
         specifier: ^3.12.2
         version: 3.12.2
-      '@memohai/icon':
-        specifier: workspace:*
-        version: link:../icons
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.1.6(@types/node@25.9.5)(esbuild@0.27.2)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
@@ -8486,16 +8486,16 @@ snapshots:
       - electron-builder-squirrel-windows
       - supports-color
 
-  dockview-core@7.0.2(patch_hash=8195455b5e4bc151ac7c9ca7beae0706d3f9bc46cddcceb43d4ece5ca47f6f61): {}
+  dockview-core@7.0.2(patch_hash=639f33f45e24a2902c78d410c959a65825fbb26f57fcbc4aee20b766a279da06): {}
 
-  dockview-vue@7.0.2(patch_hash=ed0eefdb14161c24622f84cfcd1f3470577cc96fd973705c7e09d1c643452b07)(vue@3.5.44(typescript@6.0.3)):
+  dockview-vue@7.0.2(patch_hash=3878c85eedfb0bcb964a5dc8859a6688bd3c1c14b852a648ded64c86a2ad57cc)(vue@3.5.44(typescript@6.0.3)):
     dependencies:
       dockview: 7.0.2
       vue: 3.5.44(typescript@6.0.3)
 
   dockview@7.0.2:
     dependencies:
-      dockview-core: 7.0.2(patch_hash=8195455b5e4bc151ac7c9ca7beae0706d3f9bc46cddcceb43d4ece5ca47f6f61)
+      dockview-core: 7.0.2(patch_hash=639f33f45e24a2902c78d410c959a65825fbb26f57fcbc4aee20b766a279da06)
 
   dompurify@3.4.17:
     optionalDependencies:

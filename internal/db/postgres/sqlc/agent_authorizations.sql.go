@@ -13,7 +13,7 @@ import (
 
 const countAgentAuthorizations = `-- name: CountAgentAuthorizations :one
 SELECT count(*) FROM agent_authorizations
-WHERE owner_user_id = $1 AND team_id = public.memoh_current_team_id() AND status <> 'claimed' AND expires_at > now()
+WHERE owner_user_id = $1 AND team_id = public.ami_current_team_id() AND status <> 'claimed' AND expires_at > now()
 `
 
 func (q *Queries) CountAgentAuthorizations(ctx context.Context, ownerUserID pgtype.UUID) (int64, error) {
@@ -70,7 +70,7 @@ func (q *Queries) CreateAgentAuthorization(ctx context.Context, arg CreateAgentA
 
 const deleteAgentAuthorization = `-- name: DeleteAgentAuthorization :exec
 DELETE FROM agent_authorizations
-WHERE id = $1 AND owner_user_id = $2 AND team_id = public.memoh_current_team_id()
+WHERE id = $1 AND owner_user_id = $2 AND team_id = public.ami_current_team_id()
 `
 
 type DeleteAgentAuthorizationParams struct {
@@ -85,7 +85,7 @@ func (q *Queries) DeleteAgentAuthorization(ctx context.Context, arg DeleteAgentA
 
 const getAgentAuthorization = `-- name: GetAgentAuthorization :one
 SELECT id, team_id, owner_user_id, runtime, auth_kind, status, encrypted_payload, encryption_nonce, expires_at, poll_after, claimed_agent_id, created_at FROM agent_authorizations
-WHERE id = $1 AND owner_user_id = $2 AND team_id = public.memoh_current_team_id()
+WHERE id = $1 AND owner_user_id = $2 AND team_id = public.ami_current_team_id()
   AND expires_at > now()
 FOR UPDATE
 `
@@ -116,7 +116,7 @@ func (q *Queries) GetAgentAuthorization(ctx context.Context, arg GetAgentAuthori
 }
 
 const lockAgentAuthorizationOwner = `-- name: LockAgentAuthorizationOwner :exec
-SELECT pg_advisory_xact_lock(hashtextextended(public.memoh_current_team_id()::text || $1::text, 0))
+SELECT pg_advisory_xact_lock(hashtextextended(public.ami_current_team_id()::text || $1::text, 0))
 `
 
 func (q *Queries) LockAgentAuthorizationOwner(ctx context.Context, ownerUserID string) error {
@@ -125,7 +125,7 @@ func (q *Queries) LockAgentAuthorizationOwner(ctx context.Context, ownerUserID s
 }
 
 const pruneAgentAuthorizations = `-- name: PruneAgentAuthorizations :exec
-DELETE FROM agent_authorizations WHERE team_id = public.memoh_current_team_id() AND expires_at <= now()
+DELETE FROM agent_authorizations WHERE team_id = public.ami_current_team_id() AND expires_at <= now()
 `
 
 func (q *Queries) PruneAgentAuthorizations(ctx context.Context) error {
@@ -136,7 +136,7 @@ func (q *Queries) PruneAgentAuthorizations(ctx context.Context) error {
 const updateAgentAuthorization = `-- name: UpdateAgentAuthorization :one
 UPDATE agent_authorizations SET status = $2, encrypted_payload = $3, encryption_nonce = $4,
     expires_at = $5, poll_after = $6, claimed_agent_id = $7
-WHERE id = $1 AND team_id = public.memoh_current_team_id() RETURNING id, team_id, owner_user_id, runtime, auth_kind, status, encrypted_payload, encryption_nonce, expires_at, poll_after, claimed_agent_id, created_at
+WHERE id = $1 AND team_id = public.ami_current_team_id() RETURNING id, team_id, owner_user_id, runtime, auth_kind, status, encrypted_payload, encryption_nonce, expires_at, poll_after, claimed_agent_id, created_at
 `
 
 type UpdateAgentAuthorizationParams struct {

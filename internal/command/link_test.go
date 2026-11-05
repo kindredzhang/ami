@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channelaccess"
+	"github.com/kindredzhang/ami/internal/channelaccess"
 )
 
 // fakeLinkConsumer records ConsumeLinkCode calls and returns a configured result.

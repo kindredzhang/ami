@@ -14,14 +14,14 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/chat/checkpoint"
-	"github.com/felinics/memoh/internal/chat/event"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/chat/checkpoint"
+	"github.com/kindredzhang/ami/internal/chat/event"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 type runtimeFencedThreadWriter interface {
@@ -98,7 +98,7 @@ func RuntimeTypeOf(thread Thread) string {
 }
 
 // IsExternalRuntime reports whether a session runs on an external agent
-// (an ACP agent or a direct runtime) rather than Memoh's own model loop.
+// (an ACP agent or a direct runtime) rather than Ami's own model loop.
 func IsExternalRuntime(thread Thread) bool {
 	return runtimekind.IsExternal(RuntimeTypeOf(thread))
 }
@@ -308,7 +308,7 @@ type ForkFromAssistantInput struct {
 	ThreadID string
 	// RuntimeMetadataOverride replaces the clone's runtime metadata. External
 	// runtime forks must pass it carrying the driver's freshly forked session
-	// keys; without it the two Memoh sessions would share one runtime session.
+	// keys; without it the two Ami sessions would share one runtime session.
 	RuntimeMetadataOverride map[string]any
 	// RuntimeForkRequired marks a source whose runtime keeps its native
 	// session in runtime metadata with no owner: a copy without the runtime's
@@ -700,7 +700,7 @@ func (s *Service) ForkFromAssistantTurn(ctx context.Context, input ForkFromAssis
 		return Thread{}, ErrForkSourceNotChat
 	}
 	// External runtime sessions must fork their runtime-side session too; a
-	// caller that has not prepared one (no override) would leave two Memoh
+	// caller that has not prepared one (no override) would leave two Ami
 	// sessions sharing a single runtime session.
 	if input.RuntimeForkRequired && input.RuntimeMetadataOverride == nil {
 		return Thread{}, ErrForkSourceNotChat

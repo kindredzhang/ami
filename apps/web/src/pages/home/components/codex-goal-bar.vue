@@ -59,7 +59,7 @@ import { useTimestamp } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { Pause, Play, Target, Trash2 } from 'lucide-vue-next'
 import { Button } from '@felinic/ui'
-import type { ExternalGoal } from '@memohai/sdk'
+import type { ExternalGoal } from '@ami/sdk'
 import ComposerCapsule from './composer-capsule.vue'
 import ComposerPanelError from './composer-panel-error.vue'
 

@@ -12,7 +12,7 @@ function encode(obj: unknown): string {
 
 const valid = {
   v: 1,
-  kind: 'memoh-provider-import',
+  kind: 'ami-provider-import',
   name: 'My Gateway',
   base_url: 'https://api.example.com/v1',
   api_key: 'sk-abcdef123456',

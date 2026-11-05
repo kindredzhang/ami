@@ -9,23 +9,23 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 func TestRuntimeRenderer_ChatModePassThroughMarkdown(t *testing.T) {
 	t.Parallel()
 
-	markdown := "# Memoh Runtime Context\n\n  keep spacing exactly  \n"
+	markdown := "# Ami Runtime Context\n\n  keep spacing exactly  \n"
 	payload, rendered := renderRuntimeChat(t, RuntimeRenderConfig{
 		Mode:            RuntimeRenderModeChat,
 		ContextMarkdown: markdown,
-		ContextURI:      "memoh://custom/context",
+		ContextURI:      "ami://custom/context",
 	}, nil)
 
 	if payload.ContextMarkdown != markdown {
 		t.Fatalf("ContextMarkdown = %q, want %q", payload.ContextMarkdown, markdown)
 	}
-	if payload.ContextURI != "memoh://custom/context" {
+	if payload.ContextURI != "ami://custom/context" {
 		t.Fatalf("ContextURI = %q, want custom URI", payload.ContextURI)
 	}
 	wantHash := acpTestSHA256(markdown)
@@ -38,7 +38,7 @@ func TestRuntimeRenderer_ChatModeDefaultURI(t *testing.T) {
 	t.Parallel()
 
 	payload, _ := renderRuntimeChat(t, RuntimeRenderConfig{ContextMarkdown: "context"}, nil)
-	if payload.ContextURI != "memoh://context/current-turn" {
+	if payload.ContextURI != "ami://context/current-turn" {
 		t.Fatalf("ContextURI = %q, want default current-turn URI", payload.ContextURI)
 	}
 }

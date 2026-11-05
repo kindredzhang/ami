@@ -196,7 +196,7 @@ func assertScriptHygiene(t *testing.T, id string, action Action, script string) 
 	if strings.Contains(script, "/data") {
 		t.Errorf("Script(%s, %s) hard-codes /data", id, action)
 	}
-	for _, fn := range []string{"dep_log()", "dep_result()", "dep_switch()", "memoh_dep_main"} {
+	for _, fn := range []string{"dep_log()", "dep_result()", "dep_switch()", "ami_dep_main"} {
 		if strings.Contains(script, fn) {
 			t.Errorf("Script(%s, %s) redefines prelude symbol %s", id, action, fn)
 		}

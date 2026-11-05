@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { client } from '@memohai/sdk/client'
+import { client } from '@ami/sdk/client'
 import { connectWebSocket } from './useChat.ws'
 
 class MockWebSocket {

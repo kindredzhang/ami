@@ -75,7 +75,7 @@ func (q *Queries) CreateContextLifecycle(ctx context.Context, arg CreateContextL
 const getContextLifecycleByRunID = `-- name: GetContextLifecycleByRunID :one
 SELECT run_id, team_id, bot_id, session_id, status, error_code, snapshot, created_at
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
 `
 
@@ -109,7 +109,7 @@ func (q *Queries) GetContextLifecycleByRunID(ctx context.Context, runID pgtype.U
 const getContextLifecycleSelectionDecisionsByRunID = `-- name: GetContextLifecycleSelectionDecisionsByRunID :one
 SELECT selection_decisions
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
 `
 
@@ -123,7 +123,7 @@ func (q *Queries) GetContextLifecycleSelectionDecisionsByRunID(ctx context.Conte
 const getLatestAssistantContextLifecycleByRunID = `-- name: GetLatestAssistantContextLifecycleByRunID :one
 SELECT id, metadata
 FROM bot_history_messages
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND role = 'assistant'
   AND metadata ? 'context_lifecycle'
@@ -146,7 +146,7 @@ func (q *Queries) GetLatestAssistantContextLifecycleByRunID(ctx context.Context,
 const getLatestAssistantContextLifecycleMetadataByRunID = `-- name: GetLatestAssistantContextLifecycleMetadataByRunID :one
 SELECT metadata
 FROM bot_history_messages
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND role = 'assistant'
   AND metadata ? 'context_lifecycle'
@@ -164,7 +164,7 @@ func (q *Queries) GetLatestAssistantContextLifecycleMetadataByRunID(ctx context.
 const getLatestContextLifecycleBySession = `-- name: GetLatestContextLifecycleBySession :one
 SELECT (snapshot - 'selection_decisions'::text)::jsonb AS snapshot
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = $1
 ORDER BY created_at DESC, run_id DESC
 LIMIT 1
@@ -187,7 +187,7 @@ SELECT EXISTS (
     AND NOT EXISTS (
       SELECT 1
       FROM context_lifecycles AS lifecycles
-      WHERE lifecycles.team_id = public.memoh_current_team_id()
+      WHERE lifecycles.team_id = public.ami_current_team_id()
         AND lifecycles.run_id = messages.run_id
     )
 )
@@ -262,7 +262,7 @@ SELECT
   created_at,
   (snapshot - 'selection_decisions'::text)::jsonb AS snapshot
 FROM context_lifecycles
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = $1
 ORDER BY created_at DESC, run_id DESC
 LIMIT $2
@@ -319,7 +319,7 @@ FROM session_runs
 LEFT JOIN context_lifecycles
   ON context_lifecycles.team_id = session_runs.team_id
  AND context_lifecycles.run_id = session_runs.run_id
-WHERE session_runs.team_id = public.memoh_current_team_id()
+WHERE session_runs.team_id = public.ami_current_team_id()
   AND session_runs.state IN ('completed', 'aborted', 'failed', 'lost')
   AND (
     context_lifecycles.run_id IS NULL
@@ -374,7 +374,7 @@ const updateAbortedContextLifecycleSnapshot = `-- name: UpdateAbortedContextLife
 UPDATE context_lifecycles
 SET snapshot = $1::jsonb - 'selection_decisions',
     selection_decisions = COALESCE($1::jsonb -> 'selection_decisions', selection_decisions)
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $2
   AND bot_id = $3
   AND session_id = $4
@@ -440,7 +440,7 @@ ON CONFLICT (run_id) DO UPDATE
 SET
   status = 'aborted',
   error_code = NULL
-WHERE context_lifecycles.team_id = public.memoh_current_team_id()
+WHERE context_lifecycles.team_id = public.ami_current_team_id()
   AND context_lifecycles.bot_id = EXCLUDED.bot_id
   AND context_lifecycles.session_id = EXCLUDED.session_id
 RETURNING run_id, bot_id, session_id, status, error_code, created_at
@@ -518,7 +518,7 @@ SET
       THEN COALESCE(EXCLUDED.selection_decisions, context_lifecycles.selection_decisions)
     ELSE context_lifecycles.selection_decisions
   END
-WHERE context_lifecycles.team_id = public.memoh_current_team_id()
+WHERE context_lifecycles.team_id = public.ami_current_team_id()
   AND context_lifecycles.team_id = EXCLUDED.team_id
   AND context_lifecycles.bot_id = EXCLUDED.bot_id
   AND context_lifecycles.session_id = EXCLUDED.session_id

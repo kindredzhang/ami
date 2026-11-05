@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	mcpgw "github.com/felinics/memoh/internal/mcp"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
 )
 
 type testConnectionLister struct {

@@ -5,7 +5,7 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "AT-SPI2 helper used by the Memoh workspace Computer Use tools"
+description = "AT-SPI2 helper used by the Ami workspace Computer Use tools"
 publish = false
 
 [[bin]]

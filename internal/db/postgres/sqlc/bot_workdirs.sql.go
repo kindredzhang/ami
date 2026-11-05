@@ -14,7 +14,7 @@ import (
 const archiveBotWorkdir = `-- name: ArchiveBotWorkdir :one
 UPDATE bot_workdirs
 SET archived_at = now(), updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
   AND archived_at IS NULL
@@ -86,7 +86,7 @@ func (q *Queries) CreateBotWorkdir(ctx context.Context, arg CreateBotWorkdirPara
 const getBotWorkdir = `-- name: GetBotWorkdir :one
 SELECT id, team_id, bot_id, name, target_kind, remote_binding_id, path, created_by_user_id, archived_at, created_at, updated_at
 FROM bot_workdirs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 `
@@ -121,7 +121,7 @@ func (q *Queries) GetBotWorkdir(ctx context.Context, arg GetBotWorkdirParams) (B
 const listBotWorkdirs = `-- name: ListBotWorkdirs :many
 SELECT id, team_id, bot_id, name, target_kind, remote_binding_id, path, created_by_user_id, archived_at, created_at, updated_at
 FROM bot_workdirs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND ($2::bool OR archived_at IS NULL)
 ORDER BY created_at ASC, id ASC
@@ -167,7 +167,7 @@ func (q *Queries) ListBotWorkdirs(ctx context.Context, arg ListBotWorkdirsParams
 const renameBotWorkdir = `-- name: RenameBotWorkdir :one
 UPDATE bot_workdirs
 SET name = $1, updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $2
   AND id = $3
   AND archived_at IS NULL

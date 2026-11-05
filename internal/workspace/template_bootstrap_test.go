@@ -15,15 +15,15 @@ func TestTemplateBootstrapperPreservesUserFilesAndRefreshesManagedSkills(t *test
 	source := fstest.MapFS{
 		"AGENTS.md":                                {Data: []byte("default agents\n")},
 		"MEMORY.md":                                {Data: []byte("default memory\n")},
-		".memoh/hooks.json":                        {Data: []byte("{}\n")},
-		".memoh/skills/.gitkeep":                   {Data: nil},
-		".memoh/skills/skill-creator/SKILL.md":     {Data: []byte("managed v2\n")},
-		".memoh/skills/skill-creator/scripts/x.py": {Data: []byte("print('managed')\n")},
+		".ami/hooks.json":                        {Data: []byte("{}\n")},
+		".ami/skills/.gitkeep":                   {Data: nil},
+		".ami/skills/skill-creator/SKILL.md":     {Data: []byte("managed v2\n")},
+		".ami/skills/skill-creator/scripts/x.py": {Data: []byte("print('managed')\n")},
 	}
 	target := newFakeWorkspaceFS()
 	target.files["/data/AGENTS.md"] = []byte("user agents\n")
-	target.files["/data/.memoh/skills/skill-creator/SKILL.md"] = []byte("managed v1\n")
-	target.files["/data/.memoh/skills/user-skill/SKILL.md"] = []byte("user skill\n")
+	target.files["/data/.ami/skills/skill-creator/SKILL.md"] = []byte("managed v1\n")
+	target.files["/data/.ami/skills/user-skill/SKILL.md"] = []byte("user skill\n")
 
 	err := NewTemplateBootstrapper(source).Bootstrap(context.Background(), target, "/data")
 	if err != nil {
@@ -31,11 +31,11 @@ func TestTemplateBootstrapperPreservesUserFilesAndRefreshesManagedSkills(t *test
 	}
 	assertWorkspaceFile(t, target, "/data/AGENTS.md", "user agents\n")
 	assertWorkspaceFile(t, target, "/data/MEMORY.md", "default memory\n")
-	assertWorkspaceFile(t, target, "/data/.memoh/hooks.json", "{}\n")
-	assertWorkspaceFile(t, target, "/data/.memoh/skills/skill-creator/SKILL.md", "managed v2\n")
-	assertWorkspaceFile(t, target, "/data/.memoh/skills/skill-creator/scripts/x.py", "print('managed')\n")
-	assertWorkspaceFile(t, target, "/data/.memoh/skills/user-skill/SKILL.md", "user skill\n")
-	if _, ok := target.files["/data/.memoh/skills/.gitkeep"]; ok {
+	assertWorkspaceFile(t, target, "/data/.ami/hooks.json", "{}\n")
+	assertWorkspaceFile(t, target, "/data/.ami/skills/skill-creator/SKILL.md", "managed v2\n")
+	assertWorkspaceFile(t, target, "/data/.ami/skills/skill-creator/scripts/x.py", "print('managed')\n")
+	assertWorkspaceFile(t, target, "/data/.ami/skills/user-skill/SKILL.md", "user skill\n")
+	if _, ok := target.files["/data/.ami/skills/.gitkeep"]; ok {
 		t.Fatal(".gitkeep was written into workspace")
 	}
 }

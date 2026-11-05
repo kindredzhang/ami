@@ -7,7 +7,7 @@ import {
   memoryTags,
   useMemoryFilter,
 } from './use-memory-filter'
-import type { AdaptersMemoryItem } from '@memohai/sdk'
+import type { AdaptersMemoryItem } from '@ami/sdk'
 
 function item(over: Partial<AdaptersMemoryItem> = {}): AdaptersMemoryItem {
   return { id: '1', memory: 'm', ...over }

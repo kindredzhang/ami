@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@memohai/sdk', async importOriginal => ({
+vi.mock('@ami/sdk', async importOriginal => ({
   ...await importOriginal<object>(),
   getBotsByBotIdSessions: vi.fn(),
 }))
 
-import { getBotsByBotIdSessions } from '@memohai/sdk'
+import { getBotsByBotIdSessions } from '@ami/sdk'
 import { fetchSessions } from './useChat.chat-api'
 
 const listSessions = vi.mocked(getBotsByBotIdSessions)

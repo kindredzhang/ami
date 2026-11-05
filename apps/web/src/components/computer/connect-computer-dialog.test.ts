@@ -3,16 +3,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, nextTick, reactive, ref, type App, type Slots } from 'vue'
 import { createPinia } from 'pinia'
 import { PiniaColada } from '@pinia/colada'
-import type { UserruntimeRuntime } from '@memohai/sdk'
+import type { UserruntimeRuntime } from '@ami/sdk'
 import ConnectComputerDialog from './connect-computer-dialog.vue'
 
 const api = vi.hoisted(() => ({ list: vi.fn(), remove: vi.fn(), grant: vi.fn(), copy: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getUsersMeRuntimes: api.list,
   deleteUsersMeRuntimesById: api.remove,
   putBotsByBotIdWorkspaceTargetsRemotesByRuntimeId: api.grant,
 }))
-vi.mock('@memohai/sdk/colada', () => ({
+vi.mock('@ami/sdk/colada', () => ({
   getBotsQuery: () => ({ key: ['bots'], query: async () => ({ items: [{ id: 'bot-1' }] }) }),
 }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
@@ -102,7 +102,7 @@ describe('connection and recovery', () => {
     await flush()
     expect(control.getAttribute('aria-checked')).toBe('true')
     const command = root.querySelector('code')?.textContent
-    expect(command).toContain('--replace && memoh-runtime service install && memoh-runtime service start')
+    expect(command).toContain('--replace && ami-runtime service install && ami-runtime service start')
     expect(root.textContent).toContain('computerConnect.replaceDescription')
     clickButton('common.copy')
     await flush()

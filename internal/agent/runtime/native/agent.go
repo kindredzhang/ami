@@ -13,16 +13,16 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // Agent is the core agent that handles LLM interactions.
@@ -220,7 +220,7 @@ func sendEvent(ctx context.Context, ch chan<- StreamEvent, evt StreamEvent) bool
 	}
 }
 
-// runStream lives in loop_stream.go: the Memoh-owned streaming step loop
+// runStream lives in loop_stream.go: the Ami-owned streaming step loop
 // that replaced the SDK's StreamText compatibility loop. Final-boundary
 // NextInputs continue on the next inner-loop iteration.
 
@@ -273,7 +273,7 @@ func drainStreamUntilClosed(stream <-chan sdk.StreamPart, grace time.Duration, o
 	}
 }
 
-// runGenerate lives in loop_generate.go: the Memoh-owned generate step loop
+// runGenerate lives in loop_generate.go: the Ami-owned generate step loop
 // that replaced the SDK's GenerateTextResult compatibility loop.
 
 func clampStableMessageCount(count, total int) int {

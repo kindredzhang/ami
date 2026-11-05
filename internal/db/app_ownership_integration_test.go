@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
 )
 
 const (
@@ -124,7 +124,7 @@ func teamScopedPool(t *testing.T) *pgxpool.Pool {
 		t.Fatalf("parse test DSN: %v", err)
 	}
 	cfg.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
-		_, err := conn.Exec(ctx, `SELECT set_config('memoh.team_id', $1, false)`, appTeamID)
+		_, err := conn.Exec(ctx, `SELECT set_config('ami.team_id', $1, false)`, appTeamID)
 		return err
 	}
 	pool, err := pgxpool.NewWithConfig(context.Background(), cfg)
@@ -182,7 +182,7 @@ func TestAppMigrationRoundTrip(t *testing.T) {
 	var installationID string
 	if err := pool.QueryRow(ctx, `INSERT INTO bot_app_installations
 		(bot_id, workspace_target_id, registry_id, app_id, revision, status)
-		VALUES ($1, 'native', 'memoh', 'pdf', $2, 'installed') RETURNING id`, appBotOneID, appRevision).Scan(&installationID); err != nil {
+		VALUES ($1, 'native', 'ami', 'pdf', $2, 'installed') RETURNING id`, appBotOneID, appRevision).Scan(&installationID); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := pool.Exec(ctx, `INSERT INTO bot_app_dependency_refs (installation_id, dependency_id)

@@ -3,7 +3,7 @@ package apps
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/supermarket"
 )
 
 // installerPublisher adapts *supermarket.Installer to SkillPublisher and

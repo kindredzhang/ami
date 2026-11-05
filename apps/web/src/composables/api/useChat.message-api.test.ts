@@ -6,17 +6,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 // where `stream` was a Promise and `for await` on it threw synchronously
 // inside `consumeSSE`; the store-level test suite missed that regression
 // because it mocks the wrapper, not the SDK underneath it.
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsByBotIdSessionsEvents: vi.fn(),
   getBotsByBotIdMessages: vi.fn(),
   getBotsByBotIdMessagesLocate: vi.fn(),
 }))
 
-vi.mock('@memohai/sdk/client', () => ({
+vi.mock('@ami/sdk/client', () => ({
   client: { get: vi.fn(), post: vi.fn(), setConfig: vi.fn() },
 }))
 
-import { getBotsByBotIdSessionsEvents } from '@memohai/sdk'
+import { getBotsByBotIdSessionsEvents } from '@ami/sdk'
 
 import { streamBotSessionsActivityEvents } from './useChat.message-api'
 

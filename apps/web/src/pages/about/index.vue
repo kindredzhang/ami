@@ -16,14 +16,14 @@
             <div class="flex size-14 shrink-0 items-center justify-center rounded-xl border border-border bg-background">
               <img
                 src="/logo.svg"
-                alt="Memoh"
+                alt="Ami"
                 class="size-9"
               >
             </div>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2">
                 <h2 class="text-base font-semibold text-foreground">
-                  Memoh
+                  Ami
                 </h2>
                 <Badge
                   v-if="displayVersion"
@@ -315,7 +315,7 @@ import { useCapabilitiesStore } from '@/store/capabilities'
 import { useSettingsStore } from '@/store/settings'
 import { useUpdateStore } from '@/store/update'
 
-const GITHUB_REPO = 'felinics/memoh'
+const GITHUB_REPO = 'kindredzhang/ami'
 
 // Release notes are arbitrary upstream markdown and can contain fenced code
 // blocks. markstream 2.0's built-in code block needs the optional stream-diffs
@@ -368,7 +368,7 @@ const codeBlockTheme = computed(() => ({
 
 const links: ResourceLink[] = [
   { icon: Github, labelKey: 'about.github', href: `https://github.com/${GITHUB_REPO}` },
-  { icon: BookOpen, labelKey: 'about.docs', href: 'https://docs.memoh.ai' },
+  { icon: BookOpen, labelKey: 'about.docs', href: `https://github.com/${GITHUB_REPO}/tree/main/docs` },
   { icon: MessageSquare, labelKey: 'about.feedback', href: `https://github.com/${GITHUB_REPO}/issues` },
 ]
 

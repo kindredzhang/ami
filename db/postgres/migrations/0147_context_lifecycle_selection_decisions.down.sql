@@ -19,10 +19,10 @@ BEGIN
     RETURN;
   END IF;
 
-  previous_team_id := current_setting('memoh.team_id', true);
+  previous_team_id := current_setting('ami.team_id', true);
 
   FOR migration_team_id IN SELECT id FROM public.teams ORDER BY id LOOP
-    PERFORM set_config('memoh.team_id', migration_team_id::text, true);
+    PERFORM set_config('ami.team_id', migration_team_id::text, true);
 
     UPDATE public.context_lifecycles
     SET snapshot = snapshot || jsonb_build_object('selection_decisions', selection_decisions)
@@ -35,11 +35,11 @@ BEGIN
       AND jsonb_typeof(snapshot -> 'selection') = 'object';
   END LOOP;
 
-  PERFORM set_config('memoh.team_id', COALESCE(previous_team_id, ''), true);
+  PERFORM set_config('ami.team_id', COALESCE(previous_team_id, ''), true);
 END $$;
 
 ALTER POLICY teams_self_select ON public.teams
-  USING (id = public.memoh_current_team_id());
+  USING (id = public.ami_current_team_id());
 
 ALTER TABLE public.context_lifecycles
     DROP COLUMN IF EXISTS selection_decisions;

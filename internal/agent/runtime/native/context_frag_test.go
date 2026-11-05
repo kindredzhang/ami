@@ -5,9 +5,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	tools "github.com/felinics/memoh/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 func TestRefreshContextFragOmitsMaterializedQuery(t *testing.T) {

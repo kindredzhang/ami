@@ -25,7 +25,7 @@ CREATE INDEX IF NOT EXISTS idx_bot_sessions_attention
   WHERE attention_at IS NOT NULL AND deleted_at IS NULL;
 
 CREATE TABLE IF NOT EXISTS public.session_reads (
-  team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+  team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                          REFERENCES public.teams(id) ON DELETE RESTRICT,
   user_id    UUID        NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
   session_id UUID        NOT NULL,
@@ -53,12 +53,12 @@ DROP POLICY IF EXISTS session_reads_team_update ON public.session_reads;
 DROP POLICY IF EXISTS session_reads_team_delete ON public.session_reads;
 
 CREATE POLICY session_reads_team_select ON public.session_reads
-  FOR SELECT USING (team_id = public.memoh_current_team_id());
+  FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY session_reads_team_insert ON public.session_reads
-  FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+  FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_reads_team_update ON public.session_reads
   FOR UPDATE
-  USING (team_id = public.memoh_current_team_id())
-  WITH CHECK (team_id = public.memoh_current_team_id());
+  USING (team_id = public.ami_current_team_id())
+  WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY session_reads_team_delete ON public.session_reads
-  FOR DELETE USING (team_id = public.memoh_current_team_id());
+  FOR DELETE USING (team_id = public.ami_current_team_id());

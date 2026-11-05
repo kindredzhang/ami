@@ -5,7 +5,7 @@ import FileViewer from './file-viewer.vue'
 
 const sdk = vi.hoisted(() => ({ read: vi.fn(), write: vi.fn() }))
 const toast = vi.hoisted(() => ({ success: vi.fn(), error: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getBotsByBotIdContainerFsRead: sdk.read,
   postBotsByBotIdContainerFsWrite: sdk.write,
   getBotsByBotIdContainerFs: vi.fn(),

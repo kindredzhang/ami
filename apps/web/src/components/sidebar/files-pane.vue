@@ -365,8 +365,8 @@ import {
   postBotsByBotIdContainerFsDelete,
   postBotsByBotIdContainerFsRename,
   postBotsByBotIdContainerFsWrite,
-} from '@memohai/sdk'
-import type { HandlersFsFileInfo } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { HandlersFsFileInfo } from '@ami/sdk'
 import { isApiErrorCode, resolveApiErrorMessage } from '@/utils/api-error'
 import { sdkApiUrl, sdkAuthQuery } from '@/lib/api-client'
 import { joinPath, parentPath } from '@/components/file-manager/utils'

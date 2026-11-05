@@ -11,7 +11,7 @@ import {
   type RuntimeServiceStatus,
 } from './types'
 
-const launchdLabel = 'ai.memoh.runtime'
+const launchdLabel = 'ai.ami.runtime'
 const bootstrapAttempts = 5
 const defaultBootstrapRetryDelayMs = 300
 const bootoutWaitAttempts = 50
@@ -61,7 +61,7 @@ export function createLaunchdServiceManager(
   const launchctl = '/bin/launchctl'
   const domain = `gui/${uid}`
   const target = `${domain}/${launchdLabel}`
-  const launcherPath = join(paths.serviceDir, 'Memoh Runtime')
+  const launcherPath = join(paths.serviceDir, 'Ami Runtime')
   const retryDelayMs = options.bootstrapRetryDelayMs ?? defaultBootstrapRetryDelayMs
   const loaded = async () => (await runner(launchctl, ['print', target])).code === 0
   // `launchctl bootout` returns before launchd has finished tearing the job
@@ -97,7 +97,7 @@ export function createLaunchdServiceManager(
     async register(spec) {
       await ensureDirectory(spec.logsDir)
       // macOS attributes a legacy agent to its executable. Launch a named
-      // script so Login Items shows Memoh Runtime rather than Node's signer.
+      // script so Login Items shows Ami Runtime rather than Node's signer.
       // exec preserves launchd's process supervision; npm still owns the CLI.
       const launcher = `#!/bin/sh\nexec ${shellQuote(spec.nodePath)} ${shellQuote(spec.entryPath)} "$@"\n`
       await writeFileAtomic(launcherPath, launcher, 0o700)

@@ -51,7 +51,7 @@ func (q *Queries) CreateFetchProvider(ctx context.Context, arg CreateFetchProvid
 }
 
 const deleteFetchProvider = `-- name: DeleteFetchProvider :exec
-DELETE FROM fetch_providers WHERE team_id = public.memoh_current_team_id() AND id = $1
+DELETE FROM fetch_providers WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 func (q *Queries) DeleteFetchProvider(ctx context.Context, id pgtype.UUID) error {
@@ -60,7 +60,7 @@ func (q *Queries) DeleteFetchProvider(ctx context.Context, id pgtype.UUID) error
 }
 
 const getFetchProviderByID = `-- name: GetFetchProviderByID :one
-SELECT id, name, provider, config, enable, created_at, updated_at, team_id FROM fetch_providers WHERE team_id = public.memoh_current_team_id() AND id = $1
+SELECT id, name, provider, config, enable, created_at, updated_at, team_id FROM fetch_providers WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 func (q *Queries) GetFetchProviderByID(ctx context.Context, id pgtype.UUID) (FetchProvider, error) {
@@ -80,7 +80,7 @@ func (q *Queries) GetFetchProviderByID(ctx context.Context, id pgtype.UUID) (Fet
 }
 
 const getFetchProviderByName = `-- name: GetFetchProviderByName :one
-SELECT id, name, provider, config, enable, created_at, updated_at, team_id FROM fetch_providers WHERE team_id = public.memoh_current_team_id() AND name = $1
+SELECT id, name, provider, config, enable, created_at, updated_at, team_id FROM fetch_providers WHERE team_id = public.ami_current_team_id() AND name = $1
 `
 
 func (q *Queries) GetFetchProviderByName(ctx context.Context, name string) (FetchProvider, error) {
@@ -101,7 +101,7 @@ func (q *Queries) GetFetchProviderByName(ctx context.Context, name string) (Fetc
 
 const listFetchProviders = `-- name: ListFetchProviders :many
 SELECT id, name, provider, config, enable, created_at, updated_at, team_id FROM fetch_providers
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
 ORDER BY created_at DESC
 `
 
@@ -136,7 +136,7 @@ func (q *Queries) ListFetchProviders(ctx context.Context) ([]FetchProvider, erro
 
 const listFetchProvidersByProvider = `-- name: ListFetchProvidersByProvider :many
 SELECT id, name, provider, config, enable, created_at, updated_at, team_id FROM fetch_providers
-WHERE team_id = public.memoh_current_team_id() AND provider = $1
+WHERE team_id = public.ami_current_team_id() AND provider = $1
 ORDER BY created_at DESC
 `
 
@@ -177,7 +177,7 @@ SET
   config = $3,
   enable = $4,
   updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $5
+WHERE team_id = public.ami_current_team_id() AND id = $5
 RETURNING id, name, provider, config, enable, created_at, updated_at, team_id
 `
 

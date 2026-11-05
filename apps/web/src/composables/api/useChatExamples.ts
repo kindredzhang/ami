@@ -1,6 +1,6 @@
 import { toValue, type MaybeRefOrGetter } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getBotsByBotIdContainer, getBotsByBotIdSettings } from '@memohai/sdk'
+import { getBotsByBotIdContainer, getBotsByBotIdSettings } from '@ami/sdk'
 import { BUILTIN_CHAT_EXAMPLES } from '@/lib/chat-examples/catalog'
 import { capabilitySnapshotFrom, type CapabilityProbes } from '@/lib/chat-examples/capabilities'
 

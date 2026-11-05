@@ -3,8 +3,8 @@ package application
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 func discussContextPressure(cmd turn.StartTurnCommand) int {

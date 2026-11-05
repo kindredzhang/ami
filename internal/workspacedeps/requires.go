@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 var (

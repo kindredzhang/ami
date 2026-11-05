@@ -11,8 +11,8 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/jsonschema-go/jsonschema"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	sched "github.com/felinics/memoh/internal/schedule"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	sched "github.com/kindredzhang/ami/internal/schedule"
 )
 
 type ScheduleProvider struct {

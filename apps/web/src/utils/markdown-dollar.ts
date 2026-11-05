@@ -20,8 +20,8 @@ import type { MarkdownIt } from 'markstream-vue'
 // ordinary message content.
 const PH = '\uE000'
 
-const MASK_RULE = 'memoh_dollar_mask'
-const RESTORE_RULE = 'memoh_dollar_restore'
+const MASK_RULE = 'ami_dollar_mask'
+const RESTORE_RULE = 'ami_dollar_restore'
 
 type MarkdownItToken = ReturnType<MarkdownIt['parse']>[number]
 

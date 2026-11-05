@@ -13,8 +13,8 @@ import (
 
 	"github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // Fixed examples cover each protocol/control combination through the real SDK,

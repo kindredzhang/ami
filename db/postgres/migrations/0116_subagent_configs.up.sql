@@ -2,7 +2,7 @@
 -- Persist the model selection and optional parent-message snapshot for managed subagents.
 
 CREATE TABLE IF NOT EXISTS public.subagent_configs (
-    team_id         UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id         UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                 REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id      UUID        PRIMARY KEY,
     model_uuid      UUID,
@@ -37,12 +37,12 @@ DROP POLICY IF EXISTS subagent_configs_team_update ON public.subagent_configs;
 DROP POLICY IF EXISTS subagent_configs_team_delete ON public.subagent_configs;
 
 CREATE POLICY subagent_configs_team_select ON public.subagent_configs
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY subagent_configs_team_insert ON public.subagent_configs
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY subagent_configs_team_update ON public.subagent_configs
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY subagent_configs_team_delete ON public.subagent_configs
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

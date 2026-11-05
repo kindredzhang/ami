@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	netctl "github.com/felinics/memoh/internal/network"
+	netctl "github.com/kindredzhang/ami/internal/network"
 )
 
 func TestProviderStatusRejectsExitNodeWithUserspace(t *testing.T) {

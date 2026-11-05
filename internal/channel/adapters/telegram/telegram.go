@@ -20,15 +20,15 @@ import (
 	"golang.org/x/time/rate"
 	tele "gopkg.in/telebot.v4"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/common"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/redact"
-	"github.com/felinics/memoh/internal/textutil"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/common"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/redact"
+	"github.com/kindredzhang/ami/internal/textutil"
 )
 
 const (
@@ -1781,7 +1781,7 @@ func validateTelegramActions(actions []channel.Action) error {
 }
 
 // telegramActionButton renders a single Action as a Telegram inline-keyboard
-// button. Callback Value keeps precedence for compatibility with Memoh's
+// button. Callback Value keeps precedence for compatibility with Ami's
 // existing interactive actions; URL is used only for link-only actions.
 func telegramActionButton(label string, action channel.Action) (tele.InlineButton, bool) {
 	if value := strings.TrimSpace(action.Value); value != "" {

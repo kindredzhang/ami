@@ -216,8 +216,8 @@ import {
   getBotsByBotIdHooksEvents,
   postBotsByBotIdContainerFsWrite,
   postBotsByBotIdHooksTest,
-} from '@memohai/sdk'
-import type { HandlersHookEventInfo } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { HandlersHookEventInfo } from '@ami/sdk'
 import { SectionGroup, SettingsRow, SettingsSection } from '@felinic/ui'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 
@@ -226,7 +226,7 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const configPath = '/data/.memoh/hooks.json'
+const configPath = '/data/.ami/hooks.json'
 
 type HookActionConfig = {
   type?: string
@@ -449,7 +449,7 @@ function defaultHooksConfig(): HooksConfig & Record<string, unknown> {
         actions: [
           {
             type: 'command',
-            command: 'mkdir -p .memoh && cat >> .memoh/hooks.log',
+            command: 'mkdir -p .ami && cat >> .ami/hooks.log',
             on_error: 'ignore',
           },
         ],

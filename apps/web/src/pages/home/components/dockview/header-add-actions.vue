@@ -66,7 +66,7 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { MessageCircle } from 'lucide-vue-next'
-import { AddIcon, TerminalIcon, BrowserIcon, ComputerIcon, SplitRightIcon, SplitDownIcon } from '@memohai/icon/ui'
+import { AddIcon, TerminalIcon, BrowserIcon, ComputerIcon, SplitRightIcon, SplitDownIcon } from '@ami/icon/ui'
 import {
   Button,
   DropdownMenu,

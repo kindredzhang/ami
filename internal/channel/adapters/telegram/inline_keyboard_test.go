@@ -6,7 +6,7 @@ import (
 
 	tele "gopkg.in/telebot.v4"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestTelegramInlineKeyboard_CallbackButton(t *testing.T) {

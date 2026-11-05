@@ -5,11 +5,11 @@ import (
 
 	"github.com/google/uuid"
 
-	acpprofileadapter "github.com/felinics/memoh/internal/agent/adapter/acpprofile"
-	runtimeprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/botagents"
-	thread "github.com/felinics/memoh/internal/chat/thread"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	acpprofileadapter "github.com/kindredzhang/ami/internal/agent/adapter/acpprofile"
+	runtimeprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/botagents"
+	thread "github.com/kindredzhang/ami/internal/chat/thread"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 func newThreadServiceForTest(queries dbstore.Queries) *thread.Service {

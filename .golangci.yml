@@ -65,7 +65,7 @@ linters:
             - "**/internal/searchproviders/**"
             - "**/internal/supermarket/**"
           deny:
-            - pkg: github.com/felinics/memoh/internal/apperror
+            - pkg: github.com/kindredzhang/ami/internal/apperror
               desc: return a package error; the caller's translation function chooses the public error (docs/errors.md)
     govet:
       enable-all: true
@@ -121,9 +121,9 @@ formatters:
       sections:
         - standard
         - default
-        - prefix(github.com/felinics/memoh)
+        - prefix(github.com/kindredzhang/ami)
     gofumpt:
       extra-rules: false
     goimports:
       local-prefixes:
-        - github.com/felinics/memoh
+        - github.com/kindredzhang/ami

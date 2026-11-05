@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 const dirTestChannelType = channel.ChannelType("dir-test")

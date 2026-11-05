@@ -1,15 +1,15 @@
 {
-  "name": "@memohai/runtime",
+  "name": "@ami/runtime",
   "version": "1.0.1",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felinics/Memoh.git",
+    "url": "git+https://github.com/kindredzhang/ami.git",
     "directory": "packages/runtime"
   },
-  "description": "Embeddable Memoh Remote Runtime SDK and CLI",
+  "description": "Embeddable Ami Remote Runtime SDK and CLI",
   "type": "module",
   "bin": {
-    "memoh-runtime": "dist/cli.mjs"
+    "ami-runtime": "dist/cli.mjs"
   },
   "exports": {
     ".": {

@@ -55,8 +55,8 @@ import { ConfirmDeleteDialog, InlineLoadingRow, toast } from '@felinic/ui'
 import {
   deleteBotsByBotIdScheduleById,
   getBotsByBotIdScheduleById,
-} from '@memohai/sdk'
-import type { ScheduleSchedule } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { ScheduleSchedule } from '@ami/sdk'
 import type { DockviewApi, DockviewPanelApi } from 'dockview-vue'
 import { useChatStore } from '@/store/chat-list'
 import { resolveApiErrorMessage } from '@/utils/api-error'

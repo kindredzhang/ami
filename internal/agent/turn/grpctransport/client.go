@@ -10,10 +10,10 @@ import (
 
 	"google.golang.org/grpc"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/agent/turn/turnpb"
-	"github.com/felinics/memoh/internal/rpc"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn/turnpb"
+	"github.com/kindredzhang/ami/internal/rpc"
 )
 
 type Client struct {

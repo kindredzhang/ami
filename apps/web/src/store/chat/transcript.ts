@@ -5,7 +5,7 @@ import type {
   UIMessage,
   UITurn,
 } from '@/composables/api/useChat.types'
-import { parseMemohError } from '@/utils/api-error'
+import { parseAmiError } from '@/utils/api-error'
 import {
   messageIdentityId,
   mergeApprovalState,
@@ -606,7 +606,7 @@ export function createTranscriptController({
     turn.streaming = false
   }
 
-  // `args` are the feedback's machine-readable parameters (parseMemohError);
+  // `args` are the feedback's machine-readable parameters (parseAmiError);
   // the block keeps the string-valued ones for the renderer's i18n and links.
   function appendAssistantError(assistantTurn: ChatAssistantTurn, errorMessage: string, code?: string, args?: Record<string, unknown>) {
     const text = errorMessage.trim()
@@ -617,7 +617,7 @@ export function createTranscriptController({
 
   // keepTurn: history keeps this turn, so an empty one shows its failure instead of being removed.
   function finalizeStreamFailure(assistantTurn: ChatAssistantTurn, botId: string, targetSessionId: string, error: Error, keepTurn = false) {
-    const parsed = parseMemohError(error)
+    const parsed = parseAmiError(error)
     if (!hasVisibleAssistantBlocks(assistantTurn)) {
       if (parsed?.code || keepTurn) {
         appendAssistantError(assistantTurn, error.message, parsed?.code, parsed?.args)

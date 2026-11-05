@@ -16,12 +16,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/textutil"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/textutil"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // ActionRollback is the sixth action. It is never scripted by a
@@ -61,7 +61,7 @@ const (
 	staleOperationAge = 60 * time.Second
 	// rollbackScript is the whole body run by Rollback: switch `current` to
 	// the previous version. state.json is rewritten by the Server afterwards.
-	rollbackScript = `dep_switch "$MEMOH_DEP_HOME/versions/$MEMOH_DEP_VERSION"` + "\n"
+	rollbackScript = `dep_switch "$AMI_DEP_HOME/versions/$AMI_DEP_VERSION"` + "\n"
 )
 
 // Options configures NewService. Workspace, Store, and Catalog are required.
@@ -1165,7 +1165,7 @@ type operation struct {
 	catalog *catalog.Catalog
 	key     InstallationKey
 	dep     catalog.Dependency
-	// version is the MEMOH_DEP_VERSION install-like scripts receive: the
+	// version is the AMI_DEP_VERSION install-like scripts receive: the
 	// requested version, else the manifest pin, else empty for latest.
 	version  string
 	client   *bridge.Client
@@ -1596,7 +1596,7 @@ func upstreamCheckable(dep catalog.Dependency) bool {
 	return dep.Version.Pin == "" && dep.Scripts.CheckUpdate != ""
 }
 
-// targetVersion is the MEMOH_DEP_VERSION an install-like action passes: the
+// targetVersion is the AMI_DEP_VERSION an install-like action passes: the
 // version the caller asked for, else the manifest pin, else empty so the
 // script installs whatever it considers latest.
 // ErrInvalidVersion rejects inputs that could address files outside a version

@@ -19,7 +19,7 @@ SET state = 'running',
       jsonb_build_object($1::text,
         jsonb_build_object('kind', $2::text, 'phase', 'accepted')), true),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $3 AND session_id = $4
   AND run_id = $5 AND fencing_token = $6
   AND state IN ('running', 'waiting_decision') AND abort_requested_at IS NULL
@@ -80,7 +80,7 @@ WITH target_session AS MATERIALIZED (
   SELECT s.id AS session_id
   FROM bot_sessions AS s
   JOIN bots bot ON bot.team_id = s.team_id AND bot.id = s.bot_id
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = $7
     AND s.bot_id = $2
     AND s.deleted_at IS NULL
@@ -97,7 +97,7 @@ WITH target_session AS MATERIALIZED (
 existing AS (
   SELECT 1 AS present
   FROM session_runs AS prior
-  WHERE prior.team_id = public.memoh_current_team_id()
+  WHERE prior.team_id = public.ami_current_team_id()
     AND prior.session_id = $7
     AND prior.invocation_id = $3
 ),
@@ -105,7 +105,7 @@ allocated_position AS (
   UPDATE bot_sessions AS s
   SET next_turn_position = s.next_turn_position + 1
   FROM target_session
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = target_session.session_id
     AND NOT EXISTS (SELECT 1 FROM existing)
   RETURNING (s.next_turn_position - 1)::bigint AS turn_position
@@ -212,7 +212,7 @@ WITH target_session AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
   JOIN bots bot ON bot.team_id = session.team_id AND bot.id = session.bot_id
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = $6
     AND session.bot_id = $5
     AND session.deleted_at IS NULL
@@ -229,7 +229,7 @@ SET owner_id = $1,
     state = 'running',
     updated_at = now()
 FROM target_session target
-WHERE run.team_id = public.memoh_current_team_id()
+WHERE run.team_id = public.ami_current_team_id()
   AND run.run_id = $4
   AND run.bot_id = $5
   AND run.session_id = target.id
@@ -308,7 +308,7 @@ SET state = CASE
         ELSE $3::text
     END,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $4
   AND fencing_token = $5
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
@@ -369,7 +369,7 @@ func (q *Queries) FinalizeSessionRun(ctx context.Context, arg FinalizeSessionRun
 const getActiveSessionRun = `-- name: GetActiveSessionRun :one
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = $1
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
 `
@@ -408,12 +408,12 @@ func (q *Queries) GetActiveSessionRun(ctx context.Context, sessionID pgtype.UUID
 const getLatestSessionRun = `-- name: GetLatestSessionRun :one
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs run
-WHERE run.team_id = public.memoh_current_team_id()
+WHERE run.team_id = public.ami_current_team_id()
   AND run.session_id = $1
   AND run.run_id = (
     SELECT latest.run_id
     FROM session_runs latest
-    WHERE latest.team_id = public.memoh_current_team_id()
+    WHERE latest.team_id = public.ami_current_team_id()
       AND latest.session_id = $1
     ORDER BY latest.created_at DESC, latest.run_id DESC
     LIMIT 1
@@ -472,7 +472,7 @@ func (q *Queries) GetLatestSessionRun(ctx context.Context, sessionID pgtype.UUID
 const getSessionRun = `-- name: GetSessionRun :one
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
 `
 
@@ -510,7 +510,7 @@ func (q *Queries) GetSessionRun(ctx context.Context, runID pgtype.UUID) (Session
 const getSessionRunByInvocation = `-- name: GetSessionRunByInvocation :one
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = $1
   AND invocation_id = $2
 `
@@ -554,7 +554,7 @@ func (q *Queries) GetSessionRunByInvocation(ctx context.Context, arg GetSessionR
 const isInterruptedSessionRunLatest = `-- name: IsInterruptedSessionRunLatest :one
 SELECT EXISTS (
  SELECT 1 FROM session_runs source
- WHERE source.team_id = public.memoh_current_team_id() AND source.run_id = $1
+ WHERE source.team_id = public.ami_current_team_id() AND source.run_id = $1
   AND source.state = 'lost' AND source.error_code = 'session_runtime.interrupted'
   AND source.abort_requested_at IS NULL AND source.input_json ? 'resume'
   AND NOT EXISTS (SELECT 1 FROM session_runs later WHERE later.team_id = source.team_id
@@ -574,7 +574,7 @@ func (q *Queries) IsInterruptedSessionRunLatest(ctx context.Context, runID pgtyp
 const listActiveSessionRunsByBot = `-- name: ListActiveSessionRunsByBot :many
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
 ORDER BY session_id, run_id
@@ -628,7 +628,7 @@ const listInterruptedSessionRuns = `-- name: ListInterruptedSessionRuns :many
 SELECT r.run_id, r.team_id, r.bot_id, r.session_id, r.invocation_id, r.turn_id, r.turn_position, r.state, r.input_json, r.input_fingerprint, r.owner_id, r.fencing_token, r.owner_since, r.live_generation, r.abort_requested_at, r.proposed_terminal_state, r.proposed_error_code, r.proposed_error_message, r.finish_proposed_at, r.error_code, r.error_message, r.created_at, r.updated_at FROM session_runs r
 JOIN bot_sessions s ON s.team_id = r.team_id AND s.id = r.session_id
 JOIN bots b ON b.team_id = r.team_id AND b.id = r.bot_id
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND r.state = 'lost' AND r.error_code = 'session_runtime.interrupted'
   AND r.input_json ? 'resume' AND s.deleted_at IS NULL AND b.status <> 'deleting'
   AND r.run_id > $1::uuid
@@ -686,7 +686,7 @@ func (q *Queries) ListInterruptedSessionRuns(ctx context.Context, afterRunID pgt
 const listOrphanedSessionRuns = `-- name: ListOrphanedSessionRuns :many
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND state = 'accepted'
   AND owner_id IS NULL
   AND created_at < now() - make_interval(secs => $1::double precision)
@@ -750,7 +750,7 @@ func (q *Queries) ListOrphanedSessionRuns(ctx context.Context, arg ListOrphanedS
 const listStaleGenerationSessionRuns = `-- name: ListStaleGenerationSessionRuns :many
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
   AND live_generation IS NOT NULL
   AND live_generation <> $1
@@ -831,7 +831,7 @@ func (q *Queries) ListStaleGenerationSessionRuns(ctx context.Context, arg ListSt
 const lockActiveSessionRunForHistoryReset = `-- name: LockActiveSessionRunForHistoryReset :one
 SELECT run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND bot_id = $2
   AND session_id = $3
@@ -889,7 +889,7 @@ func (q *Queries) LockActiveSessionRunForHistoryReset(ctx context.Context, arg L
 const lockBotForSessionRunClaim = `-- name: LockBotForSessionRunClaim :one
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
 FOR UPDATE
 `
@@ -907,7 +907,7 @@ func (q *Queries) LockBotForSessionRunClaim(ctx context.Context, botID pgtype.UU
 const lockSessionRunForAgentStepCommit = `-- name: LockSessionRunForAgentStepCommit :one
 SELECT run_id
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND bot_id = $2
   AND session_id = $3
@@ -946,7 +946,7 @@ SET input_json = jsonb_set(input_json,
       ARRAY['decision_continuations', $1::text, 'phase'],
       '"executing"'::jsonb, false),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $2 AND session_id = $3
   AND run_id = $4 AND fencing_token = $5
   AND state = 'running' AND abort_requested_at IS NULL
@@ -1010,7 +1010,7 @@ SET state = 'finishing',
     END,
     finish_proposed_at = COALESCE(finish_proposed_at, now()),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $4
   AND fencing_token = $5
   AND (
@@ -1077,7 +1077,7 @@ SET owner_id = $1,
     fencing_token = $2,
     live_generation = $3,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $4
   AND state = 'waiting_decision'
   AND abort_requested_at IS NULL
@@ -1139,7 +1139,7 @@ const requestSessionRunAbort = `-- name: RequestSessionRunAbort :one
 UPDATE session_runs
 SET abort_requested_at = COALESCE(abort_requested_at, now()),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND state IN ('accepted', 'running', 'waiting_decision')
 RETURNING run_id, team_id, bot_id, session_id, invocation_id, turn_id, turn_position, state, input_json, input_fingerprint, owner_id, fencing_token, owner_since, live_generation, abort_requested_at, proposed_terminal_state, proposed_error_code, proposed_error_message, finish_proposed_at, error_code, error_message, created_at, updated_at
@@ -1182,7 +1182,7 @@ const resumeSessionRun = `-- name: ResumeSessionRun :one
 UPDATE session_runs
 SET state = 'running',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND fencing_token = $2
   AND state IN ('running', 'waiting_decision')
@@ -1227,7 +1227,7 @@ func (q *Queries) ResumeSessionRun(ctx context.Context, arg ResumeSessionRunPara
 
 const retireInterruptedSessionRun = `-- name: RetireInterruptedSessionRun :execrows
 UPDATE session_runs SET input_json = input_json - 'resume'
-WHERE team_id = public.memoh_current_team_id() AND run_id = $1
+WHERE team_id = public.ami_current_team_id() AND run_id = $1
   AND state = 'lost' AND error_code = 'session_runtime.interrupted' AND input_json ? 'resume'
 `
 
@@ -1243,7 +1243,7 @@ func (q *Queries) RetireInterruptedSessionRun(ctx context.Context, runID pgtype.
 
 const retireSupersededInterruptedSessionRuns = `-- name: RetireSupersededInterruptedSessionRuns :execrows
 UPDATE session_runs r SET input_json = r.input_json - 'resume'
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND r.state = 'lost' AND r.error_code = 'session_runtime.interrupted' AND r.input_json ? 'resume'
   AND (EXISTS (SELECT 1 FROM session_runs later WHERE later.team_id = r.team_id
       AND later.session_id = r.session_id AND later.turn_position > r.turn_position)
@@ -1264,7 +1264,7 @@ func (q *Queries) RetireSupersededInterruptedSessionRuns(ctx context.Context) (i
 
 const saveSessionRunResumeContext = `-- name: SaveSessionRunResumeContext :execrows
 UPDATE session_runs SET input_json = jsonb_set(input_json, '{resume}', $1::jsonb), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND run_id = $2
+WHERE team_id = public.ami_current_team_id() AND run_id = $2
   AND fencing_token = $3 AND state = 'running'
 `
 
@@ -1287,7 +1287,7 @@ const setSessionRunWaitingDecision = `-- name: SetSessionRunWaitingDecision :one
 UPDATE session_runs
 SET state = 'waiting_decision',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = $1
   AND fencing_token = $2
   AND state IN ('running', 'waiting_decision')

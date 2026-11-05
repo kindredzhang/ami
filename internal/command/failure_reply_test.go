@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // newFailingCommandHandler registers /probe run, whose handler returns err,

@@ -2,8 +2,8 @@ import { safeSessionGet, safeSessionRemove, safeSessionSet } from '@/utils/safe-
 import type { BotCreateSettings } from '@/store/bot-create-progress'
 import { isDirectBotAgentRuntime, type DirectBotAgentRuntime } from '@/utils/bot-agent'
 
-const KEY = 'memoh:new-bot:authorization'
-const ONBOARDING_KEY = 'memoh:onboarding:creation'
+const KEY = 'ami:new-bot:authorization'
+const ONBOARDING_KEY = 'ami:onboarding:creation'
 
 // The Bot a create flow already produced. The bot row exists on the server as
 // soon as `bot_created` streams, so a refresh must resume on that Bot instead of

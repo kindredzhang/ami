@@ -16,7 +16,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
 )
 
 func recordTurnSpans(t *testing.T) *tracetest.SpanRecorder {

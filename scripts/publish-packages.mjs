@@ -9,7 +9,7 @@ import { detectPublishAuthMode } from './publish-auth.mjs'
 const ROOT_DIR = dirname(dirname(fileURLToPath(import.meta.url)))
 
 // packages/ui is a git submodule, but it intentionally stays in this publish
-// allowlist. Memoh releases publish the pinned UI package under the Memoh
+// allowlist. Ami releases publish the pinned UI package under the Ami
 // release version, so the npm package represents the UI sources selected by
 // this host release. If @felinic/ui moves to an independent release cadence,
 // remove it here and from .github/workflows/release.yml in the same change.
@@ -38,7 +38,7 @@ const publishScope = process.env.NPM_PUBLISH_SCOPE?.trim() || null
 // - OIDC mode (CI trusted publishing): pnpm exchanges the GitHub
 //   Actions OIDC token (ACTIONS_ID_TOKEN_REQUEST_TOKEN, available when the job
 //   has id-token: write) for a short-lived npm credential at publish time.
-//   Every published package must have felinics/Memoh + release.yml registered
+//   Every published package must have kindredzhang/ami + release.yml registered
 //   as its trusted publisher on npmjs.com, or the exchange is rejected.
 // OIDC mode changes two behaviors below: the token preflight is impossible
 // (npm whoami needs a token), so it is skipped; and --provenance is added,
@@ -121,7 +121,7 @@ function scopeReachable(scope) {
 // Preflight: before publishing ANY package, verify the token can reach every
 // scope we are about to publish into. Fail closed — if we can't confirm a
 // scope, abort the whole run so npm never ends up with a partial release
-// (e.g. @memohai/* published but @felinic/ui rejected at 403). Token-mode
+// (e.g. @ami/* published but @felinic/ui rejected at 403). Token-mode
 // only: OIDC trusted publishing has no token to check, and dry-run skips it
 // so local token-free runs keep working. See the mode note at the top.
 function preflightScopes(plan) {

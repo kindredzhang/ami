@@ -1,7 +1,7 @@
 import { computed, onScopeDispose, toValue, watch, type MaybeRefOrGetter } from 'vue'
 import { useQueryCache } from '@pinia/colada'
-import { getBotsQueryKey } from '@memohai/sdk/colada'
-import type { BotsBot } from '@memohai/sdk'
+import { getBotsQueryKey } from '@ami/sdk/colada'
+import type { BotsBot } from '@ami/sdk'
 
 const POLL_INTERVAL_MS = 2000
 

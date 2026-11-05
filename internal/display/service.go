@@ -33,12 +33,12 @@ const (
 	EncoderGStreamer     = "gstreamer"
 	CodecH264            = webrtc.MimeTypeH264
 	CodecVP8             = webrtc.MimeTypeVP8
-	gstLaunchEnv         = "MEMOH_GSTREAMER_LAUNCH"
-	rtcUDPPortEnv        = "MEMOH_DISPLAY_WEBRTC_UDP_PORT"
-	rtcUDPPortMinEnv     = "MEMOH_DISPLAY_WEBRTC_UDP_PORT_MIN"
-	rtcUDPPortMaxEnv     = "MEMOH_DISPLAY_WEBRTC_UDP_PORT_MAX"
-	rtcNATIPsEnv         = "MEMOH_DISPLAY_WEBRTC_NAT_IPS"
-	forceVP8Env          = "MEMOH_DISPLAY_FORCE_VP8"
+	gstLaunchEnv         = "AMI_GSTREAMER_LAUNCH"
+	rtcUDPPortEnv        = "AMI_DISPLAY_WEBRTC_UDP_PORT"
+	rtcUDPPortMinEnv     = "AMI_DISPLAY_WEBRTC_UDP_PORT_MIN"
+	rtcUDPPortMaxEnv     = "AMI_DISPLAY_WEBRTC_UDP_PORT_MAX"
+	rtcNATIPsEnv         = "AMI_DISPLAY_WEBRTC_NAT_IPS"
+	forceVP8Env          = "AMI_DISPLAY_FORCE_VP8"
 	videoPayloadTypeH264 = 102
 	videoPayloadTypeVP8  = 96
 	videoClockRate       = 90000
@@ -365,7 +365,7 @@ func (s *Service) Screenshot(ctx context.Context, botID string) ([]byte, string,
 		return nil, "", errors.Join(ErrEncoderUnavailable, err)
 	}
 
-	output, err := os.CreateTemp("", "memoh-display-*.jpg")
+	output, err := os.CreateTemp("", "ami-display-*.jpg")
 	if err != nil {
 		return nil, "", err
 	}

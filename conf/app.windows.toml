@@ -1,4 +1,4 @@
-# Memoh Windows configuration template
+# Ami Windows configuration template
 # It is an experimental feature and not recommended for production.
 
 [log]
@@ -16,9 +16,9 @@ rpc_listen_addr = "127.0.0.1:9091"
 [internal_rpc]
 # Leave shared_secret empty to run the pre-split all-in-one deployment: the
 # server embeds the channel runtime (external channels, webhooks) and
-# no memoh-channel process or internal RPC is needed.
+# no ami-channel process or internal RPC is needed.
 # Set a secret (e.g. `openssl rand -hex 32`) to split the channel runtime
-# into its own memoh-channel process; the internal RPC is plaintext, so keep
+# into its own ami-channel process; the internal RPC is plaintext, so keep
 # the listeners loopback-only unless the link is otherwise protected.
 server_target = "127.0.0.1:9090"
 channel_target = "127.0.0.1:9091"
@@ -27,30 +27,30 @@ shared_secret = ""
 [admin]
 username = "admin"
 password = "admin123"
-email = "dev@memoh.local"
+email = "dev@ami.local"
 
 [auth]
-jwt_secret = "memoh-dev-secret-do-not-use-in-production"
+jwt_secret = "ami-dev-secret-do-not-use-in-production"
 jwt_expires_in = "168h"
 agent_credentials_encryption_key = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 timezone = "UTC"
 
 [database]
-# Memoh now supports PostgreSQL only.
+# Ami now supports PostgreSQL only.
 driver = "postgres"
 
 [container]
 # Windows template uses containerd by default. The Docker backend is
 # available for custom deployments, but its runtime paths must match the host.
 backend = "containerd"
-# registry = "memoh.cn"  # Uncomment for China mainland mirror
-default_image = "memohai/workspace:debian-latest"
+# registry = "ami.cn"  # Uncomment for China mainland mirror
+default_image = "amiai/workspace:debian-latest"
 image_pull_policy = "if_not_present"
 # containerd snapshotter used by workspace containers.
 snapshotter = "overlayfs"
 data_root = "data"
-bridge_path = "/opt/memoh/runtime/bridge"
+bridge_path = "/opt/ami/runtime/bridge"
 
 [containerd]
 # Windows containerd usually exposes a named pipe endpoint.
@@ -66,18 +66,18 @@ host = ""
 [postgres]
 host = "127.0.0.1"
 port = 5432
-user = "memoh"
-password = "memoh123"
-database = "memoh"
+user = "ami"
+password = "ami123"
+database = "ami"
 sslmode = "disable"
 
 [pgvector]
 enabled = false
 host = "127.0.0.1"
 port = 5432
-user = "memoh"
+user = "ami"
 password = ""
-database = "memoh_vector"
+database = "ami_vector"
 sslmode = "disable"
 
 [registry]

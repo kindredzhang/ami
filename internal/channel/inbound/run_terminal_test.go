@@ -6,9 +6,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // terminalTurnRun is a handle that ends its runs with run_terminal.

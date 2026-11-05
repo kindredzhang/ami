@@ -6,15 +6,15 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func toolCallMessageFrag(text string) contextfrag.ContextFrag {
 	call := sdk.ToolCallPart{
 		ToolCallID: "call-1",
 		ToolName:   "web_search",
-		Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "memoh context usage panel design"}),
+		Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "ami context usage panel design"}),
 	}
 	return contextfrag.MessageFrag(contextfrag.MessageFragInput{
 		ID:      "message.000",

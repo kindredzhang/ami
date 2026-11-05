@@ -3,8 +3,8 @@ package grok
 import (
 	"sync"
 
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
 )
 
 // grokProcess is what a `grok agent stdio` process reports through Grok's own
@@ -15,7 +15,7 @@ type grokProcess struct {
 	mu sync.Mutex
 	// models is the catalog Grok last pushed; nil until it has.
 	models map[string]any
-	// toolStatus is Grok's latest report on the Memoh tool gateway of each
+	// toolStatus is Grok's latest report on the Ami tool gateway of each
 	// session; statusWake closes, and is replaced, when a report arrives.
 	toolStatus map[string]mcpStatus
 	statusWake chan struct{}
@@ -35,13 +35,13 @@ func processEnv(home, apiKey string) []string {
 		"GROK_HOME="+home,
 		// The managed dependency owns the CLI version.
 		"GROK_DISABLE_AUTOUPDATER=1",
-		// Memoh keeps the transcript: a stopped turn stays in Grok's history
-		// as it stays in Memoh's.
+		// Ami keeps the transcript: a stopped turn stays in Grok's history
+		// as it stays in Ami's.
 		"GROK_CANCEL_REWIND=0",
-		// Memoh shows none of these, and each costs a model call per turn.
+		// Ami shows none of these, and each costs a model call per turn.
 		"GROK_TURN_SUMMARY=0",
 		"GROK_SESSION_RECAP=0",
-		// Memoh owns memory. Grok's would carry across every conversation of
+		// Ami owns memory. Grok's would carry across every conversation of
 		// the Agent, which share its home.
 		"GROK_MEMORY=0",
 	)

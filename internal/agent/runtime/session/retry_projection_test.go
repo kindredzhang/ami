@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 func startRetryProjectionRun(t *testing.T, name string) (*Manager, RunHandle, Subscription) {

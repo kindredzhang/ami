@@ -339,8 +339,8 @@ import {
   getBotsByBotIdSettings,
   postBotsByBotIdSchedule,
   putBotsByBotIdScheduleById,
-} from '@memohai/sdk'
-import type { ScheduleCreateRequest, ScheduleSchedule, ScheduleUpdateRequest } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { ScheduleCreateRequest, ScheduleSchedule, ScheduleUpdateRequest } from '@ami/sdk'
 import ScheduleExecutionFields, { type ScheduleExecutionForm } from './schedule-execution-fields.vue'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { isAgentRuntimeType } from '@/store/chat-list.utils'

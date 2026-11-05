@@ -104,7 +104,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@felinic/ui'
-import type { ConnectitAuthMethod, ConnectitConnector } from '@memohai/sdk'
+import type { ConnectitAuthMethod, ConnectitConnector } from '@ami/sdk'
 import {
   beginAppConnectorOAuth,
   createAppConnectorCredential,

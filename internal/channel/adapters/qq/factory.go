@@ -3,10 +3,10 @@ package qq
 import (
 	"log/slog"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/identities"
-	"github.com/felinics/memoh/internal/channel/route"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/identities"
+	"github.com/kindredzhang/ami/internal/channel/route"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func ProvideQQAdapter(log *slog.Logger, mediaService *media.Service, identityService *identities.Service, routeService *route.DBService) channel.Adapter {

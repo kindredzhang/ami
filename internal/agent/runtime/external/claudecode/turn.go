@@ -15,11 +15,11 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (
@@ -28,7 +28,7 @@ const (
 	maxLineBytes = 32 * 1024 * 1024
 )
 
-// turnRunner drives one Memoh run, including native turns started by steering.
+// turnRunner drives one Ami run, including native turns started by steering.
 type turnRunner struct {
 	input     external.PromptInput
 	approval  approval.FlowService
@@ -63,7 +63,7 @@ type turnRunner struct {
 	sessionID       string
 	result          *inboundMessage
 	inboundCancels  map[string]context.CancelFunc
-	memohMCPCallIDs map[string]struct{}
+	amiMCPCallIDs map[string]struct{}
 	toolCalls       map[string]toolCall
 	doneOnce        sync.Once
 	permissionMode  string
@@ -117,7 +117,7 @@ func newTurn(parent context.Context, s *cliSession, input external.PromptInput, 
 		cancel:          cancel,
 		done:            make(chan struct{}),
 		inboundCancels:  map[string]context.CancelFunc{},
-		memohMCPCallIDs: map[string]struct{}{},
+		amiMCPCallIDs: map[string]struct{}{},
 		toolCalls:       map[string]toolCall{},
 		runtimeMetadata: map[string]any{},
 		ready:           make(chan struct{}), steers: map[string]*pendingSteer{},
@@ -230,7 +230,7 @@ func (t *turnRunner) handleMessage(msg *inboundMessage) {
 	case "command_lifecycle":
 		t.handleCommandLifecycle(msg)
 	case "tool_progress":
-		if msg.ParentToolUseID == nil && msg.ToolUseID != "" && !t.isMemohMCPWrapper(msg.ToolUseID, msg.ToolName) {
+		if msg.ParentToolUseID == nil && msg.ToolUseID != "" && !t.isAmiMCPWrapper(msg.ToolUseID, msg.ToolName) {
 			t.emit(event.StreamEvent{
 				Type: event.ToolCallMetadata, ToolCallID: msg.ToolUseID, ToolName: canonicalDisplayToolName(msg.ToolName),
 				Metadata: map[string]any{"execution_progress": map[string]any{"elapsed_time_seconds": msg.ElapsedTimeSeconds}},
@@ -325,7 +325,7 @@ func (t *turnRunner) handleMessage(msg *inboundMessage) {
 		for _, block := range chat.Content {
 			switch block.Type {
 			case "tool_use":
-				if t.isMemohMCPWrapper(block.ID, block.Name) {
+				if t.isAmiMCPWrapper(block.ID, block.Name) {
 					continue
 				}
 				var input any
@@ -378,7 +378,7 @@ func (t *turnRunner) handleMessage(msg *inboundMessage) {
 			if block.Type != "tool_result" {
 				continue
 			}
-			if t.isMemohMCPWrapper(block.ToolUseID, "") {
+			if t.isAmiMCPWrapper(block.ToolUseID, "") {
 				continue
 			}
 			call := t.takeToolCall(block.ToolUseID)
@@ -459,7 +459,7 @@ func (t *turnRunner) handleMessage(msg *inboundMessage) {
 	case messageTypeControlRequest:
 		var payload controlRequestPayload
 		if err := json.Unmarshal(msg.Request, &payload); err != nil {
-			t.respondControlError(msg.RequestID, "memoh could not decode this request")
+			t.respondControlError(msg.RequestID, "ami could not decode this request")
 			return
 		}
 		switch payload.Subtype {
@@ -477,7 +477,7 @@ func (t *turnRunner) handleMessage(msg *inboundMessage) {
 			}()
 		default:
 			t.logger.Warn("claude: unhandled control request", slog.String("subtype", payload.Subtype))
-			t.respondControlError(msg.RequestID, "memoh does not handle this request")
+			t.respondControlError(msg.RequestID, "ami does not handle this request")
 		}
 	case messageTypeControlCancel:
 		t.cancelInboundControl(msg.RequestID)
@@ -509,17 +509,17 @@ func (t *turnRunner) cancelInboundControl(requestID string) {
 	}
 }
 
-func (t *turnRunner) isMemohMCPWrapper(id, name string) bool {
+func (t *turnRunner) isAmiMCPWrapper(id, name string) bool {
 	id = strings.TrimSpace(id)
 	t.mu.Lock()
 	defer t.mu.Unlock()
-	if isMemohMCPToolName(name) {
+	if isAmiMCPToolName(name) {
 		if id != "" {
-			t.memohMCPCallIDs[id] = struct{}{}
+			t.amiMCPCallIDs[id] = struct{}{}
 		}
 		return true
 	}
-	_, ok := t.memohMCPCallIDs[id]
+	_, ok := t.amiMCPCallIDs[id]
 	return ok
 }
 
@@ -553,20 +553,20 @@ func (t *turnRunner) respondControlError(requestID, message string) {
 	_ = t.writeLine(line)
 }
 
-// handleCanUseTool routes one permission callback through the Memoh approval
+// handleCanUseTool routes one permission callback through the Ami approval
 // flow. Runs on its own goroutine, bounded by the turn-scoped context.
 func (t *turnRunner) handleCanUseTool(ctx context.Context, requestID string, payload *controlRequestPayload) {
 	if payload.ToolName == "AskUserQuestion" {
 		t.answerQuestions(ctx, requestID, payload)
 		return
 	}
-	if t.isMemohMCPWrapper(payload.ToolUseID, payload.ToolName) {
-		// Memoh tools enforce Memoh's own approval rules inside the tool
+	if t.isAmiMCPWrapper(payload.ToolUseID, payload.ToolName) {
+		// Ami tools enforce Ami's own approval rules inside the tool
 		// gateway when they execute, whatever Claude's permission mode is.
 		// Claude's question about the wrapper would only add a second card.
 		line, err := permissionAllowResponse(requestID, payload.Input, payload.ToolUseID)
 		if err != nil {
-			t.respondControlError(requestID, "memoh could not encode the decision")
+			t.respondControlError(requestID, "ami could not encode the decision")
 			return
 		}
 		_ = t.writeLine(line)
@@ -582,7 +582,7 @@ func (t *turnRunner) handleCanUseTool(ctx context.Context, requestID string, pay
 	if _, ok := approval.OperationForTool(toolName); !ok {
 		raw, err := json.MarshalIndent(payload.Input, "", "  ")
 		if err != nil {
-			t.respondControlError(requestID, "memoh could not encode the permission request")
+			t.respondControlError(requestID, "ami could not encode the permission request")
 			return
 		}
 		// The card is its own transcript entry. Under the real tool_use id the
@@ -607,7 +607,7 @@ func (t *turnRunner) handleCanUseTool(ctx context.Context, requestID string, pay
 		line, err = permissionDenyResponse(requestID, reason)
 	}
 	if err != nil {
-		t.respondControlError(requestID, "memoh could not encode the decision")
+		t.respondControlError(requestID, "ami could not encode the decision")
 		return
 	}
 	_ = t.writeLine(line)
@@ -616,8 +616,8 @@ func (t *turnRunner) handleCanUseTool(ctx context.Context, requestID string, pay
 func canonicalDisplayToolName(toolName string) string {
 	name := strings.TrimSpace(toolName)
 	lower := strings.ToLower(name)
-	if isMemohMCPToolName(name) {
-		return strings.TrimPrefix(lower, "mcp__"+memohMCPServerName+"__")
+	if isAmiMCPToolName(name) {
+		return strings.TrimPrefix(lower, "mcp__"+amiMCPServerName+"__")
 	}
 	switch lower {
 	case "askuserquestion":
@@ -639,8 +639,8 @@ func canonicalDisplayToolName(toolName string) string {
 	}
 }
 
-func isMemohMCPToolName(toolName string) bool {
-	return strings.HasPrefix(strings.ToLower(strings.TrimSpace(toolName)), "mcp__"+memohMCPServerName+"__")
+func isAmiMCPToolName(toolName string) bool {
+	return strings.HasPrefix(strings.ToLower(strings.TrimSpace(toolName)), "mcp__"+amiMCPServerName+"__")
 }
 
 func canonicalDisplayToolCall(toolName string, input any) (string, any) {
@@ -691,7 +691,7 @@ func (t *turnRunner) observeExit(err error) {
 // interrupt asks the CLI to stop the running turn.
 func (t *turnRunner) interrupt() {
 	// No response waiter: teardown waits for the native result and process exit.
-	line, err := controlRequestLine("memoh-interrupt", "interrupt", map[string]any{"cancel_queued": true})
+	line, err := controlRequestLine("ami-interrupt", "interrupt", map[string]any{"cancel_queued": true})
 	if err == nil {
 		err = t.writeLine(line)
 	}

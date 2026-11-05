@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestRouteHubPublishEvent(t *testing.T) {

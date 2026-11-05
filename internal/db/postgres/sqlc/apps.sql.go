@@ -15,7 +15,7 @@ const clearAppConnectorRefConnection = `-- name: ClearAppConnectorRefConnection 
 UPDATE bot_app_connector_refs
 SET connection_id = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND connection_id = $1
 `
 
@@ -29,7 +29,7 @@ func (q *Queries) ClearAppConnectorRefConnection(ctx context.Context, connection
 
 const deleteAppConnectorRef = `-- name: DeleteAppConnectorRef :execrows
 DELETE FROM bot_app_connector_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
   AND connector_type = $2
 `
@@ -49,7 +49,7 @@ func (q *Queries) DeleteAppConnectorRef(ctx context.Context, arg DeleteAppConnec
 
 const deleteAppDependencyRef = `-- name: DeleteAppDependencyRef :execrows
 DELETE FROM bot_app_dependency_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
   AND dependency_id = $2
 `
@@ -69,7 +69,7 @@ func (q *Queries) DeleteAppDependencyRef(ctx context.Context, arg DeleteAppDepen
 
 const deleteBotAppInstallation = `-- name: DeleteBotAppInstallation :one
 DELETE FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -112,7 +112,7 @@ SELECT id, team_id, bot_id, registry_id, app_id, revision, version,
        status, reason, available_revision, available_version, last_checked_at, last_error, last_error_code,
        release, installed_at, updated_at
 FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND registry_id = $2
   AND app_id = $3
@@ -155,7 +155,7 @@ SELECT id, team_id, bot_id, registry_id, app_id, revision, version,
        status, reason, available_revision, available_version, last_checked_at, last_error, last_error_code,
        release, installed_at, updated_at
 FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 LIMIT 1
@@ -194,7 +194,7 @@ func (q *Queries) GetBotAppInstallationByID(ctx context.Context, arg GetBotAppIn
 const listAppConnectorRefs = `-- name: ListAppConnectorRefs :many
 SELECT id, team_id, installation_id, connector_type, connection_id, required, created_at, updated_at
 FROM bot_app_connector_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
 ORDER BY connector_type
 `
@@ -234,7 +234,7 @@ SELECT r.id, r.team_id, r.installation_id, r.connector_type, r.connection_id, r.
 FROM bot_app_connector_refs r
 JOIN bot_app_installations i
   ON i.team_id = r.team_id AND i.id = r.installation_id
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND i.bot_id = $1
 ORDER BY r.connector_type, i.registry_id, i.app_id
 `
@@ -286,7 +286,7 @@ func (q *Queries) ListAppConnectorRefsForBot(ctx context.Context, botID pgtype.U
 const listAppDependencyRefs = `-- name: ListAppDependencyRefs :many
 SELECT id, team_id, installation_id, dependency_id, created_at
 FROM bot_app_dependency_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
 ORDER BY dependency_id
 `
@@ -323,7 +323,7 @@ SELECT r.id, r.team_id, r.installation_id, r.dependency_id, r.created_at,
 FROM bot_app_dependency_refs r
 JOIN bot_app_installations i
   ON i.team_id = r.team_id AND i.id = r.installation_id
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND i.bot_id = $1
 ORDER BY r.dependency_id, i.registry_id, i.app_id
 `
@@ -371,7 +371,7 @@ SELECT id, team_id, bot_id, registry_id, app_id, revision, version,
        status, reason, available_revision, available_version, last_checked_at, last_error, last_error_code,
        release, installed_at, updated_at
 FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY registry_id, app_id
 `
 
@@ -417,7 +417,7 @@ const setAppConnectorRefConnection = `-- name: SetAppConnectorRefConnection :one
 UPDATE bot_app_connector_refs
 SET connection_id = $1,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $2
   AND connector_type = $3
 RETURNING id, team_id, installation_id, connector_type, connection_id, required, created_at, updated_at
@@ -451,7 +451,7 @@ SET available_revision = $1,
     available_version = $2,
     last_checked_at = $3,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $4
   AND id = $5
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -506,7 +506,7 @@ SET revision = $1,
     available_revision = '',
     available_version = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $4
   AND id = $5
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -559,7 +559,7 @@ SET status = $1,
     last_error = '',
     last_error_code = $2,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $3
   AND id = $4
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,

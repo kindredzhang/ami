@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/version"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 	DefaultProviderProbeTimeout        = 60 * time.Second
 	DefaultProviderTLSHandshakeTimeout = 30 * time.Second
 
-	providerUserAgentProduct = "Memoh"
+	providerUserAgentProduct = "Ami"
 )
 
 var defaultProviderTransport = newDefaultProviderTransport()
@@ -46,7 +46,7 @@ func DefaultProviderUserAgent() string {
 		buildToken = "unknown"
 	}
 	return providerUserAgentProduct + "/" + versionToken +
-		" (" + providerUserAgentPlatform() + ") memoh-server (Memoh; " + buildToken + ")"
+		" (" + providerUserAgentPlatform() + ") ami-server (Ami; " + buildToken + ")"
 }
 
 type providerUserAgentRoundTripper struct {

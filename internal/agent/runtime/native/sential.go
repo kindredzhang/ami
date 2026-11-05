@@ -22,8 +22,8 @@ const (
 	ToolLoopDetectedAbortMessage    = "tool loop detected, stream aborted"
 	ToolLoopRepeatThreshold         = 5
 	ToolLoopWarningsBeforeAbort     = 1
-	ToolLoopWarningKey              = "__memoh_tool_loop_warning"                                                                                                                                                                            //nolint:gosec // internal warning key, not a credential
-	ToolLoopWarningText             = "[MEMOH_TOOL_LOOP_WARNING] Repeated identical tool invocation (same tool + arguments) was detected more than 5 times. Stop looping this tool and either summarize current results or change strategy." //nolint:gosec // human-readable warning text, not a credential
+	ToolLoopWarningKey              = "__ami_tool_loop_warning"                                                                                                                                                                            //nolint:gosec // internal warning key, not a credential
+	ToolLoopWarningText             = "[AMI_TOOL_LOOP_WARNING] Repeated identical tool invocation (same tool + arguments) was detected more than 5 times. Stop looping this tool and either summarize current results or change strategy." //nolint:gosec // human-readable warning text, not a credential
 
 	defaultNgramSize           = 10
 	defaultWindowSize          = 1000

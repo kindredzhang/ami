@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	session "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type forkAnchorMessageService struct {

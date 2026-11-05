@@ -59,7 +59,7 @@ import {
   putBotsByBotIdSettings,
   type HandlersDisplayInfoResponse,
   type SettingsUpsertRequest,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import DisplayPane from '@/pages/home/components/display-pane.vue'
 

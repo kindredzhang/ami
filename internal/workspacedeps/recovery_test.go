@@ -12,8 +12,8 @@ import (
 	"testing/fstest"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func TestDisconnectedScriptCompletionRecoversWithoutServerMemory(t *testing.T) {

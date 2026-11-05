@@ -2,7 +2,7 @@
 -- Restore the pre-membership model when every user still belongs to exactly one team.
 
 DROP TRIGGER IF EXISTS team_members_last_active_admin_guard ON public.team_members;
-DROP FUNCTION IF EXISTS public.memoh_guard_last_active_team_admin();
+DROP FUNCTION IF EXISTS public.ami_guard_last_active_team_admin();
 
 -- Inspect the complete membership set even when the migration owner is a
 -- non-superuser subject to FORCE RLS. Transaction rollback restores this state
@@ -101,7 +101,7 @@ FROM public.team_members tm
 WHERE tm.user_id = u.id;
 
 ALTER TABLE public.users
-    ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id(),
+    ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id(),
     ALTER COLUMN team_id SET NOT NULL,
     ALTER COLUMN role SET DEFAULT 'member',
     ALTER COLUMN role SET NOT NULL;
@@ -111,7 +111,7 @@ ALTER TABLE public.users
     DROP CONSTRAINT users_username_unique,
     ADD CONSTRAINT users_email_unique UNIQUE (team_id, email),
     ADD CONSTRAINT users_username_unique UNIQUE (team_id, username),
-    ADD CONSTRAINT memoh_team_key_018c4edf45ca UNIQUE (team_id, id),
+    ADD CONSTRAINT ami_team_key_018c4edf45ca UNIQUE (team_id, id),
     ADD CONSTRAINT users_team_id_fkey
         FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE RESTRICT;
 
@@ -205,15 +205,15 @@ ALTER TABLE public.user_runtimes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_runtimes FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY users_team_select ON public.users
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY users_team_insert ON public.users
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY users_team_update ON public.users
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY users_team_delete ON public.users
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.users FORCE ROW LEVEL SECURITY;

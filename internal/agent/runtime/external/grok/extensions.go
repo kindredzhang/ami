@@ -6,15 +6,15 @@ import (
 	"strings"
 	"time"
 
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/errs"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // What the driver reads and drives through Grok's own extension methods; the
 // methods and their shapes are listed in config.go.
 
 // gatewayStatusTimeout bounds how long a turn waits for Grok to say whether
-// it connected to the Memoh tool gateway. Grok reports within a moment of a
+// it connected to the Ami tool gateway. Grok reports within a moment of a
 // session opening; a report that never comes does not hold the turn.
 const gatewayStatusTimeout = 3 * time.Second
 
@@ -77,7 +77,7 @@ func (p *grokProcess) updateToolStatus(params json.RawMessage) {
 		Name      string `json:"name"`
 		mcpStatus
 	}
-	if json.Unmarshal(params, &report) != nil || !acpclient.IsMemohToolsMCPServerName(report.Name) {
+	if json.Unmarshal(params, &report) != nil || !acpclient.IsAmiToolsMCPServerName(report.Name) {
 		return
 	}
 	p.mu.Lock()
@@ -87,7 +87,7 @@ func (p *grokProcess) updateToolStatus(params json.RawMessage) {
 	p.mu.Unlock()
 }
 
-// gatewayStatus waits for Grok's report on the session's Memoh tool gateway.
+// gatewayStatus waits for Grok's report on the session's Ami tool gateway.
 func (p *grokProcess) gatewayStatus(ctx context.Context, sessionID string, timeout time.Duration) (mcpStatus, bool) {
 	deadline := time.After(timeout)
 	for {

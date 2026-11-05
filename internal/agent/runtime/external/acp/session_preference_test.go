@@ -6,8 +6,8 @@ import (
 	"sync"
 	"testing"
 
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
 )
 
 type durablePairStore struct {
@@ -33,8 +33,8 @@ func (s *durablePairStore) SaveModelPreference(_ context.Context, _ string, mode
 }
 
 func TestSessionPoolRestoresPersistedPromptPairAfterRuntimeClose(t *testing.T) {
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
-	t.Setenv("MEMOH_ACP_SESSION_POOL_FAKE_AGENT_REASONING", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_MODELS", "1")
+	t.Setenv("AMI_ACP_SESSION_POOL_FAKE_AGENT_REASONING", "1")
 	pool := newFakeScriptPool(t)
 	store := &durablePairStore{}
 	pool.store = store

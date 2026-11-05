@@ -8,12 +8,12 @@ import (
 	"log/slog"
 	"time"
 
-	agentevent "github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const sessionRuntimeACPAgent = sessionpkg.RuntimeACPAgent

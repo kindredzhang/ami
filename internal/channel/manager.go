@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
 )
 
 // ConfigLister lists channel configs for periodic refresh. Used by connection lifecycle.

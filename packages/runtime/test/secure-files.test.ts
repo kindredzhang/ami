@@ -29,8 +29,8 @@ afterEach(async () => {
 describe('atomic credential writes', () => {
   it.runIf(process.platform === 'win32')('reapplies private ACLs to existing files and directories', async () => {
     // Simulate Node inheriting module paths that cannot load in Windows PowerShell.
-    vi.stubEnv('PSModulePath', join(tmpdir(), 'memoh-no-powershell-modules'))
-    const directory = await mkdtemp(join(tmpdir(), 'memoh-acl-repeat-'))
+    vi.stubEnv('PSModulePath', join(tmpdir(), 'ami-no-powershell-modules'))
+    const directory = await mkdtemp(join(tmpdir(), 'ami-acl-repeat-'))
     directories.push(directory)
     const file = join(directory, 'credential')
     await protectWindowsDirectory(directory)
@@ -136,7 +136,7 @@ describe.runIf(process.platform === 'darwin')('inherited macOS ACLs', () => {
 })
 
 async function credentialFile(): Promise<string> {
-  const directory = await mkdtemp(join(await realpath(tmpdir()), 'memoh-credential-test-'))
+  const directory = await mkdtemp(join(await realpath(tmpdir()), 'ami-credential-test-'))
   directories.push(directory)
   const path = join(directory, 'credential')
   await writeFile(path, 'old credential', { mode: 0o600 })

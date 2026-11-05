@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (
@@ -20,7 +20,7 @@ const (
 	setupModeSelf   = "self"
 )
 
-// Profile is how Memoh runs a user-configured ACP agent: the one generic
+// Profile is how Ami runs a user-configured ACP agent: the one generic
 // profile, whose command and arguments the agent instance supplies.
 type Profile struct {
 	ID                string
@@ -128,7 +128,7 @@ func genericACPProfile() Profile {
 		},
 		SupportedBackends: []string{"container"},
 		// api_key is an internal managed-mode marker here; generic ACP has no
-		// authentication UI of its own and only needs Memoh-managed launch data.
+		// authentication UI of its own and only needs Ami-managed launch data.
 		SetupModes: []string{setupModeAPIKey},
 	}
 }

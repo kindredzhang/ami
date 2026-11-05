@@ -7,8 +7,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 func TestStoredModelMessageCodecPreservesEnvelopeAndStructuredContent(t *testing.T) {
@@ -25,7 +25,7 @@ func TestStoredModelMessageCodecPreservesEnvelopeAndStructuredContent(t *testing
 			Type: "function",
 			Function: turn.ToolCallFunction{
 				Name:      "lookup",
-				Arguments: `{"q":"memoh"}`,
+				Arguments: `{"q":"ami"}`,
 			},
 		}},
 	}
@@ -118,7 +118,7 @@ func TestStoredModelMessageToSDKMessageRestoresLegacyToolCalls(t *testing.T) {
 			ID: "legacy-call",
 			Function: turn.ToolCallFunction{
 				Name:      "lookup",
-				Arguments: `{"query":"memoh"}`,
+				Arguments: `{"query":"ami"}`,
 			},
 		}},
 	})
@@ -127,7 +127,7 @@ func TestStoredModelMessageToSDKMessageRestoresLegacyToolCalls(t *testing.T) {
 		Content: []sdk.MessagePart{sdk.ToolCallPart{
 			ToolCallID: "legacy-call",
 			ToolName:   "lookup",
-			Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "memoh"}),
+			Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "ami"}),
 		}},
 	}
 	assertPersistenceJSON(t, got, want)
@@ -138,9 +138,9 @@ func TestStoredModelMessageToSDKMessageDoesNotDuplicateModernToolParts(t *testin
 
 	got := StoredModelMessageToSDKMessage(turn.ModelMessage{
 		Role:    "assistant",
-		Content: mustPersistenceJSON(t, []map[string]any{{"type": "tool-call", "toolCallId": "call-1", "toolName": "lookup", "input": map[string]any{"q": "memoh"}}}),
+		Content: mustPersistenceJSON(t, []map[string]any{{"type": "tool-call", "toolCallId": "call-1", "toolName": "lookup", "input": map[string]any{"q": "ami"}}}),
 		ToolCalls: []turn.ToolCall{{
-			ID: "call-1", Function: turn.ToolCallFunction{Name: "lookup", Arguments: `{"q":"memoh"}`},
+			ID: "call-1", Function: turn.ToolCallFunction{Name: "lookup", Arguments: `{"q":"ami"}`},
 		}},
 	})
 	if len(got.Content) != 1 {
@@ -171,7 +171,7 @@ func TestDecodeStoredModelMessageSupportsPreviousSDKEnvelope(t *testing.T) {
 		Content: []sdk.MessagePart{sdk.ToolCallPart{
 			ToolCallID: "call-old-sdk",
 			ToolName:   "lookup",
-			Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "memoh"}),
+			Input:      toolexec.ArgumentsFromValue(map[string]any{"query": "ami"}),
 		}},
 	}
 	// Rows written before the usage column carried the SDK envelope with its
@@ -180,7 +180,7 @@ func TestDecodeStoredModelMessageSupportsPreviousSDKEnvelope(t *testing.T) {
 		"role": "assistant",
 		"content": []map[string]any{{
 			"type": "tool-call", "toolCallId": "call-old-sdk", "toolName": "lookup",
-			"input": map[string]any{"query": "memoh"},
+			"input": map[string]any{"query": "ami"},
 		}},
 		"usage": map[string]any{"inputTokens": 7, "outputTokens": 3},
 	})

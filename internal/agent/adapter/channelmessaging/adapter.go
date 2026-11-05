@@ -5,8 +5,8 @@ package channelmessaging
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/messaging"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/messaging"
 )
 
 type runtime interface {

@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"slices"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 var (

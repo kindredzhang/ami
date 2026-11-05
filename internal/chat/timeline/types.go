@@ -15,7 +15,7 @@ const (
 
 // CanonicalUser is a platform-agnostic sender identity.
 type CanonicalUser struct {
-	// ID is the channel_identity_id (Memoh UUID).
+	// ID is the channel_identity_id (Ami UUID).
 	ID          string `json:"id"`
 	DisplayName string `json:"display_name"`
 	Username    string `json:"username,omitempty"`

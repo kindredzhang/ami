@@ -23,8 +23,8 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 type failAfterDataReader struct {
@@ -198,7 +198,7 @@ func TestClientReadRawMissingFileReturnsNotFoundImmediately(t *testing.T) {
 	t.Parallel()
 
 	client := newTestReadRawClient(t, map[string][]byte{})
-	_, err := client.ReadRaw(context.Background(), "/data/.memoh/media/missing.jpg")
+	_, err := client.ReadRaw(context.Background(), "/data/.ami/media/missing.jpg")
 	if err == nil {
 		t.Fatal("expected read raw to fail for missing file")
 	}
@@ -211,9 +211,9 @@ func TestClientReadRawPreservesFirstChunk(t *testing.T) {
 	t.Parallel()
 
 	client := newTestReadRawClient(t, map[string][]byte{
-		"/data/.memoh/media/existing.jpg": []byte("hello"),
+		"/data/.ami/media/existing.jpg": []byte("hello"),
 	})
-	reader, err := client.ReadRaw(context.Background(), "/data/.memoh/media/existing.jpg")
+	reader, err := client.ReadRaw(context.Background(), "/data/.ami/media/existing.jpg")
 	if err != nil {
 		t.Fatalf("ReadRaw returned error: %v", err)
 	}
@@ -232,9 +232,9 @@ func TestClientReadRawSupportsEmptyFile(t *testing.T) {
 	t.Parallel()
 
 	client := newTestReadRawClient(t, map[string][]byte{
-		"/data/.memoh/media/empty.txt": {},
+		"/data/.ami/media/empty.txt": {},
 	})
-	reader, err := client.ReadRaw(context.Background(), "/data/.memoh/media/empty.txt")
+	reader, err := client.ReadRaw(context.Background(), "/data/.ami/media/empty.txt")
 	if err != nil {
 		t.Fatalf("ReadRaw returned error: %v", err)
 	}
@@ -258,10 +258,10 @@ func TestClientWriteRawSupportsEmptyFile(t *testing.T) {
 		WorkspaceRoot:  root,
 		DataMount:      "/data",
 	}))
-	if _, err := client.WriteRaw(context.Background(), "/data/.memoh/media/empty.txt", bytes.NewReader(nil)); err != nil {
+	if _, err := client.WriteRaw(context.Background(), "/data/.ami/media/empty.txt", bytes.NewReader(nil)); err != nil {
 		t.Fatalf("WriteRaw() error = %v", err)
 	}
-	info, err := os.Stat(filepath.Join(root, ".memoh", "media", "empty.txt"))
+	info, err := os.Stat(filepath.Join(root, ".ami", "media", "empty.txt"))
 	if err != nil {
 		t.Fatalf("stat empty file: %v", err)
 	}
@@ -274,7 +274,7 @@ func TestClientWriteRawDoesNotReplaceTargetOnReaderFailure(t *testing.T) {
 	t.Parallel()
 
 	root := t.TempDir()
-	target := filepath.Join(root, ".memoh", "media", "asset.txt")
+	target := filepath.Join(root, ".ami", "media", "asset.txt")
 	if err := os.MkdirAll(filepath.Dir(target), 0o750); err != nil {
 		t.Fatalf("mkdir target: %v", err)
 	}
@@ -286,7 +286,7 @@ func TestClientWriteRawDoesNotReplaceTargetOnReaderFailure(t *testing.T) {
 		WorkspaceRoot:  root,
 		DataMount:      "/data",
 	}))
-	if _, err := client.WriteRaw(context.Background(), "/data/.memoh/media/asset.txt", &failAfterDataReader{}); err == nil {
+	if _, err := client.WriteRaw(context.Background(), "/data/.ami/media/asset.txt", &failAfterDataReader{}); err == nil {
 		t.Fatal("WriteRaw() error = nil, want reader failure")
 	}
 
@@ -737,8 +737,8 @@ func TestClientWithOutgoingMetadataScopesUnaryAndStreamingWithoutOwningConnectio
 	}
 	root := newTestClient(t, server)
 	scoped := root.WithOutgoingMetadata(map[string]string{
-		"x-memoh-workspace-id":   "11111111-1111-4111-8111-111111111111",
-		"x-memoh-workspace-path": "bots/one",
+		"x-ami-workspace-id":   "11111111-1111-4111-8111-111111111111",
+		"x-ami-workspace-path": "bots/one",
 	})
 	if scoped == nil {
 		t.Fatal("WithOutgoingMetadata returned nil")
@@ -746,7 +746,7 @@ func TestClientWithOutgoingMetadataScopesUnaryAndStreamingWithoutOwningConnectio
 	if _, err := scoped.Stat(context.Background(), "/"); err != nil {
 		t.Fatalf("scoped Stat: %v", err)
 	}
-	assertMetadataValue(t, <-server.unary, "x-memoh-workspace-path", "bots/one")
+	assertMetadataValue(t, <-server.unary, "x-ami-workspace-path", "bots/one")
 
 	result, err := scoped.Exec(context.Background(), "true", "/data", 5)
 	if err != nil {
@@ -755,7 +755,7 @@ func TestClientWithOutgoingMetadataScopesUnaryAndStreamingWithoutOwningConnectio
 	if result.ExitCode != 0 {
 		t.Fatalf("scoped Exec exit code = %d", result.ExitCode)
 	}
-	assertMetadataValue(t, <-server.stream, "x-memoh-workspace-id", "11111111-1111-4111-8111-111111111111")
+	assertMetadataValue(t, <-server.stream, "x-ami-workspace-id", "11111111-1111-4111-8111-111111111111")
 
 	if err := scoped.Close(); err != nil {
 		t.Fatalf("scoped Close: %v", err)
@@ -763,7 +763,7 @@ func TestClientWithOutgoingMetadataScopesUnaryAndStreamingWithoutOwningConnectio
 	if _, err := root.Stat(context.Background(), "/"); err != nil {
 		t.Fatalf("root client was closed by scoped view: %v", err)
 	}
-	assertMetadataValue(t, <-server.unary, "x-memoh-workspace-id", "")
+	assertMetadataValue(t, <-server.unary, "x-ami-workspace-id", "")
 }
 
 func assertMetadataValue(t *testing.T, md metadata.MD, key, want string) {

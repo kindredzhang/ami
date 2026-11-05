@@ -13,7 +13,7 @@ import (
 
 const countSessionEvents = `-- name: CountSessionEvents :one
 SELECT COUNT(*) FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND session_id = $1
+WHERE team_id = public.ami_current_team_id() AND session_id = $1
 `
 
 func (q *Queries) CountSessionEvents(ctx context.Context, sessionID pgtype.UUID) (int64, error) {
@@ -64,7 +64,7 @@ func (q *Queries) CreateSessionEvent(ctx context.Context, arg CreateSessionEvent
 
 const deleteSessionEventsByBot = `-- name: DeleteSessionEventsByBot :exec
 DELETE FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 `
 
 func (q *Queries) DeleteSessionEventsByBot(ctx context.Context, botID pgtype.UUID) error {
@@ -74,7 +74,7 @@ func (q *Queries) DeleteSessionEventsByBot(ctx context.Context, botID pgtype.UUI
 
 const listSessionEventsByBot = `-- name: ListSessionEventsByBot :many
 SELECT id, bot_id, session_id, event_kind, event_data, external_message_id, sender_channel_identity_id, received_at_ms, created_at, team_id FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY received_at_ms ASC, id ASC
 `
 
@@ -111,7 +111,7 @@ func (q *Queries) ListSessionEventsByBot(ctx context.Context, botID pgtype.UUID)
 
 const listSessionEventsBySession = `-- name: ListSessionEventsBySession :many
 SELECT id, bot_id, session_id, event_kind, event_data, external_message_id, sender_channel_identity_id, received_at_ms, created_at, team_id FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND session_id = $1
+WHERE team_id = public.ami_current_team_id() AND session_id = $1
 ORDER BY received_at_ms ASC, created_at ASC, id ASC
 `
 
@@ -148,7 +148,7 @@ func (q *Queries) ListSessionEventsBySession(ctx context.Context, sessionID pgty
 
 const listSessionEventsBySessionAfter = `-- name: ListSessionEventsBySessionAfter :many
 SELECT id, bot_id, session_id, event_kind, event_data, external_message_id, sender_channel_identity_id, received_at_ms, created_at, team_id FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND session_id = $1 AND received_at_ms >= $2
+WHERE team_id = public.ami_current_team_id() AND session_id = $1 AND received_at_ms >= $2
 ORDER BY received_at_ms ASC, created_at ASC, id ASC
 `
 
@@ -203,7 +203,7 @@ WITH page AS (
     event.created_at,
     octet_length(event.event_data::text)::BIGINT AS payload_bytes
   FROM bot_session_events event
-  WHERE event.team_id = public.memoh_current_team_id()
+  WHERE event.team_id = public.ami_current_team_id()
     AND event.session_id = $2
     AND (
       NOT $3::boolean
@@ -219,7 +219,7 @@ WITH page AS (
         OR m.id = ANY($9::uuid[])
       )
       FROM bot_visible_history_messages m
-      WHERE m.team_id = public.memoh_current_team_id()
+      WHERE m.team_id = public.ami_current_team_id()
         AND m.session_id = $2
         AND m.source_message_id = event.external_message_id
         AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')

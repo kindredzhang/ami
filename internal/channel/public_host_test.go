@@ -16,7 +16,7 @@ func TestIsPublicHost(t *testing.T) {
 		{host: "foo.localhost"},
 		{host: "app.local"},
 		{host: "office"},
-		{host: "memoh.internal"},
+		{host: "ami.internal"},
 		{host: "foo.test"},
 		{host: "foo.invalid"},
 		{host: "foo.example"},

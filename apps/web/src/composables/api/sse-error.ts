@@ -1,5 +1,5 @@
-import { client } from '@memohai/sdk/client'
-import { parseMemohError, renderI18nMessage, resolveApiErrorMessage } from '@/utils/api-error'
+import { client } from '@ami/sdk/client'
+import { parseAmiError, renderI18nMessage, resolveApiErrorMessage } from '@/utils/api-error'
 
 export interface SSEErrorEvent {
   type: 'error'
@@ -29,7 +29,7 @@ export function localizeSSEErrorEvent<T extends SSEErrorEvent>(event: T): T {
 }
 
 export function normalizeSSEFailure(error: unknown, fallback: string): unknown {
-  if (parseMemohError(error)) return error
+  if (parseAmiError(error)) return error
   if (error instanceof Error) return error
   if (typeof error === 'string' && error.trim()) return new Error(error)
   // Legacy servers reject with `{"message": ...}` and no code; keep the object

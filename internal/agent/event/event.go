@@ -54,7 +54,7 @@ const (
 	// NoticeNativeHistoryLost: the runtime started a new native session and
 	// does not remember the conversation shown so far.
 	NoticeNativeHistoryLost NoticeKind = "native_history_lost"
-	// NoticeToolsUnavailable: Memoh tools could not be mounted for the turn.
+	// NoticeToolsUnavailable: Ami tools could not be mounted for the turn.
 	NoticeToolsUnavailable NoticeKind = "tools_unavailable"
 	// NoticeElicitationDeclined: a request for user input was declined
 	// without asking the user.

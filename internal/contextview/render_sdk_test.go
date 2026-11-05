@@ -8,7 +8,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 func TestSDKRendererPreservesSystemSectionBytes(t *testing.T) {
@@ -51,7 +51,7 @@ func TestSDKRendererSystemRenderGroupsUseDeclaredJoiners(t *testing.T) {
 			"system.platform_identity.telegram",
 			"system.platform_identity",
 			"\n",
-			`<identity channel="telegram" username="@memoh"/>`,
+			`<identity channel="telegram" username="@ami"/>`,
 		),
 		groupedSystemTextFrag(
 			"system.platform_identity.微信",
@@ -79,7 +79,7 @@ func TestSDKRendererSystemRenderGroupsUseDeclaredJoiners(t *testing.T) {
 	payload, _ := renderSDKPayload(t, frags, placementFor(frags))
 	want := "prompt\n\n" +
 		"## Platform Identities\n\nKnown identities.\n\n" +
-		"<identity channel=\"telegram\" username=\"@memoh\"/>\n" +
+		"<identity channel=\"telegram\" username=\"@ami\"/>\n" +
 		"<identity channel=\"weixin\" username=\"小明\"/>\n\n" +
 		"## Skills\n\n2 skill(s) available:\n" +
 		"- **alpha**: first\n" +

@@ -10,10 +10,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	audiopkg "github.com/felinics/memoh/internal/audio"
-	"github.com/felinics/memoh/internal/messaging"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	audiopkg "github.com/kindredzhang/ami/internal/audio"
+	"github.com/kindredzhang/ami/internal/messaging"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 const ttsMaxTextLen = 500

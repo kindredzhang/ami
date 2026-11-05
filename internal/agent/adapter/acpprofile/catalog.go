@@ -7,10 +7,10 @@ import (
 	"errors"
 	"fmt"
 
-	runtimeprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/chat/thread"
+	runtimeprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 // SetupResolver resolves the Agent instance an ACP thread runs as and its

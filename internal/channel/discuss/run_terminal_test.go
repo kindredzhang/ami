@@ -11,12 +11,12 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	agentevent "github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/logger"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 type recordingBroadcaster struct{ events []channel.StreamEvent }

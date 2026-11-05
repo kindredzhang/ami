@@ -3,7 +3,7 @@ import { pathToFileURL } from 'node:url'
 import { isTrustedRendererUrl } from './renderer-trust'
 
 describe('isTrustedRendererUrl', () => {
-  const productionEntry = '/Applications/Memoh/resources/app.asar/out/renderer/index.html'
+  const productionEntry = '/Applications/Ami/resources/app.asar/out/renderer/index.html'
 
   it('allows only the exact development renderer entry', () => {
     const options = { devBaseUrl: 'http://127.0.0.1:8082', productionEntry }

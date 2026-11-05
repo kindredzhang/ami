@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/models"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // The reasoning decision on the subagent spawn path (#983).

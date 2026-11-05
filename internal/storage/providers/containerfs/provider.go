@@ -1,6 +1,6 @@
 // Package containerfs implements storage.Provider for bot containers
 // backed by gRPC calls to the in-container MCP service. Files are stored
-// inside the container's writable layer at /data/.memoh/media/<subpath>.
+// inside the container's writable layer at /data/.ami/media/<subpath>.
 package containerfs
 
 import (
@@ -11,12 +11,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	attachmentpkg "github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	attachmentpkg "github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
-	containerMediaRoot       = ".memoh/media"
+	containerMediaRoot       = ".ami/media"
 	legacyContainerMediaRoot = "media"
 )
 

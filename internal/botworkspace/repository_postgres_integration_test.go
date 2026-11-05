@@ -10,11 +10,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/dbtest"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/team"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/dbtest"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 // claimTx opens a transaction on TEST_POSTGRES_DSN that is rolled back when
@@ -25,7 +25,7 @@ func claimTx(t *testing.T) (context.Context, pgx.Tx, Repository, uuid.UUID) {
 	t.Helper()
 	dsn := os.Getenv("TEST_POSTGRES_DSN")
 	if dsn == "" {
-		if os.Getenv("MEMOH_TEST_POSTGRES_REQUIRED") == "1" {
+		if os.Getenv("AMI_TEST_POSTGRES_REQUIRED") == "1" {
 			t.Fatal("TEST_POSTGRES_DSN is not set")
 		}
 		t.Skip("set TEST_POSTGRES_DSN to run")

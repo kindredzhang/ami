@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func (h *Handler) buildModelGroup() *CommandGroup {

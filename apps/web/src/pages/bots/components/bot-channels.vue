@@ -156,8 +156,8 @@ import {
   Empty, EmptyTitle, EmptyDescription, EmptyContent,
 } from '@felinic/ui'
 import { useQuery } from '@pinia/colada'
-import { getChannels, getBotsByIdChannelByPlatform, getBotsByBotIdSettings } from '@memohai/sdk'
-import type { HandlersChannelMeta, ChannelChannelConfig } from '@memohai/sdk'
+import { getChannels, getBotsByIdChannelByPlatform, getBotsByBotIdSettings } from '@ami/sdk'
+import type { HandlersChannelMeta, ChannelChannelConfig } from '@ami/sdk'
 import { BackendCard, PageShell, SwapTransition } from '@felinic/ui'
 import ChannelSettingsPanel from './channel-settings-panel.vue'
 import ChannelIcon from '@/components/channel-icon/index.vue'

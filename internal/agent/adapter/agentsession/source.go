@@ -5,8 +5,8 @@ package agentsession
 import (
 	"context"
 
-	acp "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	"github.com/felinics/memoh/internal/chat/thread"
+	acp "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	"github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type Source struct {

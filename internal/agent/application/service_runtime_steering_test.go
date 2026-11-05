@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func TestExternalSteerClaimsOnlyCurrentRunAndAppliesAfterConfirmation(t *testing.T) {

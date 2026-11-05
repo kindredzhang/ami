@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 type connectionEntry struct {

@@ -14,7 +14,7 @@ export interface GrpcWebSocketTestHarness {
 
 /**
  * Exposes the server side of the real Runtime WebSocket to a grpc-js client.
- * The TCP listener exists only in tests, where it stands in for Memoh's
+ * The TCP listener exists only in tests, where it stands in for Ami's
  * server-side gRPC client. Production runtime code never opens a listener.
  */
 export async function createGrpcWebSocketTestHarness(

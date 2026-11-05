@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/reasoning"
-	"github.com/felinics/memoh/internal/server"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/server"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestSettingsReasoningHTTPError(t *testing.T) {

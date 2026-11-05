@@ -8,7 +8,7 @@
           "additionalProperties": false,
           "properties": {
             "allow_custom": {
-              "description": "Select kinds only: retained for compatibility; Memoh always offers and accepts custom answers.",
+              "description": "Select kinds only: retained for compatibility; Ami always offers and accepts custom answers.",
               "type": "boolean"
             },
             "kind": {

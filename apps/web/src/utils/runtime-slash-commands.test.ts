@@ -7,10 +7,10 @@ import {
 } from './runtime-slash-commands'
 
 describe('runtime slash commands', () => {
-  it('projects opaque Agent commands without shadowing Memoh controls', () => {
+  it('projects opaque Agent commands without shadowing Ami controls', () => {
     const commands = [
       { name: 'review:deep', description: 'Review changes', input_hint: 'scope' },
-      { name: 'help', description: 'Reserved by Memoh' },
+      { name: 'help', description: 'Reserved by Ami' },
       { name: '/invalid' },
       { name: 'bad name' },
     ]
@@ -34,10 +34,10 @@ it('仅在入口可用时拦截完整 /plan 和 /goal，带参数的命令仍交
   expect(composerLocalQuickActionID('/goal', true, false, false)).toBe('')
   expect(composerLocalQuickActionID('/goal my task', true, false, true)).toBe('')
   expect(composerLocalQuickActionID('/goal clear', true, false, true)).toBe('')
-  expect(runtimeGoalObjective('/goal 介绍 Memoh', 'claude-code')).toBe('介绍 Memoh')
+  expect(runtimeGoalObjective('/goal 介绍 Ami', 'claude-code')).toBe('介绍 Ami')
   expect(runtimeGoalObjective('/goal', 'claude-code')).toBeNull()
   expect(runtimeGoalObjective('/goal clear', 'claude-code')).toBeNull()
   expect(runtimeGoalObjective('/goal resume', 'claude-code')).toBe('resume')
   expect(runtimeGoalObjective('/goal resume', 'codex')).toBeNull()
-  expect(runtimeGoalObjective('/goal 介绍 Memoh', 'model')).toBeNull()
+  expect(runtimeGoalObjective('/goal 介绍 Ami', 'model')).toBeNull()
 })

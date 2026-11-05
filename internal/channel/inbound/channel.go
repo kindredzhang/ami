@@ -18,28 +18,28 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/felinics/memoh/internal/acl"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/discuss"
-	"github.com/felinics/memoh/internal/channel/route"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/runtimekind"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/acl"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/discuss"
+	"github.com/kindredzhang/ami/internal/channel/route"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 var base64Std = base64.StdEncoding
@@ -3030,7 +3030,7 @@ func isHTTPURL(raw string) bool {
 }
 
 // extractStorageKey derives the media storage key from a container-internal
-// access path. The expected path format is /data/.memoh/media/<storage_key>.
+// access path. The expected path format is /data/.ami/media/<storage_key>.
 func extractStorageKey(accessPath string, _ string) string {
 	return attachment.ExtractStorageKey(accessPath)
 }
@@ -4028,13 +4028,13 @@ func (p *ChannelInboundProcessor) issueRuntimeBearerToken(ctx context.Context, i
 }
 
 func acpMCPToolsURLFromEnv(botID string) string {
-	if raw := strings.TrimSpace(os.Getenv("MEMOH_ACP_MCP_HTTP_URL")); raw != "" {
+	if raw := strings.TrimSpace(os.Getenv("AMI_ACP_MCP_HTTP_URL")); raw != "" {
 		if strings.Contains(raw, "{bot_id}") {
 			return strings.ReplaceAll(raw, "{bot_id}", url.PathEscape(strings.TrimSpace(botID)))
 		}
 		return raw
 	}
-	base := strings.TrimRight(strings.TrimSpace(os.Getenv("MEMOH_ACP_MCP_HTTP_BASE_URL")), "/")
+	base := strings.TrimRight(strings.TrimSpace(os.Getenv("AMI_ACP_MCP_HTTP_BASE_URL")), "/")
 	if base == "" {
 		return ""
 	}
@@ -4419,7 +4419,7 @@ func (p *ChannelInboundProcessor) existingActiveSession(ctx context.Context, ide
 }
 
 // newSessionDisplayModeLabel names the session /new starts: the mode, and the
-// harness when the session does not run on Memoh's own.
+// harness when the session does not run on Ami's own.
 func newSessionDisplayModeLabel(loc *i18n.Localizer, spec NewSessionSpec, harness string) string {
 	mode := loc.T(newSessionModeKey(spec))
 	if harness == "" {
@@ -4469,7 +4469,7 @@ func (p *ChannelInboundProcessor) newSessionCard(ctx context.Context, cfg channe
 	return card, true
 }
 
-// newSessionHarnessName is the harness a /new session runs on, "" for Memoh's
+// newSessionHarnessName is the harness a /new session runs on, "" for Ami's
 // own. An Agent is named by its required Name, which is what the user created
 // and picks it by; a session with no Agent row falls back to the runtime's
 // product name or the ACP profile's display name.

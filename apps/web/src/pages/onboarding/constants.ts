@@ -1,8 +1,8 @@
 export const ONBOARDING_KEYS = {
-  providerId: 'memoh:onboarding:provider-id',
-  botResult: 'memoh:onboarding:bot-result',
-  forceOnboarding: 'memoh:dev:force-onboarding',
-  introSeen: 'memoh:onboarding:intro-seen',
-  completedUsers: 'memoh:onboarding:completed-users',
-  entryAnimation: 'memoh:onboarding:entry-animation',
+  providerId: 'ami:onboarding:provider-id',
+  botResult: 'ami:onboarding:bot-result',
+  forceOnboarding: 'ami:dev:force-onboarding',
+  introSeen: 'ami:onboarding:intro-seen',
+  completedUsers: 'ami:onboarding:completed-users',
+  entryAnimation: 'ami:onboarding:entry-animation',
 } as const

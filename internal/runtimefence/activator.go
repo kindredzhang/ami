@@ -3,7 +3,7 @@ package runtimefence
 import (
 	"context"
 
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // Activator binds Activate to one persistence store so a caller can hand

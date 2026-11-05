@@ -1,9 +1,9 @@
-import { client } from '@memohai/sdk/client'
-import type { Options } from '@memohai/sdk'
+import { client } from '@ami/sdk/client'
+import type { Options } from '@ami/sdk'
 import type {
   HandlersCreateContainerResponse,
   PostBotsByBotIdContainerData,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import {
   fetchSSEProblem,
   isSSEErrorEvent,

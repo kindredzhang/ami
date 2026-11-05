@@ -7,8 +7,8 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
 )
 
 // authRequiredCode is the JSON-RPC error Grok answers with when it holds no

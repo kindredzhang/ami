@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 // processingRecorder is a fake StartProcessingFunc that records the order of

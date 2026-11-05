@@ -1,4 +1,4 @@
-import type { BotsBotCheck } from '@memohai/sdk'
+import type { BotsBotCheck } from '@ami/sdk'
 
 /**
  * The detail text of a runtime check: the catalog copy for the setup error

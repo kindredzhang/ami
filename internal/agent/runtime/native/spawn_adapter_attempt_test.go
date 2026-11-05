@@ -9,11 +9,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentevent "github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 func TestSpawnAdapterGenerateWithWatchdogKeepsRetryableAttemptNonTerminal(t *testing.T) {

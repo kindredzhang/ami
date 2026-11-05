@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/chat/attention"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/chat/attention"
 )
 
 type markCall struct {

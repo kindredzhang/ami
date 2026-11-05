@@ -10,8 +10,8 @@ import (
 
 	"golang.org/x/sync/singleflight"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (

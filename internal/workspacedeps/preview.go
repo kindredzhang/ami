@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // ScriptEnvEntry is one environment variable the runner injects into a
@@ -112,7 +112,7 @@ func (s *Service) ScriptPreviewDetails(ctx context.Context, botID, depID string,
 	if s.scriptEnv != nil {
 		spec.ExtraEnv = s.scriptEnv(ctx)
 	}
-	resultPath := path.Join(tmpDir, "memoh-dep-"+dep.ID+"-"+previewResultNonce+".json")
+	resultPath := path.Join(tmpDir, "ami-dep-"+dep.ID+"-"+previewResultNonce+".json")
 	if action != catalog.ActionCheckUpdate && action != catalog.ActionVersion {
 		directory := path.Join(operationRoot(spec.Home, dep.ID), previewResultNonce)
 		spec.Receipt = &OperationReceipt{ID: previewResultNonce, Directory: directory}
@@ -143,7 +143,7 @@ func previewTimeout(dep catalog.Dependency, action catalog.Action) time.Duration
 	return dep.Timeouts.Duration(action)
 }
 
-// previewVersion mirrors the MEMOH_DEP_VERSION each service method passes
+// previewVersion mirrors the AMI_DEP_VERSION each service method passes
 // (targetVersion): the manifest pin when there is one, otherwise whatever
 // version the request names, or nothing for latest.
 func previewVersion(dep catalog.Dependency, action catalog.Action) string {
@@ -160,7 +160,7 @@ func previewVersion(dep catalog.Dependency, action catalog.Action) string {
 	}
 }
 
-// previewCurrentVersion mirrors the MEMOH_DEP_CURRENT_VERSION each service
+// previewCurrentVersion mirrors the AMI_DEP_CURRENT_VERSION each service
 // method passes: the version recorded in state.json, when there is one.
 func previewCurrentVersion(action catalog.Action) string {
 	switch action {

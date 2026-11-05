@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 // Store is an in-memory ledger with the same guarantees the PostgreSQL

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/background"
 )
 
 func TestAuthorizedOperationRequiresConfirmedRevisionAndSession(t *testing.T) {

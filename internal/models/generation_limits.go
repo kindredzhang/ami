@@ -24,7 +24,7 @@ const (
 // GenerationLimits is the single authority for one turn's output allowance:
 // the context budget plan reserves MaxOutputTokens and, when Requested, the
 // provider request carries the same value as max_tokens. Unrequested limits
-// are Memoh's reserve only; the provider keeps its own default because the
+// are Ami's reserve only; the provider keeps its own default because the
 // model's real cap is unknown and an explicit value could be rejected. A
 // configured model cap makes every limit explicit and keeps it within the cap.
 type GenerationLimits struct {

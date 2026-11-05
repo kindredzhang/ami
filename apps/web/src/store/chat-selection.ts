@@ -40,7 +40,7 @@ export const useChatSelectionStore = defineStore('chat-selection', () => {
   // The list still checks it once it loads (ensureBot moves to another bot
   // when this one is gone).
   const lastBots = useLocalStorage<Array<{ userId: string, botId: string }>>(
-    'memoh:chat:last-bots',
+    'ami:chat:last-bots',
     [],
     { serializer: StorageSerializers.object },
   )

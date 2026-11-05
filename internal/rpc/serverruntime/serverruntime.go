@@ -8,13 +8,13 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/audio"
-	"github.com/felinics/memoh/internal/channel/inbound"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/handlers"
-	intrpc "github.com/felinics/memoh/internal/rpc"
-	runtimeRpc "github.com/felinics/memoh/internal/rpc/runtime"
-	"github.com/felinics/memoh/internal/skills"
+	"github.com/kindredzhang/ami/internal/audio"
+	"github.com/kindredzhang/ami/internal/channel/inbound"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/handlers"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
+	runtimeRpc "github.com/kindredzhang/ami/internal/rpc/runtime"
+	"github.com/kindredzhang/ami/internal/skills"
 )
 
 const (

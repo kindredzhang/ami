@@ -19,13 +19,13 @@ func buildExternalAgentToolsURL(c echo.Context, botID string) string {
 
 func buildExternalAgentToolsURLFromRequest(req *http.Request, botID string) string {
 	// Keep the legacy environment keys for existing deployments; this URL serves all external agents.
-	if raw := strings.TrimSpace(os.Getenv("MEMOH_ACP_MCP_HTTP_URL")); raw != "" {
+	if raw := strings.TrimSpace(os.Getenv("AMI_ACP_MCP_HTTP_URL")); raw != "" {
 		if strings.Contains(raw, "{bot_id}") {
 			return strings.ReplaceAll(raw, "{bot_id}", url.PathEscape(strings.TrimSpace(botID)))
 		}
 		return raw
 	}
-	base := strings.TrimSpace(os.Getenv("MEMOH_ACP_MCP_HTTP_BASE_URL"))
+	base := strings.TrimSpace(os.Getenv("AMI_ACP_MCP_HTTP_BASE_URL"))
 	if base == "" {
 		base = localRequestBaseURL(req)
 	}

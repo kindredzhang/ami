@@ -11,7 +11,7 @@ const localStorageStub = {
 
 vi.stubGlobal('localStorage', localStorageStub)
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   deleteBotsByBotIdContainerDisplaySessionsBySessionId: vi.fn(),
   getBotsByBotIdContainerDisplay: (...args: unknown[]) => getDisplay(...args),
   postBotsByBotIdContainerDisplayWebrtcOffer: vi.fn(),

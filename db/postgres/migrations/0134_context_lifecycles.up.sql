@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS public.context_lifecycles (
     run_id     UUID        PRIMARY KEY,
-    team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                             REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id     UUID        NOT NULL,
     session_id UUID        NOT NULL,
@@ -35,12 +35,12 @@ DROP POLICY IF EXISTS context_lifecycles_team_update ON public.context_lifecycle
 DROP POLICY IF EXISTS context_lifecycles_team_delete ON public.context_lifecycles;
 
 CREATE POLICY context_lifecycles_team_select ON public.context_lifecycles
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY context_lifecycles_team_insert ON public.context_lifecycles
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY context_lifecycles_team_update ON public.context_lifecycles
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY context_lifecycles_team_delete ON public.context_lifecycles
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

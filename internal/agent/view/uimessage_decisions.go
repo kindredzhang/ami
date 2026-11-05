@@ -3,8 +3,8 @@ package view
 import (
 	"strings"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
 )
 
 // ApplyToolApprovals sets each tool block's approval card from its stored

@@ -23,7 +23,7 @@ SELECT
   created_at,
   team_id
 FROM snapshots
-WHERE team_id = public.memoh_current_team_id() AND container_id = $1
+WHERE team_id = public.ami_current_team_id() AND container_id = $1
   AND runtime_snapshot_name = $2
 LIMIT 1
 `
@@ -62,7 +62,7 @@ SELECT
   created_at,
   team_id
 FROM snapshots
-WHERE team_id = public.memoh_current_team_id() AND container_id = $1
+WHERE team_id = public.ami_current_team_id() AND container_id = $1
 ORDER BY created_at DESC
 `
 
@@ -108,8 +108,8 @@ SELECT
   s.created_at,
   cv.version
 FROM snapshots s
-LEFT JOIN container_versions cv ON cv.snapshot_id = s.id AND cv.team_id = public.memoh_current_team_id()
-WHERE s.team_id = public.memoh_current_team_id() AND s.container_id = $1
+LEFT JOIN container_versions cv ON cv.snapshot_id = s.id AND cv.team_id = public.ami_current_team_id()
+WHERE s.team_id = public.ami_current_team_id() AND s.container_id = $1
 ORDER BY s.created_at DESC
 `
 

@@ -1,6 +1,6 @@
 package protocolgen
 
-// The generator emits only the v2 subset Memoh actually speaks. Unknown
+// The generator emits only the v2 subset Ami actually speaks. Unknown
 // methods and variants are tolerated at runtime by design (decoded to raw
 // envelopes), so growing this list later is purely additive: add the method,
 // regenerate, and the new typed params appear.
@@ -8,7 +8,7 @@ package protocolgen
 // The two v1 legacy server requests (applyPatchApproval, execCommandApproval)
 // are deliberately absent: the runtime is v2-only.
 
-// clientMethod is a request Memoh sends to the app-server.
+// clientMethod is a request Ami sends to the app-server.
 type clientMethod struct {
 	Method string
 	// Response names the response definition. Empty means the method is
@@ -43,7 +43,7 @@ var clientMethods = []clientMethod{
 	{Method: "account/logout", Response: "LogoutAccountResponse"},
 }
 
-// serverRequestMethod is a request the app-server sends to Memoh and waits on
+// serverRequestMethod is a request the app-server sends to Ami and waits on
 // (approvals, elicitation, auth refresh). Responses are standalone documents
 // exported next to the bundle.
 type serverRequestMethod struct {
@@ -60,7 +60,7 @@ var serverRequestMethods = []serverRequestMethod{
 	{Method: "account/chatgptAuthTokens/refresh", Response: "ChatgptAuthTokensRefreshResponse"},
 }
 
-// serverNotifications are the notifications Memoh decodes into typed params.
+// serverNotifications are the notifications Ami decodes into typed params.
 // Anything not listed still surfaces as a raw envelope.
 var serverNotifications = []string{
 	"error",

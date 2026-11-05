@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 func TestCurrentRunViewInputCodec(t *testing.T) {

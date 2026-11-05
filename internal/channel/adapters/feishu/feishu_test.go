@@ -9,7 +9,7 @@ import (
 
 	larkim "github.com/larksuite/oapi-sdk-go/v3/service/im/v1"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 type fakeProcessingReactionGateway struct {

@@ -11,7 +11,7 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"github.com/felinics/memoh/internal/audio"
+	"github.com/kindredzhang/ami/internal/audio"
 )
 
 var upgrader = websocket.Upgrader{

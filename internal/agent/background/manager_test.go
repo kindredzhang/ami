@@ -8,7 +8,7 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 func TestSpawnCompletesAndWaits(t *testing.T) {
@@ -79,7 +79,7 @@ func TestSpawnAdoptUsesSelectedOutputDirectory(t *testing.T) {
 	resultCh := make(chan AdoptResult, 1)
 	resultCh <- AdoptResult{Stdout: "ok\n", ExitCode: 0, ExitReceived: true}
 	writes := make(chan string, 8)
-	const outputDir = "/data/.memoh/background"
+	const outputDir = "/data/.ami/background"
 
 	taskID, outputFile := mgr.SpawnAdopt(
 		context.Background(),

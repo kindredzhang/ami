@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	agenttools "github.com/felinics/memoh/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	agenttools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 func TestGenerateSystemPromptIncludesPlatformIdentitiesInChat(t *testing.T) {
@@ -16,13 +16,13 @@ func TestGenerateSystemPromptIncludesPlatformIdentitiesInChat(t *testing.T) {
 	prompt := GenerateSystemPrompt(SystemPromptParams{
 		SessionType:               sessionmode.Chat,
 		Timezone:                  "UTC",
-		PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"telegram\" username=\"@memoh\"/>",
+		PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"telegram\" username=\"@ami\"/>",
 	})
 
 	if !strings.Contains(prompt, "## Platform Identities") {
 		t.Fatalf("expected platform identities heading in prompt")
 	}
-	if !strings.Contains(prompt, `<identity channel="telegram" username="@memoh"/>`) {
+	if !strings.Contains(prompt, `<identity channel="telegram" username="@ami"/>`) {
 		t.Fatalf("expected platform identity XML in prompt")
 	}
 }
@@ -52,7 +52,7 @@ func TestGenerateSystemPromptIncludesCommonAndModeContracts(t *testing.T) {
 		{
 			sessionType: sessionmode.Chat,
 			want: []string{
-				"You are an AI agent running inside a private Memoh workspace.",
+				"You are an AI agent running inside a private Ami workspace.",
 				"## Session mode: chat",
 				"Your text output is sent directly to the current conversation.",
 			},
@@ -60,7 +60,7 @@ func TestGenerateSystemPromptIncludesCommonAndModeContracts(t *testing.T) {
 		{
 			sessionType: sessionmode.Discuss,
 			want: []string{
-				"You are an AI agent running inside a private Memoh workspace.",
+				"You are an AI agent running inside a private Ami workspace.",
 				"## Session mode: discuss",
 				"Speak in the conversation only through an available messaging capability.",
 			},
@@ -68,7 +68,7 @@ func TestGenerateSystemPromptIncludesCommonAndModeContracts(t *testing.T) {
 		{
 			sessionType: sessionmode.Schedule,
 			want: []string{
-				"You are an AI agent running inside a private Memoh workspace.",
+				"You are an AI agent running inside a private Ami workspace.",
 				"## Session mode: schedule",
 				"Your normal text output is logged only.",
 			},
@@ -76,7 +76,7 @@ func TestGenerateSystemPromptIncludesCommonAndModeContracts(t *testing.T) {
 		{
 			sessionType: sessionmode.Subagent,
 			want: []string{
-				"You are an AI agent running inside a private Memoh workspace.",
+				"You are an AI agent running inside a private Ami workspace.",
 				"## Session mode: subagent",
 				"You are a task-focused worker spawned by a parent agent.",
 			},
@@ -150,7 +150,7 @@ func TestBuildFileSectionsRespectsMaxBytes(t *testing.T) {
 	if !strings.Contains(sections, "## AGENTS.md") {
 		t.Fatalf("file sections missing first file heading:\n%s", sections)
 	}
-	if !strings.Contains(sections, "[memoh pruned]") {
+	if !strings.Contains(sections, "[ami pruned]") {
 		t.Fatalf("file sections should include prune marker:\n%s", sections)
 	}
 }
@@ -165,7 +165,7 @@ func TestBuildFileSectionsRespectsLineLimit(t *testing.T) {
 		},
 	}, 32*1024)
 
-	if !strings.Contains(sections, "[memoh pruned]") {
+	if !strings.Contains(sections, "[ami pruned]") {
 		t.Fatalf("file sections should include prune marker for line-only overflow:\n%s", sections)
 	}
 }
@@ -181,7 +181,7 @@ func TestBuildFileSectionsRespectsCumulativeLineLimit(t *testing.T) {
 	if got := strings.Count(sections, "\n") + 1; got > 2000 {
 		t.Fatalf("file sections lines = %d, want <= 2000", got)
 	}
-	if !strings.Contains(sections, "[memoh pruned]") {
+	if !strings.Contains(sections, "[ami pruned]") {
 		t.Fatalf("file sections should include prune marker for cumulative line overflow:\n%s", sections)
 	}
 }
@@ -240,7 +240,7 @@ func TestGenerateSystemPromptDoesNotReintroduceStaticToolSections(t *testing.T) 
 			prompt := GenerateSystemPrompt(SystemPromptParams{
 				SessionType:               sessionType,
 				Timezone:                  "UTC",
-				PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"telegram\" username=\"@memoh\"/>",
+				PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"telegram\" username=\"@ami\"/>",
 			})
 			for _, legacySection := range []string{
 				"## Basic Tools",
@@ -274,7 +274,7 @@ func TestGenerateSystemPromptDoesNotEnumerateConditionalTools(t *testing.T) {
 			prompt := GenerateSystemPrompt(SystemPromptParams{
 				SessionType:               sessionType,
 				Timezone:                  "UTC",
-				PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"telegram\" username=\"@memoh\"/>",
+				PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"telegram\" username=\"@ami\"/>",
 			})
 			for _, name := range conditionalTools {
 				if promptEnumeratesTool(prompt, name) {
@@ -340,13 +340,13 @@ func TestGenerateSystemPromptIncludesPlatformIdentitiesInDiscuss(t *testing.T) {
 	prompt := GenerateSystemPrompt(SystemPromptParams{
 		SessionType:               sessionmode.Discuss,
 		Timezone:                  "UTC",
-		PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"discord\" username=\"@memoh\"/>",
+		PlatformIdentitiesSection: "## Platform Identities\n\n<identity channel=\"discord\" username=\"@ami\"/>",
 	})
 
 	if !strings.Contains(prompt, "## Platform Identities") {
 		t.Fatalf("expected platform identities heading in discuss prompt")
 	}
-	if !strings.Contains(prompt, `<identity channel="discord" username="@memoh"/>`) {
+	if !strings.Contains(prompt, `<identity channel="discord" username="@ami"/>`) {
 		t.Fatalf("expected platform identity XML in discuss prompt")
 	}
 }

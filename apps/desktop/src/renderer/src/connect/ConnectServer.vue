@@ -52,7 +52,7 @@
       <p>
         {{ t('desktopConnection.fullInstallLead') }}
         <a
-          href="https://github.com/felinics/Memoh#deploy-to-server"
+          href="https://github.com/kindredzhang/ami#deploy-to-server"
           target="_blank"
           rel="noreferrer"
           class="underline underline-offset-2 hover:text-foreground"
@@ -71,11 +71,11 @@ import { z } from 'zod'
 import { Input, toast } from '@felinic/ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import LoadingButton from '@memohai/web/components/loading-button/index.vue'
-import DotMatrixBg from '@memohai/web/pages/login/components/dot-matrix-bg.vue'
-import { notifyAuthSessionCleared } from '@memohai/web/lib/auth-session'
-import { setupApiClient } from '@memohai/web/api-client'
-import { LOGIN_ENTRY_ANIMATION_KEY } from '@memohai/web/pages/login/transition'
+import LoadingButton from '@ami/web/components/loading-button/index.vue'
+import DotMatrixBg from '@ami/web/pages/login/components/dot-matrix-bg.vue'
+import { notifyAuthSessionCleared } from '@ami/web/lib/auth-session'
+import { setupApiClient } from '@ami/web/api-client'
+import { LOGIN_ENTRY_ANIMATION_KEY } from '@ami/web/pages/login/transition'
 import { decidePostConnectNavigation } from './connection-navigation'
 
 const { t } = useI18n()

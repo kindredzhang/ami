@@ -10,7 +10,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // isPlainFileName rejects names that would escape the target directory.
@@ -76,7 +76,7 @@ func (s *Service) finalizeFilesystem(ctx context.Context, op *operation, state, 
 // can release database ownership. Stream EOF alone never confirms a result.
 func runFilesystemScript(ctx context.Context, client *bridge.Client, home, depID, script string) error {
 	stream, err := client.ExecStreamWithOptions(ctx, scriptExecCommand, defaultWorkDir, 15, bridge.ExecOptions{Env: []string{
-		"MEMOH_DEP_HOME=" + home, "MEMOH_DEP_ID=" + depID,
+		"AMI_DEP_HOME=" + home, "AMI_DEP_ID=" + depID,
 	}})
 	if err != nil {
 		return errors.Join(ErrOperationUncertain, err)

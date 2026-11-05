@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Dev-only component wall. Reached via the `memoh:dev-tools` localStorage flag
+// Dev-only component wall. Reached via the `ami:dev-tools` localStorage flag
 // (web) or Cmd/Ctrl+Shift+D (desktop). Renders every @felinic/ui component and
 // design token in one place so tokens/components can be tuned via Vite HMR.
 //

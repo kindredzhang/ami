@@ -11,11 +11,11 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/bots"
-	messageevent "github.com/felinics/memoh/internal/chat/event"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/httpx"
+	"github.com/kindredzhang/ami/internal/bots"
+	messageevent "github.com/kindredzhang/ami/internal/chat/event"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/httpx"
 )
 
 // sessionMessageStreamBuffer sizes the per-subscriber channel for the activity

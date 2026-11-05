@@ -7,9 +7,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/httpx"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/httpx"
 )
 
 // sessionInvocationLookup is the read-only slice of the session run ledger

@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createApp, h, nextTick, ref, type App } from 'vue'
 const api = vi.hoisted(() => ({ create: vi.fn(), get: vi.fn(), exchange: vi.fn(), cancel: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({ postAgentAuthorizations: api.create, getAgentAuthorizationsById: api.get,
+vi.mock('@ami/sdk', () => ({ postAgentAuthorizations: api.create, getAgentAuthorizationsById: api.get,
   postAgentAuthorizationsByIdExchange: api.exchange, deleteAgentAuthorizationsById: api.cancel }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 import { useAgentAuthorization } from './useAgentAuthorization'

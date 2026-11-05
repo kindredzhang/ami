@@ -16,11 +16,11 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // sessionListQueries records the arguments passed to the paged list queries
@@ -46,7 +46,7 @@ func (e *sessionListEnricher) EnrichThreads(_ context.Context, _ string, threads
 	out := append([]session.Thread(nil), threads...)
 	for i := range out {
 		out[i].RouteConversationType = "group"
-		out[i].RouteMetadata = map[string]any{"conversation_name": "Memoh"}
+		out[i].RouteMetadata = map[string]any{"conversation_name": "Ami"}
 	}
 	return out, nil
 }
@@ -330,7 +330,7 @@ func TestListSessionsPreservesRouteProjection(t *testing.T) {
 	if len(response.Items) != 1 || response.Items[0].RouteConversationType != "group" {
 		t.Fatalf("items = %#v", response.Items)
 	}
-	if response.Items[0].RouteMetadata["conversation_name"] != "Memoh" {
+	if response.Items[0].RouteMetadata["conversation_name"] != "Ami" {
 		t.Fatalf("route metadata = %#v", response.Items[0].RouteMetadata)
 	}
 }

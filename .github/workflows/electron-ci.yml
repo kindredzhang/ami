@@ -59,10 +59,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Typecheck desktop
-        run: pnpm --filter @memohai/desktop typecheck
+        run: pnpm --filter @ami/desktop typecheck
 
       - name: Test desktop release tooling
-        run: pnpm --filter @memohai/desktop test:release
+        run: pnpm --filter @ami/desktop test:release
 
       - name: Build desktop (unpacked smoke)
-        run: pnpm --filter @memohai/desktop build:dir
+        run: pnpm --filter @ami/desktop build:dir

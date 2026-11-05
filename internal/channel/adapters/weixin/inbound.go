@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
-// buildInboundMessage maps a WeixinMessage to a Memoh InboundMessage.
+// buildInboundMessage maps a WeixinMessage to a Ami InboundMessage.
 func buildInboundMessage(msg WeixinMessage) (channel.InboundMessage, bool) {
 	text, attachments := extractContent(msg)
 	replyRef := extractReplyRef(msg)

@@ -13,13 +13,13 @@ import (
 	"github.com/felinics/twilight/sdk"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/messageconv"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/messageconv"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // usageTokens is the input-side shape every provider must report:

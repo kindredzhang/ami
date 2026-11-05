@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 func TestAdaptInbound_FallsBackToText_WhenPartsEmpty(t *testing.T) {
@@ -27,7 +27,7 @@ func TestAdaptInbound_FallsBackToText_WhenPartsEmpty(t *testing.T) {
 
 func TestAdaptAttachments_ContentHash(t *testing.T) {
 	atts := []channel.Attachment{
-		{Type: channel.AttachmentImage, ContentHash: "abc123", URL: "/data/.memoh/media/bot/ab/abc123.jpg", Mime: "image/jpeg"},
+		{Type: channel.AttachmentImage, ContentHash: "abc123", URL: "/data/.ami/media/bot/ab/abc123.jpg", Mime: "image/jpeg"},
 		{Type: channel.AttachmentFile, URL: "https://example.com/doc.pdf", Mime: "application/pdf"},
 	}
 	got := adaptAttachments(atts)
@@ -37,7 +37,7 @@ func TestAdaptAttachments_ContentHash(t *testing.T) {
 	if got[0].ContentHash != "abc123" || got[0].MimeType != "image/jpeg" {
 		t.Fatalf("unexpected first attachment: %+v", got[0])
 	}
-	if got[0].FilePath != "/data/.memoh/media/bot/ab/abc123.jpg" {
+	if got[0].FilePath != "/data/.ami/media/bot/ab/abc123.jpg" {
 		t.Fatalf("expected FilePath from URL, got %q", got[0].FilePath)
 	}
 	if got[1].Type != "file" || got[1].MimeType != "application/pdf" {
@@ -114,7 +114,7 @@ func TestAdaptInbound_PreservesLink_FromParts(t *testing.T) {
 		Message: channel.Message{
 			ID: "m1",
 			Parts: []channel.MessagePart{
-				{Type: channel.MessagePartLink, Text: "Memoh", URL: "https://example.com"},
+				{Type: channel.MessagePartLink, Text: "Ami", URL: "https://example.com"},
 			},
 		},
 	}
@@ -126,8 +126,8 @@ func TestAdaptInbound_PreservesLink_FromParts(t *testing.T) {
 		t.Fatalf("expected URL preserved, got %+v", me.Content[0])
 	}
 	kids := me.Content[0].Children
-	if len(kids) != 1 || kids[0].Type != "text" || kids[0].Text != "Memoh" {
-		t.Fatalf("expected link to wrap text 'Memoh', got %+v", kids)
+	if len(kids) != 1 || kids[0].Type != "text" || kids[0].Text != "Ami" {
+		t.Fatalf("expected link to wrap text 'Ami', got %+v", kids)
 	}
 }
 
@@ -290,7 +290,7 @@ func TestAdaptInbound_RoundTripsThroughRenderer(t *testing.T) {
 				{Type: channel.MessagePartText, Text: "hi "},
 				{Type: channel.MessagePartMention, Text: "@bot", ChannelIdentityID: "ci-bot"},
 				{Type: channel.MessagePartText, Text: " see "},
-				{Type: channel.MessagePartLink, Text: "Memoh", URL: "https://example.com"},
+				{Type: channel.MessagePartLink, Text: "Ami", URL: "https://example.com"},
 			},
 		},
 		ReceivedAt: time.Unix(1700000000, 0).UTC(),
@@ -309,7 +309,7 @@ func TestAdaptInbound_RoundTripsThroughRenderer(t *testing.T) {
 	if !strings.Contains(xml, `<mention uid="ci-bot">@bot</mention>`) {
 		t.Fatalf("expected rendered mention tag, got: %s", xml)
 	}
-	if !strings.Contains(xml, `<a href="https://example.com">Memoh</a>`) {
+	if !strings.Contains(xml, `<a href="https://example.com">Ami</a>`) {
 		t.Fatalf("expected rendered link tag, got: %s", xml)
 	}
 }

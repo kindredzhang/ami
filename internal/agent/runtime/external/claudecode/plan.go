@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func nativePermissionMode(mode string) bool {

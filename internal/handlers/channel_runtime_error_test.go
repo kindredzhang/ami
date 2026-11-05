@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	runtimeRpc "github.com/felinics/memoh/internal/rpc/runtime"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	runtimeRpc "github.com/kindredzhang/ami/internal/rpc/runtime"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 func TestMapChannelRuntimeErrorKeepsCausePrivate(t *testing.T) {

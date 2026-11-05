@@ -9,12 +9,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/step"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type hookToolRunner struct {

@@ -11,8 +11,8 @@ import (
 	openairesponses "github.com/felinics/twilight/provider/openai/responses"
 	sdk "github.com/felinics/twilight/sdk"
 
-	memohcopilot "github.com/felinics/memoh/internal/copilot"
-	"github.com/felinics/memoh/internal/reasoning"
+	amicopilot "github.com/kindredzhang/ami/internal/copilot"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // SDKModelConfig holds provider and model information resolved from DB,
@@ -102,7 +102,7 @@ func NewSDKChatModel(cfg SDKModelConfig) *sdk.Model {
 		return openaicodex.New(opts...).ChatModel(cfg.ModelID)
 
 	case ClientTypeGitHubCopilot:
-		return memohcopilot.NewModel(cfg.APIKey, cfg.ModelID, cfg.HTTPClient)
+		return amicopilot.NewModel(cfg.APIKey, cfg.ModelID, cfg.HTTPClient)
 
 	case ClientTypeAnthropicMessages:
 		opts := []anthropicmessages.Option{

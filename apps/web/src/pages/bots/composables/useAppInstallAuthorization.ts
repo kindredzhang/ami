@@ -1,7 +1,7 @@
 import { computed, onBeforeUnmount, ref, watch, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQueryCache } from '@pinia/colada'
-import { getBotsByBotIdApps } from '@memohai/sdk'
+import { getBotsByBotIdApps } from '@ami/sdk'
 import { invalidateBotApps, type AppItem } from '@/composables/api/useApps'
 import type { AppOperation } from '@/store/app-operations'
 import { resolveApiErrorMessage } from '@/utils/api-error'

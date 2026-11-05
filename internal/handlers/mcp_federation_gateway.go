@@ -13,7 +13,7 @@ import (
 
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	mcpgw "github.com/felinics/memoh/internal/mcp"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
 )
 
 type MCPFederationGateway struct {
@@ -109,7 +109,7 @@ func (g *MCPFederationGateway) connectStreamableSession(ctx context.Context, con
 		return nil, nil, errors.New("http mcp url is required")
 	}
 	client := sdkmcp.NewClient(&sdkmcp.Implementation{
-		Name:    "memoh-federation-client",
+		Name:    "ami-federation-client",
 		Version: "v1",
 	}, nil)
 	httpClient, status := g.connectionHTTPClient(ctx, connection)
@@ -133,7 +133,7 @@ func (g *MCPFederationGateway) connectSSESession(ctx context.Context, connection
 	var lastErr error
 	for _, endpoint := range endpoints {
 		client := sdkmcp.NewClient(&sdkmcp.Implementation{
-			Name:    "memoh-federation-client",
+			Name:    "ami-federation-client",
 			Version: "v1",
 		}, nil)
 		httpClient, status := g.connectionHTTPClient(ctx, connection)
@@ -301,7 +301,7 @@ func (g *MCPFederationGateway) startStdioConnectionSession(ctx context.Context, 
 		Env:     normalizeStringMap(connection.Config["env"]),
 		Cwd:     strings.TrimSpace(anyToString(connection.Config["cwd"])),
 	}
-	// Federation sessions are short-lived and unregistered — no onClose. Memoh
+	// Federation sessions are short-lived and unregistered — no onClose. Ami
 	// is the real client here, so the handshake uses the default identity.
 	return g.handler.startContainerdMCPCommandSession(ctx, botID, containerID, request, nil, defaultStdioSDKClient())
 }

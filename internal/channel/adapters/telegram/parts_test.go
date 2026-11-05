@@ -5,7 +5,7 @@ import (
 
 	tele "gopkg.in/telebot.v4"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestExtractTelegramMessageParts_PlainTextNoEntities(t *testing.T) {
@@ -92,16 +92,16 @@ func TestExtractTelegramMessageParts_CodeBlockWithLanguage(t *testing.T) {
 func TestExtractTelegramMessageParts_TextLinkWithURL(t *testing.T) {
 	t.Parallel()
 	msg := &tele.Message{
-		Text: "see Memoh now",
+		Text: "see Ami now",
 		Entities: tele.Entities{
-			{Type: tele.EntityTextLink, Offset: 4, Length: 5, URL: "https://example.com"},
+			{Type: tele.EntityTextLink, Offset: 4, Length: 3, URL: "https://example.com"},
 		},
 	}
 	parts := extractTelegramMessageParts(msg)
 	if len(parts) != 3 {
 		t.Fatalf("expected 3 parts, got %+v", parts)
 	}
-	if parts[1].Type != channel.MessagePartLink || parts[1].URL != "https://example.com" || parts[1].Text != "Memoh" {
+	if parts[1].Type != channel.MessagePartLink || parts[1].URL != "https://example.com" || parts[1].Text != "Ami" {
 		t.Fatalf("link part wrong: %+v", parts[1])
 	}
 }

@@ -92,11 +92,11 @@ func EncodeOutput(value any) (sdk.ToolOutput, error) {
 	return sdk.JSONOutput(value)
 }
 
-// SchemaFromValue resolves a tool's parameter schema from the shapes Memoh
+// SchemaFromValue resolves a tool's parameter schema from the shapes Ami
 // builds it in: an already resolved schema, a JSON object (map or raw
 // document), or a struct type whose schema is inferred. A value that resolves
 // to nothing yields the empty object schema so the definition is never sent
-// without parameters. Use it for schemas Memoh writes itself; a schema that
+// without parameters. Use it for schemas Ami writes itself; a schema that
 // arrives as data (an MCP tool, a memory provider descriptor) goes through
 // ResolveSchema so a document that does not parse is not silently replaced.
 func SchemaFromValue(value any) *jsonschema.Schema {
@@ -161,7 +161,7 @@ func OutputFromValue(value any) sdk.ToolOutput {
 }
 
 // SchemaValue is a parameter schema as the JSON object it encodes to, the
-// shape Memoh's MCP gateway and its tests inspect; nil is the empty object.
+// shape Ami's MCP gateway and its tests inspect; nil is the empty object.
 func SchemaValue(schema *jsonschema.Schema) map[string]any {
 	if schema == nil {
 		return map[string]any{}

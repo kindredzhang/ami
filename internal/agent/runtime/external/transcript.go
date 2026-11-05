@@ -6,12 +6,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // TranscriptRecorder folds stream events into the persisted round transcript.

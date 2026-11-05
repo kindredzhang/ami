@@ -27,8 +27,8 @@
 - [ ] **Step 1: 确认工作区干净并创建分支**
 
 ```bash
-git -C /Users/acbox/projects/memoh/Memoh status --short   # 预期：仅untracked的docs/superpowers/与.claude/worktrees/
-git -C /Users/acbox/projects/memoh/Memoh checkout -b feat/channel-boundary
+git -C /Users/acbox/projects/ami/Ami status --short   # 预期：仅untracked的docs/superpowers/与.claude/worktrees/
+git -C /Users/acbox/projects/ami/Ami checkout -b feat/channel-boundary
 ```
 
 - [ ] **Step 2: 提交spec与plan文档**
@@ -274,8 +274,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/conversation"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/conversation"
 )
 
 type fakeRunner struct {
@@ -387,9 +387,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/conversation"
-	"github.com/felinics/memoh/internal/conversation/flow"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/conversation"
+	"github.com/kindredzhang/ami/internal/conversation/flow"
 )
 
 type Adapter struct {
@@ -651,8 +651,8 @@ package main
 import (
 	"go.uber.org/fx"
 
-	channelmodule "github.com/felinics/memoh/cmd/internal/channel"
-	coremodule "github.com/felinics/memoh/cmd/internal/core"
+	channelmodule "github.com/kindredzhang/ami/cmd/internal/channel"
+	coremodule "github.com/kindredzhang/ami/cmd/internal/core"
 )
 
 // cmd/channel is a single-instance assembly-closure verification binary

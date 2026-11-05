@@ -7,7 +7,7 @@ import (
 	"testing/synctest"
 	"time"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 func TestActiveTurnDrainWaitsForCanceledTurnCleanup(t *testing.T) {

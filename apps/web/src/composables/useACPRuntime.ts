@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useChatStore } from '@/store/chat-list'
 import type { ChatViewTarget } from '@/store/chat/types'
 import { acpRuntimeMatchesConfiguration } from '@/utils/acp-runtime-matching'
-import type { AcpagentRuntimeStatus, AcpclientAvailableCommandInfo, AcpclientModeInfo, AcpclientModelInfo, AcpclientReasoningEffortInfo, ExternalControls } from '@memohai/sdk'
+import type { AcpagentRuntimeStatus, AcpclientAvailableCommandInfo, AcpclientModeInfo, AcpclientModelInfo, AcpclientReasoningEffortInfo, ExternalControls } from '@ami/sdk'
 
 interface UseACPRuntimeOptions {
   target: MaybeRefOrGetter<ChatViewTarget>

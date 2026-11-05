@@ -30,20 +30,20 @@ interface ArchCheckStrings {
 
 const ARCH_CHECK_STRINGS: Record<ArchCheckLocale, ArchCheckStrings> = {
   en: {
-    title: 'You are using the Intel version of Memoh',
+    title: 'You are using the Intel version of Ami',
     detail:
       'This Mac has Apple silicon. The Intel version runs through Rosetta translation, '
-      + 'which makes Memoh noticeably slower and uses more battery.\n\n'
+      + 'which makes Ami noticeably slower and uses more battery.\n\n'
       + 'Download the Apple silicon version, open it, and choose "Replace" to switch.',
     detailNoDownload:
       'This Mac has Apple silicon. The Intel version runs through Rosetta translation, '
-      + 'which makes Memoh noticeably slower and uses more battery.\n\n'
-      + 'Install the Apple silicon (arm64) version of Memoh instead.',
+      + 'which makes Ami noticeably slower and uses more battery.\n\n'
+      + 'Install the Apple silicon (arm64) version of Ami instead.',
     download: 'Download Apple Silicon Version',
     continue: 'Continue Anyway',
   },
   zh: {
-    title: '你正在使用 Intel 版 Memoh',
+    title: '你正在使用 Intel 版 Ami',
     detail:
       '这台 Mac 使用 Apple 芯片。Intel 版需要经过 Rosetta 转译运行，'
       + '会明显变慢、更耗电。\n\n'
@@ -51,12 +51,12 @@ const ARCH_CHECK_STRINGS: Record<ArchCheckLocale, ArchCheckStrings> = {
     detailNoDownload:
       '这台 Mac 使用 Apple 芯片。Intel 版需要经过 Rosetta 转译运行，'
       + '会明显变慢、更耗电。\n\n'
-      + '请改为安装 Apple 芯片（arm64）版 Memoh。',
+      + '请改为安装 Apple 芯片（arm64）版 Ami。',
     download: '下载 Apple 芯片版',
     continue: '仍然继续',
   },
   ja: {
-    title: 'Intel 版の Memoh を使用しています',
+    title: 'Intel 版の Ami を使用しています',
     detail:
       'この Mac は Apple シリコンを搭載しています。Intel 版は Rosetta による変換で動作するため、'
       + '動作が遅くなり、バッテリーの消費も増えます。\n\n'
@@ -64,7 +64,7 @@ const ARCH_CHECK_STRINGS: Record<ArchCheckLocale, ArchCheckStrings> = {
     detailNoDownload:
       'この Mac は Apple シリコンを搭載しています。Intel 版は Rosetta による変換で動作するため、'
       + '動作が遅くなり、バッテリーの消費も増えます。\n\n'
-      + '代わりに Apple シリコン（arm64）版の Memoh をインストールしてください。',
+      + '代わりに Apple シリコン（arm64）版の Ami をインストールしてください。',
     download: 'Apple シリコン版をダウンロード',
     continue: 'このまま続ける',
   },
@@ -81,7 +81,7 @@ function archCheckStrings(): ArchCheckStrings {
 // electron-builder.yml 的 artifactName(${productName}-${version}-mac-${arch}.${ext})。
 // 未配置更新源的自建包没有可信的下载地址,返回 null,只给文字说明。
 function arm64DmgUrl(): string | null {
-  const base = (process.env.MEMOH_DESKTOP_UPDATE_BASE_URL ?? '').trim()
+  const base = (process.env.AMI_DESKTOP_UPDATE_BASE_URL ?? '').trim()
   if (!base) return null
   try {
     return new URL(`${app.getName()}-${app.getVersion()}-mac-arm64.dmg`, base.endsWith('/') ? base : `${base}/`).toString()

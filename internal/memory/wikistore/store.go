@@ -9,7 +9,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/felinics/memoh/internal/memory/migrate"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
 )
 
 // Store is the backend-agnostic contract over the memory wiki tables. All

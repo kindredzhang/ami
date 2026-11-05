@@ -3,7 +3,7 @@ import {
   apiErrorStatus,
   isApiErrorAnswered,
   isApiErrorCode,
-  parseMemohError,
+  parseAmiError,
   resolveApiErrorMessage,
   UserFacingError,
 } from '@/utils/api-error'
@@ -68,7 +68,7 @@ describe('resolveApiErrorMessage', () => {
   })
 
   it('reads error_code when code is absent', () => {
-    expect(parseMemohError({
+    expect(parseAmiError({
       error_code: 'agent.response_timeout',
       error: 'The model did not respond in time. Please try again.',
     })).toMatchObject({ code: 'agent.response_timeout' })
@@ -191,7 +191,7 @@ describe('resolveApiErrorMessage', () => {
 
     expect(resolveApiErrorMessage(error, 'fallback')).toBe(expected)
     expect(isApiErrorCode(error, 'bot.name_taken')).toBe(true)
-    expect(parseMemohError(error)).toEqual({
+    expect(parseAmiError(error)).toEqual({
       code: 'bot.name_taken',
       args: { field: 'name' },
       message: 'This name is already taken.',
@@ -216,9 +216,9 @@ describe('resolveApiErrorMessage', () => {
   })
 
   it.each([
-    ['en', 'skill.builtin_read_only', 'Built-in Skills are managed by Memoh and cannot be edited or deleted.'],
-    ['zh', 'skill.builtin_read_only', 'Memoh 自带 Skill 由系统管理，无法编辑或删除'],
-    ['ja', 'skill.builtin_read_only', 'Memoh 組み込みの Skill はシステムによって管理されているため、編集または削除できません。'],
+    ['en', 'skill.builtin_read_only', 'Built-in Skills are managed by Ami and cannot be edited or deleted.'],
+    ['zh', 'skill.builtin_read_only', 'Ami 自带 Skill 由系统管理，无法编辑或删除'],
+    ['ja', 'skill.builtin_read_only', 'Ami 組み込みの Skill はシステムによって管理されているため、編集または削除できません。'],
     ['en', 'skill.name_taken', 'A Skill with this name already exists. Choose a different name.'],
     ['zh', 'skill.name_taken', '已存在同名 Skill，请换一个名称'],
     ['ja', 'skill.name_taken', '同じ名前の Skill がすでに存在します。別の名前を使用してください。'],
@@ -308,9 +308,9 @@ describe('resolveApiErrorMessage', () => {
     ['agent.provider_request_rejected', 'en', 'The model provider rejected the request. Check the model settings, or try another model.'],
     ['agent.provider_request_rejected', 'zh', '模型服务商拒绝了这次请求，请检查模型设置，或换一个模型'],
     ['agent.provider_request_rejected', 'ja', 'モデルプロバイダーがリクエストを拒否しました。モデル設定を確認するか、別のモデルをお試しください。'],
-    ['agent.provider_unreachable', 'en', 'Memoh could not reach the model provider. Check the provider address and that the service is running.'],
+    ['agent.provider_unreachable', 'en', 'Ami could not reach the model provider. Check the provider address and that the service is running.'],
     ['agent.provider_unreachable', 'zh', '无法连接到模型服务商，请检查服务地址是否正确、服务是否在运行'],
-    ['agent.provider_unreachable', 'ja', 'Memoh からモデルプロバイダーに接続できませんでした。プロバイダーのアドレスとサービスが稼働中か確認してください。'],
+    ['agent.provider_unreachable', 'ja', 'Ami からモデルプロバイダーに接続できませんでした。プロバイダーのアドレスとサービスが稼働中か確認してください。'],
   ])('localizes structural stream failure %s for %s', (code, language, expected) => {
     locale = language
 
@@ -324,7 +324,7 @@ describe('resolveApiErrorMessage', () => {
       detail: 'A future error occurred.',
     }
 
-    expect(parseMemohError(error)?.code).toBe('future.new_condition')
+    expect(parseAmiError(error)?.code).toBe('future.new_condition')
     expect(resolveApiErrorMessage(error, 'fallback')).toBe('fallback')
   })
 
@@ -367,10 +367,10 @@ describe('resolveApiErrorMessage', () => {
   })
 
   it('reads the fault and trace of a Problem', () => {
-    expect(parseMemohError({ code: 'internal', status: 500, fault: 'server', trace_id: 'trace-1', request_id: 'req-1' })).toMatchObject({
+    expect(parseAmiError({ code: 'internal', status: 500, fault: 'server', trace_id: 'trace-1', request_id: 'req-1' })).toMatchObject({
       code: 'internal', status: 500, fault: 'server', traceId: 'trace-1', requestId: 'req-1',
     })
-    expect(parseMemohError({ code: 'internal', fault: 'unheard-of' })?.fault).toBeUndefined()
+    expect(parseAmiError({ code: 'internal', fault: 'unheard-of' })?.fault).toBeUndefined()
   })
 
   it.each([

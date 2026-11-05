@@ -18,8 +18,8 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@felinic/ui'
-import { getModels, getProviders } from '@memohai/sdk'
-import type { ModelsGetResponse, ProvidersGetResponse } from '@memohai/sdk'
+import { getModels, getProviders } from '@ami/sdk'
+import type { ModelsGetResponse, ProvidersGetResponse } from '@ami/sdk'
 import { Boxes, Box, ChevronRight, Plus, Search } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { BackendCard, DetailPane, PageShell, SectionGroup, SwapTransition } from '@felinic/ui'

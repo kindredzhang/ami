@@ -12,14 +12,14 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/pgvector/pgvector-go"
 
-	"github.com/felinics/memoh/internal/db"
-	pgvectordb "github.com/felinics/memoh/internal/db/pgvector"
-	pgvectorsqlc "github.com/felinics/memoh/internal/db/pgvector/sqlc"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/db"
+	pgvectordb "github.com/kindredzhang/ami/internal/db/pgvector"
+	pgvectorsqlc "github.com/kindredzhang/ami/internal/db/pgvector/sqlc"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 const (
@@ -147,7 +147,7 @@ func (r *pgvectorIndex) withTeamTx(ctx context.Context, fn func(*pgvectorsqlc.Qu
 		return fmt.Errorf("pgvector semantic index: begin team transaction: %w", err)
 	}
 	defer func() { _ = tx.Rollback(ctx) }()
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamUUID.String()); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamUUID.String()); err != nil {
 		return fmt.Errorf("pgvector semantic index: bind team: %w", err)
 	}
 	if err := fn(r.store.Queries().WithTx(tx), teamUUID); err != nil {

@@ -17,12 +17,12 @@
 - Unread ⇔ `attention_at IS NOT NULL AND attention_at > COALESCE(read_at, '-infinity')`.
 - Writing attention never changes `bot_sessions.updated_at`. `attention_at` only moves forward; `read_at` only moves forward (`GREATEST`).
 - Events and APIs never carry message bodies.
-- OSS is single-team: `internal/db/db.go` sets `memoh.team_id` on every connection, so background writers need no extra team context. New tables still follow the team-scoped pattern of migration `0162` (team_id default, composite team FKs `NOT VALID`, RLS enabled + forced, four policies) because `internal/db/team_*_integration_test.go` guard it.
+- OSS is single-team: `internal/db/db.go` sets `ami.team_id` on every connection, so background writers need no extra team context. New tables still follow the team-scoped pattern of migration `0162` (team_id default, composite team FKs `NOT VALID`, RLS enabled + forced, four policies) because `internal/db/team_*_integration_test.go` guard it.
 - Migration number: next free (`0167` at the time of writing); update `0001_init.up.sql` to the same final state; run `mise run sqlc-generate`.
 - After handler changes: `mise run swagger-generate` then `mise run sdk-generate`; never hand-edit `internal/db/postgres/sqlc/` or `packages/sdk/`.
 - Inbox: hidden when empty; newest first; at most 5 rows, then a "Show all (n)" row.
 - Notification body copy is fixed per kind (i18n en/zh/ja): replied / run failed / waiting for your confirmation. Title: `"<bot name> · <session title>"`.
-- Web notifications default **off** (enabling is the permission gesture); desktop default **on**. Setting stored per device in localStorage key `memoh-system-notifications`.
+- Web notifications default **off** (enabling is the permission gesture); desktop default **on**. Setting stored per device in localStorage key `ami-system-notifications`.
 - Before any UI edit read `packages/ui/AGENTS.md`; colors via tokens only (`bg-accent-red-fill` for reply/failed, `--accent-yellow` for needs_input); `mise run lint` includes the UI contract guard.
 - After code: `pnpm run lint --fix`, `pnpm run typecheck`, the relevant `go test`, and commit per task.
 
@@ -151,7 +151,7 @@
 - `streamUserAttentionEvents(signal, onEvent)` mirrors `streamBotSessionsActivityEvents`.
 
 - [ ] **Step 1: Failing Vitest** `unread.test.ts`: seed → `total`; `session_attention` adds and fires `onAttention`; seeding never fires `onAttention`; `session_read` removes; `dropped` triggers a refetch; `markRead` sends `through` equal to the entry's `attentionAt`; `inbox` order newest first.
-- [ ] **Step 2:** `pnpm --filter @memohai/web exec vitest run src/store/unread.test.ts` → FAIL.
+- [ ] **Step 2:** `pnpm --filter @ami/web exec vitest run src/store/unread.test.ts` → FAIL.
 - [ ] **Step 3:** Implement; start the store once after login (where the chat store bootstraps) and stop it on logout.
 - [ ] **Step 4:** Same command → PASS; `pnpm run lint --fix && pnpm run typecheck`.
 - [ ] **Step 5:** Commit `feat(web): track unread sessions across bots`.
@@ -196,12 +196,12 @@ Read `packages/ui/AGENTS.md` and the sidebar ownership notes first.
 - Modify: `apps/desktop/src/preload/index.ts`; create `apps/desktop/src/main/attention-notifications.ts`, `.test.ts`; modify `apps/desktop/src/main/index.ts` (IPC handlers)
 
 **Interfaces — Produces:**
-- Web: `useAttentionNotifications()` installed once in the shell. Subscribes `unread.onAttention`; skips when `isSessionViewed(e.sessionId)` or the setting is off. Desktop bridge present → `window.api.desktop.notify({ id: e.sessionId + '@' + e.attentionAt, botId, sessionId, title, body })`; else `new Notification(title, { body, tag: e.sessionId })` whose `onclick` focuses and calls `openSessionAnywhere`. Watches `unread.total` → `window.api.desktop.setBadgeCount(total)` when present. Setting: `useLocalStorage('memoh-system-notifications', isDesktop)`; turning it on in web calls `Notification.requestPermission()` and reverts the switch when not `granted`.
+- Web: `useAttentionNotifications()` installed once in the shell. Subscribes `unread.onAttention`; skips when `isSessionViewed(e.sessionId)` or the setting is off. Desktop bridge present → `window.api.desktop.notify({ id: e.sessionId + '@' + e.attentionAt, botId, sessionId, title, body })`; else `new Notification(title, { body, tag: e.sessionId })` whose `onclick` focuses and calls `openSessionAnywhere`. Watches `unread.total` → `window.api.desktop.setBadgeCount(total)` when present. Setting: `useLocalStorage('ami-system-notifications', isDesktop)`; turning it on in web calls `Notification.requestPermission()` and reverts the switch when not `granted`.
 - Preload: `desktop.notify(payload: DesktopAttentionNotification): Promise<void>`, `desktop.setBadgeCount(n: number): Promise<void>`, `desktop.onNotificationClick(cb: (p: { botId: string, sessionId: string, title: string }) => void): () => void`. Channels `desktop:attention-notify`, `desktop:set-badge-count`, `desktop:attention-notification-click`.
 - Main: `createAttentionNotifier({ show, focusWindow, send }): { notify(payload, sender), setBadge(n) }` — remembers delivered ids (bounded, last 200) so duplicate ids from other windows are ignored; on click focuses the sender's window (fallback: main window) and sends the click channel to it. Both IPC handlers call `assertTrustedRenderer(event)` and validate payload shape.
 
 - [ ] **Step 1: Failing tests**: web — viewed session does not notify; setting off does not notify; desktop bridge path calls `notify` with the composite id; web path uses `tag = sessionId`; badge follows `total`. Desktop main — two `notify` calls with the same id show once; click sends `desktop:attention-notification-click` with the payload; invalid payload ignored.
-- [ ] **Step 2:** `pnpm --filter @memohai/web exec vitest run src/composables/useAttentionNotifications.test.ts` and `pnpm --filter @memohai/desktop exec vitest run src/main/attention-notifications.test.ts` → FAIL.
+- [ ] **Step 2:** `pnpm --filter @ami/web exec vitest run src/composables/useAttentionNotifications.test.ts` and `pnpm --filter @ami/desktop exec vitest run src/main/attention-notifications.test.ts` → FAIL.
 - [ ] **Step 3:** Implement. **Step 4:** Both → PASS; `pnpm run lint --fix && pnpm run typecheck`.
 - [ ] **Step 5:** Commit `feat: raise browser and desktop notifications for attention`.
 

@@ -1,19 +1,19 @@
-# @memohai/desktop
+# @ami/desktop
 
-Memoh Desktop is the native client for Memoh Cloud or a hosted Memoh server. It
+Ami Desktop is the native client for Ami Cloud or a hosted Ami server. It
 is built with [electron-vite](https://electron-vite.github.io/) and owns the
 Electron shell, tray, window/menu behavior, native cache invalidation, and
 renderer bootstrap. It does not start or package a local server.
 
 The renderer owns its own `src/renderer/src/main.ts`, root component, and
-router. It imports reusable building blocks from `@memohai/web` (pages,
+router. It imports reusable building blocks from `@ami/web` (pages,
 layouts, stores, i18n, `api-client`, and `style.css`) but assembles the Vue app
 locally. Desktop-only renderer setup belongs in this entry, not in
-`@memohai/web`.
+`@ami/web`.
 
 ### How the reuse is wired
 
-- `@memohai/web/package.json` exposes pages, layouts, stores, i18n,
+- `@ami/web/package.json` exposes pages, layouts, stores, i18n,
   `api-client`, and `style.css` through its `exports` field.
 - Vite (via `electron.vite.config.ts`) resolves those subpaths to the real
   files in `apps/web/src/` at bundle time.
@@ -25,22 +25,22 @@ locally. Desktop-only renderer setup belongs in this entry, not in
 
 ```bash
 # from repo root
-pnpm --filter @memohai/desktop dev
+pnpm --filter @ami/desktop dev
 # or via mise
 mise run desktop:dev
 ```
 
-`MEMOH_DESKTOP_BASE_URL` overrides the server that Desktop connects to. Dev
+`AMI_DESKTOP_BASE_URL` overrides the server that Desktop connects to. Dev
 defaults to `http://localhost:18080`.
 
 ## Build
 
 ```bash
-pnpm --filter @memohai/desktop build           # full platform installer
-pnpm --filter @memohai/desktop build:dir       # unpacked app dir (CI smoke test)
-pnpm --filter @memohai/desktop build:mac       # macOS DMG + ZIP, arm64 + x64
-pnpm --filter @memohai/desktop build:linux:x64 # Linux AppImage + deb + rpm
-pnpm --filter @memohai/desktop build:win:x64   # Windows NSIS installer
+pnpm --filter @ami/desktop build           # full platform installer
+pnpm --filter @ami/desktop build:dir       # unpacked app dir (CI smoke test)
+pnpm --filter @ami/desktop build:mac       # macOS DMG + ZIP, arm64 + x64
+pnpm --filter @ami/desktop build:linux:x64 # Linux AppImage + deb + rpm
+pnpm --filter @ami/desktop build:win:x64   # Windows NSIS installer
 ```
 
 Output goes to `apps/desktop/dist/`.
@@ -52,7 +52,7 @@ The script validates release metadata, maps signing aliases, materializes an
 App Store Connect key when necessary, and invokes `electron-builder` with
 `--publish never`. Builds never upload artifacts themselves.
 
-When `MEMOH_DESKTOP_UPDATE_BASE_URL` is set, electron-builder emits
+When `AMI_DESKTOP_UPDATE_BASE_URL` is set, electron-builder emits
 `latest.yml`, `latest-mac.yml`, or `latest-linux.yml` plus blockmaps and embeds
 an `app-update.yml` pointing at that public HTTP(S) directory. The packaged app
 then checks that feed on startup; download and restart/install remain explicit
@@ -68,11 +68,11 @@ files.
 
 | Variable | Purpose | GitHub setting |
 |---|---|---|
-| `MEMOH_DESKTOP_BASE_URL` | Hosted server compiled into the app | Variable |
-| `MEMOH_DESKTOP_VERSION` | Installer/app version override (`v1.2.3` or `1.2.3`) | Variable |
-| `MEMOH_DESKTOP_APP_ID` | Reverse-DNS bundle/application id override | Variable |
-| `MEMOH_DESKTOP_UPDATE_BASE_URL` | Public generic update-feed URL; also enables update metadata | Variable |
-| `MEMOH_DESKTOP_REQUIRE_MAC_SIGNING` | Fail macOS release builds unless signing and notarization inputs are complete | Variable |
+| `AMI_DESKTOP_BASE_URL` | Hosted server compiled into the app | Variable |
+| `AMI_DESKTOP_VERSION` | Installer/app version override (`v1.2.3` or `1.2.3`) | Variable |
+| `AMI_DESKTOP_APP_ID` | Reverse-DNS bundle/application id override | Variable |
+| `AMI_DESKTOP_UPDATE_BASE_URL` | Public generic update-feed URL; also enables update metadata | Variable |
+| `AMI_DESKTOP_REQUIRE_MAC_SIGNING` | Fail macOS release builds unless signing and notarization inputs are complete | Variable |
 | `APPLE_CERTIFICATE` / `CSC_LINK` | `.p12` path/URL or base64 certificate | Secret in CI |
 | `APPLE_CERTIFICATE_PASSWORD` / `CSC_KEY_PASSWORD` | `.p12` password | Secret |
 | `APPLE_API_KEY` | App Store Connect `.p8` path, PEM, or base64 PEM | Secret |
@@ -90,11 +90,11 @@ stores the certificate body in the corresponding Secret.
 
 All app icons are checked in under `build/` and `resources/`. They are generated
 from `apps/web/public/logo.svg` (the brand mark) by `scripts/build-icons.mjs`.
-The generator and its dependencies are part of `@memohai/desktop`; there is no
+The generator and its dependencies are part of `@ami/desktop`; there is no
 separate icon-tools package. Re-run it after the logo changes:
 
 ```bash
-pnpm --filter @memohai/desktop icons
+pnpm --filter @ami/desktop icons
 ```
 
 Outputs:

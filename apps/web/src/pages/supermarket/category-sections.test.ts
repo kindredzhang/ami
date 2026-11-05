@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { HandlersSupermarketAppCategory } from '@memohai/sdk'
+import type { HandlersSupermarketAppCategory } from '@ami/sdk'
 import { browsableCategories, categoryAppCount } from './category-sections'
 
 function category(id: string, order: number, registries: Array<{ id: string; count: number }>): HandlersSupermarketAppCategory {
@@ -14,7 +14,7 @@ function category(id: string, order: number, registries: Array<{ id: string; cou
 }
 
 describe('categoryAppCount', () => {
-  const documents = category('documents', 50, [{ id: 'memoh', count: 3 }, { id: 'openai', count: 2 }])
+  const documents = category('documents', 50, [{ id: 'ami', count: 3 }, { id: 'openai', count: 2 }])
 
   it('counts every registry by default', () => {
     expect(categoryAppCount(documents)).toBe(5)
@@ -29,9 +29,9 @@ describe('categoryAppCount', () => {
 describe('browsableCategories', () => {
   const categories = [
     category('tool', 30, [{ id: 'openai', count: 4 }]),
-    category('agent', 10, [{ id: 'memoh', count: 2 }]),
+    category('agent', 10, [{ id: 'ami', count: 2 }]),
     category('other', 999, []),
-    category('runtime', 20, [{ id: 'memoh', count: 3 }]),
+    category('runtime', 20, [{ id: 'ami', count: 3 }]),
   ]
 
   it('drops empty categories and keeps table order', () => {
@@ -39,6 +39,6 @@ describe('browsableCategories', () => {
   })
 
   it('drops categories empty for the selected registry', () => {
-    expect(browsableCategories(categories, 'memoh').map(item => item.id)).toEqual(['agent', 'runtime'])
+    expect(browsableCategories(categories, 'ami').map(item => item.id)).toEqual(['agent', 'runtime'])
   })
 })

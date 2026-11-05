@@ -7,17 +7,17 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
-// memoh-server-mtls Secret 在 server pod 内的文件布局（设计 §6.1，由 bytenet 挂载）。
+// ami-server-mtls Secret 在 server pod 内的文件布局（设计 §6.1，由 bytenet 挂载）。
 const (
 	serverClientCertFile = "server-client.crt"
 	serverClientKeyFile  = "server-client.key"
 	bridgeServerCAFile   = "bridge-server-ca.crt"
 
-	bridgeMTLSMountPath    = "/run/memoh/mtls/bridge"
+	bridgeMTLSMountPath    = "/run/ami/mtls/bridge"
 	bridgeServerCertFile   = "bridge-server.crt"
 	bridgeServerKeyFile    = "bridge-server.key"
 	serverClientCACertFile = "server-client-ca.crt"
@@ -42,11 +42,11 @@ func BridgeTLSOptionsFromConfig(cfg config.Config) (*bridge.TLSOptions, error) {
 	}
 	instanceID := strings.TrimSpace(cfg.InstanceID)
 	if instanceID == "" {
-		return nil, errors.New("bridge tls: strict mode requires instance id (MEMOH_INSTANCE_ID)")
+		return nil, errors.New("bridge tls: strict mode requires instance id (AMI_INSTANCE_ID)")
 	}
 	dir := strings.TrimSpace(cfg.BridgeTLS.ServerDir)
 	if dir == "" {
-		return nil, errors.New("bridge tls: strict mode requires server material dir (MEMOH_BRIDGE_TLS_SERVER_DIR)")
+		return nil, errors.New("bridge tls: strict mode requires server material dir (AMI_BRIDGE_TLS_SERVER_DIR)")
 	}
 	dir, err := normalizeMaterialDir(dir)
 	if err != nil {
@@ -76,7 +76,7 @@ func BridgeTLSRuntimeOptionsFromConfig(cfg config.Config) (*BridgeTLSRuntimeOpti
 	}
 	bridgeDir := strings.TrimSpace(cfg.BridgeTLS.BridgeDir)
 	if bridgeDir == "" {
-		return nil, errors.New("bridge tls: strict mode requires bridge material dir (MEMOH_BRIDGE_TLS_BRIDGE_DIR)")
+		return nil, errors.New("bridge tls: strict mode requires bridge material dir (AMI_BRIDGE_TLS_BRIDGE_DIR)")
 	}
 	bridgeDir, err = normalizeMaterialDir(bridgeDir)
 	if err != nil {

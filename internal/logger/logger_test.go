@@ -11,7 +11,7 @@ import (
 
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/logger"
+	"github.com/kindredzhang/ami/internal/logger"
 )
 
 func decode(t *testing.T, line string) map[string]any {

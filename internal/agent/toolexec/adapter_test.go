@@ -21,7 +21,7 @@ func TestEncodeOutputRejectsInvalidRawJSON(t *testing.T) {
 }
 
 // A schema that arrives as data and does not parse is an error for the
-// caller to act on; SchemaFromValue keeps degrading for Memoh-written shapes.
+// caller to act on; SchemaFromValue keeps degrading for Ami-written shapes.
 func TestResolveSchemaReportsUnparsableDocuments(t *testing.T) {
 	bad := map[string]any{"type": "object", "properties": map[string]any{"a": map[string]any{"type": "number", "exclusiveMinimum": true}}}
 	if _, err := ResolveSchema(bad); err == nil {

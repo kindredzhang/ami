@@ -5,7 +5,7 @@ import (
 
 	googlegenerative "github.com/felinics/twilight/provider/google/generativeai"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 func intPtr(v int) *int { return &v }

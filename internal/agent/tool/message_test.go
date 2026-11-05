@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/messaging"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/messaging"
 )
 
 func TestChannelAttachmentsToToolAttachments_NormalizesLocalPath(t *testing.T) {
@@ -137,7 +137,7 @@ func (messageTestAssetResolver) Ingest(context.Context, media.IngestInput) (medi
 }
 
 func (messageTestAssetResolver) AccessPath(_ context.Context, asset media.Asset) string {
-	return "/data/.memoh/media/" + asset.ContentHash
+	return "/data/.ami/media/" + asset.ContentHash
 }
 
 func (messageTestAssetResolver) IngestContainerFile(context.Context, string, string) (media.Asset, error) {

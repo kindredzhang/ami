@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
 )
 
 func TestSteerRequiresConsumerAndRejectsFinishingRun(t *testing.T) {

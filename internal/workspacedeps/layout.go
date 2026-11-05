@@ -16,19 +16,19 @@ const (
 )
 
 // DepsRoot returns the directory holding every managed dependency:
-// <dataRoot>/.memoh/deps.
+// <dataRoot>/.ami/deps.
 func DepsRoot(dataRoot string) string {
-	return path.Join(dataRoot, ".memoh", "deps")
+	return path.Join(dataRoot, ".ami", "deps")
 }
 
 // Home returns the root directory of one dependency. It is exported to
-// scripts as MEMOH_DEP_HOME.
+// scripts as AMI_DEP_HOME.
 func Home(dataRoot, depID string) string {
 	return path.Join(DepsRoot(dataRoot), depID)
 }
 
 // ShimDir returns the directory of generated shims that is injected into
-// PATH ahead of the toolkit. It is exported to scripts as MEMOH_DEP_BIN.
+// PATH ahead of the toolkit. It is exported to scripts as AMI_DEP_BIN.
 func ShimDir(dataRoot string) string {
 	return path.Join(DepsRoot(dataRoot), shimDirName)
 }
@@ -57,7 +57,7 @@ func CurrentDir(home string) string {
 }
 
 // lockPath mirrors the kernel wrapper's stable lock file computation,
-// "$(dirname "$MEMOH_DEP_HOME")/.locks/$MEMOH_DEP_ID.lock", so the runner can
+// "$(dirname "$AMI_DEP_HOME")/.locks/$AMI_DEP_ID.lock", so the runner can
 // acquire the same lock while finalizing an operation.
 func lockPath(home, depID string) string {
 	return path.Join(path.Dir(home), locksDirName, depID+lockFileSuffix)

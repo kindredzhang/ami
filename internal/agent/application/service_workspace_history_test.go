@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/workspace"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 type workspaceRequestTargetService struct{}

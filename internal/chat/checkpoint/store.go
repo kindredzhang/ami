@@ -10,12 +10,12 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"go.opentelemetry.io/otel"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
-const meterName = "github.com/felinics/memoh/internal/chat/checkpoint"
+const meterName = "github.com/kindredzhang/ami/internal/chat/checkpoint"
 
 // Store reads and writes the history checkpoints of sessions.
 type Store struct {

@@ -20,11 +20,11 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	memohcopilot "github.com/felinics/memoh/internal/copilot"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/models"
+	amicopilot "github.com/kindredzhang/ami/internal/copilot"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 const (
@@ -187,10 +187,10 @@ func (s *Service) oauthConfigForProvider(provider sqlc.Provider) oauthConfig {
 	case models.ClientTypeGitHubCopilot:
 		result := oauthConfig{
 			ClientType:    models.ClientTypeGitHubCopilot,
-			ClientID:      memohcopilot.GitHubOAuthClientID,
+			ClientID:      amicopilot.GitHubOAuthClientID,
 			DeviceCodeURL: defaultGitHubDeviceCodeURL,
 			TokenURL:      defaultGitHubTokenURL,
-			Scopes:        memohcopilot.GitHubOAuthScope,
+			Scopes:        amicopilot.GitHubOAuthScope,
 		}
 		if v := strings.TrimSpace(stringValue(metadata, metadataOAuthDeviceCodeURLKey)); v != "" {
 			result.DeviceCodeURL = v

@@ -4,7 +4,7 @@
 -- schema cannot store 'disable'.
 
 -- Same RLS bracket as the up migration: these data steps run on a migration
--- connection that has no memoh.team_id.
+-- connection that has no ami.team_id.
 ALTER TABLE bots NO FORCE ROW LEVEL SECURITY;
 ALTER TABLE bots DISABLE ROW LEVEL SECURITY;
 

@@ -11,7 +11,7 @@ import {
   type ProvidersCreateRequest,
   type ProvidersGetResponse,
   type ModelsGetResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { MANUAL_LLM_CLIENT_TYPE_LIST } from '@/constants/client-types'
 import type { ProviderPreset } from '@/constants/provider-presets'
 import { isApiErrorCode, resolveApiErrorMessage } from '@/utils/api-error'

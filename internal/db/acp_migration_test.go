@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	embeddeddb "github.com/felinics/memoh/db"
+	embeddeddb "github.com/kindredzhang/ami/db"
 )
 
 func TestPostgresACPAgentSessionTypeMigrationFiles(t *testing.T) {
@@ -34,7 +34,7 @@ func TestToolApprovalMigrationContracts(t *testing.T) {
 	}
 	const operationCheck = "CHECK (operation IN ('read', 'write', 'exec', 'permission'))"
 	if !strings.Contains(tableSQL, operationCheck) {
-		t.Fatalf("%s missing Memoh-native tool approval operation CHECK %q", path, operationCheck)
+		t.Fatalf("%s missing Ami-native tool approval operation CHECK %q", path, operationCheck)
 	}
 	if strings.Contains(tableSQL, "CHECK (tool_name IN") {
 		t.Fatalf("%s tool_approval_requests must not constrain real tool_name values", path)

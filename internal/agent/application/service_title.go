@@ -11,18 +11,18 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	messageevent "github.com/felinics/memoh/internal/chat/event"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/job"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
-	"github.com/felinics/memoh/internal/oauthctx"
-	"github.com/felinics/memoh/internal/providers"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	messageevent "github.com/kindredzhang/ami/internal/chat/event"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/job"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/oauthctx"
+	"github.com/kindredzhang/ami/internal/providers"
 )
 
 const (

@@ -9,15 +9,15 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func TestMCPToolCallReadsTheQualifiedName(t *testing.T) {
 	// The raw input of a use_tool permission request from Grok 1.0.40.
-	server, tool, ok := mcpToolCall(map[string]any{"variant": "UseTool", "tool_name": "Memoh_Tools__send_message", "tool_input": map[string]any{"text": "hi"}})
-	if !ok || server != "Memoh_Tools" || tool != "send_message" {
+	server, tool, ok := mcpToolCall(map[string]any{"variant": "UseTool", "tool_name": "Ami_Tools__send_message", "tool_input": map[string]any{"text": "hi"}})
+	if !ok || server != "Ami_Tools" || tool != "send_message" {
 		t.Fatalf("mcpToolCall() = %q, %q, %v", server, tool, ok)
 	}
 	for _, input := range []any{nil, map[string]any{"command": "ls"}, map[string]any{"tool_name": "send_message"}, map[string]any{"tool_name": "__x"}} {

@@ -18,9 +18,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 const browserTestBufSize = 1 << 20
@@ -111,18 +111,18 @@ func TestBrowserProxyURLAndHostParsing(t *testing.T) {
 	}
 
 	req.Header.Set("X-Forwarded-Proto", "https")
-	req.Header.Set("X-Forwarded-Host", "memoh.example.com")
+	req.Header.Set("X-Forwarded-Host", "ami.example.com")
 	got = buildBrowserProxyURL(req, "0123456789abcdef0123456789abcdef", "/")
-	want = "https://0123456789abcdef0123456789abcdef.browser.memoh.example.com/"
+	want = "https://0123456789abcdef0123456789abcdef.browser.ami.example.com/"
 	if got != want {
 		t.Fatalf("forwarded browser proxy url = %q, want %q", got, want)
 	}
 
-	id, ok := browserSessionIDFromHost("0123456789abcdef0123456789abcdef.browser.memoh.example.com:443")
+	id, ok := browserSessionIDFromHost("0123456789abcdef0123456789abcdef.browser.ami.example.com:443")
 	if !ok || id != "0123456789abcdef0123456789abcdef" {
 		t.Fatalf("browser session id = %q, %v", id, ok)
 	}
-	if _, ok := browserSessionIDFromHost("not-a-session.browser.memoh.example.com"); ok {
+	if _, ok := browserSessionIDFromHost("not-a-session.browser.ami.example.com"); ok {
 		t.Fatal("invalid session id should not parse")
 	}
 }
@@ -152,7 +152,7 @@ func TestBrowserReverseProxyHTTPThroughBridgeTunnel(t *testing.T) {
 	t.Parallel()
 
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/hello" || r.URL.RawQuery != "name=memoh" {
+		if r.URL.Path != "/hello" || r.URL.RawQuery != "name=ami" {
 			t.Fatalf("upstream URL = %s?%s", r.URL.Path, r.URL.RawQuery)
 		}
 		if !strings.HasPrefix(r.Host, "127.0.0.1:") {
@@ -181,7 +181,7 @@ func TestBrowserReverseProxyHTTPThroughBridgeTunnel(t *testing.T) {
 	client := newBrowserTestBridgeClient(t)
 	proxy := newBrowserReverseProxy(client, port)
 
-	req := httptest.NewRequest(http.MethodPost, "http://session.browser.localhost/hello?name=memoh", bytes.NewBufferString("payload"))
+	req := httptest.NewRequest(http.MethodPost, "http://session.browser.localhost/hello?name=ami", bytes.NewBufferString("payload"))
 	req.Header.Set("X-Forwarded-Host", "spoofed.example")
 	req.Header.Set("X-Forwarded-Proto", "https")
 	req.Header.Set("X-Forwarded-For", "spoofed")

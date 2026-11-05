@@ -12,8 +12,8 @@ import { grpcMessageLimit, startRuntimeGrpcServer } from './service'
 import { runtimeCapabilities } from './core/guards'
 import { runtimeClientVersion } from './version'
 
-export const runtimeProtocolGrpc = 'memoh.runtime.v1.grpc'
-export const runtimeMetadataHeader = 'X-Memoh-Runtime-Metadata'
+export const runtimeProtocolGrpc = 'ami.runtime.v1.grpc'
+export const runtimeMetadataHeader = 'X-Ami-Runtime-Metadata'
 // Hosted gateways consume this tenant-routing header before proxying the
 // WebSocket. The upstream single-team server intentionally does not require it.
 export const runtimeTeamIDHeader = 'X-Team-ID'
@@ -34,7 +34,7 @@ export interface RuntimeHandshakeMetadataV1 {
 export interface RuntimeHandshakeHeaders {
   Authorization: string
   'Sec-WebSocket-Protocol': typeof runtimeProtocolGrpc
-  'X-Memoh-Runtime-Metadata': string
+  'X-Ami-Runtime-Metadata': string
   'X-Team-ID'?: string
 }
 
@@ -94,7 +94,7 @@ export function handshakeHeaders(
   const headers: RuntimeHandshakeHeaders = {
     Authorization: `Bearer ${config.key.trim()}`,
     'Sec-WebSocket-Protocol': runtimeProtocolGrpc,
-    'X-Memoh-Runtime-Metadata': encodeHandshakeMetadata(metadata),
+    'X-Ami-Runtime-Metadata': encodeHandshakeMetadata(metadata),
   }
   if (config.teamId !== undefined) {
     headers[runtimeTeamIDHeader] = normalizeRuntimeTeamId(config.teamId)

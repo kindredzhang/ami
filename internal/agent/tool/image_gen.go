@@ -18,15 +18,15 @@ import (
 	openaiimages "github.com/felinics/twilight/provider/openai/images"
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
-	"github.com/felinics/memoh/internal/providers"
-	"github.com/felinics/memoh/internal/settings"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/providers"
+	"github.com/kindredzhang/ami/internal/settings"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (

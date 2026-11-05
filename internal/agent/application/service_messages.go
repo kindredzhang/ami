@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	turnpkg "github.com/felinics/memoh/internal/agent/turn"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	turnpkg "github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // sdkMessagesToModelMessages converts SDK messages to the persistence/API format

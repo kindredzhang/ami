@@ -5,7 +5,7 @@
 
 CREATE TABLE IF NOT EXISTS public.bot_plugin_installations (
     id           UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id      UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id      UUID        NOT NULL DEFAULT public.ami_current_team_id()
                              REFERENCES public.teams(id) ON DELETE RESTRICT,
     bot_id       UUID        NOT NULL,
     plugin_id    TEXT        NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS public.bot_plugin_installations (
     manifest     JSONB       NOT NULL DEFAULT '{}'::jsonb,
     installed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_bot_plugin_installations UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_bot_plugin_installations UNIQUE (team_id, id),
     CONSTRAINT bot_plugin_installations_unique UNIQUE (team_id, bot_id, plugin_id),
     CONSTRAINT bot_plugin_installations_bot_id_fkey
         FOREIGN KEY (team_id, bot_id)
@@ -34,15 +34,15 @@ ALTER TABLE public.bot_plugin_installations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bot_plugin_installations FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY bot_plugin_installations_team_select ON public.bot_plugin_installations
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_plugin_installations_team_insert ON public.bot_plugin_installations
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_plugin_installations_team_update ON public.bot_plugin_installations
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_plugin_installations_team_delete ON public.bot_plugin_installations
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 ALTER TABLE public.mcp_connections
     ADD COLUMN managed_by_plugin_installation_id UUID,
@@ -59,7 +59,7 @@ CREATE INDEX IF NOT EXISTS idx_mcp_connections_plugin_installation_id
 
 CREATE TABLE IF NOT EXISTS public.bot_plugin_resources (
     id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id         UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id         UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                 REFERENCES public.teams(id) ON DELETE RESTRICT,
     installation_id UUID        NOT NULL,
     resource_type   TEXT        NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS public.bot_plugin_resources (
     metadata        JSONB       NOT NULL DEFAULT '{}'::jsonb,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_bot_plugin_resources UNIQUE (team_id, id),
+    CONSTRAINT ami_team_key_bot_plugin_resources UNIQUE (team_id, id),
     CONSTRAINT bot_plugin_resources_unique
         UNIQUE (team_id, installation_id, resource_type, resource_key),
     CONSTRAINT bot_plugin_resources_installation_id_fkey
@@ -86,12 +86,12 @@ ALTER TABLE public.bot_plugin_resources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bot_plugin_resources FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY bot_plugin_resources_team_select ON public.bot_plugin_resources
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_plugin_resources_team_insert ON public.bot_plugin_resources
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_plugin_resources_team_update ON public.bot_plugin_resources
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_plugin_resources_team_delete ON public.bot_plugin_resources
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());

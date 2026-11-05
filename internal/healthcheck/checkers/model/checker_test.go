@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/healthcheck"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/oauthctx"
+	"github.com/kindredzhang/ami/internal/healthcheck"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/oauthctx"
 )
 
 type testLookup struct {

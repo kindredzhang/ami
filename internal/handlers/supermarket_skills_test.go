@@ -14,9 +14,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/server"
-	supermarketclient "github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/server"
+	supermarketclient "github.com/kindredzhang/ami/internal/supermarket"
 )
 
 const validSkillArtifactContent = "---\nname: skill\ndescription: Demo\n---\n\n# Demo\n"
@@ -39,13 +39,13 @@ func TestSupermarketSkillRoutesUseRegistryCatalogOnly(t *testing.T) {
 	e := echo.New()
 	handler.Register(e)
 
-	req := httptest.NewRequest(http.MethodGet, "/supermarket/skills?registry=memoh&limit=50", nil)
+	req := httptest.NewRequest(http.MethodGet, "/supermarket/skills?registry=ami&limit=50", nil)
 	rec := httptest.NewRecorder()
 	e.ServeHTTP(rec, req)
 	if rec.Code != http.StatusOK {
 		t.Fatalf("GET /supermarket/skills status = %d, want 200: %s", rec.Code, rec.Body.String())
 	}
-	if upstreamRequestURI != "/api/skills?registry=memoh&limit=50" {
+	if upstreamRequestURI != "/api/skills?registry=ami&limit=50" {
 		t.Fatalf("upstream request URI = %q, want canonical Skill collection", upstreamRequestURI)
 	}
 }
@@ -69,9 +69,9 @@ func TestSupermarketAppRoutesUseAppCatalog(t *testing.T) {
 		path string
 		want string
 	}{
-		{"/supermarket/apps?registry=memoh&limit=50", "/api/apps?registry=memoh&limit=50"},
-		{"/supermarket/registries/memoh/apps?q=web", "/api/registries/memoh/apps?q=web"},
-		{"/supermarket/registries/memoh/apps/web-tools", "/api/registries/memoh/apps/web-tools"},
+		{"/supermarket/apps?registry=ami&limit=50", "/api/apps?registry=ami&limit=50"},
+		{"/supermarket/registries/ami/apps?q=web", "/api/registries/ami/apps?q=web"},
+		{"/supermarket/registries/ami/apps/web-tools", "/api/registries/ami/apps/web-tools"},
 	}
 	for _, test := range tests {
 		req := httptest.NewRequest(http.MethodGet, test.path, nil)
@@ -197,7 +197,7 @@ func validRegistrySkillDescriptor() SupermarketCatalogSkill {
 	return SupermarketCatalogSkill{
 		RegistryID: "registry", AppID: "app", SkillID: "skill", InstallID: "registry+app+skill",
 		Artifact: SupermarketSkillArtifact{
-			Format: "memoh_skill_v1",
+			Format: "ami_skill_v1",
 			Digest: strings.Repeat("a", 64), Size: 1,
 			UncompressedSize: validSkillArtifactUncompressedSize,
 			ArchiveSize:      2 * 1024,
@@ -286,7 +286,7 @@ func TestSupermarketProxyAnswersUpstreamErrorsAsProblem(t *testing.T) {
 			handler.Register(e)
 
 			for _, path := range []string{
-				"/supermarket/registries/memoh/apps/missing",
+				"/supermarket/registries/ami/apps/missing",
 				"/supermarket/apps?q=web",
 				"/supermarket/artifacts/icon/" + strings.Repeat("a", sha256.Size*2),
 			} {

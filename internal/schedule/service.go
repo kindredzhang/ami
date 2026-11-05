@@ -15,17 +15,17 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/robfig/cron/v3"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/boot"
-	"github.com/felinics/memoh/internal/botagents"
-	messageevent "github.com/felinics/memoh/internal/chat/event"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/job"
-	memtimezone "github.com/felinics/memoh/internal/timezone"
-	"github.com/felinics/memoh/internal/workdir"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/boot"
+	"github.com/kindredzhang/ami/internal/botagents"
+	messageevent "github.com/kindredzhang/ami/internal/chat/event"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/job"
+	memtimezone "github.com/kindredzhang/ami/internal/timezone"
+	"github.com/kindredzhang/ami/internal/workdir"
 )
 
 // SessionSpec describes the session one schedule fire runs in. The creator

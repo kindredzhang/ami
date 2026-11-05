@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/channeltest"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/messaging"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/channeltest"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/messaging"
 )
 
 type fakeRuntime struct {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // legacyReasoningOptions is what version 1 offered for a stored config: the

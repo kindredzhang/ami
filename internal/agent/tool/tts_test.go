@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/messaging"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/messaging"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type ttsTestSettings struct{}

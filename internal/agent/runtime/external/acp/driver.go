@@ -12,17 +12,17 @@ import (
 
 	acpsdk "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 // RuntimeType is the thread runtime type this driver serves.
 const RuntimeType = string(runtimekind.ACPAgent)
 
-// contextURI names the Memoh context document resource embedded in ACP
+// contextURI names the Ami context document resource embedded in ACP
 // prompts.
-const contextURI = "memoh://context/current-turn"
+const contextURI = "ami://context/current-turn"
 
 // Pool is the session pool surface the driver adapts. *SessionPool
 // satisfies it.
@@ -142,10 +142,10 @@ func DriverPromptResult(result client.PromptResult) external.PromptResult {
 }
 
 // promptFailure shapes a failed ACP turn. A model, reasoning effort or mode
-// the agent does not offer is refused by Memoh's rule; what the agent said,
+// the agent does not offer is refused by Ami's rule; what the agent said,
 // and a launch command the workspace does not have, are shown as they were
-// said. Every other error stays as it is: Memoh's own setup rules keep their
-// codes, and a failure inside Memoh is never shown as the agent's.
+// said. Every other error stays as it is: Ami's own setup rules keep their
+// codes, and a failure inside Ami is never shown as the agent's.
 func promptFailure(err error) error {
 	if isPromptConfigSelectionError(err) {
 		return external.Fail(external.FailureModeUnavailable, err)

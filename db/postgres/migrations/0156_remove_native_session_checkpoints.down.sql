@@ -4,7 +4,7 @@
 ALTER TABLE public.agent_session_publications
     ADD COLUMN IF NOT EXISTS checkpoint_reset BOOLEAN NOT NULL DEFAULT false;
 -- Existing publications have no snapshot to restore after downgrade. The
--- update spans every team; lift the request-scoped policies (memoh.team_id is
+-- update spans every team; lift the request-scoped policies (ami.team_id is
 -- not set while migrating) and restore FORCE RLS after.
 ALTER TABLE public.agent_session_publications NO FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.agent_session_publications DISABLE ROW LEVEL SECURITY;
@@ -13,7 +13,7 @@ ALTER TABLE public.agent_session_publications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.agent_session_publications FORCE ROW LEVEL SECURITY;
 
 CREATE TABLE IF NOT EXISTS public.agent_session_states (
-    team_id               UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id               UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                       REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id            UUID        NOT NULL,
     through_run_id        UUID        NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS public.agent_session_states (
 -- because versions share them; version membership is defined by the header's
 -- file_shapes.
 CREATE TABLE IF NOT EXISTS public.agent_session_state_lines (
-    team_id       UUID   NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id       UUID   NOT NULL DEFAULT public.ami_current_team_id()
                           REFERENCES public.teams(id) ON DELETE RESTRICT,
     session_id    UUID   NOT NULL,
     file_path     TEXT COLLATE "C" NOT NULL,
@@ -111,31 +111,31 @@ ALTER TABLE public.agent_session_state_lines FORCE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS agent_session_states_team_select ON public.agent_session_states;
 CREATE POLICY agent_session_states_team_select ON public.agent_session_states
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS agent_session_states_team_insert ON public.agent_session_states;
 CREATE POLICY agent_session_states_team_insert ON public.agent_session_states
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS agent_session_states_team_update ON public.agent_session_states;
 CREATE POLICY agent_session_states_team_update ON public.agent_session_states
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS agent_session_states_team_delete ON public.agent_session_states;
 CREATE POLICY agent_session_states_team_delete ON public.agent_session_states
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 DROP POLICY IF EXISTS agent_session_state_lines_team_select ON public.agent_session_state_lines;
 CREATE POLICY agent_session_state_lines_team_select ON public.agent_session_state_lines
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS agent_session_state_lines_team_insert ON public.agent_session_state_lines;
 CREATE POLICY agent_session_state_lines_team_insert ON public.agent_session_state_lines
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS agent_session_state_lines_team_update ON public.agent_session_state_lines;
 CREATE POLICY agent_session_state_lines_team_update ON public.agent_session_state_lines
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 DROP POLICY IF EXISTS agent_session_state_lines_team_delete ON public.agent_session_state_lines;
 CREATE POLICY agent_session_state_lines_team_delete ON public.agent_session_state_lines
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 

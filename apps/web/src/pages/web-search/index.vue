@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, provide, ref } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getFetchProviders, getFetchProvidersMeta, getSearchProviders, getSearchProvidersMeta } from '@memohai/sdk'
+import { getFetchProviders, getFetchProvidersMeta, getSearchProviders, getSearchProvidersMeta } from '@ami/sdk'
 import type {
   FetchprovidersGetResponse,
   FetchprovidersProviderMeta,
   SearchprovidersGetResponse,
   SearchprovidersProviderMeta,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { BackendCard, DetailPane, PageShell, SectionGroup, SwapTransition } from '@felinic/ui'
 import FetchProviderSetting from './components/fetch-provider-setting.vue'

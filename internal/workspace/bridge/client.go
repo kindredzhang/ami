@@ -21,7 +21,7 @@ import (
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/metadata"
 
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const connectingTimeout = 30 * time.Second
@@ -559,7 +559,7 @@ func (c *Client) DialContext(ctx context.Context, network, address string) (net.
 	conn := &tunnelConn{
 		stream: stream,
 		cancel: cancel,
-		local:  tunnelAddr("memoh-bridge"),
+		local:  tunnelAddr("ami-bridge"),
 		remote: tunnelAddr(address),
 	}
 	if err := conn.waitOpen(ctx); err != nil {

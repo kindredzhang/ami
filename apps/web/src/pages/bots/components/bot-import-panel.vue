@@ -17,7 +17,7 @@ import {
   postBotsBackupImportPreview,
   type BotbackupImportResult,
   type BotbackupPreviewResult,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { formatFileSize } from '@/components/file-manager/utils'
 import { uploadWithProgress } from '@/lib/upload-with-progress'
@@ -218,7 +218,7 @@ async function handleImport() {
     <input
       ref="fileInput"
       type="file"
-      accept=".zip,.memoh.zip,application/zip"
+      accept=".zip,.ami.zip,application/zip"
       class="hidden"
       @change="handleFileChange"
     >

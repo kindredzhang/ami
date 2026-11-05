@@ -1,4 +1,4 @@
-import type { BotsBot } from '@memohai/sdk'
+import type { BotsBot } from '@ami/sdk'
 
 /**
  * The bots the switcher offers, in display order: pinned bots first (via

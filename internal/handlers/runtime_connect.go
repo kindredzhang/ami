@@ -16,12 +16,12 @@ import (
 	"github.com/labstack/echo/v4"
 	"google.golang.org/grpc/connectivity"
 
-	"github.com/felinics/memoh/internal/userruntime"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/userruntime"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
-	runtimeProtocolGRPC      = "memoh.runtime.v1.grpc"
+	runtimeProtocolGRPC      = "ami.runtime.v1.grpc"
 	runtimeReadinessTimeout  = 10 * time.Second
 	runtimeActivationTimeout = 10 * time.Second
 	runtimeMessageLimit      = userruntime.RuntimeGRPCMessageLimit

@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 type discussCursorTracker struct {

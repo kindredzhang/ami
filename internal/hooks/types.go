@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	DefaultConfigPath = "/data/.memoh/hooks.json"
+	DefaultConfigPath = "/data/.ami/hooks.json"
 	DefaultWorkDir    = "/data"
 
 	EventPreToolUse               = "PreToolUse"

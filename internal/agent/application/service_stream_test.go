@@ -12,13 +12,13 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	acpagent "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/settings"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	acpagent "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestAgentStreamFailureConversion(t *testing.T) {
@@ -666,7 +666,7 @@ func TestPersistTerminalSnapshotPersistsUserWhenPipelineContextContainsCurrentMe
 		ChatRequest{
 			BotID:    "bot-1",
 			ThreadID: "session-1",
-			Query:    "---\nmessage-id: tg-1\nchannel: telegram\n---\n@memoh1bot ping",
+			Query:    "---\nmessage-id: tg-1\nchannel: telegram\n---\n@ami1bot ping",
 		},
 		resolvedContext{
 			userMessageAlreadyInContext: true,

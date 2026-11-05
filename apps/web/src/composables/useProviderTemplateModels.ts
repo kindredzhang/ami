@@ -1,7 +1,7 @@
 import { computed, toValue } from 'vue'
 import type { MaybeRefOrGetter } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getProviderTemplatesById } from '@memohai/sdk'
+import { getProviderTemplatesById } from '@ami/sdk'
 
 export interface ProviderTemplateModelDraft {
   model_id: string

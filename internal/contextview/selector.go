@@ -1,6 +1,6 @@
 package contextview
 
-import contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+import contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 
 type FragmentSelector struct{}
 

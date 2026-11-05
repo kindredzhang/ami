@@ -16,11 +16,11 @@ import (
 
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/supermarket"
-	"github.com/felinics/memoh/internal/workspacedeps"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 const (
@@ -504,7 +504,7 @@ func release(registryID, appID, seed, version string, skills []string, deps []st
 		pkg.Skills = append(pkg.Skills, supermarket.CatalogSkill{
 			SchemaVersion: "2", RegistryID: registryID, AppID: appID, SkillID: skill,
 			InstallID: registryID + "+" + appID + "+" + skill, Name: skill,
-			Artifact: supermarket.SkillArtifact{Format: "memoh_skill_v1", Digest: revisionOf("f"), Size: 1, UncompressedSize: 1, ArchiveSize: 1, FileCount: 1, ContentType: "application/gzip", DownloadURL: "/api/artifacts/skill/" + revisionOf("f")},
+			Artifact: supermarket.SkillArtifact{Format: "ami_skill_v1", Digest: revisionOf("f"), Size: 1, UncompressedSize: 1, ArchiveSize: 1, FileCount: 1, ContentType: "application/gzip", DownloadURL: "/api/artifacts/skill/" + revisionOf("f")},
 		})
 	}
 	pkg.SkillCount = len(pkg.Skills)
@@ -567,7 +567,7 @@ func TestInstallLinksPresentDependenciesAndInstallsMissingOnes(t *testing.T) {
 	h := newHarness()
 	h.deps.present["node"] = presentDep("node", workspacedeps.SourceToolkit)
 	h.deps.present["codex"] = absentDep("codex")
-	pkg := release("memoh", "codex", "a", "1.0.0", nil, []string{"node", "codex"}, nil)
+	pkg := release("ami", "codex", "a", "1.0.0", nil, []string{"node", "codex"}, nil)
 	h.publish(pkg)
 
 	result, rec := h.install(t, pkg)
@@ -599,7 +599,7 @@ func TestInstallIsPartialWhenADependencyFailsAndResumeCompletesIt(t *testing.T) 
 	h := newHarness()
 	h.deps.present["codex"] = absentDep("codex")
 	h.deps.installErr["codex"] = errors.New("npm exploded")
-	pkg := release("memoh", "codex", "a", "1.0.0", []string{"codex-workflows"}, []string{"codex"}, nil)
+	pkg := release("ami", "codex", "a", "1.0.0", []string{"codex-workflows"}, []string{"codex"}, nil)
 	h.publish(pkg)
 
 	result, rec := h.install(t, pkg)
@@ -626,14 +626,14 @@ func TestInstallIsPartialWhenADependencyFailsAndResumeCompletesIt(t *testing.T) 
 func TestInstallFailsWhenSkillsCannotBePublished(t *testing.T) {
 	h := newHarness()
 	h.publisher.publishErr = errors.New("bridge down")
-	pkg := release("memoh", "pdf", "a", "1.0.0", []string{"pdf"}, nil, nil)
+	pkg := release("ami", "pdf", "a", "1.0.0", []string{"pdf"}, nil, nil)
 	h.publish(pkg)
 	rec := &recorder{}
-	_, err := h.service.Install(context.Background(), testBotID, InstallRequest{RegistryID: "memoh", AppID: "pdf", Revision: pkg.Revision}, rec)
+	_, err := h.service.Install(context.Background(), testBotID, InstallRequest{RegistryID: "ami", AppID: "pdf", Revision: pkg.Revision}, rec)
 	if err == nil || !strings.Contains(err.Error(), "bridge down") {
 		t.Fatalf("Install error = %v", err)
 	}
-	inst, err := h.store.Get(context.Background(), testBotID, "memoh", "pdf")
+	inst, err := h.store.Get(context.Background(), testBotID, "ami", "pdf")
 	if err != nil || inst.Status != StatusFailed {
 		t.Fatalf("installation = %+v, %v", inst, err)
 	}
@@ -655,7 +655,7 @@ func TestInstallRejectsReferencesOutsideTheOfficialRegistry(t *testing.T) {
 func TestInstallLinksActiveConnectorsAndMarksMissingRequiredOnesPartial(t *testing.T) {
 	h := newHarness()
 	h.connectors.connections = []connectors.Connector{{ConnectionID: "conn-gh", ConnectorType: "github", Status: "active"}}
-	pkg := release("memoh", "review", "a", "1.0.0", []string{"review"}, nil, []supermarket.AppConnectorReference{{Type: "github", Required: true}, {Type: "notion", Required: true}, {Type: "slack", Required: false}})
+	pkg := release("ami", "review", "a", "1.0.0", []string{"review"}, nil, []supermarket.AppConnectorReference{{Type: "github", Required: true}, {Type: "notion", Required: true}, {Type: "slack", Required: false}})
 	h.publish(pkg)
 
 	result, rec := h.install(t, pkg)
@@ -694,8 +694,8 @@ func TestRemoveReleasesOnlyUnsharedDependenciesAndConnections(t *testing.T) {
 	h.deps.present["node"] = absentDep("node")
 	h.deps.present["codex"] = absentDep("codex")
 	h.connectors.connections = []connectors.Connector{{ConnectionID: "conn-gh", ConnectorType: "github", Status: "active"}}
-	codex := release("memoh", "codex", "a", "1.0.0", nil, []string{"node", "codex"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
-	tools := release("memoh", "tools", "b", "1.0.0", []string{"tools"}, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: false}})
+	codex := release("ami", "codex", "a", "1.0.0", nil, []string{"node", "codex"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
+	tools := release("ami", "tools", "b", "1.0.0", []string{"tools"}, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: false}})
 	h.publish(codex)
 	h.publish(tools)
 	codexResult, _ := h.install(t, codex)
@@ -740,7 +740,7 @@ func TestRemoveReleasesOnlyUnsharedDependenciesAndConnections(t *testing.T) {
 func TestRemoveDisconnectsConnectionsNoAppReferencesAndKeepsImageCopies(t *testing.T) {
 	h := newHarness()
 	h.deps.present["node"] = presentDep("node", workspacedeps.SourceToolkit)
-	pkg := release("memoh", "node", "a", "1.0.0", nil, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
+	pkg := release("ami", "node", "a", "1.0.0", nil, []string{"node"}, []supermarket.AppConnectorReference{{Type: "github", Required: true}})
 	h.publish(pkg)
 	result, _ := h.install(t, pkg)
 	if _, err := h.service.CreateConnectorCredential(context.Background(), testBotID, result.Installation.ID, "github", "token", map[string]string{"token": "x"}); err != nil {
@@ -761,7 +761,7 @@ func TestListShowsDiscoveredDependenciesThroughTheirCanonicalApp(t *testing.T) {
 	h := newHarness()
 	h.deps.present["node"] = presentDep("node", workspacedeps.SourceToolkit)
 	h.deps.present["codex"] = presentDep("codex", workspacedeps.SourceManaged)
-	pkg := release("memoh", "codex", "a", "1.0.0", nil, []string{"codex"}, nil)
+	pkg := release("ami", "codex", "a", "1.0.0", nil, []string{"codex"}, nil)
 	h.publish(pkg)
 	h.install(t, pkg)
 
@@ -789,12 +789,12 @@ func TestCheckUpdatesIgnoresAppMissingFromRealRegistry(t *testing.T) {
 	var liveChecked atomic.Bool
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		switch req.URL.Path {
-		case "/api/registries/memoh/apps/gone":
+		case "/api/registries/ami/apps/gone":
 			http.NotFound(w, req)
-		case "/api/registries/memoh/apps/live":
+		case "/api/registries/ami/apps/live":
 			liveChecked.Store(true)
 			w.Header().Set("Content-Type", "application/json")
-			_, _ = fmt.Fprintf(w, `{"schema_version":"2","registry_id":"memoh","app_id":"live","name":"live","description":"","tags":[],"version":"2.0.0","category":"tool","category_name":"Tools","dependencies":["node"],"connectors":[],"skill_count":0,"dependency_count":1,"connector_count":0,"revision":"%s","skills":[]}`, liveRevision)
+			_, _ = fmt.Fprintf(w, `{"schema_version":"2","registry_id":"ami","app_id":"live","name":"live","description":"","tags":[],"version":"2.0.0","category":"tool","category_name":"Tools","dependencies":["node"],"connectors":[],"skill_count":0,"dependency_count":1,"connector_count":0,"revision":"%s","skills":[]}`, liveRevision)
 		default:
 			http.NotFound(w, req)
 		}
@@ -803,14 +803,14 @@ func TestCheckUpdatesIgnoresAppMissingFromRealRegistry(t *testing.T) {
 
 	h := newHarness()
 	gone, err := h.store.Upsert(context.Background(), UpsertInstallation{
-		BotID: testBotID, RegistryID: "memoh", AppID: "gone", Revision: revisionOf("c"),
+		BotID: testBotID, RegistryID: "ami", AppID: "gone", Revision: revisionOf("c"),
 		Version: "1.0.0", Status: StatusInstalled, Reason: ReasonUser,
 	})
 	if err != nil {
 		t.Fatalf("store.Upsert(gone): %v", err)
 	}
 	live, err := h.store.Upsert(context.Background(), UpsertInstallation{
-		BotID: testBotID, RegistryID: "memoh", AppID: "live", Revision: revisionOf("b"),
+		BotID: testBotID, RegistryID: "ami", AppID: "live", Revision: revisionOf("b"),
 		Version: "1.0.0", Status: StatusInstalled, Reason: ReasonUser,
 	})
 	if err != nil {
@@ -870,7 +870,7 @@ func (r *hookedRegistry) FetchCurrentApp(ctx context.Context, registryID, appID 
 func installApps(t *testing.T, h *harness, ids ...string) {
 	t.Helper()
 	for i, id := range ids {
-		pkg := release("memoh", id, strconv.Itoa(i), "1.0.0", nil, nil, nil)
+		pkg := release("ami", id, strconv.Itoa(i), "1.0.0", nil, nil, nil)
 		h.publish(pkg)
 		h.install(t, pkg)
 	}
@@ -990,7 +990,7 @@ func TestCheckUpdatesRecordsNewerRevisionAndUpdatePrunesDroppedReferences(t *tes
 	h := newHarness()
 	h.deps.present["node"] = absentDep("node")
 	h.deps.present["uv"] = absentDep("uv")
-	v1 := release("memoh", "python", "a", "1.0.0", []string{"py"}, []string{"node", "uv"}, nil)
+	v1 := release("ami", "python", "a", "1.0.0", []string{"py"}, []string{"node", "uv"}, nil)
 	h.publish(v1)
 	result, _ := h.install(t, v1)
 
@@ -1002,7 +1002,7 @@ func TestCheckUpdatesRecordsNewerRevisionAndUpdatePrunesDroppedReferences(t *tes
 		t.Fatalf("no update expected: %+v", checked.Items[0].Installation)
 	}
 
-	v2 := release("memoh", "python", "b", "1.1.0", []string{"py", "py-extra"}, []string{"uv"}, nil)
+	v2 := release("ami", "python", "b", "1.1.0", []string{"py", "py-extra"}, []string{"uv"}, nil)
 	h.publish(v2)
 	checked, err = h.service.CheckUpdates(context.Background(), testBotID)
 	if err != nil {
@@ -1040,12 +1040,12 @@ func TestCheckUpdatesRecordsNewerRevisionAndUpdatePrunesDroppedReferences(t *tes
 func TestRemoveUnreferencedRequiredApps(t *testing.T) {
 	h := newHarness()
 	h.deps.present["node"] = absentDep("node")
-	node := release("memoh", "node", "a", "1.0.0", nil, []string{"node"}, nil)
-	app := release("memoh", "app", "b", "1.0.0", []string{"app"}, []string{"node"}, nil)
+	node := release("ami", "node", "a", "1.0.0", nil, []string{"node"}, nil)
+	app := release("ami", "app", "b", "1.0.0", []string{"app"}, []string{"node"}, nil)
 	h.publish(node)
 	h.publish(app)
 	nodeRec := &recorder{}
-	if _, err := h.service.Install(context.Background(), testBotID, InstallRequest{RegistryID: "memoh", AppID: "node", Revision: node.Revision, Reason: ReasonRequired}, nodeRec); err != nil {
+	if _, err := h.service.Install(context.Background(), testBotID, InstallRequest{RegistryID: "ami", AppID: "node", Revision: node.Revision, Reason: ReasonRequired}, nodeRec); err != nil {
 		t.Fatalf("install node: %v", err)
 	}
 	appResult, _ := h.install(t, app)
@@ -1073,12 +1073,12 @@ func TestUpdateSelectionUpdatesOnlyTheReferencedDependencies(t *testing.T) {
 	h := newHarness()
 	h.deps.present["node"] = presentDep("node", workspacedeps.SourceManaged)
 	h.deps.present["python"] = presentDep("python", workspacedeps.SourceToolkit)
-	pkg := release("memoh", "codex", "a", "1.0.0", []string{"codex"}, []string{"node"}, nil)
+	pkg := release("ami", "codex", "a", "1.0.0", []string{"codex"}, []string{"node"}, nil)
 	h.publish(pkg)
 	h.install(t, pkg)
 
 	rec := &recorder{}
-	result, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "codex", Dependencies: []string{"node", "node"}}, rec)
+	result, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "codex", Dependencies: []string{"node", "node"}}, rec)
 	if err != nil {
 		t.Fatalf("UpdateSelection: %v", err)
 	}
@@ -1096,12 +1096,12 @@ func TestUpdateSelectionUpdatesOnlyTheReferencedDependencies(t *testing.T) {
 	}
 
 	// A dependency the App does not reference is refused before anything runs.
-	_, err = h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "codex", Dependencies: []string{"python"}}, nil)
+	_, err = h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "codex", Dependencies: []string{"python"}}, nil)
 	if !errors.Is(err, ErrInvalidRequest) {
 		t.Fatalf("unreferenced dependency: err = %v, want ErrInvalidRequest", err)
 	}
 	// Selecting nothing is an error, not a no-op stream.
-	_, err = h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "codex"}, nil)
+	_, err = h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "codex"}, nil)
 	if !errors.Is(err, ErrInvalidRequest) {
 		t.Fatalf("empty selection: err = %v, want ErrInvalidRequest", err)
 	}
@@ -1112,7 +1112,7 @@ func TestUpdateSelectionUpdatesTheDependencyOfADiscoveredApp(t *testing.T) {
 	h.deps.present["uv"] = presentDep("uv", workspacedeps.SourceToolkit)
 
 	rec := &recorder{}
-	_, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "uv", Dependencies: []string{"uv"}}, rec)
+	_, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "uv", Dependencies: []string{"uv"}}, rec)
 	if err != nil {
 		t.Fatalf("UpdateSelection: %v", err)
 	}
@@ -1123,7 +1123,7 @@ func TestUpdateSelectionUpdatesTheDependencyOfADiscoveredApp(t *testing.T) {
 		t.Fatalf("events = %s", rec.types())
 	}
 	// The release of an App that is not installed cannot be updated.
-	_, err = h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "uv", Release: true}, nil)
+	_, err = h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "uv", Release: true}, nil)
 	if !errors.Is(err, ErrNotInstalled) {
 		t.Fatalf("release of discovered App: err = %v, want ErrNotInstalled", err)
 	}
@@ -1132,14 +1132,14 @@ func TestUpdateSelectionUpdatesTheDependencyOfADiscoveredApp(t *testing.T) {
 func TestUpdateSelectionRunsDependenciesBeforeTheRelease(t *testing.T) {
 	h := newHarness()
 	h.deps.present["node"] = presentDep("node", workspacedeps.SourceManaged)
-	v1 := release("memoh", "codex", "a", "1.0.0", []string{"codex"}, []string{"node"}, nil)
+	v1 := release("ami", "codex", "a", "1.0.0", []string{"codex"}, []string{"node"}, nil)
 	h.publish(v1)
 	h.install(t, v1)
-	v2 := release("memoh", "codex", "b", "1.1.0", []string{"codex"}, []string{"node"}, nil)
+	v2 := release("ami", "codex", "b", "1.1.0", []string{"codex"}, []string{"node"}, nil)
 	h.publish(v2)
 
 	rec := &recorder{}
-	result, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "codex", Release: true, Dependencies: []string{"node"}}, rec)
+	result, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "codex", Release: true, Dependencies: []string{"node"}}, rec)
 	if err != nil {
 		t.Fatalf("UpdateSelection: %v", err)
 	}
@@ -1160,13 +1160,13 @@ func TestUpdateSelectionRunsDependenciesBeforeTheRelease(t *testing.T) {
 
 func TestUpdateSelectionKeepsApprovedRevisionWhenLatestChanges(t *testing.T) {
 	h := newHarness()
-	v1 := release("memoh", "codex", "a", "1.0.0", []string{"codex"}, nil, nil)
+	v1 := release("ami", "codex", "a", "1.0.0", []string{"codex"}, nil, nil)
 	h.publish(v1)
 	h.install(t, v1)
-	approved := release("memoh", "codex", "b", "1.1.0", []string{"codex"}, nil, nil)
+	approved := release("ami", "codex", "b", "1.1.0", []string{"codex"}, nil, nil)
 	h.publish(approved)
-	h.publish(release("memoh", "codex", "c", "2.0.0", []string{"codex"}, nil, nil))
-	result, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "memoh", AppID: "codex", Release: true, Revision: approved.Revision}, nil)
+	h.publish(release("ami", "codex", "c", "2.0.0", []string{"codex"}, nil, nil))
+	result, err := h.service.UpdateSelection(context.Background(), testBotID, UpdateRequest{RegistryID: "ami", AppID: "codex", Release: true, Revision: approved.Revision}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1177,10 +1177,10 @@ func TestUpdateSelectionKeepsApprovedRevisionWhenLatestChanges(t *testing.T) {
 
 func TestResumeApprovedRejectsChangedRelease(t *testing.T) {
 	h := newHarness()
-	pkg := release("memoh", "pdf", "a", "1.0.0", []string{"pdf"}, nil, nil)
+	pkg := release("ami", "pdf", "a", "1.0.0", []string{"pdf"}, nil, nil)
 	h.publish(pkg)
 	result, _ := h.install(t, pkg)
-	next := release("memoh", "pdf", "b", "2.0.0", []string{"pdf"}, nil, nil)
+	next := release("ami", "pdf", "b", "2.0.0", []string{"pdf"}, nil, nil)
 	h.publish(next)
 	h.install(t, next)
 	published := len(h.publisher.published)

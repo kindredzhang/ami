@@ -112,7 +112,7 @@ import {
   SettingsIcon,
   UsageIcon,
   UsersIcon,
-} from '@memohai/icon/ui'
+} from '@ami/icon/ui'
 import { useUserStore } from '@/store/user'
 import { avatarInitials } from '@/composables/useAvatarInitials'
 import { UsageQuotaKey } from '@/lib/usage-quota'

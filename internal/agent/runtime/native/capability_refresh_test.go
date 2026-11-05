@@ -10,11 +10,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
 type capabilityRefreshProvider struct {
@@ -339,7 +339,7 @@ func TestCapabilityRefreshDecoratesNewReadTool(t *testing.T) {
 							if _, ok := part.(sdk.ImagePart); ok && msg.Role == sdk.MessageRoleUser {
 								mediaDelivered = true
 							}
-							if result, ok := part.(sdk.ToolResultPart); ok && strings.Contains(result.Result.String(), "memoh_read_media") {
+							if result, ok := part.(sdk.ToolResultPart); ok && strings.Contains(result.Result.String(), "ami_read_media") {
 								envelopeLeaked = true
 							}
 						}

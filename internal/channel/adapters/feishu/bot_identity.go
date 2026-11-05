@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func resolveConfiguredBotOpenID(cfg channel.ChannelConfig) string {

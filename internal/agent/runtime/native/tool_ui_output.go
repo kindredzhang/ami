@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 // recordUIOutput stores a tool's UI-only payload (the allowlisted keys under

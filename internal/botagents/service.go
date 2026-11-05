@@ -12,15 +12,15 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/codexcfg"
-	"github.com/felinics/memoh/internal/agent/runtime/external/grok/grokcfg"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/runtimekind"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/codexcfg"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/grok/grokcfg"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 var (

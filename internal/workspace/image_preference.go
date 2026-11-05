@@ -9,9 +9,9 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 const (
@@ -447,7 +447,7 @@ func normalizeWorkspaceSkillDiscoveryRoots(roots []string) []string {
 	}
 
 	managedDir := path.Join(config.DefaultDataMount, "skills")
-	indexDir := path.Join(config.DefaultDataMount, ".memoh", "skills")
+	indexDir := path.Join(config.DefaultDataMount, ".ami", "skills")
 	legacyDir := path.Join(config.DefaultDataMount, ".skills")
 	seen := make(map[string]struct{}, len(roots))
 	normalized := make([]string, 0, len(roots))

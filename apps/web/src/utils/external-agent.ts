@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 import { Bot as BotIcon } from 'lucide-vue-next'
-import { Acp, ClaudeCode, ClaudeCodeColor, Codex, CodexColor, Xai } from '@memohai/icon'
+import { Acp, ClaudeCode, ClaudeCodeColor, Codex, CodexColor, Xai } from '@ami/icon'
 
 export function externalAgentIcon(agentID: unknown, color = false): Component {
   if (isACPAgent(agentID)) return Acp

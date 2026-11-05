@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/fx"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 // TestFXOptionsValidate validates both deployment shapes: split (channel

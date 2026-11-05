@@ -9,10 +9,10 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	approval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/mcp"
+	approval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 type capabilityTestConnections struct {

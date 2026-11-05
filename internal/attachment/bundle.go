@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 // Bundle is the internal attachment normalization shape shared across
@@ -40,7 +40,7 @@ const (
 	MetadataKeySourcePath = "source_path"
 	MetadataKeySourceURL  = "source_url"
 
-	containerMediaSubdir       = ".memoh/media"
+	containerMediaSubdir       = ".ami/media"
 	legacyContainerMediaSubdir = "media"
 )
 

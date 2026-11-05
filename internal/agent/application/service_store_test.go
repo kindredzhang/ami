@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	turnpkg "github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/settings"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	turnpkg "github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func TestBuildInteractionMetadataIncludesForwardConversation(t *testing.T) {
@@ -221,7 +221,7 @@ func TestBuildPersistInputsKeepsAttachmentOnlyUserDisplayTextEmpty(t *testing.T)
 		DisplayName:      "User",
 		Channel:          "web",
 		ConversationType: "private",
-		AttachmentPaths:  []string{"/data/.memoh/media/b2/b2edf40e.png"},
+		AttachmentPaths:  []string{"/data/.ami/media/b2/b2edf40e.png"},
 		Time:             time.Date(2026, 8, 20, 17, 37, 14, 0, time.UTC),
 	}, "")
 

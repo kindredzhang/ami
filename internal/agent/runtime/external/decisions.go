@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // ApprovalCard is the stream event that shows an approval to the user.
@@ -48,7 +48,7 @@ type ApprovalCall struct {
 
 // DecideApproval forwards a runtime's own permission question to the user.
 // The runtime's permission mode is the only policy layer for its native
-// tools; Memoh's rules govern Memoh's tools, which the gateway enforces. A
+// tools; Ami's rules govern Ami's tools, which the gateway enforces. A
 // failure fails closed, as cancelled.
 func DecideApproval(ctx context.Context, service approval.FlowService, waiter func(string) func(), input PromptInput, call ApprovalCall, emit func(event.StreamEvent), logger *slog.Logger) approval.FlowResult {
 	if service == nil {

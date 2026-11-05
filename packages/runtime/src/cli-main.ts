@@ -50,7 +50,7 @@ export async function runCLI(args: string[], overrides: Partial<CLIContext> = {}
   }
   const [command, ...rest] = args
   if (['help', '--help', '-h'].includes(command)) {
-    context.stdout('Usage: memoh-runtime <enroll|run|service|version>\nUse <command> --help for details.')
+    context.stdout('Usage: ami-runtime <enroll|run|service|version>\nUse <command> --help for details.')
     return 0
   }
   if (command === 'version' || command === '--version') { context.stdout(runtimeClientVersion); return 0 }
@@ -65,7 +65,7 @@ export async function runCLI(args: string[], overrides: Partial<CLIContext> = {}
 async function run(args: string[], context: CLIContext): Promise<number> {
   const { values } = parseArgs({ args, options: { ...connectionOptions, log: { type: 'string' } }, strict: true })
   if (values.help) {
-    context.stdout('Usage: memoh-runtime run [--server <url> --key <key> | --config <file>] [--log <file>]\nReads saved enrollment when no connection is supplied. Never saves or changes a service.')
+    context.stdout('Usage: ami-runtime run [--server <url> --key <key> | --config <file>] [--log <file>]\nReads saved enrollment when no connection is supplied. Never saves or changes a service.')
     return 0
   }
   const log = createLogFile(stringValue(values.log), context.stderr)
@@ -115,7 +115,7 @@ function createLogFile(path: string | undefined, warn: (message: string) => void
 async function enroll(args: string[], context: CLIContext): Promise<number> {
   const { values } = parseArgs({ args, strict: true, options: { ...connectionOptions, replace: { type: 'boolean' } } })
   if (values.help) {
-    context.stdout('Usage: memoh-runtime enroll [--server <url> --key <key> | --config <file>] [--replace]\nSaves the enrollment used by future runs. A running service changes only after an explicit restart.')
+    context.stdout('Usage: ami-runtime enroll [--server <url> --key <key> | --config <file>] [--replace]\nSaves the enrollment used by future runs. A running service changes only after an explicit restart.')
     return 0
   }
   assertManagedPaths(context)
@@ -140,7 +140,7 @@ async function enroll(args: string[], context: CLIContext): Promise<number> {
 async function service(args: string[], context: CLIContext): Promise<number> {
   const [action, ...rest] = args
   if (!action || ['help', '--help', '-h'].includes(action)) {
-    context.stdout('Usage: memoh-runtime service <install|start|stop|restart|status|uninstall>\nInstall registers a stopped service. Enrollment is managed separately with enroll.')
+    context.stdout('Usage: ami-runtime service <install|start|stop|restart|status|uninstall>\nInstall registers a stopped service. Enrollment is managed separately with enroll.')
     return 0
   }
   if (!['install', 'start', 'stop', 'restart', 'status', 'uninstall'].includes(action)) throw new Error(`unknown service command: ${action}`)
@@ -149,7 +149,7 @@ async function service(args: string[], context: CLIContext): Promise<number> {
     ...(action === 'status' ? { json: { type: 'boolean' as const } } : {}),
   } })
   if (values.help) {
-    context.stdout(`Usage: memoh-runtime service ${action}${action === 'status' ? ' [--json]' : ''}`)
+    context.stdout(`Usage: ami-runtime service ${action}${action === 'status' ? ' [--json]' : ''}`)
     return 0
   }
   assertManagedPaths(context)
@@ -157,7 +157,7 @@ async function service(args: string[], context: CLIContext): Promise<number> {
   const manager = createRuntimeServiceManager({ platform: context.platform, paths, runner: context.runner, uid: context.uid })
   if (action === 'status') {
     const status = await manager.status()
-    context.stdout(values.json ? JSON.stringify(status) : `Memoh Runtime service: ${status.state} (${status.backend})${status.detail ? `: ${status.detail}` : ''}`)
+    context.stdout(values.json ? JSON.stringify(status) : `Ami Runtime service: ${status.state} (${status.backend})${status.detail ? `: ${status.detail}` : ''}`)
     return status.state === 'running' ? 0 : 1
   }
   switch (action) {
@@ -193,10 +193,10 @@ async function service(args: string[], context: CLIContext): Promise<number> {
       await waitForService(manager, 'running')
       break
   }
-  context.stdout(action === 'install' ? 'installed Memoh Runtime service (stopped); run service start to connect'
-    : action === 'uninstall' ? 'uninstalled Memoh Runtime service; saved enrollment was retained'
-      : action === 'stop' ? 'stopped Memoh Runtime service; it starts again at the next login unless you run service uninstall'
-        : `${action === 'restart' ? 'restarted' : 'started'} Memoh Runtime service`)
+  context.stdout(action === 'install' ? 'installed Ami Runtime service (stopped); run service start to connect'
+    : action === 'uninstall' ? 'uninstalled Ami Runtime service; saved enrollment was retained'
+      : action === 'stop' ? 'stopped Ami Runtime service; it starts again at the next login unless you run service uninstall'
+        : `${action === 'restart' ? 'restarted' : 'started'} Ami Runtime service`)
   return 0
 }
 
@@ -206,22 +206,22 @@ async function resolveEnrollment(values: Values, context: CLIContext): Promise<R
     if (['server', 'key', 'team-id', 'insecure-localhost'].some(key => values[key] !== undefined)) throw new Error('--config cannot be combined with connection flags')
     return readRuntimeEnrollment(resolve(explicitConfig), context.home)
   }
-  const serverUrl = stringValue(values.server) ?? context.env.MEMOH_RUNTIME_SERVER
-  const key = stringValue(values.key) ?? context.env.MEMOH_RUNTIME_KEY
+  const serverUrl = stringValue(values.server) ?? context.env.AMI_RUNTIME_SERVER
+  const key = stringValue(values.key) ?? context.env.AMI_RUNTIME_KEY
   if (serverUrl || key) {
     if (!serverUrl || !key) throw new Error('--server and --key must be provided together')
     return normalizeRuntimeEnrollment({ serverUrl, key,
-      teamId: stringValue(values['team-id']) ?? context.env.MEMOH_RUNTIME_TEAM_ID,
-      insecureLocalhost: values['insecure-localhost'] === true || parseBooleanEnvironment(context.env.MEMOH_RUNTIME_INSECURE_LOCALHOST, 'MEMOH_RUNTIME_INSECURE_LOCALHOST') === true,
+      teamId: stringValue(values['team-id']) ?? context.env.AMI_RUNTIME_TEAM_ID,
+      insecureLocalhost: values['insecure-localhost'] === true || parseBooleanEnvironment(context.env.AMI_RUNTIME_INSECURE_LOCALHOST, 'AMI_RUNTIME_INSECURE_LOCALHOST') === true,
     }, context.home)
   }
   if (['team-id', 'insecure-localhost'].some(key => values[key] !== undefined)) throw new Error('connection options require --server and --key')
-  const input = context.env.MEMOH_RUNTIME_CONFIG ?? resolveRuntimePaths({ home: context.home }).configPath
+  const input = context.env.AMI_RUNTIME_CONFIG ?? resolveRuntimePaths({ home: context.home }).configPath
   return readRuntimeEnrollment(resolve(input), context.home)
 }
 
 function assertManagedPaths(context: CLIContext): void {
-  if (context.env.MEMOH_RUNTIME_HOME) throw new Error('MEMOH_RUNTIME_HOME is not supported for managed enrollment or services; use the fixed user runtime directory')
+  if (context.env.AMI_RUNTIME_HOME) throw new Error('AMI_RUNTIME_HOME is not supported for managed enrollment or services; use the fixed user runtime directory')
 }
 
 function stringValue(value: string | boolean | undefined): string | undefined {

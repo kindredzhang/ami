@@ -12,16 +12,16 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/acl"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	netctl "github.com/felinics/memoh/internal/network"
-	"github.com/felinics/memoh/internal/reasoning"
-	"github.com/felinics/memoh/internal/runtimekind"
-	tzutil "github.com/felinics/memoh/internal/timezone"
+	"github.com/kindredzhang/ami/internal/acl"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	netctl "github.com/kindredzhang/ami/internal/network"
+	"github.com/kindredzhang/ami/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	tzutil "github.com/kindredzhang/ami/internal/timezone"
 )
 
 type ReasoningOptionsResolver interface {

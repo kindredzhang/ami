@@ -3,7 +3,7 @@ package sessionruntime
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // Package-local backend/ownership tests isolate live reservation algorithms.

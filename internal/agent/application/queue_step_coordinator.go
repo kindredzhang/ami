@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/step"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 // queueStepCoordinator orders queue consumption after history persistence.

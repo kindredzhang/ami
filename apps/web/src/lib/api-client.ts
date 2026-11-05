@@ -1,4 +1,4 @@
-import { client } from '@memohai/sdk/client'
+import { client } from '@ami/sdk/client'
 import { notifyAuthSessionCleared } from './auth-session'
 
 export interface SetupApiClientOptions {

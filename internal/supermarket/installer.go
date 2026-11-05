@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspace"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 const maxConcurrentAppPreparations = 2

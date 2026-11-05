@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func TestResolveAttachmentKeepsBlobContextAliveUntilReaderClose(t *testing.T) {

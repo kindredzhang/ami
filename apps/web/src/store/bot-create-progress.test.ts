@@ -29,7 +29,7 @@ vi.mock('@/composables/api/useContainerStream', () => ({
   postBotsByBotIdContainerStream: (...args: unknown[]) => postContainerStream(...args),
 }))
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   patchBotsByBotIdAgentsById: (...args: unknown[]) => patchAgent(...args),
   getBotsByBotIdAgentsById: (...args: unknown[]) => getAgent(...args),
   getBotsByBotIdAgents: (...args: unknown[]) => getAgents(...args),
@@ -480,7 +480,7 @@ describe('useBotCreateProgressStore', () => {
     expect(store.createdAgent?.enabled).toBe(true)
   })
 
-  it('resumes a plain Memoh Bot after a refresh and applies its pending settings', async () => {
+  it('resumes a plain Ami Bot after a refresh and applies its pending settings', async () => {
     const store = useBotCreateProgressStore()
     await store.restore({ botId: 'bot-1', botName: 'cat', displayName: 'Cat', setupError: null, settings: { chat_model_id: 'm1' } }, true)
     expect(postBotsStream).not.toHaveBeenCalled()

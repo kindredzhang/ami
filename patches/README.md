@@ -10,14 +10,14 @@ Why:
 `dockview-core` builds the single-tab drag ghost by cloning the live docked tab
 DOM, then hard-codes the ghost offset as `offsetX: 30`.
 
-Both defaults fight Memoh's editor chrome:
+Both defaults fight Ami's editor chrome:
 
 - The cloned DOM includes strip-only layout pieces such as the close slot,
   active-tab shape, and lane padding. Once that structure is inside the floating
   drag chip, the title cannot be centered reliably with app CSS.
 - The 30px horizontal offset places the chip partly to the left of the pointer.
   VS Code's single editor-tab drag image anchors the tab at the pointer's
-  top-left (`setDragImage(tab, 0, 0)`), which is the behavior we want for Memoh
+  top-left (`setDragImage(tab, 0, 0)`), which is the behavior we want for Ami
   tabs.
 
 Scope:
@@ -66,7 +66,7 @@ Remove when:
 `dockview-core` exposes single-tab drag ghost customization/offset options, or
 upstream stops cloning the docked tab for the single-tab ghost and no longer
 bleeds the chip left of the pointer; and dockview-core lets the "+" actions and
-void ride with the tabs (or Memoh stops growing the tab strip with `flex:1 1
+void ride with the tabs (or Ami stops growing the tab strip with `flex:1 1
 auto`), so the relocate patch is no longer needed to keep the "+" flush after the
 last tab and the void spanning the blank header stretch.
 
@@ -107,7 +107,7 @@ Why:
 `dockview-vue@7.0.2` enriches header action params with `api`,
 `containerApi`, `group`, `panels`, and `activePanel` when the header action
 component mounts. On a group location change, its ESM runtime updates the Vue
-component with only `{ location }`, replacing the complete params object. Memoh's
+component with only `{ location }`, replacing the complete params object. Ami's
 header action components need `group` and `panels`, so the app crashes after that
 location-only update.
 
@@ -120,7 +120,7 @@ location instead of replacing params with `{ location }`.
 Remove when:
 
 `dockview-vue` upstream changes `updateLocation` to preserve the full header
-action props, or Memoh no longer uses header action components that depend on
+action props, or Ami no longer uses header action components that depend on
 the enriched params.
 
 Upgrade checklist:
@@ -134,6 +134,6 @@ Useful checks:
 
 ```bash
 grep -n "updateLocation" patches/dockview-vue@7.0.2.patch
-rg -n "Memoh patch: keep the complete header-action params|params: \\{ location \\}" \
+rg -n "Ami patch: keep the complete header-action params|params: \\{ location \\}" \
   node_modules/.pnpm/dockview-vue@7.0.2*/node_modules/dockview-vue/dist/dockview-vue.es.js
 ```

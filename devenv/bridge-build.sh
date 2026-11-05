@@ -3,7 +3,7 @@
 # Called by air after server build — safe to skip outside dev container.
 set -e
 
-RUNTIME_DIR="/opt/memoh/runtime"
+RUNTIME_DIR="/opt/ami/runtime"
 BRIDGE_BINARY="$RUNTIME_DIR/bridge"
 STAGING="${BRIDGE_BINARY}.new"
 

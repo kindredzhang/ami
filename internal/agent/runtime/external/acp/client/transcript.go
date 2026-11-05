@@ -1,6 +1,6 @@
 package client
 
-import "github.com/felinics/memoh/internal/agent/runtime/external"
+import "github.com/kindredzhang/ami/internal/agent/runtime/external"
 
 type TranscriptRecorder = external.TranscriptRecorder
 

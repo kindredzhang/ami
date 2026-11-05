@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/chat/attention"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/chat/attention"
 )
 
 // attentionMarker records that a session needs its creator; the attention

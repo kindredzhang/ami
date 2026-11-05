@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	dbpkg "github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/memory/migrate"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
 )
 
 func TestPostgresUpsertNodeConcurrentlyUnionsSourceRefs(t *testing.T) {

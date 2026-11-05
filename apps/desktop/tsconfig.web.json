@@ -16,7 +16,7 @@
     // values must carry an explicit './' prefix (TS5090).
     "paths": {
       "@renderer/*": ["./src/renderer/src/*"],
-      "@memohai/web/*": ["./src/renderer/types/web-stubs.d.ts"],
+      "@ami/web/*": ["./src/renderer/types/web-stubs.d.ts"],
       "@felinic/ui": ["./src/renderer/types/ui-stubs.d.ts"]
     }
   }

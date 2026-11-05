@@ -12,7 +12,7 @@ import (
 	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
 	larkevent "github.com/larksuite/oapi-sdk-go/v3/event"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // requireHTTPErrorWithCause checks that err answers status, that the answer

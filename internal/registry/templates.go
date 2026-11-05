@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/felinics/memoh/internal/providertemplates"
+	"github.com/kindredzhang/ami/internal/providertemplates"
 )
 
 func ProviderTemplateDefinitions(definitions []ProviderDefinition) []providertemplates.Definition {

@@ -3,9 +3,9 @@ package codex
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 func (*Driver) PlanMode(_ context.Context, input external.PromptInput) (external.ModeState, error) {

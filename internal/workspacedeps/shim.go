@@ -5,7 +5,7 @@ import "strings"
 // toolkitCABundle is the CA bundle the workspace image ships under the
 // toolkit. Agent shims export it as SSL_CERT_FILE when nothing else set one,
 // mirroring the toolkit's python3/pip3 wrappers (docker/toolkit/bin).
-const toolkitCABundle = "/opt/memoh/toolkit/certs/ca-certificates.crt"
+const toolkitCABundle = "/opt/ami/toolkit/certs/ca-certificates.crt"
 
 // ShimScript returns the contents of a PATH shim that execs entrypoint with
 // the caller's arguments. Agent shims additionally point SSL_CERT_FILE at the

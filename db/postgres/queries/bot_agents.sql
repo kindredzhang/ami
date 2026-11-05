@@ -12,14 +12,14 @@ RETURNING *;
 -- name: GetBotAgentByID :one
 SELECT *
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND id = sqlc.arg(id);
 
 -- name: GetActiveBotAgentByID :one
 SELECT *
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND id = sqlc.arg(id)
   AND enabled
@@ -28,14 +28,14 @@ WHERE team_id = public.memoh_current_team_id()
 -- name: LockBotForAgentMutation :one
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(bot_id)
 FOR NO KEY UPDATE;
 
 -- name: ListBotAgents :many
 SELECT *
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND deleted_at IS NULL
 ORDER BY created_at, id;
@@ -43,7 +43,7 @@ ORDER BY created_at, id;
 -- name: FindActiveBotAgentByRuntimeProvider :one
 SELECT *
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND runtime = sqlc.arg(runtime)
   AND metadata->>'provider' = sqlc.arg(provider)::text
@@ -61,7 +61,7 @@ SET name = sqlc.arg(name),
       ELSE bot_agents.metadata
     END,
     updated_at = now()
-WHERE bot_agents.team_id = public.memoh_current_team_id()
+WHERE bot_agents.team_id = public.ami_current_team_id()
   AND bot_agents.bot_id = sqlc.arg(bot_id)
   AND bot_agents.id = sqlc.arg(id)
   AND bot_agents.deleted_at IS NULL
@@ -70,7 +70,7 @@ WHERE bot_agents.team_id = public.memoh_current_team_id()
     OR NOT EXISTS (
       SELECT 1
       FROM bots
-      WHERE bots.team_id = public.memoh_current_team_id()
+      WHERE bots.team_id = public.ami_current_team_id()
         AND bots.id = sqlc.arg(bot_id)
         AND bots.default_bot_agent_id = bot_agents.id
     )
@@ -82,14 +82,14 @@ UPDATE bot_agents
 SET enabled = false,
     deleted_at = now(),
     updated_at = now()
-WHERE bot_agents.team_id = public.memoh_current_team_id()
+WHERE bot_agents.team_id = public.ami_current_team_id()
   AND bot_agents.bot_id = sqlc.arg(bot_id)
   AND bot_agents.id = sqlc.arg(id)
   AND bot_agents.deleted_at IS NULL
   AND NOT EXISTS (
     SELECT 1
     FROM bots
-    WHERE bots.team_id = public.memoh_current_team_id()
+    WHERE bots.team_id = public.ami_current_team_id()
       AND bots.id = sqlc.arg(bot_id)
       AND bots.default_bot_agent_id = bot_agents.id
   )
@@ -99,7 +99,7 @@ RETURNING *;
 SELECT EXISTS (
   SELECT 1
   FROM bots
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND id = sqlc.arg(bot_id)
     AND default_bot_agent_id = sqlc.arg(id)
 ) AS is_default;

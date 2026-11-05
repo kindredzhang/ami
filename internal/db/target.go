@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 const (

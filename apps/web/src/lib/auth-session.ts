@@ -6,7 +6,7 @@ export interface AuthSessionClearedDetail {
   reason: AuthSessionClearReason
 }
 
-export const AUTH_SESSION_CLEARED_EVENT = 'memoh:auth-session-cleared'
+export const AUTH_SESSION_CLEARED_EVENT = 'ami:auth-session-cleared'
 
 // Per-Tab focus/layout state now lives in sessionStorage (see
 // utils/tab-scoped-storage.ts), with a localStorage cold-start seed under the

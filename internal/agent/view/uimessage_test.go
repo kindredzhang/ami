@@ -10,11 +10,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	agentevent "github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/partmeta"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func convertTestMessagesToUITurns(messages []messagepkg.Message) []UITurn {
@@ -623,7 +623,7 @@ func TestConvertMessagesToUITurnsStripsUserXMLEnvelopeFallback(t *testing.T) {
 		Content: mustUIMessageJSON(t, turn.ModelMessage{
 			Role: "user",
 			Content: mustUIRawJSON(t, `<message id="msg-image-only" sender="Test User (@test_user)" t="2026-05-08T19:08:58Z" channel="telegram" conversation="Test Group" type="group" target="test-group">
-<attachment path="/data/.memoh/media/test/test-image.webp"/>
+<attachment path="/data/.ami/media/test/test-image.webp"/>
 
 </message>`),
 		}),
@@ -652,7 +652,7 @@ func TestConvertMessagesToUITurnsStripsUserXMLEnvelopeFallback(t *testing.T) {
 func TestConvertMessagesToUITurnsStripsUserXMLEnvelopeFromDisplayContent(t *testing.T) {
 	now := time.Now().UTC()
 	envelope := `<message sender="User" t="2026-08-20T17:37:14+08:00" channel="web" type="private" target="115e7013-dc2a-4437-8e21-b49fbb21dfef">
-<attachment path="/data/.memoh/media/b2/b2edf40e.png"/>
+<attachment path="/data/.ami/media/b2/b2edf40e.png"/>
 
 </message>`
 	turns := convertTestMessagesToUITurns([]messagepkg.Message{{
@@ -1650,7 +1650,7 @@ func TestConvertRawModelMessagesToUIAssistantMessagesKeepsBackgroundExecRunning(
 		{
 			Role: "tool",
 			Content: mustUIRawJSON(t, []map[string]any{
-				{"type": "tool-result", "toolCallId": "call-1", "toolName": "exec", "result": map[string]any{"json": map[string]any{"structuredContent": map[string]any{"status": "background_started", "task_id": "bg_1", "output_file": "/tmp/memoh-bg/bg_1.log"}}}},
+				{"type": "tool-result", "toolCallId": "call-1", "toolName": "exec", "result": map[string]any{"json": map[string]any{"structuredContent": map[string]any{"status": "background_started", "task_id": "bg_1", "output_file": "/tmp/ami-bg/bg_1.log"}}}},
 			}),
 		},
 	})
@@ -1691,7 +1691,7 @@ func TestApplyBackgroundTaskSnapshotsClosesPersistedStartedExec(t *testing.T) {
 			Content: mustUIMessageJSON(t, turn.ModelMessage{
 				Role: "tool",
 				Content: mustUIRawJSON(t, []map[string]any{
-					{"type": "tool-result", "toolCallId": "call-1", "toolName": "exec", "result": map[string]any{"structuredContent": map[string]any{"status": "background_started", "task_id": "bg_1", "output_file": "/tmp/memoh-bg/bg_1.log"}}},
+					{"type": "tool-result", "toolCallId": "call-1", "toolName": "exec", "result": map[string]any{"structuredContent": map[string]any{"status": "background_started", "task_id": "bg_1", "output_file": "/tmp/ami-bg/bg_1.log"}}},
 				}),
 			}),
 			CreatedAt: baseTime.Add(time.Second),
@@ -1711,7 +1711,7 @@ func TestApplyBackgroundTaskSnapshotsClosesPersistedStartedExec(t *testing.T) {
 		TaskID:     "bg_1",
 		Status:     "completed",
 		Command:    "npm test",
-		OutputFile: "/tmp/memoh-bg/bg_1.log",
+		OutputFile: "/tmp/ami-bg/bg_1.log",
 		Duration:   "2s",
 		OutputTail: "ok\n",
 	}})
@@ -1749,7 +1749,7 @@ func TestApplyBackgroundTaskSnapshotsClosesMissingPersistedStartedExec(t *testin
 			Content: mustUIMessageJSON(t, turn.ModelMessage{
 				Role: "tool",
 				Content: mustUIRawJSON(t, []map[string]any{
-					{"type": "tool-result", "toolCallId": "call-1", "toolName": "exec", "result": map[string]any{"structuredContent": map[string]any{"status": "background_started", "task_id": "bg_1", "output_file": "/tmp/memoh-bg/bg_1.log"}}},
+					{"type": "tool-result", "toolCallId": "call-1", "toolName": "exec", "result": map[string]any{"structuredContent": map[string]any{"status": "background_started", "task_id": "bg_1", "output_file": "/tmp/ami-bg/bg_1.log"}}},
 				}),
 			}),
 			CreatedAt: baseTime.Add(time.Second),
@@ -2063,7 +2063,7 @@ func TestUIMessageStreamConverterRuntimeNoticeCarriesMetadataArgs(t *testing.T) 
 			"install_task_id": " task-42 ",
 			"installed_path":  "",
 			"attempts":        2,
-			"detail":          map[string]any{"path": "/opt/memoh/toolkit/bin/codex"},
+			"detail":          map[string]any{"path": "/opt/ami/toolkit/bin/codex"},
 		},
 	})
 	want := UIMessage{
@@ -2255,7 +2255,7 @@ func TestRuntimeFeedbackLiveAndHistoryProjection(t *testing.T) {
 }
 
 // The terminal snapshot is a serialized []sdk.Message. Its tool input and
-// Memoh annotations arrive in the SDK shape and must read back the way the
+// Ami annotations arrive in the SDK shape and must read back the way the
 // persisted rows do; a pending ask_user card otherwise loses its form when
 // the run ends and the snapshot replaces the live block.
 func TestConvertRawModelMessagesReadsSDKShapedToolCalls(t *testing.T) {

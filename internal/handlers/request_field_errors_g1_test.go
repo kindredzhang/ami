@@ -8,9 +8,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/providers"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/providers"
 )
 
 func TestRequestFieldErrorsAreAnsweredWithTheFieldName(t *testing.T) {

@@ -21,12 +21,12 @@ const runtimeTeamId = '11111111-1111-4111-8111-111111111111'
 
 describe('runtime handshake', () => {
   it('preserves an API base path when building the public WebSocket URL', () => {
-    expect(runtimeConnectUrl('https://memoh.example/api').href)
-      .toBe('wss://memoh.example/api/runtimes/connect')
+    expect(runtimeConnectUrl('https://ami.example/api').href)
+      .toBe('wss://ami.example/api/runtimes/connect')
     expect(runtimeConnectUrl('http://127.0.0.1:8080/').href)
       .toBe('ws://127.0.0.1:8080/runtimes/connect')
-    expect(runtimeConnectUrl('https://memoh.example/prefix/?ignored=1#fragment').href)
-      .toBe('wss://memoh.example/prefix/runtimes/connect')
+    expect(runtimeConnectUrl('https://ami.example/prefix/?ignored=1#fragment').href)
+      .toBe('wss://ami.example/prefix/runtimes/connect')
   })
 
   it('uses the selected protocol and one base64url Unicode metadata header', () => {
@@ -47,8 +47,8 @@ describe('runtime handshake', () => {
     expect(headers['Sec-WebSocket-Protocol']).toBe(runtimeProtocolGrpc)
     expect(headers.Authorization).toBe(`Bearer ${key}`)
     expect(headers['X-Team-ID']).toBe(runtimeTeamId)
-    expect(headers).not.toHaveProperty('X-Memoh-Runtime-Hostname')
-    const decoded = JSON.parse(Buffer.from(headers['X-Memoh-Runtime-Metadata'], 'base64url').toString('utf8'))
+    expect(headers).not.toHaveProperty('X-Ami-Runtime-Hostname')
+    const decoded = JSON.parse(Buffer.from(headers['X-Ami-Runtime-Metadata'], 'base64url').toString('utf8'))
     expect(decoded).toEqual(metadata)
     expect(Object.keys(decoded).sort()).toEqual([
       'arch',
@@ -59,14 +59,14 @@ describe('runtime handshake', () => {
       'version',
       'workspace_base',
     ])
-    expect(headers['X-Memoh-Runtime-Metadata']).not.toContain('=')
+    expect(headers['X-Ami-Runtime-Metadata']).not.toContain('=')
 
-    const windowsMetadata = createHandshakeMetadata(String.raw`C:\Users\alice\Memoh`, '1.2.3', {
+    const windowsMetadata = createHandshakeMetadata(String.raw`C:\Users\alice\Ami`, '1.2.3', {
       hostname: 'alice-pc',
       os: 'win32',
       arch: 'x64',
     })
-    expect(windowsMetadata.workspace_base).toBe(String.raw`C:\Users\alice\Memoh`)
+    expect(windowsMetadata.workspace_base).toBe(String.raw`C:\Users\alice\Ami`)
   })
 
   it('allows plaintext only for an explicitly enabled loopback target', () => {
@@ -77,7 +77,7 @@ describe('runtime handshake', () => {
   })
 
   it('sends the production headers and preserved path in a real WebSocket handshake', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'memoh-runtime-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'ami-runtime-session-'))
     const controller = new AbortController()
     const statuses: string[] = []
     let running: Promise<void> | undefined
@@ -111,7 +111,7 @@ describe('runtime handshake', () => {
       expect(request.headers.authorization).toBe(`Bearer ${key}`)
       expect(request.headers['x-team-id']).toBe(runtimeTeamId)
       expect(request.headers['sec-websocket-protocol']).toBe(runtimeProtocolGrpc)
-      const encoded = request.headers['x-memoh-runtime-metadata']
+      const encoded = request.headers['x-ami-runtime-metadata']
       expect(typeof encoded).toBe('string')
       expect(JSON.parse(Buffer.from(String(encoded), 'base64url').toString('utf8'))).toMatchObject({
         version: 1,
@@ -133,7 +133,7 @@ describe('runtime handshake', () => {
   })
 
   it('includes a bounded server response body in handshake errors', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'memoh-runtime-rejection-'))
+    const root = await mkdtemp(join(tmpdir(), 'ami-runtime-rejection-'))
     const controller = new AbortController()
     let running: Promise<void> | undefined
     let rejection: string | undefined
@@ -171,7 +171,7 @@ describe('runtime handshake', () => {
   })
 
   it('stops waiting when a handshake error body never ends', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'memoh-runtime-stalled-rejection-'))
+    const root = await mkdtemp(join(tmpdir(), 'ami-runtime-stalled-rejection-'))
     const controller = new AbortController()
     let running: Promise<void> | undefined
     let rejection: string | undefined

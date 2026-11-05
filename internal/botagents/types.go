@@ -3,7 +3,7 @@ package botagents
 import (
 	"time"
 
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 // BotAgent runtimes: RuntimeACP is bot-agent-domain vocabulary (the ACP row

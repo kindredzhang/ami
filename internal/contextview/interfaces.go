@@ -3,7 +3,7 @@ package contextview
 import (
 	"context"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 type CollectRequest struct {

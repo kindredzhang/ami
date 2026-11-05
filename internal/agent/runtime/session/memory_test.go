@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 type afterFuncTrackingContext struct {

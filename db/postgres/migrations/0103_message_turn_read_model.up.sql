@@ -19,8 +19,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_bot_history_messages_turn_seq_unique
   ON bot_history_messages(turn_id, turn_message_seq)
   WHERE turn_id IS NOT NULL AND turn_message_seq IS NOT NULL;
 
-DROP TABLE IF EXISTS _memoh_history_turn_backfill;
-CREATE TEMP TABLE _memoh_history_turn_backfill AS
+DROP TABLE IF EXISTS _ami_history_turn_backfill;
+CREATE TEMP TABLE _ami_history_turn_backfill AS
 WITH ordered AS (
   SELECT
     m.*,
@@ -71,7 +71,7 @@ SET turn_id = t.turn_id,
     turn_message_seq = 1,
     turn_position = t.position,
     turn_visible = true
-FROM _memoh_history_turn_backfill t
+FROM _ami_history_turn_backfill t
 WHERE m.id = t.request_message_id
   AND m.turn_id IS NULL;
 
@@ -80,7 +80,7 @@ SET turn_id = t.turn_id,
     turn_message_seq = 2,
     turn_position = t.position,
     turn_visible = true
-FROM _memoh_history_turn_backfill t
+FROM _ami_history_turn_backfill t
 WHERE m.id = t.assistant_message_id
   AND m.turn_id IS NULL;
 
@@ -99,7 +99,7 @@ WITH bounded_turns AS (
       PARTITION BY t.session_id
       ORDER BY t.position
     ) AS next_message_id
-  FROM _memoh_history_turn_backfill t
+  FROM _ami_history_turn_backfill t
   LEFT JOIN bot_history_messages req ON req.id = t.request_message_id
   LEFT JOIN bot_history_messages assistant ON assistant.id = t.assistant_message_id
 ),
@@ -121,7 +121,7 @@ tail_messages AS (
     AND m.turn_id IS NULL
     AND NOT EXISTS (
       SELECT 1
-      FROM _memoh_history_turn_backfill anchored
+      FROM _ami_history_turn_backfill anchored
       WHERE anchored.request_message_id = m.id
          OR anchored.assistant_message_id = m.id
     )
@@ -200,4 +200,4 @@ FROM (
 ) turns
 WHERE s.id = turns.session_id;
 
-DROP TABLE IF EXISTS _memoh_history_turn_backfill;
+DROP TABLE IF EXISTS _ami_history_turn_backfill;

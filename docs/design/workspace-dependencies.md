@@ -2,11 +2,11 @@
 
 ## Ownership
 
-Supermarket publishes the official `memoh` dependency registry. Memoh contains the
+Supermarket publishes the official `ami` dependency registry. Ami contains the
 manifest parser, verified artifact loader, discovery, script runner, installation
 state machine, and runtime integration. It does not embed dependency definitions or
 installation scripts. Adding a CLI or correcting its recipe is a registry release,
-not a Memoh release. Adding an Agent runtime driver still requires Memoh code.
+not a Ami release. Adding an Agent runtime driver still requires Ami code.
 
 The first release supports the official registry only and includes Codex, Claude
 Code, Node.js, Python, and uv. Apps compose Skills, workspace dependencies and
@@ -26,8 +26,8 @@ Supermarket publishes four HTTP surfaces:
 | Method | Path | Meaning |
 | --- | --- | --- |
 | GET | `/api/dependencies` | Current catalog; search, registry/category filtering and pagination |
-| GET | `/api/registries/memoh/dependencies/{id}` | Current dependency descriptor |
-| GET | `/api/registries/memoh/dependencies/{id}/releases/{revision}` | Immutable release document |
+| GET | `/api/registries/ami/dependencies/{id}` | Current dependency descriptor |
+| GET | `/api/registries/ami/dependencies/{id}/releases/{revision}` | Immutable release document |
 | GET | `/api/artifacts/dependency/{digest}` | Immutable compressed definition artifact |
 
 Dependency snapshots and their reviewed `dependencies.lock.json` are independent of
@@ -44,7 +44,7 @@ There are three distinct identities:
 
 The manifest digest additionally frames the sorted manifest/script filenames,
 lengths and contents. Both implementations use `name + NUL + byte length + NUL +
-contents`. Icons have their own digest. Memoh checks the release, archive, manifest
+contents`. Icons have their own digest. Ami checks the release, archive, manifest
 projection, script digest and icon contents before making a definition usable.
 Archives are parsed in memory; links, unsafe paths, duplicate files, undeclared
 files, malformed metadata and budget violations are rejected before execution.
@@ -67,19 +67,19 @@ A refresh or publication between preparation and execution cannot swap the scrip
 A new operation resolves latest when no revision is supplied, while retries retain
 the prepared revision reported by the started event. Reinstall keeps the prior installation available
 while the replacement is staged. If the definition has no dedicated reinstall
-script, Memoh reruns install without removing the existing versions first.
+script, Ami reruns install without removing the existing versions first.
 
 Same-schema recipe changes must preserve the managed directory and result contract,
 including the ability to remove installations produced by prior recipe revisions.
 New scripts never replace a running operation's in-memory definition.
 
-Rollback is different: it executes Memoh's fixed symlink-switch operation, not a
+Rollback is different: it executes Ami's fixed symlink-switch operation, not a
 registry rollback script. The previous software version, entrypoints and recorded
 publication identity are restored together. No registry request is needed.
 
 ## Persistent cache and availability
 
-Memoh uses the configured `supermarket.base_url` and accepts only `memoh` dependency
+Ami uses the configured `supermarket.base_url` and accepts only `ami` dependency
 releases from that origin. Downloads and redirects stay on the configured origin;
 artifact URLs are constructed from verified digests, not arbitrary metadata URLs.
 Compiled runtime requirements bind official dependency IDs to launcher commands.
@@ -112,9 +112,9 @@ operations remain available in the persistent cache.
 
 ## Workspace layout and execution
 
-Managed dependencies live under `<data root>/.memoh/deps/<id>/versions/<version>`.
+Managed dependencies live under `<data root>/.ami/deps/<id>/versions/<version>`.
 `current` identifies the active version, `state.json` records its publication and
-entrypoints, and generated shims in `.memoh/deps/bin` precede the image toolkit on
+entrypoints, and generated shims in `.ami/deps/bin` precede the image toolkit on
 PATH for every bridge command, including both pipe and PTY exec, not just the Codex
 and Claude Code drivers. Dependency management always uses the bot container and
 its `/data` root, independently of the selected computer. The direct runtimes retain
@@ -165,7 +165,7 @@ errors are not exposed on public endpoints. HTTP and SSE failures expose stable
 rows also include bounded, redacted diagnostic details that remain available after
 the initiating tab closes.
 
-## Memoh API and UI
+## Ami API and UI
 
 Existing `/bots/{bot_id}/dependencies` actions remain. Install/update/reinstall and
 remove accept an optional `definition_revision`; install-like actions also accept
@@ -205,7 +205,7 @@ Required validation includes:
 - Real HTTP installation, software version selection, update, reinstall, removal,
   overlays and rollback for the five official dependencies.
 - Publishing an additional test dependency without changing Go/TS and installing it
-  through Memoh; current-definition behavior for subsequent operations.
+  through Ami; current-definition behavior for subsequent operations.
 - Fresh PostgreSQL initialization and incremental down/up, Go tests/race/lint,
   frontend tests/type checks/UI guard, Supermarket tests/type checks/build, and all
   six stacked PR CI summaries.

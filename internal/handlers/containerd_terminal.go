@@ -12,9 +12,9 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/bots"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/shellenv"
+	"github.com/kindredzhang/ami/internal/bots"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/shellenv"
 )
 
 // terminalIdleTimeout closes inactive terminal WebSocket sessions to

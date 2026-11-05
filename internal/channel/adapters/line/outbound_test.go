@@ -9,8 +9,8 @@ import (
 
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/publicmedia"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/publicmedia"
 )
 
 const testPublicMediaSignSecret = "line-public-media-test-secret"
@@ -202,14 +202,14 @@ func TestSendPreparedReturnsErrorWhenOnlyUnsupportedAttachments(t *testing.T) {
 		Target: "Uuser",
 		Message: channel.PreparedMessage{
 			Message: channel.Message{
-				Attachments: []channel.Attachment{{Type: channel.AttachmentFile, URL: "memoh://file"}},
+				Attachments: []channel.Attachment{{Type: channel.AttachmentFile, URL: "ami://file"}},
 			},
 			Attachments: []channel.PreparedAttachment{
 				{
 					Kind: channel.PreparedAttachmentUpload,
 					Logical: channel.Attachment{
 						Type: channel.AttachmentFile,
-						URL:  "memoh://file",
+						URL:  "ami://file",
 					},
 				},
 			},
@@ -236,14 +236,14 @@ func TestSendPreparedDoesNotPushTextWhenAttachmentsUnsupported(t *testing.T) {
 			Message: channel.Message{
 				Format:      channel.MessageFormatPlain,
 				Text:        "hello",
-				Attachments: []channel.Attachment{{Type: channel.AttachmentFile, URL: "memoh://file"}},
+				Attachments: []channel.Attachment{{Type: channel.AttachmentFile, URL: "ami://file"}},
 			},
 			Attachments: []channel.PreparedAttachment{
 				{
 					Kind: channel.PreparedAttachmentUpload,
 					Logical: channel.Attachment{
 						Type: channel.AttachmentFile,
-						URL:  "memoh://file",
+						URL:  "ami://file",
 					},
 				},
 			},

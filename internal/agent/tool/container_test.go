@@ -13,11 +13,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/hooks"
-	workspacepkg "github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/hooks"
+	workspacepkg "github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const readImageHint = "Also supports reading image files (PNG, JPEG, GIF, WebP)"
@@ -192,7 +192,7 @@ func TestContainerExecDescriptionUsesRemoteWindowsCommands(t *testing.T) {
 	provider := NewContainerProvider(nil, containerTestBridgeProvider{info: bridge.WorkspaceInfo{
 		Backend:        bridge.WorkspaceBackendRemote,
 		OS:             "win32",
-		DefaultWorkDir: `C:\Users\alice\Memoh`,
+		DefaultWorkDir: `C:\Users\alice\Ami`,
 	}}, nil, "")
 	toolList, err := provider.Tools(context.Background(), SessionContext{BotID: "bot-1"})
 	if err != nil {

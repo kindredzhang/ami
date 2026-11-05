@@ -1,10 +1,10 @@
 package tools
 
 import (
-	"github.com/felinics/memoh/internal/agent/tool/internal/toolname"
+	"github.com/kindredzhang/ami/internal/agent/tool/internal/toolname"
 )
 
-// ToolName identifies a built-in Memoh agent tool.
+// ToolName identifies a built-in Ami agent tool.
 type ToolName = toolname.Name
 
 func ToolMCPManage() ToolName { return toolname.ToolMCPManage() }

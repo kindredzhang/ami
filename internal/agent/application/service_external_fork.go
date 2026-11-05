@@ -8,11 +8,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/turn"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 // ErrExternalForkUnsupported reports a fork request against an external
@@ -25,7 +25,7 @@ var ErrExternalForkUnsupported = errors.New("runtime does not support forking")
 var ErrExternalForkAnchorMissing = errors.New("fork source turn has no runtime turn anchor")
 
 // PrepareExternalFork forks the runtime-side conversation behind an external
-// session and returns the complete runtime metadata the forked Memoh session
+// session and returns the complete runtime metadata the forked Ami session
 // must carry. The anchor turn's recorded runtime turn id bounds the
 // runtime-side fork to the same cut as the visible history.
 func (s *Service) PrepareExternalFork(ctx context.Context, botID, sessionID, turnID string) (map[string]any, error) {

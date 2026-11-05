@@ -15,7 +15,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestGrokBuildRuntimeMigration(t *testing.T) {

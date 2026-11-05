@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
 )
 
 func (t *turnRunner) answerQuestions(ctx context.Context, requestID string, payload *controlRequestPayload) {

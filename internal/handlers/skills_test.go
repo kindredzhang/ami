@@ -28,18 +28,18 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	displaypkg "github.com/felinics/memoh/internal/display"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	displaypkg "github.com/kindredzhang/ami/internal/display"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 type targetResolvingContainerWorkspace struct {
@@ -612,15 +612,15 @@ func TestListSkillsAPIUsesConfiguredDiscoveryRoots(t *testing.T) {
 
 func TestListSkillsAPIIncludesInstalledRegistrySkillDirectories(t *testing.T) {
 	env := newSkillsTestEnv(t)
-	appRoot, err := skillset.SkillDirForIDs("memoh", "github", "review")
+	appRoot, err := skillset.SkillDirForIDs("ami", "github", "review")
 	if err != nil {
 		t.Fatalf("Registry App Skill root: %v", err)
 	}
-	disabledRoot, err := skillset.SkillDirForIDs("memoh", "disabled", "hidden")
+	disabledRoot, err := skillset.SkillDirForIDs("ami", "disabled", "hidden")
 	if err != nil {
 		t.Fatalf("disabled Registry App Skill root: %v", err)
 	}
-	remoteRoot, err := skillset.SkillDirForIDs("memoh", "remote", "hidden")
+	remoteRoot, err := skillset.SkillDirForIDs("ami", "remote", "hidden")
 	if err != nil {
 		t.Fatalf("remote Registry App Skill root: %v", err)
 	}
@@ -644,7 +644,7 @@ func TestListSkillsAPIIncludesInstalledRegistrySkillDirectories(t *testing.T) {
 	if got.State != skillset.StateEffective {
 		t.Fatalf("state = %q, want effective", got.State)
 	}
-	if got.RegistryID != "memoh" || got.AppID != "github" || got.SkillID != "review" {
+	if got.RegistryID != "ami" || got.AppID != "github" || got.SkillID != "review" {
 		t.Fatalf("Registry App identity = %q/%q/%q", got.RegistryID, got.AppID, got.SkillID)
 	}
 	if got.Editable || got.Deletable {

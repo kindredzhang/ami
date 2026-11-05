@@ -12,7 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-const acceptanceRuntimeKeyPrefix = "memoh:session_runtime:acceptance:"
+const acceptanceRuntimeKeyPrefix = "ami:session_runtime:acceptance:"
 
 func flushAcceptanceBackend(ctx context.Context, rawURL string) error {
 	options, err := redis.ParseURL(rawURL)

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // movingStickerTGS is a red square crossing a 512x512 canvas, so the sampled

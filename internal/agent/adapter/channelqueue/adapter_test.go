@@ -4,9 +4,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/application"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/channel/inbound"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/channel/inbound"
 )
 
 func TestMapAdmissionErrorKeepsChannelCodes(t *testing.T) {

@@ -16,8 +16,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/chat/timeline"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // rasterPNG returns real PNG bytes. Image input is now decided by the bytes, so
@@ -78,7 +78,7 @@ func imageInputService(t *testing.T, assets map[string][]byte) *Service {
 				return io.NopCloser(bytes.NewReader(data)), "image/png", nil
 			},
 			accessPathFn: func(_ context.Context, _, contentHash string) (string, error) {
-				return "/data/.memoh/media/" + contentHash, nil
+				return "/data/.ami/media/" + contentHash, nil
 			},
 		},
 	}
@@ -188,7 +188,7 @@ func TestGatewayStickerBytesRouteToFileFallback(t *testing.T) {
 	if !ok || item.Type != "file" || item.Transport != gatewayTransportToolFileRef {
 		t.Fatalf("routed attachment = %#v, want a file reference", merged[0])
 	}
-	if item.Payload != "/data/.memoh/media/video-sticker" {
+	if item.Payload != "/data/.ami/media/video-sticker" {
 		t.Fatalf("file reference = %q, want the stored original", item.Payload)
 	}
 	if parts := extractNativeImageParts(merged); len(parts) != 0 {

@@ -8,8 +8,8 @@ import (
 
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 func TestOpenStreamRequiresTarget(t *testing.T) {

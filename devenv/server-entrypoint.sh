@@ -32,10 +32,10 @@ if [ -f /sys/fs/cgroup/cgroup.controllers ]; then
 fi
 
 mkdir -p /run/containerd
-# OTEL_* in this environment configures Memoh, and containerd reads the same
+# OTEL_* in this environment configures Ami, and containerd reads the same
 # variables: with an endpoint set it starts exporting its own spans, by
-# default over http/protobuf and under Memoh's OTEL_SERVICE_NAME. Against
-# Memoh's default gRPC collector port that fails on every export.
+# default over http/protobuf and under Ami's OTEL_SERVICE_NAME. Against
+# Ami's default gRPC collector port that fails on every export.
 OTEL_SDK_DISABLED=true containerd &
 CONTAINERD_PID=$!
 
@@ -53,20 +53,20 @@ if ! ctr version >/dev/null 2>&1; then
 fi
 echo "containerd is running (pid $CONTAINERD_PID)"
 
-workspace_image_archive=/opt/memoh/dev-images/workspace-debian.tar
+workspace_image_archive=/opt/ami/dev-images/workspace-debian.tar
 if [ ! -r "$workspace_image_archive" ]; then
   echo "ERROR: Development workspace image archive is missing: $workspace_image_archive" >&2
   echo "       Run 'mise run dev:workspace-image' before starting the development server." >&2
   exit 1
 fi
 
-containerd_namespace="${MEMOH_CONTAINERD_NAMESPACE:-default}"
-workspace_image_ref="${MEMOH_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
+containerd_namespace="${AMI_CONTAINERD_NAMESPACE:-default}"
+workspace_image_ref="${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
 # Importing the ~1GB archive takes far longer than the rest of this entrypoint,
 # and it happens on every container start. The stamp records which archive the
 # store already holds; it lives inside /var/lib/containerd so it is wiped by the
 # same `docker compose down -v` that wipes the image store it vouches for.
-workspace_image_stamp=/var/lib/containerd/.memoh-dev-workspace-image
+workspace_image_stamp=/var/lib/containerd/.ami-dev-workspace-image
 workspace_archive_key="$(stat -c '%s:%Y' "$workspace_image_archive")"
 
 workspace_image_present() {
@@ -88,7 +88,7 @@ echo "Development workspace image is ready."
 
 # Build bridge binary into runtime directory (first boot)
 echo "Building bridge binary..."
-(cd /workspace && go build -o /opt/memoh/runtime/bridge ./cmd/bridge)
+(cd /workspace && go build -o /opt/ami/runtime/bridge ./cmd/bridge)
 echo "Bridge binary ready."
 
 echo "Starting server..."

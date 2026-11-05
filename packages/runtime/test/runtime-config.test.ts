@@ -23,7 +23,7 @@ describe('runtime enrollment configuration', () => {
     const root = await temporaryDirectory()
     const configPath = join(root, 'private', 'config.json')
     const enrollment = normalizeRuntimeEnrollment({
-      serverUrl: 'wss://memoh.example/api///',
+      serverUrl: 'wss://ami.example/api///',
       key: ` ${runtimeKey} `,
       teamId: teamID.toUpperCase(),
     }, root)
@@ -32,7 +32,7 @@ describe('runtime enrollment configuration', () => {
 
     await expect(readRuntimeEnrollment(configPath, root)).resolves.toEqual({
       schemaVersion: 1,
-      serverUrl: 'https://memoh.example/api',
+      serverUrl: 'https://ami.example/api',
       key: runtimeKey,
       teamId: teamID,
       insecureLocalhost: false,
@@ -45,13 +45,13 @@ describe('runtime enrollment configuration', () => {
 
   it.runIf(process.platform !== 'win32')('keeps the key private inside a parent directory shared with other components', async () => {
     const root = await temporaryDirectory()
-    const shared = join(root, '.memoh')
+    const shared = join(root, '.ami')
     await mkdir(shared)
     await chmod(shared, 0o750)
     const configPath = join(shared, 'runtime.json')
 
     await writeRuntimeEnrollment(configPath, normalizeRuntimeEnrollment({
-      serverUrl: 'wss://memoh.example/api',
+      serverUrl: 'wss://ami.example/api',
       key: runtimeKey,
     }))
 
@@ -67,7 +67,7 @@ describe('runtime enrollment configuration', () => {
     await expect(readRuntimeEnrollment(configPath, root)).rejects.toThrow('unsupported schema version')
     await expect(readRuntimeEnrollment(configPath, root)).rejects.not.toThrow(runtimeKey)
     expect(() => normalizeRuntimeEnrollment({
-      serverUrl: 'https://memoh.example/api?credential=unexpected',
+      serverUrl: 'https://ami.example/api?credential=unexpected',
       key: runtimeKey,
     }, root)).toThrow('query string or fragment')
   })
@@ -77,7 +77,7 @@ describe('runtime enrollment configuration', () => {
     const target = join(root, 'actual.json')
     const link = join(root, 'runtime.json')
     await writeFile(target, JSON.stringify(normalizeRuntimeEnrollment({
-      serverUrl: 'https://memoh.example',
+      serverUrl: 'https://ami.example',
       key: runtimeKey,
     }, root)))
     await symlink(target, link)
@@ -88,7 +88,7 @@ describe('runtime enrollment configuration', () => {
 })
 
 async function temporaryDirectory(): Promise<string> {
-  const path = await mkdtemp(join(tmpdir(), 'memoh-runtime-config-'))
+  const path = await mkdtemp(join(tmpdir(), 'ami-runtime-config-'))
   temporaryDirectories.push(path)
   return path
 }

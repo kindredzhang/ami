@@ -104,7 +104,7 @@ func TestTeamSchemaGuard(t *testing.T) {
 			  ),
 			  (SELECT count(*) FROM pg_constraint con
 			    WHERE con.conrelid=('public.'||quote_ident($1))::regclass
-			      AND con.contype='u' AND con.conname LIKE 'memoh_team_key_%')`, tbl).Scan(&teamPrimary, &helperKeys); err != nil {
+			      AND con.contype='u' AND con.conname LIKE 'ami_team_key_%')`, tbl).Scan(&teamPrimary, &helperKeys); err != nil {
 			t.Fatalf("team key check %s: %v", tbl, err)
 		}
 		if !teamPrimary && helperKeys != 1 {

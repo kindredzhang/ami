@@ -5,7 +5,7 @@ package mcp
 // token-gated) and the OAuth authorization server (PRM, ASM, DCR, authorize,
 // token with REAL PKCE verification, single-use codes, refresh rotation).
 // The fake enforces every check a real provider enforces, so the journey
-// fails if Memoh's client cuts any spec corner (missing resource parameter,
+// fails if Ami's client cuts any spec corner (missing resource parameter,
 // wrong PKCE, redirect_uri drift) — not just if its own bookkeeping breaks.
 //
 // Covered regressions (all shipped bugs):
@@ -31,8 +31,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // ---------- fake persistence ----------

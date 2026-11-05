@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // errorCodeWriters are the helpers that put a code into an error response or

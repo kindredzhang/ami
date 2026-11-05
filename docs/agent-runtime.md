@@ -16,7 +16,7 @@
 - Prompt templates are embedded from `internal/agent/runtime/native/prompts/`. Partials (reusable fragments) are prefixed with `_` (e.g., `_memory.md`, `_identities.md`). System prompting combines `system_common.md` with mode-specific prompts such as `mode_chat.md` and `mode_discuss.md`.
 - Internal chat state lives under `internal/chat/`: `thread` owns Thread lifecycle/forks, `message` owns persistence, `checkpoint` owns history checkpoints, `timeline` owns canonical event projection, and `view` owns API/UI history projection. These packages do not orchestrate Agent execution.
 - The chat timeline (`internal/chat/timeline/`) owns canonical events, projection, rendering, persistence, and context composition. Inbound adaptation lives in `internal/channel/inbound/`, while discuss-mode driving lives in `internal/channel/discuss/`.
-- Browser Use and Computer Use capabilities live in `internal/agent/tool/browser.go` (plus `internal/agent/tool/computer_a11y.go`) and are exposed only when the bot's workspace display is enabled. `browser_action` / `browser_observe` operate the headed workspace Chrome/Chromium instance over CDP, `browser_remote_session` exposes the same CDP endpoint for code-driven Playwright/CDP sessions, and the Computer Use pair (`computer_observe` / `computer_action`) drives the broader GUI desktop: snapshots come from the AT-SPI accessibility tree via the bundled `a11y-cli` Rust helper at `/opt/memoh/toolkit/display/bin/a11y-cli`, and raw RFB pointer/keyboard input remains as a fallback when accessibility cannot reach the target. Both browser and computer screenshots are saved to a workspace path and never auto-attached to the conversation, so the model must explicitly read the path when it wants the image. Prefer Browser Use for web pages; use Computer Use for native dialogs, non-browser apps, or GUI states that CDP cannot reach.
+- Browser Use and Computer Use capabilities live in `internal/agent/tool/browser.go` (plus `internal/agent/tool/computer_a11y.go`) and are exposed only when the bot's workspace display is enabled. `browser_action` / `browser_observe` operate the headed workspace Chrome/Chromium instance over CDP, `browser_remote_session` exposes the same CDP endpoint for code-driven Playwright/CDP sessions, and the Computer Use pair (`computer_observe` / `computer_action`) drives the broader GUI desktop: snapshots come from the AT-SPI accessibility tree via the bundled `a11y-cli` Rust helper at `/opt/ami/toolkit/display/bin/a11y-cli`, and raw RFB pointer/keyboard input remains as a fallback when accessibility cannot reach the target. Both browser and computer screenshots are saved to a workspace path and never auto-attached to the conversation, so the model must explicitly read the path when it wants the image. Prefer Browser Use for web pages; use Computer Use for native dialogs, non-browser apps, or GUI states that CDP cannot reach.
 - Headless Playwright scripts are still ordinary workspace commands, but they are not the same path as the headed workspace browser/display stack. Use the headed Browser Use tools when the user needs to inspect or operate the visible workspace browser.
 - External agent runtimes (Codex, Claude Code, Grok Build, generic ACP) are registered in one `external.Registry`, which application, handlers and wiring share. An optional capability (model catalog, fork, compaction, goal, plan mode, commands, modes, device login, account, quota, sign-out) is the interface the driver implements, found with `external.As[T]`; it is never repeated as a flag. A driver's static `external.Caps` holds only what no interface says: its managed dependency and command, whether a fork must go through the runtime and the metadata key of the only turn it may start from, and whether read commands wait for an idle conversation. The shared pieces every driver uses live in `external`: approval decision and card (`DecideApproval`, `ApprovalCard`), questions (`AskUser`, `UserInputCard`), the steering pump (`PumpSteering`), the permission menu (`PermissionModeState`, `SelectedPermissionMode`), plan mode (`PlanModeState`), the compaction turn (`CompactionTurn`) and process sign-out (`agentproc.Supervisor.SignOut`).
 - The compaction service (`internal/agent/context/compaction/`) handles LLM-based conversation summarization.
@@ -83,7 +83,7 @@ the next call answers and the messages no row holds, can take more, and a
 Discuss batch is kept by its own rule. The 32000-token bound was calibrated on
 call-group sizes of real agent sessions, and every event logs
 `compaction retention` with the budget, the call groups it kept and the
-latest group's size, to check it against Memoh's own traffic.
+latest group's size, to check it against Ami's own traffic.
 Each pass forks that request up to the newest messages it keeps and asks the
 run's own model for the summary that replaces what folds there. The
 instruction quotes the input the next call answers, and asks the summary to
@@ -229,7 +229,7 @@ position, which its summary may have read. A write that removes rows (hiding,
 replacing or superseding a turn, deleting messages, retiring a run's
 projections) moves the session back, in the same statement, to the newest
 checkpoint on its chain that does not depend on them
-(`memoh_rewind_history_checkpoint`), and deletes the checkpoints it moved back
+(`ami_rewind_history_checkpoint`), and deletes the checkpoints it moved back
 past: they depend on a removed row, so none holds again, and a fork copies its
 own. A fold that read one of them as the active checkpoint finds the history
 moved when it commits. Nothing else changes the history a
@@ -298,7 +298,7 @@ bot's data volume: Codex writes rollouts under `CODEX_HOME`
 (`/data/.codex/agents/<agent>/`), Claude Code writes transcripts under
 `/data/.claude/projects/`, Grok Build writes sessions under `GROK_HOME`
 (`/data/.grok/agents/<agent>/`). These files are
-the authoritative native conversation record; Memoh does not snapshot them into the
+the authoritative native conversation record; Ami does not snapshot them into the
 database. Chat history stays in PostgreSQL as usual, so losing the native file
 costs the model its own memory of tool details, not the visible conversation.
 
@@ -321,7 +321,7 @@ the Claude transcript is gone, or Grok answers `session/resume` that the
 session file is missing — the turn
 starts a new native session and says
 so with a `native_history_lost` runtime notice; the next turns continue from
-Memoh's composed context. Any other failure while resuming is reported
+Ami's composed context. Any other failure while resuming is reported
 instead, since a retry may still resume the thread: as
 `external_runtime.session_resume_failed`, or, for a failure the user can fix
 such as Grok rejecting its sign-in, as that failure. Nothing here can make a
@@ -342,7 +342,7 @@ Grok runs on the ACP core (`internal/agent/runtime/external/acp`, see its
 conversation of the Agent, each on a session of its own, and also its
 sign-in, account and model catalog. A finished sign-in retires the Agent's
 process, so the next turn starts from the new login.
-Grok reports a Memoh tool gateway it could not reach through
+Grok reports a Ami tool gateway it could not reach through
 `_x.ai/mcp/server_status`, which the turn surfaces as a tools-unavailable
 notice. Grok's ACP surface has no mid-turn input: a prompt sent while one runs
 is queued until the turn ends, so steering is not offered, and `mcp/upsert`
@@ -391,7 +391,7 @@ through `POST /bots/{bot_id}/agents/{id}/login/device/{authorize,poll,cancel}`
 (`external.DeviceLoginProvider`). The runtime obtains the device code, the
 user opens the URL and confirms it, and the runtime writes its own login file
 in the Agent's home on the bot's data volume, where it keeps and refreshes
-it. Memoh stores no copy; a finished sign-in retires the Agent's process so
+it. Ami stores no copy; a finished sign-in retires the Agent's process so
 the next turn starts from the new login. On a Grok home that already holds a
 login, ACP `authenticate` answers from it without asking anyone, so signing
 in again first removes it. Grok hands the device URL out through its
@@ -465,7 +465,7 @@ The `exec` tool has separate soft waiting and process budgets:
   an EXIT frame is `unknown`, not proof of successful completion or safe retry.
 
 Video generation has its own configurable monitoring budget (default two hours,
-maximum 24 hours). A receipt under the bot workspace's `.memoh/video-jobs/` records
+maximum 24 hours). A receipt under the bot workspace's `.ami/video-jobs/` records
 its provider job identity when storage is available. Monitoring expiry checks the
 provider once more; unfinished or unobservable jobs retain their identity and an
 `unknown` outcome. They are not automatically canceled or resubmitted. An explicit

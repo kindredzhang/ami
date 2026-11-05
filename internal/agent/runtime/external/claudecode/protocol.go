@@ -11,7 +11,7 @@
 //
 // One process serves a conversation's turns one after another and stays
 // between them until it idles out; it resumes the durable native session when
-// it starts. Steering may start several native turns within one Memoh run.
+// it starts. Steering may start several native turns within one Ami run.
 // Token usage belongs to each native result and is summed across distinct
 // result UUIDs.
 package claudecode
@@ -22,7 +22,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // PinnedCLIVersion is the CLI version this driver was last run against.
@@ -32,7 +32,7 @@ const PinnedCLIVersion = "2.1.316"
 
 const noResponseRequested = "No response requested."
 
-// Stream message types (CLI → Memoh).
+// Stream message types (CLI → Ami).
 const (
 	messageTypeSystem          = "system"
 	messageTypeAssistant       = "assistant"
@@ -247,7 +247,7 @@ func userMessageLine(sessionID string, content []map[string]any) ([]byte, error)
 	return json.Marshal(line)
 }
 
-// controlRequestLine builds one Memoh → CLI control request.
+// controlRequestLine builds one Ami → CLI control request.
 func controlRequestLine(requestID, subtype string, extra map[string]any) ([]byte, error) {
 	request := map[string]any{"subtype": subtype}
 	for key, value := range extra {
@@ -294,7 +294,7 @@ func controlSuccessResponse(requestID string, response map[string]any) ([]byte, 
 	})
 }
 
-// controlErrorResponse rejects a control request Memoh cannot serve.
+// controlErrorResponse rejects a control request Ami cannot serve.
 func controlErrorResponse(requestID, message string) ([]byte, error) {
 	return json.Marshal(map[string]any{
 		"type": messageTypeControlResponse,

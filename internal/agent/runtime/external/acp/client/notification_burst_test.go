@@ -14,9 +14,9 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
 )
 
 func burstChunkText(kind string, i int) string {
@@ -64,7 +64,7 @@ func replayBurst(sessionID acp.SessionId, raw string) error {
 }
 
 // writeUpdateBurst writes the updates in a single write, the way a backlog
-// reaches Memoh when an Agent replays a session or flushes output it buffered.
+// reaches Ami when an Agent replays a session or flushes output it buffered.
 func writeUpdateBurst(sessionID acp.SessionId, updates []acp.SessionUpdate) error {
 	var burst []byte
 	for _, update := range updates {
@@ -98,14 +98,14 @@ func (c *slowConsumer) EmitStreamEvent(ev event.StreamEvent) {
 	time.Sleep(c.delay)
 }
 
-// An Agent can write updates far faster than Memoh decodes them, and the live
+// An Agent can write updates far faster than Ami decodes them, and the live
 // stream can be slower still. acp-go-sdk closes the connection once 1024
 // notifications wait for its one handler goroutine, so the Agent must be held
 // back rather than outrun it, and the slow stream must still receive the
 // whole turn in order.
 func TestPromptSurvivesUpdateBurst(t *testing.T) {
 	const chunks = 5000 // per kind, far past acp-go-sdk's 1024-notification queue
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_BURST_CHUNKS", strconv.Itoa(chunks))
+	t.Setenv("AMI_ACP_FAKE_AGENT_BURST_CHUNKS", strconv.Itoa(chunks))
 	runner, agentPath := newStartSessionTestRunner(t)
 	sess, err := runner.StartSession(context.Background(), StartRequest{
 		AgentID:     acpprofile.AgentACPID,

@@ -303,7 +303,7 @@ import {
   ShieldAlert, Database, Link, Server, SlidersHorizontal,
   Bot as BotIcon, ChevronLeft, Laptop, Package as App,
 } from 'lucide-vue-next'
-import { SettingsIcon as Settings } from '@memohai/icon/ui'
+import { SettingsIcon as Settings } from '@ami/icon/ui'
 import { computed, ref, watch, onMounted, toValue, nextTick, type Ref } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { BadgeCount, NavItem, toast } from '@felinic/ui'
@@ -314,12 +314,12 @@ import {
   getBotsByIdChecks,
   getBotsByBotIdContainer,
   getBotsByBotIdContainerSnapshots,
-} from '@memohai/sdk'
-import { getBotsQueryKey } from '@memohai/sdk/colada'
+} from '@ami/sdk'
+import { getBotsQueryKey } from '@ami/sdk/colada'
 import type {
   BotsBotCheck, HandlersGetContainerResponse,
   HandlersListSnapshotsResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useCapabilitiesStore } from '@/store/capabilities'
 import { useBotQuery } from '@/composables/api/useBot'
 

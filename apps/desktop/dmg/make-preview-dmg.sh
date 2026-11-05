@@ -3,21 +3,21 @@
 #
 # 目的:不编全量 app,就让你在真实 Finder 里看到挂载后的最终态 ——
 #   红黄绿灯 / 标题栏(卷宗名)/ 背景图 / 图标位置 / Finder 边框,全部 1:1。
-#   唯一是假的:里面的 Memoh.app 是占位壳,双击只弹个说明,不是真 Memoh。
+#   唯一是假的:里面的 Ami.app 是占位壳,双击只弹个说明,不是真 Ami。
 #
 # 它发现的图标坐标 / 窗口尺寸,会直接喂给 Phase 2 的 electron-builder.yml,
 # 所以这脚本是设计迭代的快速循环,不是一次性的。
 #
 # 用法:  bash make-preview-dmg.sh
-# 产物:  dmg/out/Memoh-Install-preview.dmg
+# 产物:  dmg/out/Ami-Install-preview.dmg
 
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BUILD="$(cd "$HERE/../build" && pwd)"
 OUT="$HERE/out"
-VOL="Install Memoh"           # = Finder 窗口标题栏文字
-APP_NAME="Memoh"              # Finder 隐藏 .app 后缀,显示为 Memoh
+VOL="Install Ami"           # = Finder 窗口标题栏文字
+APP_NAME="Ami"              # Finder 隐藏 .app 后缀,显示为 Ami
 WIN_W=660                     # 窗口内容区逻辑宽(= 背景图逻辑宽)
 WIN_H=440                     # 窗口内容区逻辑高
 TITLEBAR=28                   # 标题栏高度(隐藏工具栏后约 28pt)
@@ -31,7 +31,7 @@ trap 'rm -rf "$WORK"' EXIT
 STAGE="$WORK/stage"
 mkdir -p "$STAGE"
 
-echo "==> 1/5 占位 Memoh.app(带真图标)"
+echo "==> 1/5 占位 Ami.app(带真图标)"
 APP="$STAGE/$APP_NAME.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BUILD/icon.icns" "$APP/Contents/Resources/icon.icns"
@@ -42,7 +42,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 <dict>
   <key>CFBundleName</key><string>$APP_NAME</string>
   <key>CFBundleDisplayName</key><string>$APP_NAME</string>
-  <key>CFBundleIdentifier</key><string>ai.memoh.desktop.preview</string>
+  <key>CFBundleIdentifier</key><string>ai.ami.desktop.preview</string>
   <key>CFBundleVersion</key><string>0.0.0</string>
   <key>CFBundleShortVersionString</key><string>0.0.0</string>
   <key>CFBundlePackageType</key><string>APPL</string>
@@ -53,7 +53,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 PLIST
 cat > "$APP/Contents/MacOS/$APP_NAME" <<'EXE'
 #!/bin/bash
-osascript -e 'display dialog "这是 DMG 布局预览的占位壳,不是真的 Memoh。" buttons {"OK"} default button 1 with icon note with title "Memoh (preview)"'
+osascript -e 'display dialog "这是 DMG 布局预览的占位壳,不是真的 Ami。" buttons {"OK"} default button 1 with icon note with title "Ami (preview)"'
 EXE
 chmod +x "$APP/Contents/MacOS/$APP_NAME"
 
@@ -105,10 +105,10 @@ fi
 echo "==> 5/5 压缩成只读 DMG"
 sync
 hdiutil detach "$DEV" >/dev/null || hdiutil detach "$DEV" -force >/dev/null
-rm -f "$OUT/Memoh-Install-preview.dmg"
+rm -f "$OUT/Ami-Install-preview.dmg"
 hdiutil convert "$WORK/rw.dmg" -format UDZO -imagekey zlib-level=9 \
-  -o "$OUT/Memoh-Install-preview.dmg" >/dev/null
+  -o "$OUT/Ami-Install-preview.dmg" >/dev/null
 
 echo
-echo "完成: $OUT/Memoh-Install-preview.dmg"
+echo "完成: $OUT/Ami-Install-preview.dmg"
 echo "双击它挂载,看真实 Finder 效果。"

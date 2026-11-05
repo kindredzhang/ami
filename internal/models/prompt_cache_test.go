@@ -7,7 +7,7 @@ import (
 	openaicompletions "github.com/felinics/twilight/provider/openai/completions"
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestNormalizePromptCacheTTL(t *testing.T) {
@@ -175,8 +175,8 @@ func TestApplyPromptCache_AnthropicDoesNotMutateInput(t *testing.T) {
 
 func TestPromptCacheKeyOpenAIFamilyOnly(t *testing.T) {
 	openai := newOpenAITestModel(t)
-	if got := PromptCacheKey(openai, "5m", "sess-1"); got != "memoh-session-sess-1" {
-		t.Errorf("openai completions key = %q, want memoh-session-sess-1", got)
+	if got := PromptCacheKey(openai, "5m", "sess-1"); got != "ami-session-sess-1" {
+		t.Errorf("openai completions key = %q, want ami-session-sess-1", got)
 	}
 	if got := PromptCacheKey(openai, "off", "sess-1"); got != "" {
 		t.Errorf("ttl off key = %q, want empty", got)

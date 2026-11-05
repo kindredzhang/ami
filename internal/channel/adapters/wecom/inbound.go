@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func (a *WeComAdapter) handleFrame(ctx context.Context, cfg channel.ChannelConfig, frame WSFrame, handler channel.InboundHandler) error {

@@ -11,13 +11,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 const (
-	sdkImportPath            = "github.com/felinics/memoh/internal/agent/toolexec"
-	mcpImportPath            = "github.com/felinics/memoh/internal/mcp"
-	memoryAdaptersImportPath = "github.com/felinics/memoh/internal/memory/adapters"
+	sdkImportPath            = "github.com/kindredzhang/ami/internal/agent/toolexec"
+	mcpImportPath            = "github.com/kindredzhang/ami/internal/mcp"
+	memoryAdaptersImportPath = "github.com/kindredzhang/ami/internal/memory/adapters"
 
 	protocolTypeSDKTool           = "toolexec.Tool"
 	protocolTypeMCPToolDescriptor = "mcp.ToolDescriptor"
@@ -256,8 +256,8 @@ func f() {
 	typedAssignSrc := []byte(`package tools
 
 import (
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 func late(nameVar string, h lateHolder) {
@@ -424,9 +424,9 @@ func TestProtocolNameGuardsRecognizeImportAliases(t *testing.T) {
 	src := []byte(`package tools
 
 import (
-	twilight "github.com/felinics/memoh/internal/agent/toolexec"
-	mcpgw "github.com/felinics/memoh/internal/mcp"
-	memoryadapters "github.com/felinics/memoh/internal/memory/adapters"
+	twilight "github.com/kindredzhang/ami/internal/agent/toolexec"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
+	memoryadapters "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 var _ = []twilight.Tool{{Name: "raw_tool"}}

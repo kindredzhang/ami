@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 // HistoryReader is the lightweight history surface needed by Discuss. Keeping

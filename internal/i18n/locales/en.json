@@ -150,11 +150,11 @@
       "fieldChatACL": "Chat ACL"
     },
     "link": {
-      "usage": "Usage: /link <code> — connect this account to your Memoh user.",
+      "usage": "Usage: /link <code> — connect this account to your Ami user.",
       "missingCode": "Please provide a link code: /link <code>",
-      "success": "Connected. This account is now linked to your Memoh user and inherits your bot permissions.",
+      "success": "Connected. This account is now linked to your Ami user and inherits your bot permissions.",
       "notFound": "That link code is invalid.",
-      "expired": "That link code has expired. Generate a new one in Memoh settings.",
+      "expired": "That link code has expired. Generate a new one in Ami settings.",
       "consumed": "That link code was already used.",
       "noIdentity": "Cannot link: missing channel identity.",
       "unavailable": "Account linking is unavailable right now.",
@@ -446,9 +446,9 @@
       "unknownCommand": "Unknown command {command}. Run {help} to see what's available, or resend without the leading slash to send it as a regular message.",
       "unknownCommandShort": "Unknown command {command}. Run {help} to see all commands.",
       "unknownAction": "Unknown action {action} for {command}. Run {help} to see its actions.",
-      "ownerOnly": "⚠️ Only the bot owner can run {command}. You can still chat normally. If you are the owner, link this account first: in Memoh on the web, open Profile → Connected Accounts, get a link code, then send {link} <code> here.",
+      "ownerOnly": "⚠️ Only the bot owner can run {command}. You can still chat normally. If you are the owner, link this account first: in Ami on the web, open Profile → Connected Accounts, get a link code, then send {link} <code> here.",
       "noAccess": "⚠️ You don't have access to this bot.",
-      "accessDeniedHint": "⚠️ You can't chat with this bot yet. If you're its owner, open Profile → Connected Accounts in Memoh on the web, get a link code, and send {link} <code> here to link your account.",
+      "accessDeniedHint": "⚠️ You can't chat with this bot yet. If you're its owner, open Profile → Connected Accounts in Ami on the web, get a link code, and send {link} <code> here to link your account.",
       "accessDeniedManager": "⚠️ You can manage this bot, but Chat is disabled for this channel identity. Manage commands still work; ask the bot owner to enable Chat if this identity should send regular messages.",
       "generic": "⚠️ Couldn't complete {command} right now. Try again in a moment.",
       "genericNoResource": "⚠️ Something went wrong. Try again in a moment.",
@@ -522,7 +522,7 @@
       "provider_quota_exhausted": "The model provider account has no remaining balance or quota.",
       "provider_rate_limited": "The model provider rate limit was reached. Please wait a moment before sending again.",
       "provider_request_rejected": "The model provider rejected the request. Check the model settings, or try another model.",
-      "provider_unreachable": "Memoh could not reach the model provider. Check the provider address and that the service is running.",
+      "provider_unreachable": "Ami could not reach the model provider. Check the provider address and that the service is running.",
       "response_interrupted": "The model response was interrupted. Please try again.",
       "response_timeout": "The model did not respond in time. Please try again.",
       "tool_timeout": "The tool stopped reporting progress. Review its saved result before retrying."
@@ -631,7 +631,7 @@
     },
     "elicitation_declined": "A tool requested an interaction that could not be shown. The request was declined.",
     "external_agent": {
-      "account_unbound": "Your IM account isn't linked to a Memoh account yet, so you can't use this bot's workspace. If you're its owner, open Profile → Connected Accounts in Memoh on the web, get a link code, and send {link} <code> here.",
+      "account_unbound": "Your IM account isn't linked to a Ami account yet, so you can't use this bot's workspace. If you're its owner, open Profile → Connected Accounts in Ami on the web, get a link code, and send {link} <code> here.",
       "container_workspace_required": "This agent runtime needs a container workspace. Switch the bot to its container workspace, then try again.",
       "turn_replacement_unsupported": "Retry and edit are unavailable for external agent sessions. Send a new message instead."
     },
@@ -649,7 +649,7 @@
       "usage_limited": "The external Agent's account has no usage left. Try again after the limit resets, or check the account's plan and billing."
     },
     "fetch_provider": {
-      "native_managed": "The built-in fetch provider is managed by Memoh and cannot be changed this way.",
+      "native_managed": "The built-in fetch provider is managed by Ami and cannot be changed this way.",
       "not_found": "This fetch provider no longer exists. Refresh the list and choose another one."
     },
     "group_chat_acp_unsupported": "Group chats cannot create a chat-mode external-agent session. Use /new <agent name> or /new discuss <agent name>.",
@@ -810,7 +810,7 @@
       "reasoning_options_unavailable": "The chat model's reasoning options could not be resolved. Please try again."
     },
     "skill": {
-      "builtin_read_only": "Built-in Skills are managed by Memoh and cannot be edited or deleted.",
+      "builtin_read_only": "Built-in Skills are managed by Ami and cannot be edited or deleted.",
       "directory_shared": "This Skill's folder also holds other Skills, so it cannot be renamed or deleted here. Remove its SKILL.md in Files instead.",
       "name_invalid": "The Skill needs a valid name in its YAML frontmatter.",
       "name_taken": "A Skill with this name already exists. Choose a different name.",
@@ -845,7 +845,7 @@
       "operation_failed": "The approval response could not be processed.",
       "request_invalid": "The approval response is invalid."
     },
-    "tools_unavailable": "Memoh tools are unavailable for this conversation. Start a new session to restore them.",
+    "tools_unavailable": "Ami tools are unavailable for this conversation. Start a new session to restore them.",
     "transcription_model": {
       "not_found": "This transcription model no longer exists. Refresh the list and choose another one."
     },

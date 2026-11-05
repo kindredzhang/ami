@@ -110,7 +110,7 @@ import {
   SelectValue,
   toast,
 } from '@felinic/ui'
-import { getBotsByBotIdWorkspaceTargets, postBotsByBotIdContainerFsMkdir, type WorkspaceWorkspaceTarget } from '@memohai/sdk'
+import { getBotsByBotIdWorkspaceTargets, postBotsByBotIdContainerFsMkdir, type WorkspaceWorkspaceTarget } from '@ami/sdk'
 import DirectoryPicker from '@/components/file-manager/directory-picker.vue'
 import { parentPath } from '@/components/file-manager/utils'
 import { createWorkdir } from '@/composables/api/useWorkdirs'

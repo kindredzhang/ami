@@ -16,9 +16,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // Log stream names passed to LogSink.Log.
@@ -50,13 +50,13 @@ type RunSpec struct {
 	Home    string
 	ShimDir string
 
-	// Version is exported as MEMOH_DEP_VERSION: the version to install (the
+	// Version is exported as AMI_DEP_VERSION: the version to install (the
 	// one requested, else the manifest pin) and empty for "latest".
 	Version string
-	// CurrentVersion is exported as MEMOH_DEP_CURRENT_VERSION during update
+	// CurrentVersion is exported as AMI_DEP_CURRENT_VERSION during update
 	// and check_update.
 	CurrentVersion string
-	// Candidate is exported as MEMOH_DEP_CANDIDATE and only used by the
+	// Candidate is exported as AMI_DEP_CANDIDATE and only used by the
 	// version action: the absolute path of the executable to probe.
 	Candidate string
 	Platform  Platform
@@ -256,7 +256,7 @@ func (s RunSpec) validate() error {
 }
 
 // newResultPath picks a unique result file below the target's temporary
-// directory. It lives outside MEMOH_DEP_HOME on purpose: that tree only holds
+// directory. It lives outside AMI_DEP_HOME on purpose: that tree only holds
 // data and temporary files must not end up in snapshots.
 func newResultPath(tmpDir, depID string) (string, error) {
 	var nonce [8]byte
@@ -266,27 +266,27 @@ func newResultPath(tmpDir, depID string) (string, error) {
 	if strings.TrimSpace(tmpDir) == "" {
 		tmpDir = defaultTmpDir
 	}
-	return path.Join(tmpDir, "memoh-dep-"+depID+"-"+hex.EncodeToString(nonce[:])+".json"), nil
+	return path.Join(tmpDir, "ami-dep-"+depID+"-"+hex.EncodeToString(nonce[:])+".json"), nil
 }
 
 // buildEnv assembles the allowlisted script environment.
 func buildEnv(spec RunSpec, resultPath string, timeout time.Duration) []string {
 	env := []string{
-		"MEMOH_DEP_ID=" + spec.DepID,
-		"MEMOH_DEP_ACTION=" + string(spec.Action),
-		"MEMOH_DEP_WORKSPACE_TARGET=native",
-		"MEMOH_DEP_HOME=" + spec.Home,
-		"MEMOH_DEP_BIN=" + spec.ShimDir,
-		"MEMOH_DEP_VERSION=" + spec.Version,
-		"MEMOH_DEP_CURRENT_VERSION=" + spec.CurrentVersion,
-		"MEMOH_DEP_RESULT=" + resultPath,
-		"MEMOH_DEP_CANDIDATE=" + spec.Candidate,
-		"MEMOH_DEP_TIMEOUT_SECONDS=" + strconv.FormatInt(int64(timeout/time.Second), 10),
+		"AMI_DEP_ID=" + spec.DepID,
+		"AMI_DEP_ACTION=" + string(spec.Action),
+		"AMI_DEP_WORKSPACE_TARGET=native",
+		"AMI_DEP_HOME=" + spec.Home,
+		"AMI_DEP_BIN=" + spec.ShimDir,
+		"AMI_DEP_VERSION=" + spec.Version,
+		"AMI_DEP_CURRENT_VERSION=" + spec.CurrentVersion,
+		"AMI_DEP_RESULT=" + resultPath,
+		"AMI_DEP_CANDIDATE=" + spec.Candidate,
+		"AMI_DEP_TIMEOUT_SECONDS=" + strconv.FormatInt(int64(timeout/time.Second), 10),
 		"DEBIAN_FRONTEND=noninteractive",
 		"CI=1",
 	}
 	if spec.Receipt != nil {
-		env = append(env, "MEMOH_DEP_OPERATION_DIR="+spec.Receipt.Directory)
+		env = append(env, "AMI_DEP_OPERATION_DIR="+spec.Receipt.Directory)
 	}
 	env = append(env, spec.Platform.env()...)
 	for _, name := range mirrorEnvNames {

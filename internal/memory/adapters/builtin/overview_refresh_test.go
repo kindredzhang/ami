@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 // refreshingStore is a memory store that defers MEMORY.md rewrites.

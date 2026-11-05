@@ -10,10 +10,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/channel/publicmedia"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/channel/publicmedia"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 type Server struct {

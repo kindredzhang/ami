@@ -15,8 +15,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 type roundTripFunc func(*http.Request) (*http.Response, error)

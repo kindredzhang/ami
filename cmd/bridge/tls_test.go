@@ -24,14 +24,14 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
 	testInstanceID  = "11111111-1111-1111-1111-111111111111"
-	testServerName  = "memoh-bridge." + testInstanceID + ".bridge.memoh.internal"
-	testServerURI   = "spiffe://memoh/instance/" + testInstanceID + "/server"
-	testBridgeURI   = "spiffe://memoh/instance/" + testInstanceID + "/bridge"
+	testServerName  = "ami-bridge." + testInstanceID + ".bridge.ami.internal"
+	testServerURI   = "spiffe://ami/instance/" + testInstanceID + "/server"
+	testBridgeURI   = "spiffe://ami/instance/" + testInstanceID + "/bridge"
 	wrongInstanceID = "22222222-2222-2222-2222-222222222222"
 )
 
@@ -213,7 +213,7 @@ func assertHandshakeRejected(t *testing.T, err error) {
 	}
 }
 
-func TestStrictMTLSAcceptsMemohServerIdentity(t *testing.T) {
+func TestStrictMTLSAcceptsAmiServerIdentity(t *testing.T) {
 	material := newTestMTLSMaterial(t)
 	material.setStrictEnv(t)
 	addr := startStrictServer(t)
@@ -276,7 +276,7 @@ func TestStrictMTLSRejectsWrongInstanceURI(t *testing.T) {
 	addr := startStrictServer(t)
 
 	// CA 正确、EKU 正确、但 instance 不匹配 → VerifyConnection 拒绝。
-	wrongURI := "spiffe://memoh/instance/" + wrongInstanceID + "/server"
+	wrongURI := "spiffe://ami/instance/" + wrongInstanceID + "/server"
 	cert, key := material.clientCA.issue(t, "other-instance server", x509.ExtKeyUsageClientAuth, nil, wrongURI)
 	opts := material.clientOptions()
 	opts.ClientCertFile = writeTempFile(t, material.dir, "other.crt", cert)
@@ -291,7 +291,7 @@ func TestClientRejectsWrongBridgeURI(t *testing.T) {
 
 	// 客户端把对端钉到本 instance 的 bridge URI；server cert instance 不符必须拒连。
 	opts := material.clientOptions()
-	opts.ExpectedServerURI = "spiffe://memoh/instance/" + wrongInstanceID + "/bridge"
+	opts.ExpectedServerURI = "spiffe://ami/instance/" + wrongInstanceID + "/bridge"
 	assertHandshakeRejected(t, rpcErr(t, addr, opts))
 }
 

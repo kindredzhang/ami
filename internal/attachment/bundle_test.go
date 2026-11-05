@@ -3,7 +3,7 @@ package attachment
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func TestBundleNormalize_DataURLBecomesBase64(t *testing.T) {
@@ -169,9 +169,9 @@ func TestBundleWithAssetAccess(t *testing.T) {
 		Mime:        "text/plain",
 		SizeBytes:   7,
 		StorageKey:  "bb/asset-2.txt",
-	}, "/data/.memoh/media/bb/asset-2.txt")
+	}, "/data/.ami/media/bb/asset-2.txt")
 
-	if bundle.Path != "/data/.memoh/media/bb/asset-2.txt" {
+	if bundle.Path != "/data/.ami/media/bb/asset-2.txt" {
 		t.Fatalf("expected access path preserved, got %q", bundle.Path)
 	}
 	if MetadataString(bundle.Metadata, MetadataKeySourcePath) != "/data/work/demo.txt" {
@@ -187,7 +187,7 @@ func TestExtractStorageKey(t *testing.T) {
 		path string
 		want string
 	}{
-		{name: "current", path: "/data/.memoh/media/aa/demo.png", want: "aa/demo.png"},
+		{name: "current", path: "/data/.ami/media/aa/demo.png", want: "aa/demo.png"},
 		{name: "legacy", path: "/data/media/aa/demo.png", want: "aa/demo.png"},
 		{name: "other", path: "/tmp/demo.png", want: ""},
 	}
@@ -202,8 +202,8 @@ func TestIsMediaAccessPath(t *testing.T) {
 	t.Parallel()
 
 	for _, mediaPath := range []string{
-		"/data/.memoh/media",
-		"/data/.memoh/media/aa/demo.png",
+		"/data/.ami/media",
+		"/data/.ami/media/aa/demo.png",
 		"/data/media",
 		"data/media/aa/demo.png",
 	} {
@@ -211,7 +211,7 @@ func TestIsMediaAccessPath(t *testing.T) {
 			t.Errorf("IsMediaAccessPath(%q) = false, want true", mediaPath)
 		}
 	}
-	for _, otherPath := range []string{"/data/mediakit/demo.png", "/data/.memoh/mediakit/demo.png", "/tmp/demo.png"} {
+	for _, otherPath := range []string{"/data/mediakit/demo.png", "/data/.ami/mediakit/demo.png", "/tmp/demo.png"} {
 		if IsMediaAccessPath(otherPath) {
 			t.Errorf("IsMediaAccessPath(%q) = true, want false", otherPath)
 		}
@@ -221,10 +221,10 @@ func TestIsMediaAccessPath(t *testing.T) {
 func TestMediaAccessPath(t *testing.T) {
 	t.Parallel()
 
-	if got := MediaAccessPath("aa/demo.png"); got != "/data/.memoh/media/aa/demo.png" {
+	if got := MediaAccessPath("aa/demo.png"); got != "/data/.ami/media/aa/demo.png" {
 		t.Fatalf("unexpected media access path: %q", got)
 	}
-	if got := MediaAccessPath(""); got != "/data/.memoh/media" {
+	if got := MediaAccessPath(""); got != "/data/.ami/media" {
 		t.Fatalf("unexpected media root path: %q", got)
 	}
 }

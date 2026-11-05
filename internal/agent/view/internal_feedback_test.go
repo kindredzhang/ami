@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func TestInternalFeedbackDoesNotRenderOrSplitAnswer(t *testing.T) {

@@ -20,14 +20,14 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspacedeps"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 const (
@@ -339,7 +339,7 @@ func TestListWorkspaceDependenciesMapsEntries(t *testing.T) {
 				},
 				{
 					Dependency:        deps["node"],
-					Observed:          workspacedeps.Observed{Present: true, Source: workspacedeps.SourceToolkit, Version: "22.1.0", Command: "/opt/memoh/toolkit/bin/node"},
+					Observed:          workspacedeps.Observed{Present: true, Source: workspacedeps.SourceToolkit, Version: "22.1.0", Command: "/opt/ami/toolkit/bin/node"},
 					Installation:      &workspacedeps.Installation{Status: workspacedeps.StatusInstalled},
 					Status:            workspacedeps.StatusInstalled,
 					InstalledVersion:  "22.1.0",
@@ -355,7 +355,7 @@ func TestListWorkspaceDependenciesMapsEntries(t *testing.T) {
 				{
 					// A managed overlay over the image copy.
 					Dependency:        deps["python"],
-					Observed:          workspacedeps.Observed{Present: true, Source: workspacedeps.SourceManaged, Version: "3.13.2", Command: "/data/.memoh/deps/python/current/bin/python3"},
+					Observed:          workspacedeps.Observed{Present: true, Source: workspacedeps.SourceManaged, Version: "3.13.2", Command: "/data/.ami/deps/python/current/bin/python3"},
 					Installation:      &workspacedeps.Installation{Status: workspacedeps.StatusInstalled},
 					Status:            workspacedeps.StatusInstalled,
 					InstalledVersion:  "3.13.2",
@@ -402,7 +402,7 @@ func TestListWorkspaceDependenciesMapsEntries(t *testing.T) {
 	if codex["previous_version"] != "0.140.0" {
 		t.Errorf("codex previous_version = %v", codex["previous_version"])
 	}
-	if codex["install_path"] != "/data/.memoh/deps/codex" {
+	if codex["install_path"] != "/data/.ami/deps/codex" {
 		t.Errorf("codex install_path = %v", codex["install_path"])
 	}
 	if codex["last_checked_at"] == nil {
@@ -415,7 +415,7 @@ func TestListWorkspaceDependenciesMapsEntries(t *testing.T) {
 		t.Errorf("empty last_error must be omitted: %v", codex)
 	}
 	node := items[1].(map[string]any)
-	if node["source"] != "image" || node["install_path"] != "/opt/memoh/toolkit/bin/node" || node["image_version"] != "22.1.0" {
+	if node["source"] != "image" || node["install_path"] != "/opt/ami/toolkit/bin/node" || node["image_version"] != "22.1.0" {
 		t.Errorf("node = %v", node)
 	}
 	if _, ok := node["overlay"]; ok {
@@ -428,7 +428,7 @@ func TestListWorkspaceDependenciesMapsEntries(t *testing.T) {
 	if python["source"] != "image" || python["overlay"] != true || python["installed_version"] != "3.13.2" || python["image_version"] != "3.12.3" {
 		t.Errorf("python overlay = %v", python)
 	}
-	if python["install_path"] != "/data/.memoh/deps/python" {
+	if python["install_path"] != "/data/.ami/deps/python" {
 		t.Errorf("python install_path = %v, want the managed home while the overlay is in effect", python["install_path"])
 	}
 	ripgrep := items[2].(map[string]any)
@@ -438,7 +438,7 @@ func TestListWorkspaceDependenciesMapsEntries(t *testing.T) {
 	if ripgrep["platform_supported"] != false || ripgrep["platform_reason"] != "unsupported_platform" {
 		t.Errorf("ripgrep platform = %v", ripgrep)
 	}
-	if ripgrep["install_path"] != "/data/.memoh/deps/ripgrep" {
+	if ripgrep["install_path"] != "/data/.ami/deps/ripgrep" {
 		t.Errorf("ripgrep install_path = %v", ripgrep["install_path"])
 	}
 	if _, ok := ripgrep["previous_version"]; ok {
@@ -626,7 +626,7 @@ func TestUpdateWorkspaceDependencyStreamsEvents(t *testing.T) {
 		opLogs: [][2]string{{"stderr", "updating codex"}, {"stdout", ""}, {"stdout", "done"}},
 		operation: workspacedeps.OperationResult{
 			DependencyID: "codex", Action: catalog.ActionUpdate, Version: "0.151.0",
-			Entrypoints: map[string]string{"codex": "/data/.memoh/deps/codex/current/bin/codex"},
+			Entrypoints: map[string]string{"codex": "/data/.ami/deps/codex/current/bin/codex"},
 		},
 	}
 	h := newDepsTestHandler("admin", svc)
@@ -658,7 +658,7 @@ func TestUpdateWorkspaceDependencyStreamsEvents(t *testing.T) {
 	if frames[4]["type"] != "done" || frames[4]["version"] != "0.151.0" {
 		t.Errorf("done = %v", frames[4])
 	}
-	if entrypoints, _ := frames[4]["entrypoints"].(map[string]any); entrypoints["codex"] != "/data/.memoh/deps/codex/current/bin/codex" {
+	if entrypoints, _ := frames[4]["entrypoints"].(map[string]any); entrypoints["codex"] != "/data/.ami/deps/codex/current/bin/codex" {
 		t.Errorf("done entrypoints = %v", frames[4]["entrypoints"])
 	}
 	if len(svc.calls) != 2 || svc.calls[0] != "script" || svc.calls[1] != "update" {
@@ -791,7 +791,7 @@ func TestRollbackWorkspaceDependency(t *testing.T) {
 		deps: depsTestCatalog(),
 		operation: workspacedeps.OperationResult{
 			DependencyID: "codex", Action: workspacedeps.ActionRollback, Version: "0.147.0",
-			Entrypoints:  map[string]string{"codex": "/data/.memoh/deps/codex/current/bin/codex"},
+			Entrypoints:  map[string]string{"codex": "/data/.ami/deps/codex/current/bin/codex"},
 			Installation: workspacedeps.Installation{Status: workspacedeps.StatusInstalled},
 		},
 	}
@@ -831,7 +831,7 @@ func TestGetWorkspaceDependencyScript(t *testing.T) {
 		deps: depsTestCatalog(),
 		preview: workspacedeps.ScriptPreview{
 			DependencyID: "codex", Action: catalog.ActionUpdate, Digest: "sha256:abc", Exec: "exec sh -s", TimeoutSeconds: 1200,
-			Env:    []workspacedeps.ScriptEnvEntry{{Key: "MEMOH_DEP_HOME", Value: "/data/.memoh/deps/codex"}, {Key: "NPM_TOKEN", Secret: true}},
+			Env:    []workspacedeps.ScriptEnvEntry{{Key: "AMI_DEP_HOME", Value: "/data/.ami/deps/codex"}, {Key: "NPM_TOKEN", Secret: true}},
 			Script: "#!/bin/sh\n",
 		},
 	}
@@ -844,7 +844,7 @@ func TestGetWorkspaceDependencyScript(t *testing.T) {
 	if resp.Action != "update" || resp.Digest != "sha256:abc" || resp.Exec != "exec sh -s" || resp.TimeoutSeconds != 1200 || resp.Script != "#!/bin/sh\n" {
 		t.Errorf("response = %+v", resp)
 	}
-	if len(resp.Env) != 2 || resp.Env[0].Key != "MEMOH_DEP_HOME" || !resp.Env[1].Secret || resp.Env[1].Value != "" {
+	if len(resp.Env) != 2 || resp.Env[0].Key != "AMI_DEP_HOME" || !resp.Env[1].Secret || resp.Env[1].Value != "" {
 		t.Errorf("env = %+v", resp.Env)
 	}
 	if svc.actions[0] != catalog.ActionUpdate {

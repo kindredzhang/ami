@@ -37,8 +37,8 @@ export interface RuntimePathOptions {
 
 export function resolveRuntimePaths(options: RuntimePathOptions = {}): RuntimePaths {
   const home = resolve(options.home ?? homedir())
-  const runtimeHome = join(home, '.memoh', 'runtime')
-  const configPath = join(home, '.memoh', 'runtime.json')
+  const runtimeHome = join(home, '.ami', 'runtime')
+  const configPath = join(home, '.ami', 'runtime.json')
   const serviceDir = join(runtimeHome, 'service')
   return {
     home,
@@ -46,9 +46,9 @@ export function resolveRuntimePaths(options: RuntimePathOptions = {}): RuntimePa
     configPath,
     logsDir: join(runtimeHome, 'logs'),
     serviceDir,
-    launchdPlistPath: join(home, 'Library', 'LaunchAgents', 'ai.memoh.runtime.plist'),
-    systemdUnitPath: join(serviceDir, 'memoh-runtime.service'),
-    windowsTaskXMLPath: join(serviceDir, 'memoh-runtime-task.xml'),
+    launchdPlistPath: join(home, 'Library', 'LaunchAgents', 'ai.ami.runtime.plist'),
+    systemdUnitPath: join(serviceDir, 'ami-runtime.service'),
+    windowsTaskXMLPath: join(serviceDir, 'ami-runtime-task.xml'),
   }
 }
 

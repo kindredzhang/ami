@@ -36,7 +36,7 @@ describe('startOAuthPopupFlow', () => {
     startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus: () => new Promise<null>(() => {}),
@@ -60,7 +60,7 @@ describe('startOAuthPopupFlow', () => {
     startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus,
@@ -92,7 +92,7 @@ describe('startOAuthPopupFlow', () => {
     startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus,
@@ -114,7 +114,7 @@ describe('startOAuthPopupFlow', () => {
     const flow = startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus: vi.fn(async () => null),
@@ -136,7 +136,7 @@ describe('startOAuthPopupFlow', () => {
     const flow = startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus,
@@ -162,7 +162,7 @@ describe('startOAuthPopupFlow', () => {
     startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       messageMatches: event => event.data?.providerId === 'provider-1',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
@@ -173,9 +173,9 @@ describe('startOAuthPopupFlow', () => {
     })
 
     target.dispatchEvent(messageEvent({ type: 'other' }))
-    target.dispatchEvent(messageEvent({ type: 'memoh-oauth-success', providerId: 'provider-2' }))
-    target.dispatchEvent(messageEvent({ type: 'memoh-oauth-success', providerId: 'provider-1' }))
-    target.dispatchEvent(messageEvent({ type: 'memoh-oauth-success', providerId: 'provider-1' }))
+    target.dispatchEvent(messageEvent({ type: 'ami-oauth-success', providerId: 'provider-2' }))
+    target.dispatchEvent(messageEvent({ type: 'ami-oauth-success', providerId: 'provider-1' }))
+    target.dispatchEvent(messageEvent({ type: 'ami-oauth-success', providerId: 'provider-1' }))
     await vi.runAllTimersAsync()
 
     expect(onAuthorized).toHaveBeenCalledTimes(1)
@@ -192,7 +192,7 @@ describe('startOAuthPopupFlow', () => {
       popup,
       target,
       expectedSource,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus: vi.fn(async () => null),
@@ -201,10 +201,10 @@ describe('startOAuthPopupFlow', () => {
       onAborted: vi.fn(),
     })
 
-    target.dispatchEvent(messageEvent({ type: 'memoh-oauth-success' }, {} as MessageEventSource))
+    target.dispatchEvent(messageEvent({ type: 'ami-oauth-success' }, {} as MessageEventSource))
     expect(onAuthorized).not.toHaveBeenCalled()
 
-    target.dispatchEvent(messageEvent({ type: 'memoh-oauth-success' }, expectedSource))
+    target.dispatchEvent(messageEvent({ type: 'ami-oauth-success' }, expectedSource))
     await vi.runAllTimersAsync()
     expect(onAuthorized).toHaveBeenCalledTimes(1)
   })
@@ -219,7 +219,7 @@ describe('startOAuthPopupFlow', () => {
     startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 60_000,
       pollStatus,
@@ -247,7 +247,7 @@ describe('startOAuthPopupFlow', () => {
     startOAuthPopupFlow({
       popup,
       target,
-      messageType: 'memoh-oauth-success',
+      messageType: 'ami-oauth-success',
       pollIntervalMs: 1_000,
       timeoutMs: 5_000,
       pollStatus: vi.fn(async () => null),
@@ -257,7 +257,7 @@ describe('startOAuthPopupFlow', () => {
       onError,
     })
 
-    target.dispatchEvent(messageEvent({ type: 'memoh-oauth-success' }))
+    target.dispatchEvent(messageEvent({ type: 'ami-oauth-success' }))
     await vi.runAllTimersAsync()
 
     expect(onAuthorized).toHaveBeenCalledTimes(1)

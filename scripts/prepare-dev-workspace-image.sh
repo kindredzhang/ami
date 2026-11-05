@@ -8,17 +8,17 @@ set -eu
 # depends on this script, so it fingerprints everything the `workspace` target
 # of docker/Dockerfile.workspace actually reads and skips the whole thing when
 # that fingerprint still matches the exported archive. Set
-# MEMOH_DEV_WORKSPACE_IMAGE_FORCE=1 to rebuild anyway — needed when the change
+# AMI_DEV_WORKSPACE_IMAGE_FORCE=1 to rebuild anyway — needed when the change
 # is outside the fingerprint, e.g. a new debian:bookworm-slim base or newer
 # upstream packages pulled by apt.
 
 repo_root="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
-image="${MEMOH_DEV_WORKSPACE_IMAGE:-memohai/workspace:debian}"
-cache_dir="${MEMOH_DEV_WORKSPACE_CACHE_DIR:-$repo_root/.cache/memoh}"
+image="${AMI_DEV_WORKSPACE_IMAGE:-amiai/workspace:debian}"
+cache_dir="${AMI_DEV_WORKSPACE_CACHE_DIR:-$repo_root/.cache/ami}"
 archive="$cache_dir/workspace-debian.tar"
 stamp="$cache_dir/workspace-debian.stamp"
 tmp_dir="$cache_dir/tmp"
-force="${MEMOH_DEV_WORKSPACE_IMAGE_FORCE:-0}"
+force="${AMI_DEV_WORKSPACE_IMAGE_FORCE:-0}"
 
 # Build inputs of the `workspace` target, relative to the repo root. The
 # `bridge-builder` stage copies the whole repo but only feeds
@@ -83,7 +83,7 @@ if [ "$force" = "0" ] &&
   [ -f "$stamp" ] &&
   [ "$(cat "$stamp")" = "$fingerprint" ]; then
   echo "Development workspace image is up to date: $archive"
-  echo "  (set MEMOH_DEV_WORKSPACE_IMAGE_FORCE=1 to rebuild anyway)"
+  echo "  (set AMI_DEV_WORKSPACE_IMAGE_FORCE=1 to rebuild anyway)"
   exit 0
 fi
 

@@ -130,11 +130,11 @@ func TestRunFlowPolicyBypass(t *testing.T) {
 	}
 }
 
-func TestRuntimeApprovalNeverUsesMemohPolicy(t *testing.T) {
+func TestRuntimeApprovalNeverUsesAmiPolicy(t *testing.T) {
 	for _, interactive := range []bool{true, false} {
 		svc := &fakeFlowService{
 			evaluation: Evaluation{Decision: DecisionBypass},
-			evalErr:    errors.New("runtime approvals must not evaluate Memoh policy"),
+			evalErr:    errors.New("runtime approvals must not evaluate Ami policy"),
 			decided:    Request{Status: StatusRejected, DecidedByUser: true},
 		}
 		flow := flowInputFor(svc)

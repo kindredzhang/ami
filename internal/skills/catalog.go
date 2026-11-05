@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 type SafeCatalogItem struct {

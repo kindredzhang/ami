@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 // movingCheckpointSource emulates the compaction a recompose follows: each

@@ -35,7 +35,7 @@ Optional server configuration:
 [model_catalog]
 url = "https://models.dev/api.json"
 # Default: <workspace.data_root>/.cache/models-dev.json
-cache_path = "/opt/memoh/data/.cache/models-dev.json"
+cache_path = "/opt/ami/data/.cache/models-dev.json"
 ```
 
 The URL is an operator-controlled metadata mirror, not a client-supplied URL. It
@@ -81,7 +81,7 @@ not a models.dev response and must never pass through the public source parser.
   this service. Keep 668 deployed; do not run its down migration for an OSS rollback.
 - The later OSS-to-Cloud sync still needs the builtin v2 consumer described by
   MEM-61, preserving Cloud's managed guards and effective client type. Upgrade
-  Memoh and the worker's `tenant-bootstrap` together. This change does not solve
+  Ami and the worker's `tenant-bootstrap` together. This change does not solve
   PR 1574's separate read-time model-config migration/rollback incompatibility.
 - During mixed-version releases, ship the server before the new Web/Desktop
   client. Existing endpoint-discovery clients keep their request contract. A newer client against an old

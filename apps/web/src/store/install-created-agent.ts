@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import { getSupermarketRegistriesByRegistryIdAppsByAppId, postBotsByBotIdContainerStart, type BotagentsBotAgent } from '@memohai/sdk'
+import { getSupermarketRegistriesByRegistryIdAppsByAppId, postBotsByBotIdContainerStart, type BotagentsBotAgent } from '@ami/sdk'
 import i18n from '@/i18n'
 import { preflightDependencies } from '@/composables/api/useWorkspaceDependencies'
 import { agentDependencyRequirement, resolveEnableFlowStep } from '@/pages/bots/components/dependency-enable-flow'
@@ -25,16 +25,16 @@ export async function installCreatedAgent(botId: string, agent: BotagentsBotAgen
   if (step.kind !== 'install') throw new Error(t('bots.dependencies.preflight.failed'))
 
   const { data } = await getSupermarketRegistriesByRegistryIdAppsByAppId({
-    path: { registry_id: 'memoh', app_id: requirement.dependencyId }, throwOnError: true,
+    path: { registry_id: 'ami', app_id: requirement.dependencyId }, throwOnError: true,
   }).catch((error: unknown) => {
     throw new Error(resolveApiErrorMessage(error, t('supermarket.loadError')))
   })
   if (!data.revision) throw new Error(t('supermarket.loadError'))
   const operations = useAppOperationsStore()
   const result = operations.start({
-    botId, registryId: 'memoh', appId: requirement.dependencyId,
+    botId, registryId: 'ami', appId: requirement.dependencyId,
     name: externalAgentDisplayName(agent.runtime ?? '', agent.name ?? ''), action: 'install',
-    install: { registryId: 'memoh', appId: requirement.dependencyId, revision: data.revision },
+    install: { registryId: 'ami', appId: requirement.dependencyId, revision: data.revision },
   })
   if (result.kind === 'busy') throw new Error(t('apps.busy'))
   if (result.kind === 'invalid') throw new Error(t('bots.dependencies.preflight.failed'))

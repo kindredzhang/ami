@@ -1,1 +1,1 @@
-# @memohai/sdk
+# @ami/sdk

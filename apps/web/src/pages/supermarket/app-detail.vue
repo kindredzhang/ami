@@ -250,7 +250,7 @@ import {
   getSupermarketRegistriesByRegistryIdAppsByAppId,
   getSupermarketRegistriesByRegistryIdAppsByAppIdReleasesByRevision,
   type HandlersSupermarketAppDescriptor,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useWorkspaceDependencyText } from '@/composables/useWorkspaceDependencyText'
 import ProviderIcon from '@/components/provider-icon/index.vue'
 import {

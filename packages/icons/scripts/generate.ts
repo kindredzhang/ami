@@ -139,7 +139,7 @@ const uid = useId()
 // Main
 // ---------------------------------------------------------------------------
 
-console.log('🎨 @memohai/icon generator\n')
+console.log('🎨 @ami/icon generator\n')
 
 fs.mkdirSync(SRC_ICONS_DIR, { recursive: true })
 

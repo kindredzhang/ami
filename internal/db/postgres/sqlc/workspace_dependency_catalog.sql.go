@@ -66,7 +66,7 @@ func (q *Queries) CacheWorkspaceDependencyDefinition(ctx context.Context, arg Ca
 const findWorkspaceDependencyIcon = `-- name: FindWorkspaceDependencyIcon :one
 SELECT source_url, registry_id, dependency_id, revision, release_bytes, artifact_bytes
 FROM workspace_dependency_definitions
-WHERE team_id = public.memoh_current_team_id() AND source_url = $1
+WHERE team_id = public.ami_current_team_id() AND source_url = $1
   AND icon_digest = $2::text
 LIMIT 1
 `
@@ -102,7 +102,7 @@ func (q *Queries) FindWorkspaceDependencyIcon(ctx context.Context, arg FindWorks
 const getWorkspaceDependencyCatalog = `-- name: GetWorkspaceDependencyCatalog :one
 SELECT team_id, source_url, catalog_bytes, generation, fetched_at
 FROM workspace_dependency_catalogs
-WHERE team_id = public.memoh_current_team_id() AND source_url = $1
+WHERE team_id = public.ami_current_team_id() AND source_url = $1
 `
 
 func (q *Queries) GetWorkspaceDependencyCatalog(ctx context.Context, sourceUrl string) (WorkspaceDependencyCatalog, error) {
@@ -120,7 +120,7 @@ func (q *Queries) GetWorkspaceDependencyCatalog(ctx context.Context, sourceUrl s
 
 const getWorkspaceDependencyDefinition = `-- name: GetWorkspaceDependencyDefinition :one
 UPDATE workspace_dependency_definitions SET last_accessed_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND source_url = $1 AND registry_id = $2 AND dependency_id = $3 AND revision = $4
 RETURNING source_url, registry_id, dependency_id, revision, release_bytes, artifact_bytes
 `
@@ -168,11 +168,11 @@ WITH catalog_references AS MATERIALIZED (
   SELECT entry ->> 'id' AS dependency_id, entry ->> 'revision' AS revision
   FROM workspace_dependency_catalogs AS catalog,
     jsonb_array_elements(convert_from(catalog.catalog_bytes, 'UTF8')::jsonb -> 'entries') AS entry
-  WHERE catalog.team_id = public.memoh_current_team_id()
+  WHERE catalog.team_id = public.ami_current_team_id()
     AND catalog.source_url = $1
 )
 DELETE FROM workspace_dependency_definitions AS definition
-WHERE definition.team_id = public.memoh_current_team_id()
+WHERE definition.team_id = public.ami_current_team_id()
   AND definition.source_url = $1
   AND definition.last_accessed_at < now() - interval '30 days'
   AND NOT EXISTS (

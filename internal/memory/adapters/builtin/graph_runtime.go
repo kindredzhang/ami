@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/config"
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/memory/migrate"
-	"github.com/felinics/memoh/internal/memory/wikistore"
+	"github.com/kindredzhang/ami/internal/config"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
+	"github.com/kindredzhang/ami/internal/memory/wikistore"
 )
 
 // ModeGraph is the memory mode identifier for the graph runtime. It is the

@@ -5,7 +5,7 @@
 ## Project Structure
 
 ```
-Memoh/
+Ami/
 ├── cmd/                        # Go application entry points
 │   ├── agent/                  #   Main backend server (embedded all-in-one or split-mode server process)
 │   ├── channel/                #   Standalone channel service (split mode): platform adapters, webhooks
@@ -35,11 +35,11 @@ Memoh/
 │   │   │   │   ├── claudecode/ #         Claude Code direct runtime (external.Driver)
 │   │   │   │   ├── codex/      #         Codex direct runtime (external.Driver)
 │   │   │   │   ├── grok/       #         Grok Build direct runtime (external.Driver, an extension of the ACP core)
-│   │   │   │   └── toolmount/  #         Memoh tool gateway mounts for external runtimes
+│   │   │   │   └── toolmount/  #         Ami tool gateway mounts for external runtimes
 │   │   │   ├── native/         #       Twilight AI native runtime, prompts, streaming, hooks, and guards
 │   │   │   └── session/        #       Per-thread runtime state and control
 │   │   ├── sessionmode/        #     Session mode resolution
-│   │   ├── partmeta/           #     Memoh annotations (approval, user input, execution location) on sdk.ProviderMetadata, plus the stored-shape fold/unfold
+│   │   ├── partmeta/           #     Ami annotations (approval, user input, execution location) on sdk.ProviderMetadata, plus the stored-shape fold/unfold
 │   │   ├── step/               #     Runtime-neutral step record (model result, tool results, messages, deferred approval)
 │   │   ├── tool/               #     Native tool providers (package name remains tools)
 │   │       ├── message.go      #       Send message tool
@@ -140,13 +140,13 @@ Memoh/
 │       ├── bridge/             #     gRPC client for in-container bridge service
 │       └── bridgepb/           #     Protobuf definitions (bridge.proto)
 ├── apps/                       # Application services
-│   ├── desktop/                #   Native Electron app (@memohai/desktop): hosted-server renderer, tray, menus, preload IPC
-│   └── web/                    #   Main web app (@memohai/web, Vue 3) — see apps/web/AGENTS.md
+│   ├── desktop/                #   Native Electron app (@ami/desktop): hosted-server renderer, tray, menus, preload IPC
+│   └── web/                    #   Main web app (@ami/web, Vue 3) — see apps/web/AGENTS.md
 ├── packages/                   # Shared TypeScript libraries
 │   ├── ui/                     #   Shared UI component library (@felinic/ui) — git submodule → github.com/felinics/ui; its AGENTS.md routes agents to the UI-owned Web guidance
-│   ├── sdk/                    #   TypeScript SDK (@memohai/sdk, auto-generated from OpenAPI)
-│   ├── icons/                  #   Brand/provider icon library (@memohai/icon)
-│   └── config/                 #   Shared configuration utilities (@memohai/config)
+│   ├── sdk/                    #   TypeScript SDK (@ami/sdk, auto-generated from OpenAPI)
+│   ├── icons/                  #   Brand/provider icon library (@ami/icon)
+│   └── config/                 #   Shared configuration utilities (@ami/config)
 ├── crates/                     # Rust crates packaged into the workspace toolkit
 │   └── a11y-cli/               #   AT-SPI accessibility helper used by Computer Use
 ├── spec/                       # OpenAPI specifications (swagger.json, swagger.yaml)
@@ -178,18 +178,18 @@ Memoh/
 
 ## Desktop App
 
-- `apps/desktop/` is an [electron-vite](https://electron-vite.github.io/) project (`@memohai/desktop`) with its own managed renderer bootstrap for Memoh Cloud or a hosted Memoh server. It reuses exported `@memohai/web` pages, layouts, stores, i18n, API setup, and design tokens, but owns the Electron shell instead of importing the full web `main.ts`.
+- `apps/desktop/` is an [electron-vite](https://electron-vite.github.io/) project (`@ami/desktop`) with its own managed renderer bootstrap for Ami Cloud or a hosted Ami server. It reuses exported `@ami/web` pages, layouts, stores, i18n, API setup, and design tokens, but owns the Electron shell instead of importing the full web `main.ts`.
 - The desktop app boots its renderer with a memory-history router, desktop shell injection, native menu/keyboard integration, native chrome, and system tray reopen/quit behavior.
-- Desktop connects to the target server through `MEMOH_DESKTOP_BASE_URL` and must not start a server, package database files, embed Qdrant, or install a companion CLI.
+- Desktop connects to the target server through `AMI_DESKTOP_BASE_URL` and must not start a server, package database files, embed Qdrant, or install a companion CLI.
 - Packaging is handled by `electron-builder` (config in `apps/desktop/electron-builder.yml`); output lands in `apps/desktop/dist/`.
-- When desktop needs to diverge from the web experience, extend the desktop bootstrap or add explicit `@memohai/web` subpath exports plus desktop type stubs. Do **not** fork `apps/web` itself.
+- When desktop needs to diverge from the web experience, extend the desktop bootstrap or add explicit `@ami/web` subpath exports plus desktop type stubs. Do **not** fork `apps/web` itself.
 
 ## Container / Workspace Management
 
 - Each bot can have an isolated **workspace container** for file editing, command execution, MCP tool hosting, and optional headed browser/desktop display sessions.
 - Container workspaces communicate with the host via a **gRPC bridge** over Unix Domain Sockets (UDS), not TCP.
-- The bridge binary (`cmd/bridge/`) runs inside each container as a read-only file mount, with UDS sockets under `/run/memoh/`. Toolkit binaries (node, python, uv), display dependencies, and runtime scripts come from the workspace image; agent CLIs and other managed dependencies are installed per bot into `/data` by the workspace dependency manager (`internal/workspacedeps/`). When display is enabled the bridge can supervise Xvnc and a headed Chrome/Chromium process with CDP on port `9222`; the web UI then exposes a Display pane backed by screenshots/WebRTC/input forwarding. Treat VNC as the container desktop transport, not as the whole browser automation feature.
-- The canonical workspace image is built from `docker/Dockerfile.workspace`. There is no image-level compatibility check: custom/provider images that expose the same toolkit and script paths (`/opt/memoh/toolkit`, `/opt/memoh/scripts`) get the same base capabilities, and anything missing is reported at the point of use or discovered as an installable dependency.
+- The bridge binary (`cmd/bridge/`) runs inside each container as a read-only file mount, with UDS sockets under `/run/ami/`. Toolkit binaries (node, python, uv), display dependencies, and runtime scripts come from the workspace image; agent CLIs and other managed dependencies are installed per bot into `/data` by the workspace dependency manager (`internal/workspacedeps/`). When display is enabled the bridge can supervise Xvnc and a headed Chrome/Chromium process with CDP on port `9222`; the web UI then exposes a Display pane backed by screenshots/WebRTC/input forwarding. Treat VNC as the container desktop transport, not as the whole browser automation feature.
+- The canonical workspace image is built from `docker/Dockerfile.workspace`. There is no image-level compatibility check: custom/provider images that expose the same toolkit and script paths (`/opt/ami/toolkit`, `/opt/ami/scripts`) get the same base capabilities, and anything missing is reported at the point of use or discovered as an installable dependency.
 - `internal/workspace/` manages workspace lifecycle (create, start, stop, reconcile) and maintains a bridge gRPC connection pool for container runtimes.
 - `internal/container/` provides the container runtime abstraction layer and adapter subpackages (`docker`, `containerd`, `apple`). Snapshot/storage semantics differ by backend; do not assume containerd-style snapshot lineage for Docker or archive-backed flows.
 - SSE-based progress feedback is provided during container image pull and creation.
@@ -199,7 +199,7 @@ Memoh/
 
 The codebase has grown beyond the original agent/channel/container core. When working near these areas, read the local `AGENTS.md` and treat the corresponding `internal/` package as the source of truth; do not guess tool or schema details.
 
-- **External coding-agent runtimes (`internal/agent/runtime/external/`, `codex/`, `claudecode/`, `grok/`)** — the neutral `external.Driver` port plus the direct Codex, Claude Code and Grok Build runtimes (pinned protocol assets, device-code/OAuth login, native thread resume/fork, Memoh tool gateway mounts via `toolmount/`). **ACP (`internal/agent/runtime/external/acp/`)** is the ACP core every ACP-speaking agent runs on — one process per Agent, a session per conversation — with two extensions: custom user-supplied agents (single generic profile with a managed launch command) and Grok Build. The errors users can act on are package errors that `internal/agent/application` translates into catalog codes (`ExternalAgentError`).
+- **External coding-agent runtimes (`internal/agent/runtime/external/`, `codex/`, `claudecode/`, `grok/`)** — the neutral `external.Driver` port plus the direct Codex, Claude Code and Grok Build runtimes (pinned protocol assets, device-code/OAuth login, native thread resume/fork, Ami tool gateway mounts via `toolmount/`). **ACP (`internal/agent/runtime/external/acp/`)** is the ACP core every ACP-speaking agent runs on — one process per Agent, a session per conversation — with two extensions: custom user-supplied agents (single generic profile with a managed launch command) and Grok Build. The errors users can act on are package errors that `internal/agent/application` translates into catalog codes (`ExternalAgentError`).
 - **Workspace dependencies (`internal/workspacedeps/`)** — per-bot installation of agent CLIs and other managed dependencies into `/data`. The permission invariants (read-only launcher resolution, Manage-authorized install confirmation, no remote runtime support) are normative rules — see `AGENTS.md` → Container / Workspace Management. The Server/image upgrade boundary is documented in `docs/workspace-dependencies-upgrade.md`.
 - **Apps (`internal/apps/`, `internal/supermarket/`)** — Supermarket App discovery and installation state. Installed Apps expand into immutable Registry Skills in the selected workspace target.
 - **User input / `ask_user` (`internal/agent/decision/input/`)** — lets the in-process agent ask the user a question mid-conversation and wait for an answer.

@@ -8,12 +8,12 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/messageconv"
-	"github.com/felinics/memoh/internal/textutil"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/messageconv"
+	"github.com/kindredzhang/ami/internal/textutil"
 )
 
 const uiReplyPreviewMaxRunes = 120
@@ -359,7 +359,7 @@ func ConvertMessagesToUITurns(messages []messagepkg.Message) []UITurn {
 			text = markdownmedia.Render(text, bindings, func(b markdownmedia.Binding, label string) string {
 				target := markdownmedia.AssetURL(b)
 				if b.ErrorCode != "" {
-					target = "memoh-media-error:" + b.ErrorCode
+					target = "ami-media-error:" + b.ErrorCode
 				}
 				return "![" + label + "](" + target + ")"
 			})

@@ -33,7 +33,7 @@ export function normalizeDesktopVersion(value) {
   const version = value?.trim().replace(/^v/i, '') ?? ''
   if (!version) return ''
   if (!VERSION_PATTERN.test(version)) {
-    throw new Error(`MEMOH_DESKTOP_VERSION must be a semantic version, got "${value}"`)
+    throw new Error(`AMI_DESKTOP_VERSION must be a semantic version, got "${value}"`)
   }
   return version
 }
@@ -42,7 +42,7 @@ export function normalizeDesktopAppId(value) {
   const appId = value?.trim() ?? ''
   if (!appId) return ''
   if (!APP_ID_PATTERN.test(appId) || !appId.includes('.')) {
-    throw new Error(`MEMOH_DESKTOP_APP_ID must be a reverse-DNS identifier, got "${value}"`)
+    throw new Error(`AMI_DESKTOP_APP_ID must be a reverse-DNS identifier, got "${value}"`)
   }
   return appId
 }
@@ -55,10 +55,10 @@ export function normalizeUpdateBaseUrl(value) {
   try {
     url = new URL(rawUrl)
   } catch {
-    throw new Error(`MEMOH_DESKTOP_UPDATE_BASE_URL must be an absolute HTTP(S) URL, got "${value}"`)
+    throw new Error(`AMI_DESKTOP_UPDATE_BASE_URL must be an absolute HTTP(S) URL, got "${value}"`)
   }
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
-    throw new Error(`MEMOH_DESKTOP_UPDATE_BASE_URL must be an absolute HTTP(S) URL without credentials, got "${value}"`)
+    throw new Error(`AMI_DESKTOP_UPDATE_BASE_URL must be an absolute HTTP(S) URL without credentials, got "${value}"`)
   }
   return url.toString().replace(/\/+$/, '')
 }
@@ -79,9 +79,9 @@ export function stripPublishArgs(args) {
 
 export function buildElectronBuilderArgs(env = process.env) {
   const args = []
-  const version = normalizeDesktopVersion(env.MEMOH_DESKTOP_VERSION)
-  const appId = normalizeDesktopAppId(env.MEMOH_DESKTOP_APP_ID)
-  const updateBaseUrl = normalizeUpdateBaseUrl(env.MEMOH_DESKTOP_UPDATE_BASE_URL)
+  const version = normalizeDesktopVersion(env.AMI_DESKTOP_VERSION)
+  const appId = normalizeDesktopAppId(env.AMI_DESKTOP_APP_ID)
+  const updateBaseUrl = normalizeUpdateBaseUrl(env.AMI_DESKTOP_UPDATE_BASE_URL)
 
   if (version) args.push(`-c.extraMetadata.version=${version}`)
   if (appId) args.push(`-c.appId=${appId}`)

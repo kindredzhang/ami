@@ -1,6 +1,6 @@
 // Package templates holds the built-in files seeded into every agent
 // workspace on first boot: the AGENTS.md persona scaffold, memory notes, and
-// the default .memoh directory (hooks, built-in skills).
+// the default .ami directory (hooks, built-in skills).
 //
 // The canonical copy lives in the workspace/ subdirectory. The Server embeds
 // this package and applies it through the provider-neutral workspace bootstrap
@@ -13,16 +13,16 @@ import (
 	"io/fs"
 )
 
-// The all: prefix is load-bearing: without it the hidden .memoh directory
+// The all: prefix is load-bearing: without it the hidden .ami directory
 // (hooks.json and built-in skills) is silently excluded from the embed.
 //
 //go:embed all:workspace
 var workspaceFS embed.FS
 
 // WorkspaceFS returns the workspace bootstrap template tree, rooted at the
-// template contents (AGENTS.md, .memoh/, ...). Callers seeding a workspace
+// template contents (AGENTS.md, .ami/, ...). Callers seeding a workspace
 // should skip .gitkeep placeholder files. User-owned files are create-only;
-// built-in files under .memoh/skills are managed and may be refreshed.
+// built-in files under .ami/skills are managed and may be refreshed.
 func WorkspaceFS() fs.FS {
 	sub, err := fs.Sub(workspaceFS, "workspace")
 	if err != nil {

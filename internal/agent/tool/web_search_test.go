@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/redact"
-	"github.com/felinics/memoh/internal/searchproviders"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/redact"
+	"github.com/kindredzhang/ami/internal/searchproviders"
 )
 
 func TestCallSearXNGSearchUsesCustomBearerHeader(t *testing.T) {
@@ -176,7 +176,7 @@ func TestCallSearXNGSearchLive(t *testing.T) {
 		t.Fatalf("marshal live config: %v", err)
 	}
 
-	result, err := callSearXNGSearch(t.Context(), config, "Memoh AI agent", 3)
+	result, err := callSearXNGSearch(t.Context(), config, "Ami AI agent", 3)
 	if err != nil {
 		t.Fatalf("live SearXNG search failed: %v", err)
 	}

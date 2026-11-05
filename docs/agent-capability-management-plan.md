@@ -102,7 +102,7 @@ OAuth 的 discovery、state、PKCE、回调与令牌处理由服务端负责。�
 - 无法交互的定时任务、子 Agent 或渠道不能自动获得更高权限；缺少有效授权时返回待处理状态及可用入口。
 - 重新授权不能把凭据写入对话、工具参数历史、错误响应或日志；状态查询只暴露脱敏摘要。
 
-实施前阅读 `memoh-error-handling` skill，复用稳定错误码和私有诊断分离规则。
+实施前阅读 `ami-error-handling` skill，复用稳定错误码和私有诊断分离规则。
 
 ## 5. Prompt 与当前任务内生效
 
@@ -169,7 +169,7 @@ OAuth 的 discovery、state、PKCE、回调与令牌处理由服务端负责。�
 - 安装、更新和恢复固定发布 revision 与依赖目录快照；恢复还在安装锁内校验已确认 revision。审批等待期间目标或卸载预览变化会拒绝旧操作。
 - 管理审批保留在执行中的调用里。批准后唤醒该调用，避免重新解析并重复执行；进程丢失时，冻结的操作不能从旧审批重放。
 - 原生 Agent 在已提交步骤边界重建工具、Skills 和 Usage，同一任务可继续使用新能力；外部 MCP 客户端需要刷新工具列表。
-- `server.public_url`（或 `MEMOH_SERVER_PUBLIC_URL`）配置用户可访问的 Web 地址，供设置入口和 MCP OAuth 回调使用。
+- `server.public_url`（或 `AMI_SERVER_PUBLIC_URL`）配置用户可访问的 Web 地址，供设置入口和 MCP OAuth 回调使用。
 - 首次未探测连接的授权状态为 `unknown`；不会把未知连接误报为无需授权。`authorize` 返回 `authorization_pending`，用户完成后通过 `get`/`probe` 验证。
 - 当前目录详情返回上游发布实际提供的组件元数据；上游没有统一 App 平台约束字段，平台校验由依赖安装服务执行。
 

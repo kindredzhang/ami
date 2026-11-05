@@ -13,7 +13,7 @@ import (
 
 	"github.com/felinics/acgo"
 
-	containerapi "github.com/felinics/memoh/internal/container"
+	containerapi "github.com/kindredzhang/ami/internal/container"
 )
 
 // newTestService serves the Docker-compatible API on a unix socket: /_ping

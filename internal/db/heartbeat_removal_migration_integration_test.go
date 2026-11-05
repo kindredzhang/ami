@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestHeartbeatRemovalMigrationDeletesDescendantSessions(t *testing.T) {

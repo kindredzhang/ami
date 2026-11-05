@@ -11,11 +11,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/media"
-	intrpc "github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/rpc/storagepb"
-	"github.com/felinics/memoh/internal/storage"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/media"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/rpc/storagepb"
+	"github.com/kindredzhang/ami/internal/storage"
 )
 
 // Provider is the Channel-side proxy for the Server-owned storage provider.

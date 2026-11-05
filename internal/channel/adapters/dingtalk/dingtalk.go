@@ -12,11 +12,11 @@ import (
 	"github.com/felinics/dingtalk-stream-sdk-go/chatbot"
 	dtsdk "github.com/felinics/dingtalk-stream-sdk-go/client"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
-// DingTalkAdapter implements the Memoh channel adapter for DingTalk bots.
+// DingTalkAdapter implements the Ami channel adapter for DingTalk bots.
 // It uses the DingTalk Stream SDK (WebSocket) for inbound messages and
 // the DingTalk OpenAPI (HTTP) for outbound messages.
 type DingTalkAdapter struct {

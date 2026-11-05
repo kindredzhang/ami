@@ -1,8 +1,8 @@
-// Package partmeta is Memoh's own namespace on sdk.ProviderMetadata. The SDK
+// Package partmeta is Ami's own namespace on sdk.ProviderMetadata. The SDK
 // types provider metadata as namespace → name → string so that a provider's
-// opaque tokens survive every wire format; Memoh annotates tool-call parts
+// opaque tokens survive every wire format; Ami annotates tool-call parts
 // with its own records (a pending approval, a user-input request, the
-// execution location) and keeps them in the "memoh" namespace, one JSON
+// execution location) and keeps them in the "ami" namespace, one JSON
 // document per key.
 //
 // bot_history_messages has always stored these annotations as nested objects
@@ -17,10 +17,10 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 )
 
-// Namespace holds Memoh's annotations inside sdk.ProviderMetadata.
-const Namespace = "memoh"
+// Namespace holds Ami's annotations inside sdk.ProviderMetadata.
+const Namespace = "ami"
 
-// Keys of the annotations Memoh writes. They are also the top-level keys of
+// Keys of the annotations Ami writes. They are also the top-level keys of
 // the stored shape, which is why Fold always claims them for Namespace even
 // when their values happen to be all strings.
 const (
@@ -94,16 +94,16 @@ func lookup(meta sdk.ProviderMetadata, key string) (string, bool) {
 	return "", false
 }
 
-// Fold types the stored shape: an object under a key Memoh does not own is a
+// Fold types the stored shape: an object under a key Ami does not own is a
 // provider namespace whose non-string values are encoded the way a provider
-// encodes them (sdk.StringValues); everything else is a Memoh annotation and
+// encodes them (sdk.StringValues); everything else is a Ami annotation and
 // is encoded under Namespace.
 func Fold(stored map[string]any) sdk.ProviderMetadata {
 	if len(stored) == 0 {
 		return nil
 	}
 	out := sdk.ProviderMetadata{}
-	// A stored object may already carry the memoh namespace (a row written
+	// A stored object may already carry the ami namespace (a row written
 	// in the SDK shape). Its entries are taken first so an annotation stored
 	// at the top level always wins, whatever order the map iterates in.
 	if obj, ok := stored[Namespace].(map[string]any); ok {
@@ -136,7 +136,7 @@ func Fold(stored map[string]any) sdk.ProviderMetadata {
 	return out
 }
 
-// Unfold produces the stored shape: Memoh annotations decode back to their
+// Unfold produces the stored shape: Ami annotations decode back to their
 // documents at the top level and provider namespaces stay as they are.
 func Unfold(meta sdk.ProviderMetadata) map[string]any {
 	if len(meta) == 0 {

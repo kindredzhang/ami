@@ -51,7 +51,7 @@ func (q *Queries) CreateChannelIdentity(ctx context.Context, arg CreateChannelId
 const getChannelIdentityByChannelSubject = `-- name: GetChannelIdentityByChannelSubject :one
 SELECT id, channel_type, channel_subject_id, display_name, avatar_url, metadata, created_at, updated_at, team_id
 FROM channel_identities
-WHERE team_id = public.memoh_current_team_id() AND channel_type = $1 AND channel_subject_id = $2
+WHERE team_id = public.ami_current_team_id() AND channel_type = $1 AND channel_subject_id = $2
 `
 
 type GetChannelIdentityByChannelSubjectParams struct {
@@ -79,7 +79,7 @@ func (q *Queries) GetChannelIdentityByChannelSubject(ctx context.Context, arg Ge
 const getChannelIdentityByID = `-- name: GetChannelIdentityByID :one
 SELECT id, channel_type, channel_subject_id, display_name, avatar_url, metadata, created_at, updated_at, team_id
 FROM channel_identities
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 func (q *Queries) GetChannelIdentityByID(ctx context.Context, id pgtype.UUID) (ChannelIdentity, error) {
@@ -102,7 +102,7 @@ func (q *Queries) GetChannelIdentityByID(ctx context.Context, id pgtype.UUID) (C
 const getChannelIdentityByIDForUpdate = `-- name: GetChannelIdentityByIDForUpdate :one
 SELECT id, channel_type, channel_subject_id, display_name, avatar_url, metadata, created_at, updated_at, team_id
 FROM channel_identities
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 FOR UPDATE
 `
 
@@ -136,7 +136,7 @@ SELECT
   ci.team_id
 FROM channel_identities ci
 WHERE
-  ci.team_id = public.memoh_current_team_id()
+  ci.team_id = public.ami_current_team_id()
   AND (
     $1::text = ''
     OR ci.channel_type ILIKE '%' || $1::text || '%'

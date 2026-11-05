@@ -1,6 +1,6 @@
 import { EXTERNAL_AGENT_DEFAULT_PROJECT_PATH } from '@/utils/external-agent'
 import { computed, ref, type Ref } from 'vue'
-import type { AcpagentRuntimeStatus } from '@memohai/sdk'
+import type { AcpagentRuntimeStatus } from '@ami/sdk'
 import { fetchACPAgentOptions as requestACPAgentOptions } from '@/composables/api/useChat'
 import { botAgentRuntimeForProvider, normalizeBotAgentRuntime, type BotAgentRuntime } from '@/utils/bot-agent'
 import type { ExternalAgentSessionInput } from './types'

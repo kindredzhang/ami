@@ -227,14 +227,14 @@ import {
   postTranscriptionModelsByIdTest,
   putProvidersById,
   putTranscriptionModelsById,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type {
   AudioProviderMetaResponse,
   AudioSpeechProviderResponse,
   AudioTestTranscriptionResponse,
   AudioTranscriptionModelResponse,
   ProvidersGetResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { Eye, EyeOff } from 'lucide-vue-next'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, Input, NumberField, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from '@felinic/ui'
 import ProviderIcon from '@/components/provider-icon/index.vue'

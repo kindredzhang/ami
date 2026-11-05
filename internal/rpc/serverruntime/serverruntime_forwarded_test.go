@@ -6,10 +6,10 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/errs"
-	runtimeRpc "github.com/felinics/memoh/internal/rpc/runtime"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/errs"
+	runtimeRpc "github.com/kindredzhang/ami/internal/rpc/runtime"
 )
 
 // The deployment mode does not change the answer a user gets: a command's

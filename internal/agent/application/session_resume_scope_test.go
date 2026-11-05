@@ -16,9 +16,9 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 type (
@@ -176,7 +176,7 @@ func TestPostgresResumeScopesUseOrdinaryRoleAndPreserveTenantIntoExecution(t *te
 		if scope == "" {
 			return true, errors.New("tenant context required")
 		}
-		_, err := c.Exec(ctx, "SELECT set_config('memoh.team_id',$1,false)", scope)
+		_, err := c.Exec(ctx, "SELECT set_config('ami.team_id',$1,false)", scope)
 		return err == nil, err
 	}
 	pool, err := pgxpool.NewWithConfig(ctx, cfg)

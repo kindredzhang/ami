@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 func TestDiscoverSelf(t *testing.T) {

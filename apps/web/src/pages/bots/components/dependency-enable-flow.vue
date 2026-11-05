@@ -25,7 +25,7 @@ import {
   getSupermarketRegistriesByRegistryIdAppsByAppId,
   postBotsByBotIdContainerStart,
   type BotagentsBotAgent,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import {
   preflightDependencies,
   type DependencyItem,
@@ -43,7 +43,7 @@ import {
   type EnableFlowRequirement,
 } from './dependency-enable-flow'
 
-const DEPENDENCY_REGISTRY = 'memoh'
+const DEPENDENCY_REGISTRY = 'ami'
 
 const props = defineProps<{ botId: string }>()
 

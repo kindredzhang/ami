@@ -14,8 +14,8 @@ import (
 
 	"github.com/pion/webrtc/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 const (

@@ -13,7 +13,7 @@ const env = {
 }
 
 function artifact(t) {
-  const dir = mkdtempSync(join(tmpdir(), 'memoh-dmg-test-'))
+  const dir = mkdtempSync(join(tmpdir(), 'ami-dmg-test-'))
   t.after(() => rmSync(dir, { recursive: true, force: true }))
   const file = join(dir, 'test.dmg')
   writeFileSync(file, 'signed DMG fixture')

@@ -13,15 +13,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/auth"
-	"github.com/felinics/memoh/internal/botbackup"
-	"github.com/felinics/memoh/internal/botbackup/secure"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/accounts"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/auth"
+	"github.com/kindredzhang/ami/internal/botbackup"
+	"github.com/kindredzhang/ami/internal/botbackup/secure"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 type BotBackupHandler struct {
@@ -104,7 +104,7 @@ func (h *BotBackupHandler) Export(c echo.Context) error {
 	// Build the bundle into a temp file first. The whole export can fail (e.g.
 	// the workspace stream errors) and that must surface as a proper HTTP error
 	// rather than a truncated body after a misleading "200 OK".
-	tmp, err := os.CreateTemp("", "memoh-backup-*.zip")
+	tmp, err := os.CreateTemp("", "ami-backup-*.zip")
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError).WithInternal(err)
 	}
@@ -121,7 +121,7 @@ func (h *BotBackupHandler) Export(c echo.Context) error {
 		return errs.Wrap(err, "rewind backup file")
 	}
 
-	filename := fmt.Sprintf("bot-%s-backup-%s.memoh.zip", safeFilename(bot.DisplayName, bot.ID), time.Now().UTC().Format("20060102T150405Z"))
+	filename := fmt.Sprintf("bot-%s-backup-%s.ami.zip", safeFilename(bot.DisplayName, bot.ID), time.Now().UTC().Format("20060102T150405Z"))
 	c.Response().Header().Set(echo.HeaderContentType, "application/zip")
 	c.Response().Header().Set(echo.HeaderContentDisposition, `attachment; filename="`+filename+`"`)
 

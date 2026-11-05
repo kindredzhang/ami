@@ -3,13 +3,13 @@ package claudecode
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
 )
 
 func TestCLICommandQuotesTheLauncher(t *testing.T) {
-	command := cliCommand("/data/.memoh/deps/claude-code/versions/2.1.250/bin/it's claude", []string{"--output-format", "stream-json"})
-	want := `'/data/.memoh/deps/claude-code/versions/2.1.250/bin/it'\''s claude' --output-format stream-json`
+	command := cliCommand("/data/.ami/deps/claude-code/versions/2.1.250/bin/it's claude", []string{"--output-format", "stream-json"})
+	want := `'/data/.ami/deps/claude-code/versions/2.1.250/bin/it'\''s claude' --output-format stream-json`
 	if command != want {
 		t.Fatalf("command = %q, want %q", command, want)
 	}

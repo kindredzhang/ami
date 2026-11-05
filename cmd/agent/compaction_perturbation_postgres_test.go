@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
 )
 
 // An input larger than the window cannot be sent: its turn fails with an

@@ -76,7 +76,7 @@ ALTER TABLE public.bot_sessions
     CHECK (attention_kind IS NULL OR attention_kind IN ('reply', 'failed', 'needs_input'));
 
 CREATE TABLE IF NOT EXISTS public.session_reads (
-  team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+  team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                          REFERENCES public.teams(id) ON DELETE RESTRICT,
   user_id    UUID        NOT NULL,
   session_id UUID        NOT NULL,

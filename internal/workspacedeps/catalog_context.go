@@ -3,7 +3,7 @@ package workspacedeps
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // FreezeCatalog pins all dependency definitions for a prepared management operation.

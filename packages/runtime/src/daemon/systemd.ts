@@ -9,12 +9,12 @@ import {
   type RuntimeServiceStatus,
 } from './types'
 
-const unitName = 'memoh-runtime.service'
+const unitName = 'ami-runtime.service'
 
 export function renderSystemdUnit(spec: RuntimeServiceSpec): string {
   // systemd expands dollars in argv, but the executable path is resolved separately.
   return `[Unit]
-Description=Memoh Runtime
+Description=Ami Runtime
 
 [Service]
 Type=simple

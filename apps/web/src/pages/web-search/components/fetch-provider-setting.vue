@@ -138,13 +138,13 @@ import { toTypedSchema } from '@vee-validate/zod'
 import z from 'zod'
 import { useForm } from 'vee-validate'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
-import { deleteFetchProvidersById, getFetchProvidersMeta, postFetchProviders, putFetchProvidersById } from '@memohai/sdk'
+import { deleteFetchProvidersById, getFetchProvidersMeta, postFetchProviders, putFetchProvidersById } from '@ami/sdk'
 import type {
   FetchprovidersCreateRequest,
   FetchprovidersGetResponse,
   FetchprovidersProviderMeta,
   FetchprovidersUpdateRequest,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { ConfirmPopover, FieldStack, SettingsRow, SettingsSection, SettingsShell, toast } from '@felinic/ui'
 import { normalizeProviderConfigFields } from '@/utils/provider-template'

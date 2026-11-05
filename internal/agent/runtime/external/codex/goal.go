@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 var _ external.GoalProvider = (*Driver)(nil)
@@ -141,7 +141,7 @@ func startGoalTurn(ctx context.Context, srv *appServer, input external.PromptInp
 	return srv.activateGoal(ctx, params.ThreadID)
 }
 
-// A Memoh run keeps receiving the runtime's own continuation turns. Goal
+// A Ami run keeps receiving the runtime's own continuation turns. Goal
 // completion/pausing never cuts off the final turn's output or approvals.
 func (t *turnState) updateGoal(goal *protocol.ThreadGoal) {
 	t.mu.Lock()

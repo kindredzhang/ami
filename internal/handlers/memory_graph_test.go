@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/memory/migrate"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
 )
 
 func TestAggregateGraphEdgesMergesNodePairs(t *testing.T) {

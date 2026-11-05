@@ -5,15 +5,15 @@
 </div>  
 
 <div align="center">
-  <img src="./assets/logo.png" alt="Memoh" height="80">
-  <h1>Memoh</h1>
+  <img src="./assets/logo.png" alt="Ami" height="80">
+  <h1>Ami</h1>
   <p>Give every AI agent its own cloud computer. Open source.<br>
   Desktop, browser, network, and long-term memory — always on, even when your laptop is closed.</p>
   <div align="center">
-    <img src="https://img.shields.io/github/package-json/v/felinics/Memoh" alt="Version" />
-    <img src="https://img.shields.io/github/stars/felinics/Memoh?style=social" alt="Stars" />
-    <img src="https://img.shields.io/github/forks/felinics/Memoh?style=social" alt="Forks" />
-    <a href="https://deepwiki.com/felinics/Memoh">
+    <img src="https://img.shields.io/github/package-json/v/kindredzhang/ami" alt="Version" />
+    <img src="https://img.shields.io/github/stars/kindredzhang/ami?style=social" alt="Stars" />
+    <img src="https://img.shields.io/github/forks/kindredzhang/ami?style=social" alt="Forks" />
+    <a href="https://deepwiki.com/kindredzhang/ami">
       <img src="https://deepwiki.com/badge.svg" alt="DeepWiki" />
     </a>
     <a href="https://t.me/memohai">
@@ -23,20 +23,20 @@
   <h3>
     <a href="https://app.memoh.net">Login</a> · <a href="#self-hosted">Self-hosted</a> · <a href="https://docs.memoh.ai">Docs</a> · <a href="https://memoh.ai">Website</a> · <a href="https://x.com/memoh_ai">X</a>
   </h3>
-  <img src="./assets/hero.png" alt="Memoh" width="1000">
+  <img src="./assets/hero.png" alt="Ami" width="1000">
 </div>
 
-## What is Memoh?
+## What is Ami?
 
-Memoh is an open-source multi-agent platform. Each agent gets its own cloud computer — a dedicated workspace with a filesystem, desktop, browser, network, and long-term memory. Your agents stay online 24/7, even when your laptop is closed.
+Ami is an open-source multi-agent platform. Each agent gets its own cloud computer — a dedicated workspace with a filesystem, desktop, browser, network, and long-term memory. Your agents stay online 24/7, even when your laptop is closed.
 
-Use your own API keys to run Memoh's built-in agent, or host your existing Claude Code and Codex agents inside Memoh workspaces.
+Use your own API keys to run Ami's built-in agent, or host your existing Claude Code and Codex agents inside Ami workspaces.
 
 Talk to them through Telegram, Discord, Lark, WeChat, Web UI, and more. They remember context across sessions and platforms, drive a browser, call MCP tools, and run scheduled tasks. Run one for yourself, assign one to each team member, or spin up a fleet.
 
 ## Get Started
 
-### Memoh Cloud
+### Ami Cloud
 
 You can now sign up or log in directly at [app.memoh.net](https://app.memoh.net).
 
@@ -54,11 +54,11 @@ curl -fsSL https://memoh.sh | sh
 Manual deployment:
 
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/felinics/Memoh.git
-cd Memoh
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/kindredzhang/ami.git
+cd Ami
 cp conf/app.docker.toml config.toml
 # Edit config.toml
-export MEMOH_INTERNAL_RPC_SHARED_SECRET="$(openssl rand -hex 32)"
+export AMI_INTERNAL_RPC_SHARED_SECRET="$(openssl rand -hex 32)"
 docker compose up -d
 ```
 
@@ -66,13 +66,13 @@ The Compose stack runs Server and Channel as separate services. Keep the interna
 
 In split deployments, Channel streams media through authenticated internal Storage RPC. Only Server needs access to the workspace and media storage. Upgrade Server before Channel so the Storage service is available.
 
-Running without Docker (or upgrading an existing bare-metal install)? Leave `internal_rpc.shared_secret` empty in `config.toml`: the server then embeds the channel runtime and keeps running as a single all-in-one process — external channels, and webhook endpoints included — with no `memoh-channel` process required. Setting the secret opts into the split two-process deployment.
+Running without Docker (or upgrading an existing bare-metal install)? Leave `internal_rpc.shared_secret` empty in `config.toml`: the server then embeds the channel runtime and keeps running as a single all-in-one process — external channels, and webhook endpoints included — with no `ami-channel` process required. Setting the secret opts into the split two-process deployment.
 
 Existing setup checkouts can keep using `git pull`: the post-merge hook initializes the new
 submodule, and setup enables recursive updates for future pulls. If that hook was never installed,
 run `mise run submodule-init` once after upgrading.
 GitHub's automatic “Source code” archives omit submodule contents. For a buildable release archive,
-use the attached `Memoh-<version>-source.zip` or `.tar.gz` asset instead.
+use the attached `Ami-<version>-source.zip` or `.tar.gz` asset instead.
 
 > **Use CN mirror for slow image pulls:**
 > ```bash
@@ -86,11 +86,11 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for custom configuration and production setup
 
 </details>
 
-## Why Memoh?
+## Why Ami?
 
 - **Every agent gets its own computer**: An isolated workspace with its own filesystem, network, desktop, and browser.
 - **Multi-user, multi-bot**: Run one for yourself, deploy one for each family member, run a fleet on a single machine.
-- **Lightweight**: Self-host the server on your own infrastructure, or connect through Memoh Cloud.
+- **Lightweight**: Self-host the server on your own infrastructure, or connect through Ami Cloud.
 
 ## Sub-projects
 
@@ -100,16 +100,16 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for custom configuration and production setup
 
 ## Project Status
 
-![License](https://img.shields.io/github/license/felinics/Memoh) ![Last Commit](https://img.shields.io/github/last-commit/felinics/Memoh) ![Commit Activity](https://img.shields.io/github/commit-activity/m/felinics/Memoh) ![Issues](https://img.shields.io/github/issues/felinics/Memoh) ![Pull Requests](https://img.shields.io/github/issues-pr/felinics/Memoh)
+![License](https://img.shields.io/github/license/kindredzhang/ami) ![Last Commit](https://img.shields.io/github/last-commit/kindredzhang/ami) ![Commit Activity](https://img.shields.io/github/commit-activity/m/kindredzhang/ami) ![Issues](https://img.shields.io/github/issues/kindredzhang/ami) ![Pull Requests](https://img.shields.io/github/issues-pr/kindredzhang/ami)
 
 ## Star History
 
-[![Star History Chart](https://star-history.dera.page/svg?repos=felinics/Memoh&type=date&legend=top-left)](https://star-history.dera.page/#felinics/Memoh&type=date&legend=top-left)
+[![Star History Chart](https://star-history.dera.page/svg?repos=kindredzhang/ami&type=date&legend=top-left)](https://star-history.dera.page/#kindredzhang/ami&type=date&legend=top-left)
 
 ## Contributors
 
-<a href="https://github.com/felinics/Memoh/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=felinics/Memoh" />
+<a href="https://github.com/kindredzhang/ami/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=kindredzhang/ami" />
 </a>
 
 ## Community

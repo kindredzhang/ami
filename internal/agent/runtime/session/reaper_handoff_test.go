@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 type handoffLiveness struct {

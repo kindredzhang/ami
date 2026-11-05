@@ -11,7 +11,7 @@ import {
  *
  * Three layers to keep in mind:
  * 1. In-memory query cache — live API results inside the SPA session.
- * 2. localStorage (`memoh:query-cache`) — display-safe copy that survives Cmd+R.
+ * 2. localStorage (`ami:query-cache`) — display-safe copy that survives Cmd+R.
  * 3. Server — source of truth; Colada revalidates stale entries in the background.
  *
  * Every successful query persists by default; on write, `deepStripSecrets`
@@ -25,7 +25,7 @@ import {
  * reload does not show a pre-save value (see bot-settings autosave).
  */
 
-export const QUERY_CACHE_STORAGE_KEY = 'memoh:query-cache'
+export const QUERY_CACHE_STORAGE_KEY = 'ami:query-cache'
 
 const SAVE_TO_DISK_DEBOUNCE_MS = 1000
 

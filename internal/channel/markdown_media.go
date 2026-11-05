@@ -5,8 +5,8 @@ import (
 	"maps"
 	"strings"
 
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
 )
 
 // ResolveMarkdownMessage archives the media a message references, for an IM

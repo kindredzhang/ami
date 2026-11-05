@@ -4,7 +4,7 @@
 
 ## 背景
 
-Memoh 目前有两套并行的模型选择器实现，能力互补但互不相通：
+Ami 目前有两套并行的模型选择器实现，能力互补但互不相通：
 
 | 能力 | `chat-model-picker.vue`（Chat 组合框） | `model-options.vue`（Bot 页） |
 |---|---|---|

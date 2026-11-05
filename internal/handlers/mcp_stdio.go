@@ -20,12 +20,12 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/jsonrpc"
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	mcptools "github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/workspace"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	mcptools "github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/workspace"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 // MCPStdioRequest represents a request to create an MCP stdio session.
@@ -409,7 +409,7 @@ type mcpStdioSession struct {
 	// request is retained for the lazy start: the session process spawns on
 	// the FIRST proxied message, so an initialize can drive the handshake with
 	// the external client's own capabilities (see ensureStdioSession). An
-	// eager session would burn the single handshake on memoh's empty one.
+	// eager session would burn the single handshake on ami's empty one.
 	request MCPStdioRequest
 	// startMu serializes the lazy start across concurrent first messages.
 	startMu sync.Mutex
@@ -464,7 +464,7 @@ func (h *ContainerdHandler) CreateMCPStdio(c echo.Context) error {
 	// the response's tool list, then dies. The session process starts lazily
 	// on the first proxied message (see mcpStdioSession.request), so create
 	// keeps its old contract — fail fast on a bad command, return the tool
-	// list — without burning the session's handshake on memoh's capabilities.
+	// list — without burning the session's handshake on ami's capabilities.
 	probeSess, err := h.startContainerdMCPCommandSession(ctx, botID, containerID, req, nil, defaultStdioSDKClient())
 	if err != nil {
 		return errs.Wrap(err, "probe stdio mcp command")
@@ -497,7 +497,7 @@ func (h *ContainerdHandler) CreateMCPStdio(c echo.Context) error {
 // ensureStdioSession lazily starts the session process on the first proxied
 // message. An initialize starts it with a client built from the message's own
 // capabilities/clientInfo (the server then negotiates against the REAL client);
-// anything else starts it with memoh's default identity. Concurrent first
+// anything else starts it with ami's default identity. Concurrent first
 // messages serialize on the record's startMu.
 func (h *ContainerdHandler) ensureStdioSession(ctx context.Context, record *mcpStdioSession, req *mcptools.JSONRPCRequest) (*mcpStdioClient, error) {
 	record.startMu.Lock()
@@ -594,15 +594,15 @@ func (h *ContainerdHandler) HandleMCPStdio(c echo.Context) error {
 	return c.JSON(http.StatusOK, payload)
 }
 
-// defaultStdioSDKClient is the fixed client identity memoh presents when it is
+// defaultStdioSDKClient is the fixed client identity ami presents when it is
 // the real client itself (create-time probes, federation gateway sessions).
 func defaultStdioSDKClient() *sdkmcp.Client {
-	return sdkmcp.NewClient(&sdkmcp.Implementation{Name: "memoh", Version: "1.0.0"}, nil)
+	return sdkmcp.NewClient(&sdkmcp.Implementation{Name: "ami", Version: "1.0.0"}, nil)
 }
 
 // sdkClientForInitialize builds the SDK client for a lazily-started proxy
 // session from the EXTERNAL client's own initialize params, so the container
-// server sees the real client's capabilities and clientInfo instead of memoh's
+// server sees the real client's capabilities and clientInfo instead of ami's
 // fixed empty handshake. The pre-migration client raw-forwarded the external
 // initialize as a spec-invalid SECOND initialize on an already-handshaken
 // session; advertising at the single handshake is the spec-valid form of the
@@ -617,7 +617,7 @@ func sdkClientForInitialize(rawParams json.RawMessage) *sdkmcp.Client {
 	}
 	impl := params.ClientInfo
 	if impl == nil || strings.TrimSpace(impl.Name) == "" {
-		impl = &sdkmcp.Implementation{Name: "memoh", Version: "1.0.0"}
+		impl = &sdkmcp.Implementation{Name: "ami", Version: "1.0.0"}
 	}
 	opts := &sdkmcp.ClientOptions{}
 	if caps := params.Capabilities; caps != nil {
@@ -653,7 +653,7 @@ func connectStdioClient(ctx context.Context, stdin io.WriteCloser, stdout io.Rea
 // process that dies during the handshake must still run the registry cleanup,
 // otherwise closeOnce is consumed with a nil callback and the entry leaks.
 // The client argument chooses the identity presented at the handshake:
-// defaultStdioSDKClient() when memoh is the real client, or
+// defaultStdioSDKClient() when ami is the real client, or
 // sdkClientForInitialize(...) for lazily-started proxy sessions.
 func (h *ContainerdHandler) startContainerdMCPCommandSession(ctx context.Context, botID, containerID string, req MCPStdioRequest, onClose func(), sdkClient *sdkmcp.Client) (*mcpStdioClient, error) {
 	// Get gRPC client for the bot container via manager

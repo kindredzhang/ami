@@ -148,14 +148,14 @@ const skipAnimation = () => {
     <div class="relative w-full flex flex-col items-center justify-center">
       <!-- Animation stage -->
       <div class="relative flex items-center justify-center w-full h-[100px]">
-        <!-- Memoh Logo -->
+        <!-- Ami Logo -->
         <div
           class="absolute z-(--z-sticky) flex items-center justify-center w-24 h-24 bg-background rounded-2xl border border-border transition-all duration-1000 shadow-none"
           :class="showContent ? 'scale-100' : 'scale-110 ring-2 ring-primary/20'"
         >
           <img
             src="/logo.svg"
-            alt="Memoh"
+            alt="Ami"
             class="w-[60px] h-[60px] object-contain"
           >
         </div>

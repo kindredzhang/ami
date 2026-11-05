@@ -15,7 +15,7 @@ const getVersionSnapshotRuntimeName = `-- name: GetVersionSnapshotRuntimeName :o
 SELECT s.runtime_snapshot_name
 FROM container_versions cv
 JOIN snapshots s ON s.id = cv.snapshot_id
-WHERE cv.team_id = public.memoh_current_team_id() AND s.team_id = public.memoh_current_team_id() AND cv.container_id = $1
+WHERE cv.team_id = public.ami_current_team_id() AND s.team_id = public.ami_current_team_id() AND cv.container_id = $1
   AND cv.version = $2
 `
 
@@ -72,7 +72,7 @@ SELECT
   s.display_name
 FROM container_versions cv
 JOIN snapshots s ON s.id = cv.snapshot_id
-WHERE cv.team_id = public.memoh_current_team_id() AND s.team_id = public.memoh_current_team_id() AND cv.container_id = $1
+WHERE cv.team_id = public.ami_current_team_id() AND s.team_id = public.ami_current_team_id() AND cv.container_id = $1
 ORDER BY cv.version ASC
 `
 
@@ -115,7 +115,7 @@ func (q *Queries) ListVersionsByContainerID(ctx context.Context, containerID str
 }
 
 const nextVersion = `-- name: NextVersion :one
-SELECT COALESCE(MAX(version), 0) + 1 FROM container_versions WHERE team_id = public.memoh_current_team_id() AND container_id = $1
+SELECT COALESCE(MAX(version), 0) + 1 FROM container_versions WHERE team_id = public.ami_current_team_id() AND container_id = $1
 `
 
 func (q *Queries) NextVersion(ctx context.Context, containerID string) (int32, error) {

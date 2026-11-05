@@ -6,9 +6,9 @@ import (
 	"errors"
 	"testing"
 
-	acpagent "github.com/felinics/memoh/internal/agent/runtime/external/acp"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/slash"
+	acpagent "github.com/kindredzhang/ami/internal/agent/runtime/external/acp"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 func requestedSkillGuardRequest(sessionID string) ChatRequest {

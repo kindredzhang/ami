@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/apps"
-	"github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apps"
+	"github.com/kindredzhang/ami/internal/supermarket"
 )
 
 // unavailableCapabilityRegistry fails as the Installer does when the registry
@@ -34,7 +34,7 @@ func TestCapabilityReportsARegistryFailureByItsCode(t *testing.T) {
 	var result any
 	for _, tool := range available {
 		if tool.Name == ToolAppSearch().String() {
-			output, err := tool.Execute(&toolexec.ToolExecContext{Context: t.Context()}, toolexec.ArgumentsFromValue(map[string]any{"action": "get", "registry_id": "memoh", "app_id": "node"}))
+			output, err := tool.Execute(&toolexec.ToolExecContext{Context: t.Context()}, toolexec.ArgumentsFromValue(map[string]any{"action": "get", "registry_id": "ami", "app_id": "node"}))
 			if err != nil {
 				t.Fatal(err)
 			}

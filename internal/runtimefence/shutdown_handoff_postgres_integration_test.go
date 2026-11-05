@@ -12,10 +12,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 func TestPostgresWaitingDecisionHandoffIsAtomic(t *testing.T) {
@@ -60,7 +60,7 @@ func TestPostgresWaitingDecisionHandoffIsAtomic(t *testing.T) {
 				cfg := pool.Config().Copy()
 				cfg.MaxConns = 1
 				cfg.AfterConnect = nil
-				cfg.ConnConfig.RuntimeParams["memoh.team_id"] = uuid.NewString()
+				cfg.ConnConfig.RuntimeParams["ami.team_id"] = uuid.NewString()
 				scoped, err := pgxpool.NewWithConfig(ctx, cfg)
 				if err != nil {
 					t.Fatal(err)
@@ -194,7 +194,7 @@ func TestPostgresWaitingDecisionHandoffWithForcedRLS(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, scope := range []string{uuid.NewString(), "", teamID} {
-		if _, err := scoped.Exec(ctx, `SELECT set_config('memoh.team_id',$1,false)`, scope); err != nil {
+		if _, err := scoped.Exec(ctx, `SELECT set_config('ami.team_id',$1,false)`, scope); err != nil {
 			t.Fatal(err)
 		}
 		err := activate.ReclaimWaitingDecision(ctx, botID, sessionID, runID, "new", "live", old.Token, token, preserved)

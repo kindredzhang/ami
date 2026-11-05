@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // TestReasoningResultZhLocalizesProseNotTokens proves the migration is

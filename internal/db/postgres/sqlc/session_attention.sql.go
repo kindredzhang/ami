@@ -20,7 +20,7 @@ SELECT s.id AS session_id,
 FROM bot_sessions s
 LEFT JOIN session_reads r
   ON r.team_id = s.team_id AND r.session_id = s.id AND r.user_id = $1
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = ANY($2::uuid[])
   AND s.created_by_user_id = $1
   AND (s.attention_at IS NOT NULL OR r.marked_unread_at IS NOT NULL)
@@ -77,7 +77,7 @@ SELECT s.id AS session_id,
 FROM bot_sessions s
 LEFT JOIN session_reads r
   ON r.team_id = s.team_id AND r.session_id = s.id AND r.user_id = $1
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.created_by_user_id = $1
   AND s.deleted_at IS NULL
   AND s.visibility = 'user'
@@ -139,7 +139,7 @@ const markSessionAttention = `-- name: MarkSessionAttention :one
 UPDATE bot_sessions s
 SET attention_at = $1::timestamptz,
     attention_kind = $2::text
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = $3
   AND s.deleted_at IS NULL
   AND s.visibility = 'user'
@@ -188,7 +188,7 @@ const markSessionRead = `-- name: MarkSessionRead :one
 INSERT INTO session_reads (user_id, session_id, read_at)
 SELECT $1, s.id, $2::timestamptz
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = $3
   AND s.created_by_user_id = $1
 ON CONFLICT (team_id, user_id, session_id)
@@ -215,7 +215,7 @@ const markSessionsUnread = `-- name: MarkSessionsUnread :many
 WITH eligible AS (
   SELECT s.id, s.bot_id, s.title, s.attention_kind, s.attention_at
   FROM bot_sessions s
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = ANY($1::uuid[])
     AND s.created_by_user_id = $2
     AND s.deleted_at IS NULL

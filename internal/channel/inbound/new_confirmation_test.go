@@ -10,17 +10,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/identities"
-	"github.com/felinics/memoh/internal/channel/route"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/identities"
+	"github.com/kindredzhang/ami/internal/channel/route"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 func mustCommandInvocation(t *testing.T, text string) command.Invocation {
@@ -199,17 +199,17 @@ func TestResolveNewSessionSpecCanonicalBotMentionIsNotAnAgent(t *testing.T) {
 	group := channel.InboundMessage{Channel: channel.ChannelTypeTelegram, Conversation: channel.Conversation{Type: channel.ConversationTypeGroup}}
 
 	for _, text := range []string{
-		"/new @memoh1bot",
-		"/new discuss @memoh1bot",
-		"/new @alice @memoh1bot",
-		"/new discuss @alice @memoh1bot",
-		"@memoh1bot /new discuss",
-		"/new@memoh1bot discuss",
-		"/new discuss@memoh1bot",
+		"/new @ami1bot",
+		"/new discuss @ami1bot",
+		"/new @alice @ami1bot",
+		"/new discuss @alice @ami1bot",
+		"@ami1bot /new discuss",
+		"/new@ami1bot discuss",
+		"/new discuss@ami1bot",
 	} {
 		t.Run(text, func(t *testing.T) {
 			t.Parallel()
-			invocation, err := command.ParseInvocation(command.InvocationInput{Text: text, BotAliases: []string{"memoh1bot"}})
+			invocation, err := command.ParseInvocation(command.InvocationInput{Text: text, BotAliases: []string{"ami1bot"}})
 			if err != nil {
 				t.Fatalf("ParseInvocation() error = %v", err)
 			}
@@ -230,22 +230,22 @@ func TestChannelSlashAliasesExcludeSenderAndReplyTarget(t *testing.T) {
 		BotID:       "bot-1",
 		ReplyTarget: "group-1",
 		Metadata: map[string]any{
-			"bot_username": "memoh1bot",
-			"bot_aliases":  []string{"@memoh:example.com", "@memoh"},
+			"bot_username": "ami1bot",
+			"bot_aliases":  []string{"@ami:example.com", "@ami"},
 		},
 	}, InboundIdentity{BotID: "bot-1", DisplayName: "Alice"})
 	joined := strings.Join(aliases, ",")
 	if strings.Contains(joined, "Alice") || strings.Contains(joined, "group-1") {
 		t.Fatalf("aliases = %#v, sender and reply target must not address the bot", aliases)
 	}
-	if !strings.Contains(joined, "memoh1bot") {
+	if !strings.Contains(joined, "ami1bot") {
 		t.Fatalf("aliases = %#v, want adapter-provided bot username", aliases)
 	}
 	seenAliases := make(map[string]bool, len(aliases))
 	for _, alias := range aliases {
 		seenAliases[alias] = true
 	}
-	if !seenAliases["memoh:example.com"] || !seenAliases["memoh"] {
+	if !seenAliases["ami:example.com"] || !seenAliases["ami"] {
 		t.Fatalf("aliases = %#v, want adapter-provided alias list", aliases)
 	}
 }
@@ -283,12 +283,12 @@ func TestClassifyMatrixLocalpartMentionUsesAdapterAliases(t *testing.T) {
 			Type: channel.ConversationTypeGroup,
 		},
 		Metadata: map[string]any{
-			"bot_alias":    "@memoh:example.com",
-			"bot_aliases":  []string{"@memoh:example.com", "@memoh"},
+			"bot_alias":    "@ami:example.com",
+			"bot_aliases":  []string{"@ami:example.com", "@ami"},
 			"is_mentioned": true,
 		},
 	}
-	decision := (&ChannelInboundProcessor{}).classifyChannelSlash("@memoh /new discuss", msg, InboundIdentity{BotID: "bot-1"})
+	decision := (&ChannelInboundProcessor{}).classifyChannelSlash("@ami /new discuss", msg, InboundIdentity{BotID: "bot-1"})
 	if decision.Kind != slash.DecisionCommandAction || !decision.Directed || decision.Invocation == nil {
 		t.Fatalf("decision = %#v, want directed Matrix command", decision)
 	}
@@ -298,7 +298,7 @@ func TestClassifyMatrixLocalpartMentionUsesAdapterAliases(t *testing.T) {
 }
 
 func TestHandleInboundNewCommandIgnoresCurrentBotMentionArguments(t *testing.T) {
-	for _, text := range []string{"/new @memoh1bot", "/new discuss @memoh1bot", "/new discuss@memoh1bot"} {
+	for _, text := range []string{"/new @ami1bot", "/new discuss @ami1bot", "/new discuss@ami1bot"} {
 		t.Run(text, func(t *testing.T) {
 			channelIdentitySvc := &fakeChannelIdentityService{channelIdentity: identities.ChannelIdentity{ID: "channel-identity-1"}}
 			chatSvc := &fakeChatService{resolveResult: route.ResolveConversationResult{BotID: "chat-1", RouteID: "route-1"}}
@@ -323,7 +323,7 @@ func TestHandleInboundNewCommandIgnoresCurrentBotMentionArguments(t *testing.T) 
 				Metadata: map[string]any{
 					"raw_text":     text,
 					"is_mentioned": true,
-					"bot_username": "memoh1bot",
+					"bot_username": "ami1bot",
 				},
 			}
 			cfg := channel.ChannelConfig{TeamID: "team-test", ID: "cfg-1", BotID: "bot-1", ChannelType: channel.ChannelTypeTelegram}

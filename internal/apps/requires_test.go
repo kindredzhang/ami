@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 func requiringDep(id string, requires ...string) workspacedeps.Entry {
@@ -23,7 +23,7 @@ func TestInstallRunsPrerequisitesAsStepsWithoutReferencingThem(t *testing.T) {
 	h.deps.present["micromamba"] = requiringDep("micromamba", "python")
 	h.deps.present["pandoc"] = requiringDep("pandoc", "python", "micromamba")
 	h.deps.present["poppler"] = requiringDep("poppler", "python", "micromamba")
-	pkg := release("memoh", "docx", "a", "1.0.0", []string{"docx"}, []string{"pandoc", "poppler"}, nil)
+	pkg := release("ami", "docx", "a", "1.0.0", []string{"docx"}, []string{"pandoc", "poppler"}, nil)
 	h.publish(pkg)
 
 	result, rec := h.install(t, pkg)
@@ -55,7 +55,7 @@ func TestInstallSkipsDependentsOfAFailedPrerequisite(t *testing.T) {
 	h.deps.present["pandoc"] = requiringDep("pandoc", "micromamba")
 	h.deps.present["node"] = requiringDep("node")
 	h.deps.installErr["micromamba"] = errors.New("download failed")
-	pkg := release("memoh", "docx", "a", "1.0.0", []string{"docx"}, []string{"pandoc", "node"}, nil)
+	pkg := release("ami", "docx", "a", "1.0.0", []string{"docx"}, []string{"pandoc", "node"}, nil)
 	h.publish(pkg)
 
 	result, rec := h.install(t, pkg)
@@ -98,7 +98,7 @@ func TestRemoveKeepsDependenciesOtherDependenciesRequire(t *testing.T) {
 	h := newHarness()
 	h.deps.present["micromamba"] = requiringDep("micromamba")
 	h.deps.present["pandoc"] = requiringDep("pandoc", "micromamba")
-	mamba := release("memoh", "mamba", "a", "1.0.0", nil, []string{"micromamba"}, nil)
+	mamba := release("ami", "mamba", "a", "1.0.0", nil, []string{"micromamba"}, nil)
 	h.publish(mamba)
 	installed, _ := h.install(t, mamba)
 	// pandoc was installed on its own and needs micromamba.

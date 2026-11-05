@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	agentview "github.com/felinics/memoh/internal/agent/view"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	session "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	agentview "github.com/kindredzhang/ami/internal/agent/view"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type backgroundNotificationWriter struct {

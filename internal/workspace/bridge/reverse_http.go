@@ -10,10 +10,10 @@ import (
 
 	"google.golang.org/grpc/metadata"
 
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
-const reverseHTTPRouteMetadata = "x-memoh-reverse-http-route"
+const reverseHTTPRouteMetadata = "x-ami-reverse-http-route"
 
 func (c *Client) ServeReverseHTTP(ctx context.Context, handler http.Handler) (func(), error) {
 	return c.ServeReverseHTTPRoute(ctx, "", handler)

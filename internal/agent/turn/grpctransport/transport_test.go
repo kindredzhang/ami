@@ -17,13 +17,13 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/agent/turn/turnpb"
-	"github.com/felinics/memoh/internal/apperror"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/logger"
-	intrpc "github.com/felinics/memoh/internal/rpc"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn/turnpb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/logger"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
 )
 
 const (

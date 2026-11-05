@@ -15,7 +15,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 type directPipeTestService struct {

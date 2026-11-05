@@ -11,7 +11,7 @@ LEFT JOIN bot_sessions session
  AND session.bot_id = bot.id
  AND session.id = sqlc.narg(session_id)
  AND session.deleted_at IS NULL
-WHERE bot.team_id = public.memoh_current_team_id()
+WHERE bot.team_id = public.ami_current_team_id()
   AND bot.id = sqlc.arg(bot_id)
   AND (
     sqlc.narg(session_id)::uuid IS NULL
@@ -30,7 +30,7 @@ JOIN session_runs run
  AND run.session_id = message.session_id
  AND run.turn_id = message.turn_id
  AND run.turn_position = message.turn_position
-WHERE message.team_id = public.memoh_current_team_id()
+WHERE message.team_id = public.ami_current_team_id()
   AND message.bot_id = sqlc.arg(bot_id)
   AND message.session_id = sqlc.arg(session_id)
   AND message.run_id = sqlc.arg(run_id)
@@ -54,7 +54,7 @@ JOIN session_runs run
  AND run.session_id = message.session_id
  AND run.turn_id = message.turn_id
  AND run.turn_position = message.turn_position
-WHERE message.team_id = public.memoh_current_team_id()
+WHERE message.team_id = public.ami_current_team_id()
   AND message.bot_id = sqlc.arg(bot_id)
   AND message.session_id = sqlc.arg(session_id)
   AND message.run_id = sqlc.arg(run_id)
@@ -75,7 +75,7 @@ LIMIT 1;
 WITH owner_session AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = sqlc.arg(session_id)
     AND session.bot_id = sqlc.arg(bot_id)
   FOR UPDATE
@@ -89,7 +89,7 @@ WITH owner_session AS MATERIALIZED (
     ) AS in_context
   FROM bot_history_messages message
   JOIN owner_session owner ON owner.id = message.session_id
-  WHERE message.team_id = public.memoh_current_team_id()
+  WHERE message.team_id = public.ami_current_team_id()
     AND message.bot_id = sqlc.arg(bot_id)
     AND message.run_id = sqlc.arg(run_id)
     AND message.role = 'assistant'
@@ -97,7 +97,7 @@ WITH owner_session AS MATERIALIZED (
     AND message.metadata @> '{"agent_decision_projection": true}'::jsonb
   FOR UPDATE OF message
 ), rewound AS (
-  SELECT public.memoh_rewind_history_checkpoint(owner.id, removed.turn_position, removed.turn_message_seq) AS done
+  SELECT public.ami_rewind_history_checkpoint(owner.id, removed.turn_position, removed.turn_message_seq) AS done
   FROM owner_session owner
   CROSS JOIN (
     SELECT
@@ -110,6 +110,6 @@ WITH owner_session AS MATERIALIZED (
 )
 DELETE FROM bot_history_messages message
 USING projections
-WHERE message.team_id = public.memoh_current_team_id()
+WHERE message.team_id = public.ami_current_team_id()
   AND message.id = projections.id
   AND (SELECT count(*) FROM rewound) >= 0;

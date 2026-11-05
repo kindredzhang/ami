@@ -11,11 +11,11 @@ const require = createRequire(import.meta.url)
 
 const defaultPort = 8082
 const defaultHost = '127.0.0.1'
-const defaultApiBaseUrl = process.env.MEMOH_DESKTOP_BASE_URL ?? process.env.VITE_API_URL ?? 'http://localhost:18080'
+const defaultApiBaseUrl = process.env.AMI_DESKTOP_BASE_URL ?? process.env.VITE_API_URL ?? 'http://localhost:18080'
 
 function resolveProxyTarget(command: 'build' | 'serve'): { port: number; host: string; baseUrl: string } {
-  const configuredProxyTarget = process.env.MEMOH_WEB_PROXY_TARGET?.trim()
-  const configuredPath = process.env.MEMOH_CONFIG_PATH?.trim() || process.env.CONFIG_PATH?.trim()
+  const configuredProxyTarget = process.env.AMI_WEB_PROXY_TARGET?.trim()
+  const configuredPath = process.env.AMI_CONFIG_PATH?.trim() || process.env.CONFIG_PATH?.trim()
   const configPath = configuredPath && configuredPath.length > 0 ? configuredPath : '../../config.toml'
 
   let port = defaultPort
@@ -26,7 +26,7 @@ function resolveProxyTarget(command: 'build' | 'serve'): { port: number; host: s
 
   if (shouldReadConfig) {
     try {
-      const { loadConfig, getBaseUrl } = require('@memohai/config') as {
+      const { loadConfig, getBaseUrl } = require('@ami/config') as {
         loadConfig: (path: string) => { web?: { port?: number; host?: string } }
         getBaseUrl: (config: unknown) => string
       }
@@ -50,12 +50,12 @@ function resolveProxyTarget(command: 'build' | 'serve'): { port: number; host: s
 export default defineConfig(async ({ command }) => {
   const { port, host, baseUrl } = resolveProxyTarget(command)
   const bundledElectronToolkit = ['@electron-toolkit/preload', '@electron-toolkit/utils']
-  const desktopBaseUrl = process.env.MEMOH_DESKTOP_BASE_URL?.trim() ?? ''
-  const desktopAppId = process.env.MEMOH_DESKTOP_APP_ID?.trim() ?? ''
-  const updateBaseUrl = process.env.MEMOH_DESKTOP_UPDATE_BASE_URL?.trim() ?? ''
+  const desktopBaseUrl = process.env.AMI_DESKTOP_BASE_URL?.trim() ?? ''
+  const desktopAppId = process.env.AMI_DESKTOP_APP_ID?.trim() ?? ''
+  const updateBaseUrl = process.env.AMI_DESKTOP_UPDATE_BASE_URL?.trim() ?? ''
 
   const devtoolsPlugins: PluginOption[] = []
-  if (command !== 'build' && process.env.MEMOH_VUE_DEVTOOLS !== '0') {
+  if (command !== 'build' && process.env.AMI_VUE_DEVTOOLS !== '0') {
     try {
       const { default: vueDevTools } = await import('vite-plugin-vue-devtools')
       devtoolsPlugins.push(vueDevTools())
@@ -67,9 +67,9 @@ export default defineConfig(async ({ command }) => {
   return {
     main: {
       define: {
-        'process.env.MEMOH_DESKTOP_BASE_URL': JSON.stringify(desktopBaseUrl),
-        'process.env.MEMOH_DESKTOP_APP_ID': JSON.stringify(desktopAppId),
-        'process.env.MEMOH_DESKTOP_UPDATE_BASE_URL': JSON.stringify(updateBaseUrl),
+        'process.env.AMI_DESKTOP_BASE_URL': JSON.stringify(desktopBaseUrl),
+        'process.env.AMI_DESKTOP_APP_ID': JSON.stringify(desktopAppId),
+        'process.env.AMI_DESKTOP_UPDATE_BASE_URL': JSON.stringify(updateBaseUrl),
       },
       plugins: [externalizeDepsPlugin({ exclude: bundledElectronToolkit })],
     },
@@ -89,7 +89,7 @@ export default defineConfig(async ({ command }) => {
         // exposed to the same cache-poisoning path — see that file for the
         // full rationale.
         {
-          name: 'memoh:verify-patched-deps',
+          name: 'ami:verify-patched-deps',
           configResolved() {
             execFileSync(
               process.execPath,
@@ -103,7 +103,7 @@ export default defineConfig(async ({ command }) => {
         tailwindcss(),
       ],
       resolve: {
-        // The renderer consumes both @memohai/web and the linked @felinic/ui
+        // The renderer consumes both @ami/web and the linked @felinic/ui
         // workspace package. Keep their injection-based runtimes shared just
         // like the standalone Web build does.
         dedupe: ['vue', 'vee-validate'],

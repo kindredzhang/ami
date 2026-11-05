@@ -21,23 +21,23 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/acl"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/channel"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errlog"
-	fetchpkg "github.com/felinics/memoh/internal/fetchproviders"
-	"github.com/felinics/memoh/internal/mcp"
-	modelpkg "github.com/felinics/memoh/internal/models"
-	providerpkg "github.com/felinics/memoh/internal/providers"
-	"github.com/felinics/memoh/internal/schedule"
-	searchpkg "github.com/felinics/memoh/internal/searchproviders"
-	"github.com/felinics/memoh/internal/settings"
-	"github.com/felinics/memoh/internal/version"
+	"github.com/kindredzhang/ami/internal/acl"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/channel"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errlog"
+	fetchpkg "github.com/kindredzhang/ami/internal/fetchproviders"
+	"github.com/kindredzhang/ami/internal/mcp"
+	modelpkg "github.com/kindredzhang/ami/internal/models"
+	providerpkg "github.com/kindredzhang/ami/internal/providers"
+	"github.com/kindredzhang/ami/internal/schedule"
+	searchpkg "github.com/kindredzhang/ami/internal/searchproviders"
+	"github.com/kindredzhang/ami/internal/settings"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 type WorkspaceData interface {
@@ -367,7 +367,7 @@ func (s *Service) collect(ctx context.Context, botID string, opts ExportOptions)
 	}
 	manifest := Manifest{
 		SchemaVersion: BackupSchemaVersion,
-		App:           "memoh/" + version.Version,
+		App:           "ami/" + version.Version,
 		ExportedAt:    time.Now().UTC(),
 		SourceBotID:   bot.ID,
 		SourceBotName: bot.DisplayName,

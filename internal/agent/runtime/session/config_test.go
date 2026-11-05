@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 func TestNewManagerFromConfigDefersRedisIOUntilStart(t *testing.T) {
@@ -18,7 +18,7 @@ func TestNewManagerFromConfigDefersRedisIOUntilStart(t *testing.T) {
 		OwnerLeaseTTL: "30s",
 		Redis: config.SessionRuntimeRedisConfig{
 			URL:       "redis://127.0.0.1:1/0",
-			KeyPrefix: "memoh:test:deferred-start:",
+			KeyPrefix: "ami:test:deferred-start:",
 		},
 	}, nil, nil)
 	if err != nil {

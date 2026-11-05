@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/job"
+	"github.com/kindredzhang/ami/internal/job"
 )
 
 // DefaultReapInterval is how often the stale reaper runs after its initial

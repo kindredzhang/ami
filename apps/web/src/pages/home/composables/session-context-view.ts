@@ -1,4 +1,4 @@
-import type { HandlersContextUsage } from '@memohai/sdk'
+import type { HandlersContextUsage } from '@ami/sdk'
 import { computeContextComposition, positive, type ContextComposition } from './context-categories'
 
 export interface SessionContextView {

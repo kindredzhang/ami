@@ -17,8 +17,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/event"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // BotAgentAuthPurger signs an Agent's runtime out: it removes the login the
@@ -95,7 +95,7 @@ type PromptInput struct {
 
 	// Prompt is the user's message text.
 	Prompt string
-	// ContextMarkdown is the assembled Memoh context document for this turn.
+	// ContextMarkdown is the assembled Ami context document for this turn.
 	ContextMarkdown string
 	// Images are inline user images, raw bytes with MIME types.
 	Images []Image
@@ -105,7 +105,7 @@ type PromptInput struct {
 	ModelID         string
 	ReasoningEffort string
 
-	// SessionMode is the Memoh session mode driving this turn (chat,
+	// SessionMode is the Ami session mode driving this turn (chat,
 	// schedule, ...); tool-gateway policy keys on it.
 	SessionMode string
 
@@ -133,15 +133,15 @@ type PromptInput struct {
 	// receive the images as workspace files instead of failing the turn.
 	CanFallbackImagesToFiles bool
 	// ToolOutputLimit bounds tool output the runtime feeds back into its
-	// context through Memoh-owned tool surfaces.
+	// context through Ami-owned tool surfaces.
 	ToolOutputLimit contextlimit.ToolOutputLimit
 
 	// RuntimeMetadata is the session's runtime metadata map. Drivers read and
 	// persist their own keys through it (e.g. the codex thread id).
 	RuntimeMetadata map[string]any
 
-	// ContextURI names the Memoh-owned context document. The budget flows into
-	// runtime-hosted Memoh tools.
+	// ContextURI names the Ami-owned context document. The budget flows into
+	// runtime-hosted Ami tools.
 	ContextURI             string
 	ContextBudgetMaxTokens int
 
@@ -150,9 +150,9 @@ type PromptInput struct {
 	RuntimeOwnerAccountID string
 	// ChannelIdentityID identifies the acting user for tool attribution.
 	ChannelIdentityID string
-	// SessionToken authenticates runtime-side calls back into Memoh.
+	// SessionToken authenticates runtime-side calls back into Ami.
 	SessionToken string //nolint:gosec // session credential material, not a hardcoded secret
-	// ToolHTTPURL is the Memoh tool gateway (HTTP MCP) base URL, empty when
+	// ToolHTTPURL is the Ami tool gateway (HTTP MCP) base URL, empty when
 	// the gateway is unavailable.
 	ToolHTTPURL string
 

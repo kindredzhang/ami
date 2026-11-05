@@ -161,7 +161,7 @@ func rewriteTestArtifact(t *testing.T, archive []byte, mutate func([]archiveTest
 	if err := compressor.Close(); err != nil {
 		t.Fatal(err)
 	}
-	return compressed.Bytes(), Artifact{Format: "memoh_dependency_v1", Digest: releaseDigest(compressed.Bytes()), Size: int64(compressed.Len()), ArchiveSize: int64(raw.Len()), UncompressedSize: contentSize, FileCount: len(files), ContentType: "application/gzip"}
+	return compressed.Bytes(), Artifact{Format: "ami_dependency_v1", Digest: releaseDigest(compressed.Bytes()), Size: int64(compressed.Len()), ArchiveSize: int64(raw.Len()), UncompressedSize: contentSize, FileCount: len(files), ContentType: "application/gzip"}
 }
 
 func TestUsingRejectsEmptyDefinition(t *testing.T) {

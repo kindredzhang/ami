@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // Catalog codes the tests use: a 4xx with an allowed arg, a 4xx without, and

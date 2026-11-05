@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	textprune "github.com/felinics/memoh/internal/prune"
-	"github.com/felinics/memoh/internal/textutil"
+	textprune "github.com/kindredzhang/ami/internal/prune"
+	"github.com/kindredzhang/ami/internal/textutil"
 )
 
 const (
@@ -217,13 +217,13 @@ func fallbackToolOutput(value any, label string, cfg textprune.Config) any {
 	raw := MarshalString(value)
 	content := fallbackContentString(raw, label, cfg)
 	return map[string]any{
-		"_memoh_truncated": true,
+		"_ami_truncated": true,
 		"content":          content,
 	}
 }
 
 func fallbackContentString(raw, label string, cfg textprune.Config) string {
-	contentBudget := cfg.MaxBytes - len(`{"_memoh_truncated":true,"content":""}`)
+	contentBudget := cfg.MaxBytes - len(`{"_ami_truncated":true,"content":""}`)
 	if contentBudget <= 0 {
 		return textprune.DefaultMarker
 	}
@@ -234,7 +234,7 @@ func fallbackContentString(raw, label string, cfg textprune.Config) string {
 		})
 		content := textprune.PruneWithEdges(raw, label, contentCfg)
 		if !textprune.Exceeds(MarshalString(map[string]any{
-			"_memoh_truncated": true,
+			"_ami_truncated": true,
 			"content":          content,
 		}), cfg.MaxBytes, cfg.MaxLines) {
 			return content

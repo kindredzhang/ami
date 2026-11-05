@@ -8,11 +8,11 @@ import (
 	"log/slog"
 	"strings"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	turnpkg "github.com/felinics/memoh/internal/agent/turn"
-	chatview "github.com/felinics/memoh/internal/agent/view"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	turnpkg "github.com/kindredzhang/ami/internal/agent/turn"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 type RetryLatestMessageInput struct {

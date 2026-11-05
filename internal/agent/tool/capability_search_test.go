@@ -9,9 +9,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/supermarket"
 )
 
 func catalogToolFixture(t *testing.T, handler http.HandlerFunc) (toolexec.Tool, *capabilityTestApproval) {
@@ -51,8 +51,8 @@ func TestAppCategoriesFilterCountsBeforePagination(t *testing.T) {
 		response := supermarket.AppCategoryListResponse{Data: []supermarket.AppCategory{
 			{ID: "creativity", Order: 100, AppCount: 1, Registries: []supermarket.AppCategoryRegistry{{ID: "openai", Count: 1}}},
 			{ID: "empty", Order: 0},
-			{ID: "developer-tools", Name: "Developer Tools", Names: map[string]string{"zh": "开发工具"}, Order: 40, AppCount: 5, Registries: []supermarket.AppCategoryRegistry{{ID: "memoh", Count: 2}, {ID: "openai", Count: 3}}},
-			{ID: "agent", Order: 10, AppCount: 2, Registries: []supermarket.AppCategoryRegistry{{ID: "memoh", Count: 2}}},
+			{ID: "developer-tools", Name: "Developer Tools", Names: map[string]string{"zh": "开发工具"}, Order: 40, AppCount: 5, Registries: []supermarket.AppCategoryRegistry{{ID: "ami", Count: 2}, {ID: "openai", Count: 3}}},
+			{ID: "agent", Order: 10, AppCount: 2, Registries: []supermarket.AppCategoryRegistry{{ID: "ami", Count: 2}}},
 		}}
 		if err := json.NewEncoder(w).Encode(response); err != nil {
 			t.Error(err)

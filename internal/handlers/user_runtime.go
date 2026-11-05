@@ -8,10 +8,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/userruntime"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/userruntime"
 )
 
 // UserRuntimeHandler only manages the long-lived credential used by the

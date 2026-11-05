@@ -6,7 +6,7 @@ import (
 
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 const connectItOAuthClientNotConfigured = "oauth_client_not_configured"

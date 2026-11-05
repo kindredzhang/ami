@@ -1,4 +1,4 @@
-// Package team holds the default team identity used by self-hosted Memoh.
+// Package team holds the default team identity used by self-hosted Ami.
 package team
 
 // DefaultTeamID is the stable, published identity of the singleton team used

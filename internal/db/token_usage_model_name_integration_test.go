@@ -12,7 +12,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 // TestTokenUsageModelNameFallsBackToModelID exercises the real SQL label
@@ -54,13 +54,13 @@ func TestTokenUsageModelNameFallsBackToModelID(t *testing.T) {
 	}
 	bindTeamQueryFixture(t, ctx, tx)
 	if _, err := tx.Exec(ctx, `
-ALTER TABLE bot_sessions ADD COLUMN team_id UUID NOT NULL DEFAULT public.memoh_current_team_id();
-ALTER TABLE bot_history_messages ADD COLUMN team_id UUID NOT NULL DEFAULT public.memoh_current_team_id();
-ALTER TABLE providers ADD COLUMN team_id UUID NOT NULL DEFAULT public.memoh_current_team_id();
-ALTER TABLE models ADD COLUMN team_id UUID NOT NULL DEFAULT public.memoh_current_team_id();
+ALTER TABLE bot_sessions ADD COLUMN team_id UUID NOT NULL DEFAULT public.ami_current_team_id();
+ALTER TABLE bot_history_messages ADD COLUMN team_id UUID NOT NULL DEFAULT public.ami_current_team_id();
+ALTER TABLE providers ADD COLUMN team_id UUID NOT NULL DEFAULT public.ami_current_team_id();
+ALTER TABLE models ADD COLUMN team_id UUID NOT NULL DEFAULT public.ami_current_team_id();
 CREATE TABLE bot_memory_usage (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  team_id UUID NOT NULL DEFAULT public.memoh_current_team_id(),
+  team_id UUID NOT NULL DEFAULT public.ami_current_team_id(),
   bot_id UUID NOT NULL,
   model_id UUID,
   operation TEXT NOT NULL,

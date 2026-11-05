@@ -14,7 +14,7 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/toolcontext"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 type ToolSessionContext = toolcontext.Session

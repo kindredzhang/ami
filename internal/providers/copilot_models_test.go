@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func TestListGitHubCopilotRemoteModels(t *testing.T) {

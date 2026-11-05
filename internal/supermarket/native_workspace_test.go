@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 type nativeOnlyResolver struct {

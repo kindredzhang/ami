@@ -3,8 +3,8 @@ package channel_test
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/partsfixture"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/partsfixture"
 )
 
 func TestRenderPartsAsMarkdown_Canonical(t *testing.T) {

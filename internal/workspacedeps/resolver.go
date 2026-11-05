@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 // Drivers discover installed launchers without authorizing script execution.

@@ -32,7 +32,7 @@ type ElicitationFormMapping struct {
 }
 
 // ElicitationExtension reads what an agent marks in a property's _meta its
-// own way; the standard and Memoh's own markers need none.
+// own way; the standard and Ami's own markers need none.
 type ElicitationExtension struct {
 	// CustomAnswer reports the question a property is the free-text answer
 	// of.

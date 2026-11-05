@@ -3,7 +3,7 @@ package claudecode
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
 )
 
 // dependencyID is the workspace dependency catalog id that provisions the

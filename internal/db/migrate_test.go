@@ -6,8 +6,8 @@ import (
 
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 
-	dbembed "github.com/felinics/memoh/db"
-	"github.com/felinics/memoh/internal/config"
+	dbembed "github.com/kindredzhang/ami/db"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 func TestEmbeddedMigrationsHaveUniqueVersions(t *testing.T) {
@@ -27,9 +27,9 @@ func TestRunMigrateUnknownCommand(t *testing.T) {
 	cfg := config.PostgresConfig{
 		Host:     "localhost",
 		Port:     5432,
-		User:     "memoh",
+		User:     "ami",
 		Password: "secret",
-		Database: "memoh",
+		Database: "ami",
 		SSLMode:  "disable",
 	}
 	err := RunMigrate(nil, cfg, nil, "invalid", nil)

@@ -3,7 +3,7 @@ package audio
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/providers"
+	"github.com/kindredzhang/ami/internal/providers"
 )
 
 // The settings UI PUTs these masked values back through /providers/:id; the

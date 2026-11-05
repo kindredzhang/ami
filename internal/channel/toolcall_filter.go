@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/felinics/memoh/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
 )
 
 // toolCallDroppingStream hides ordinary tool calls from the wrapped primary

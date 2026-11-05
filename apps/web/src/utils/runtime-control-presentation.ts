@@ -1,4 +1,4 @@
-import type { ExternalControls, TurnRuntimeCommand, TurnRuntimeMode } from '@memohai/sdk'
+import type { ExternalControls, TurnRuntimeCommand, TurnRuntimeMode } from '@ami/sdk'
 import type { CommandActionResult } from '@/composables/api/useChat'
 import { codexUsageResetTime } from './codex-usage'
 

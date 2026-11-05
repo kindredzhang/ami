@@ -8,14 +8,14 @@ import (
 	"time"
 	"unicode"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	native "github.com/felinics/memoh/internal/agent/runtime/native"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/contextview"
-	"github.com/felinics/memoh/internal/prune"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	native "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/contextview"
+	"github.com/kindredzhang/ami/internal/prune"
 )
 
-const runtimeContextURI = "memoh://context/current-turn"
+const runtimeContextURI = "ami://context/current-turn"
 
 const runtimeDynamicContextMaxChars = 8 * 1024
 
@@ -150,7 +150,7 @@ func buildRuntimeContextSections(input runtimeContextRenderInput) []contextview.
 		Priority:   10,
 		CacheClass: contextfrag.CacheStable,
 		Budget:     contextfrag.BudgetPolicy{Overflow: contextfrag.OverflowKeep},
-		Text: "# Memoh Runtime Context\n\n" +
+		Text: "# Ami Runtime Context\n\n" +
 			"This virtual resource is already embedded in the current External Agent prompt. It is not a workspace file and no file lookup is needed. Use it for identity, memory, user preferences, and session background. The user prompt outside this resource is the actual task.",
 	})
 
@@ -229,7 +229,7 @@ func buildRuntimeContextSections(input runtimeContextRenderInput) []contextview.
 		Kind:       contextfrag.KindSystemPolicy,
 		Priority:   50,
 		CacheClass: contextfrag.CacheStable,
-	}, "Memoh Runtime Notes", strings.TrimSpace(`
+	}, "Ami Runtime Notes", strings.TrimSpace(`
 - This context is generated dynamically for the current External Agent turn.
 - Prefer the latest user prompt over stale memory when they conflict.
 - Treat secrets, OAuth tokens, API keys, and private configuration as sensitive.

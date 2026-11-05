@@ -4,7 +4,7 @@ import { useQueryCache } from '@pinia/colada'
 import { toast } from '@felinic/ui'
 import i18n from '@/i18n'
 import { useRouter } from 'vue-router'
-import { getBotsByBotIdApps } from '@memohai/sdk'
+import { getBotsByBotIdApps } from '@ami/sdk'
 import { invalidateBotApps, appInProgress, appLastError, type AppItem } from '@/composables/api/useApps'
 import { invalidateBotDependencies } from '@/composables/api/useWorkspaceDependencies'
 import {

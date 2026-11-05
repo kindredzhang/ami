@@ -8,7 +8,7 @@ import {
   patchBotsByBotIdSessionsBySessionIdRuntimeControlsMode,
   postBotsByBotIdSessionsBySessionIdRuntimeControlsCommands,
   postBotsByBotIdSessionsBySessionIdRuntimeControlsGoal,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 export function useRuntimeControls(options: {
   botId: Ref<string | null | undefined>

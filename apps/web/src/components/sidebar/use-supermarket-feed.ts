@@ -1,5 +1,5 @@
 import { onScopeDispose, ref, shallowRef, watch, type Ref } from 'vue'
-import { getSupermarketApps, type HandlersSupermarketAppSummary } from '@memohai/sdk'
+import { getSupermarketApps, type HandlersSupermarketAppSummary } from '@ami/sdk'
 import { appKey } from '@/composables/api/useApps'
 
 /** Append catalog pages while isolating each search and retaining results on retryable failures. */

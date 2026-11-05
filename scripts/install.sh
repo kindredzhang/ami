@@ -7,28 +7,28 @@ PURPLE=$(printf '\033[0;35m')
 RED=$(printf '\033[0;31m')
 NC=$(printf '\033[0m')
 
-GITHUB_REPO="felinics/Memoh"
+GITHUB_REPO="kindredzhang/ami"
 REPO="https://github.com/${GITHUB_REPO}.git"
-DIR="Memoh"
-COMPOSE_PROJECT_NAME="memoh"
+DIR="Ami"
+COMPOSE_PROJECT_NAME="ami"
 SILENT=false
 
 # Track whether the user explicitly set environment-backed options so upgrades
 # can reuse prior install values by default.
-if [ "${MEMOH_INSTALL_MODE+x}" = x ]; then
-  INSTALL_MODE="$MEMOH_INSTALL_MODE"
+if [ "${AMI_INSTALL_MODE+x}" = x ]; then
+  INSTALL_MODE="$AMI_INSTALL_MODE"
 else
   INSTALL_MODE="auto"
 fi
-if [ "${MEMOH_DATABASE_DRIVER+x}" = x ]; then
-  DATABASE_DRIVER="$MEMOH_DATABASE_DRIVER"
+if [ "${AMI_DATABASE_DRIVER+x}" = x ]; then
+  DATABASE_DRIVER="$AMI_DATABASE_DRIVER"
   DATABASE_DRIVER_SET=true
 else
   DATABASE_DRIVER="postgres"
   DATABASE_DRIVER_SET=false
 fi
-if [ "${MEMOH_CONTAINER_BACKEND+x}" = x ]; then
-  CONTAINER_BACKEND="$MEMOH_CONTAINER_BACKEND"
+if [ "${AMI_CONTAINER_BACKEND+x}" = x ]; then
+  CONTAINER_BACKEND="$AMI_CONTAINER_BACKEND"
   CONTAINER_BACKEND_SET=true
 else
   CONTAINER_BACKEND="containerd"
@@ -39,30 +39,30 @@ if [ "${USE_CN_MIRROR+x}" = x ]; then
 else
   USE_CN_MIRROR_SET=false
 fi
-if [ "${MEMOH_WEBHOOK_TUNNEL_MODE+x}" = x ]; then
+if [ "${AMI_WEBHOOK_TUNNEL_MODE+x}" = x ]; then
   WEBHOOK_TUNNEL_MODE_SET=true
 else
   WEBHOOK_TUNNEL_MODE_SET=false
 fi
-if [ "${MEMOH_WEBHOOK_PUBLIC_BASE_URL+x}" = x ]; then
+if [ "${AMI_WEBHOOK_PUBLIC_BASE_URL+x}" = x ]; then
   WEBHOOK_PUBLIC_BASE_SET=true
 else
   WEBHOOK_PUBLIC_BASE_SET=false
 fi
-if [ "${MEMOH_INTERNAL_RPC_SHARED_SECRET+x}" = x ] && [ -n "$MEMOH_INTERNAL_RPC_SHARED_SECRET" ]; then
+if [ "${AMI_INTERNAL_RPC_SHARED_SECRET+x}" = x ] && [ -n "$AMI_INTERNAL_RPC_SHARED_SECRET" ]; then
   INTERNAL_RPC_SHARED_SECRET_SET=true
 else
   INTERNAL_RPC_SHARED_SECRET_SET=false
 fi
-if [ "${MEMOH_CONNECT_IT_MODE+x}" = x ] && [ -n "$MEMOH_CONNECT_IT_MODE" ]; then
+if [ "${AMI_CONNECT_IT_MODE+x}" = x ] && [ -n "$AMI_CONNECT_IT_MODE" ]; then
   CONNECT_IT_MODE_SET=true
 else
   CONNECT_IT_MODE_SET=false
 fi
-NETWORK_NAME="${COMPOSE_PROJECT_NAME}_memoh-network"
-PROJECT_CONTAINERS="memoh-postgres memoh-pgvector memoh-migrate memoh-server memoh-channel memoh-web memoh-webhook-tunnel memoh-connect-it"
-LEGACY_PROJECT_CONTAINERS="memoh-connect-it-web"
-PROJECT_VOLUMES="${COMPOSE_PROJECT_NAME}_postgres_data ${COMPOSE_PROJECT_NAME}_pgvector_data ${COMPOSE_PROJECT_NAME}_containerd_data ${COMPOSE_PROJECT_NAME}_memoh_data ${COMPOSE_PROJECT_NAME}_server_cni_state"
+NETWORK_NAME="${COMPOSE_PROJECT_NAME}_ami-network"
+PROJECT_CONTAINERS="ami-postgres ami-pgvector ami-migrate ami-server ami-channel ami-web ami-webhook-tunnel ami-connect-it"
+LEGACY_PROJECT_CONTAINERS="ami-connect-it-web"
+PROJECT_VOLUMES="${COMPOSE_PROJECT_NAME}_postgres_data ${COMPOSE_PROJECT_NAME}_pgvector_data ${COMPOSE_PROJECT_NAME}_containerd_data ${COMPOSE_PROJECT_NAME}_ami_data ${COMPOSE_PROJECT_NAME}_server_cni_state"
 LEGACY_PROJECT_VOLUMES="${COMPOSE_PROJECT_NAME}_openviking_data"
 
 EXISTING_CONFIG_SOURCE=""
@@ -87,10 +87,10 @@ while [ $# -gt 0 ]; do
     -y|--yes) SILENT=true ;;
     --version)
       shift
-      MEMOH_VERSION="$1"
+      AMI_VERSION="$1"
       ;;
     --version=*)
-      MEMOH_VERSION="${1#--version=}"
+      AMI_VERSION="${1#--version=}"
       ;;
     --install-mode)
       shift
@@ -126,15 +126,15 @@ if [ "$SILENT" = false ] && ! [ -e /dev/tty ]; then
   SILENT=true
 fi
 
-echo "${PURPLE}Memoh One-Click Install${NC}"
+echo "${PURPLE}Ami One-Click Install${NC}"
 
-if [ "$(id -u 2>/dev/null || printf '1')" = "0" ] && [ "${MEMOH_ALLOW_ROOT_INSTALL:-false}" != "true" ]; then
+if [ "$(id -u 2>/dev/null || printf '1')" = "0" ] && [ "${AMI_ALLOW_ROOT_INSTALL:-false}" != "true" ]; then
   echo "${RED}Error: Do not run this installer as root.${NC}"
   echo "Run it as your normal user instead:"
   echo "  curl -fsSL https://memoh.sh | sh"
   echo ""
   echo "The installer will use sudo for Docker commands only when Docker requires it."
-  echo "To override this guard, set MEMOH_ALLOW_ROOT_INSTALL=true."
+  echo "To override this guard, set AMI_ALLOW_ROOT_INSTALL=true."
   exit 1
 fi
 
@@ -208,7 +208,7 @@ normalize_database_driver() {
 normalize_database_driver_or_exit() {
   normalized_database_driver=$(normalize_database_driver "$DATABASE_DRIVER" || true)
   if [ -z "$normalized_database_driver" ]; then
-    echo "${RED}Error: unsupported database driver '${DATABASE_DRIVER}'. Memoh now supports postgres only.${NC}"
+    echo "${RED}Error: unsupported database driver '${DATABASE_DRIVER}'. Ami now supports postgres only.${NC}"
     exit 1
   fi
   DATABASE_DRIVER="$normalized_database_driver"
@@ -434,7 +434,7 @@ load_existing_settings() {
 
     if [ "$INTERNAL_RPC_SHARED_SECRET_SET" = false ]; then
       value=$(read_toml_value "$EXISTING_CONFIG_SOURCE" "internal_rpc" "shared_secret" || true)
-      [ -n "$value" ] && MEMOH_INTERNAL_RPC_SHARED_SECRET="$value"
+      [ -n "$value" ] && AMI_INTERNAL_RPC_SHARED_SECRET="$value"
     fi
 
     if [ "$DATABASE_DRIVER_SET" = false ]; then
@@ -455,81 +455,81 @@ load_existing_settings() {
       if [ -z "$value" ]; then
         value=$(read_toml_value "$EXISTING_CONFIG_SOURCE" "workspace" "registry" || true)
       fi
-      if [ "$value" = "memoh.cn" ]; then
+      if [ "$value" = "ami.cn" ]; then
         USE_CN_MIRROR=true
       fi
     fi
   fi
 
   if [ -n "$EXISTING_ENV_SOURCE" ]; then
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_INSTALLER_WORKSPACE_IMAGE" || true)
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_INSTALLER_WORKSPACE_IMAGE" || true)
     [ -n "$value" ] && EXISTING_INSTALLER_WORKSPACE_IMAGE="$value"
 
     value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "POSTGRES_PASSWORD" || true)
     [ -n "$value" ] && PG_PASS="$value"
 
     if [ "$INTERNAL_RPC_SHARED_SECRET_SET" = false ]; then
-      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_INTERNAL_RPC_SHARED_SECRET" || true)
-      [ -n "$value" ] && MEMOH_INTERNAL_RPC_SHARED_SECRET="$value"
+      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_INTERNAL_RPC_SHARED_SECRET" || true)
+      [ -n "$value" ] && AMI_INTERNAL_RPC_SHARED_SECRET="$value"
     fi
 
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_DATA_DIR" || true)
-    [ -n "$value" ] && MEMOH_DATA_DIR="$value"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_DATA_DIR" || true)
+    [ -n "$value" ] && AMI_DATA_DIR="$value"
 
     if [ "$DATABASE_DRIVER_SET" = false ]; then
-      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_DATABASE_DRIVER" || true)
+      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_DATABASE_DRIVER" || true)
       [ -n "$value" ] && DATABASE_DRIVER="$value"
     fi
 
     if [ "$CONTAINER_BACKEND_SET" = false ]; then
-      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONTAINER_BACKEND" || true)
+      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONTAINER_BACKEND" || true)
       [ -n "$value" ] && CONTAINER_BACKEND="$value"
     fi
 
     if [ "$WEBHOOK_PUBLIC_BASE_SET" = false ]; then
-      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_WEBHOOK_PUBLIC_BASE_URL" || true)
-      [ -n "$value" ] && MEMOH_WEBHOOK_PUBLIC_BASE_URL="$value"
+      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_WEBHOOK_PUBLIC_BASE_URL" || true)
+      [ -n "$value" ] && AMI_WEBHOOK_PUBLIC_BASE_URL="$value"
     fi
 
     if [ "$WEBHOOK_TUNNEL_MODE_SET" = false ]; then
-      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_WEBHOOK_TUNNEL_MODE" || true)
-      [ -n "$value" ] && MEMOH_WEBHOOK_TUNNEL_MODE="$value"
+      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_WEBHOOK_TUNNEL_MODE" || true)
+      [ -n "$value" ] && AMI_WEBHOOK_TUNNEL_MODE="$value"
     fi
 
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR" || true)
-    [ -n "$value" ] && MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR="${MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_WEBHOOK_TUNNEL_LISTEN_ADDR" || true)
+    [ -n "$value" ] && AMI_WEBHOOK_TUNNEL_LISTEN_ADDR="${AMI_WEBHOOK_TUNNEL_LISTEN_ADDR:-$value}"
 
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_WEBHOOK_TUNNEL_METRICS_URL" || true)
-    [ -n "$value" ] && MEMOH_WEBHOOK_TUNNEL_METRICS_URL="${MEMOH_WEBHOOK_TUNNEL_METRICS_URL:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_WEBHOOK_TUNNEL_METRICS_URL" || true)
+    [ -n "$value" ] && AMI_WEBHOOK_TUNNEL_METRICS_URL="${AMI_WEBHOOK_TUNNEL_METRICS_URL:-$value}"
 
     if [ "$CONNECT_IT_MODE_SET" = false ]; then
-      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_MODE" || true)
-      [ -n "$value" ] && MEMOH_CONNECT_IT_MODE="$value"
+      value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_MODE" || true)
+      [ -n "$value" ] && AMI_CONNECT_IT_MODE="$value"
     fi
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_ADMIN_PASSWORD" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_ADMIN_PASSWORD="${MEMOH_CONNECT_IT_ADMIN_PASSWORD:-$value}"
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_SECRET_KEY" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_SECRET_KEY="${MEMOH_CONNECT_IT_SECRET_KEY:-$value}"
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_COOKIE_SECRET" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_COOKIE_SECRET="${MEMOH_CONNECT_IT_COOKIE_SECRET:-$value}"
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_API_TOKEN" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_API_TOKEN="${MEMOH_CONNECT_IT_API_TOKEN:-$value}"
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_PUBLIC_BASE_URL" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_PUBLIC_BASE_URL="${MEMOH_CONNECT_IT_PUBLIC_BASE_URL:-$value}"
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_PORT" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_PORT="${MEMOH_CONNECT_IT_PORT:-$value}"
-    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "MEMOH_CONNECT_IT_IMAGE" || true)
-    [ -n "$value" ] && MEMOH_CONNECT_IT_IMAGE="${MEMOH_CONNECT_IT_IMAGE:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_ADMIN_PASSWORD" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_ADMIN_PASSWORD="${AMI_CONNECT_IT_ADMIN_PASSWORD:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_SECRET_KEY" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_SECRET_KEY="${AMI_CONNECT_IT_SECRET_KEY:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_COOKIE_SECRET" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_COOKIE_SECRET="${AMI_CONNECT_IT_COOKIE_SECRET:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_API_TOKEN" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_API_TOKEN="${AMI_CONNECT_IT_API_TOKEN:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_PUBLIC_BASE_URL" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_PUBLIC_BASE_URL="${AMI_CONNECT_IT_PUBLIC_BASE_URL:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_PORT" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_PORT="${AMI_CONNECT_IT_PORT:-$value}"
+    value=$(read_env_file_value "$EXISTING_ENV_SOURCE" "AMI_CONNECT_IT_IMAGE" || true)
+    [ -n "$value" ] && AMI_CONNECT_IT_IMAGE="${AMI_CONNECT_IT_IMAGE:-$value}"
   fi
 
   return 0
 }
 
 select_workspace_image() {
-  if [ "$MEMOH_DOCKER_VERSION" = "latest" ]; then
-    release_workspace_image="memohai/workspace:debian-latest"
+  if [ "$AMI_DOCKER_VERSION" = "latest" ]; then
+    release_workspace_image="amiai/workspace:debian-latest"
   else
-    release_workspace_image="memohai/workspace:${MEMOH_DOCKER_VERSION}-debian"
+    release_workspace_image="amiai/workspace:${AMI_DOCKER_VERSION}-debian"
   fi
 
   WORKSPACE_IMAGE="$release_workspace_image"
@@ -541,7 +541,7 @@ select_workspace_image() {
   WORKSPACE_IMAGE_SECTION="$EXISTING_WORKSPACE_IMAGE_SECTION"
 
   case "$EXISTING_WORKSPACE_IMAGE" in
-    ""|memohai/workspace:debian|docker.io/memohai/workspace:debian|memohai/workspace:debian-latest|docker.io/memohai/workspace:debian-latest)
+    ""|amiai/workspace:debian|docker.io/amiai/workspace:debian|amiai/workspace:debian-latest|docker.io/amiai/workspace:debian-latest)
       return
       ;;
   esac
@@ -559,15 +559,15 @@ prompt_install_mode() {
     if [ "$INSTALL_MODE" = "auto" ]; then
       if [ -n "$EXISTING_CONFIG_SOURCE" ]; then
         INSTALL_MODE="upgrade"
-        echo "${YELLOW}ℹ Existing Memoh installation detected. Reusing existing configuration in silent mode.${NC}"
+        echo "${YELLOW}ℹ Existing Ami installation detected. Reusing existing configuration in silent mode.${NC}"
       elif [ "$EXISTING_DOCKER_STATE" = true ]; then
-        echo "${RED}Error: Existing Memoh Docker state was detected but no reusable config.toml was found.${NC}"
-        echo "Run again with MEMOH_INSTALL_MODE=reinstall to wipe Docker data, or restore the previous config.toml."
+        echo "${RED}Error: Existing Ami Docker state was detected but no reusable config.toml was found.${NC}"
+        echo "Run again with AMI_INSTALL_MODE=reinstall to wipe Docker data, or restore the previous config.toml."
         exit 1
       else
         INSTALL_MODE="fresh"
         if [ "$EXISTING_INSTALL_STATE" = true ]; then
-          echo "${YELLOW}ℹ Existing Memoh files were detected, but no Docker state or reusable config.toml was found. Proceeding with a fresh install in silent mode.${NC}"
+          echo "${YELLOW}ℹ Existing Ami files were detected, but no Docker state or reusable config.toml was found. Proceeding with a fresh install in silent mode.${NC}"
         fi
       fi
     fi
@@ -583,7 +583,7 @@ prompt_install_mode() {
     return
   fi
 
-  echo "${YELLOW}Detected existing Memoh installation state:${NC}" > /dev/tty
+  echo "${YELLOW}Detected existing Ami installation state:${NC}" > /dev/tty
   if [ -n "$EXISTING_CONFIG_SOURCE" ]; then
     echo "  - Config: ${EXISTING_CONFIG_SOURCE}" > /dev/tty
   fi
@@ -597,7 +597,7 @@ prompt_install_mode() {
     echo "  - Docker volumes:${EXISTING_DOCKER_VOLUMES}" > /dev/tty
   fi
   if [ "$EXISTING_DOCKER_CONTAINERS" = true ]; then
-    echo "  - Existing Memoh containers" > /dev/tty
+    echo "  - Existing Ami containers" > /dev/tty
   fi
   if [ "$EXISTING_DOCKER_NETWORK" = true ]; then
     echo "  - Docker network: ${NETWORK_NAME}" > /dev/tty
@@ -607,7 +607,7 @@ prompt_install_mode() {
   if [ -n "$EXISTING_CONFIG_SOURCE" ]; then
     echo "Choose install mode:" > /dev/tty
     echo "  1) Upgrade existing installation (recommended, reuses config and DB password)" > /dev/tty
-    echo "  2) Reinstall from scratch (removes Memoh Docker data)" > /dev/tty
+    echo "  2) Reinstall from scratch (removes Ami Docker data)" > /dev/tty
     echo "  3) Abort" > /dev/tty
     printf "  Install mode [1]: " > /dev/tty
     read -r input < /dev/tty || true
@@ -619,7 +619,7 @@ prompt_install_mode() {
   elif [ "$EXISTING_DOCKER_STATE" = true ]; then
     echo "No reusable config.toml was found for a safe upgrade." > /dev/tty
     echo "Choose install mode:" > /dev/tty
-    echo "  1) Reinstall from scratch (removes Memoh Docker data)" > /dev/tty
+    echo "  1) Reinstall from scratch (removes Ami Docker data)" > /dev/tty
     echo "  2) Abort" > /dev/tty
     printf "  Install mode [2]: " > /dev/tty
     read -r input < /dev/tty || true
@@ -642,7 +642,7 @@ prompt_install_mode() {
 }
 
 cleanup_existing_installation() {
-  echo "${YELLOW}Removing existing Memoh Docker containers, volumes, and network...${NC}"
+  echo "${YELLOW}Removing existing Ami Docker containers, volumes, and network...${NC}"
   for container in $PROJECT_CONTAINERS $LEGACY_PROJECT_CONTAINERS; do
     $DOCKER rm -f "$container" >/dev/null 2>&1 || true
   done
@@ -685,25 +685,25 @@ if ! $DOCKER compose version >/dev/null 2>&1; then
 fi
 echo "${GREEN}✓ Docker and Docker Compose detected${NC}"
 
-# Resolve version: use MEMOH_VERSION env if set, otherwise fetch latest release
-if [ -n "$MEMOH_VERSION" ]; then
-    echo "${GREEN}✓ Using specified version: ${MEMOH_VERSION}${NC}"
+# Resolve version: use AMI_VERSION env if set, otherwise fetch latest release
+if [ -n "$AMI_VERSION" ]; then
+    echo "${GREEN}✓ Using specified version: ${AMI_VERSION}${NC}"
 else
-    MEMOH_VERSION=$(fetch_latest_version | grep '"tag_name"' | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/')
-    if [ -n "$MEMOH_VERSION" ]; then
-        echo "${GREEN}✓ Latest release: ${MEMOH_VERSION}${NC}"
+    AMI_VERSION=$(fetch_latest_version | grep '"tag_name"' | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/')
+    if [ -n "$AMI_VERSION" ]; then
+        echo "${GREEN}✓ Latest release: ${AMI_VERSION}${NC}"
     else
         echo "${YELLOW}Warning: Failed to fetch latest release tag, falling back to main branch${NC}"
     fi
 fi
 
 # Docker image tag: strip leading "v", fall back to "latest" only when version is unknown
-if [ -n "$MEMOH_VERSION" ]; then
-    MEMOH_DOCKER_VERSION=$(echo "$MEMOH_VERSION" | sed 's/^v//')
+if [ -n "$AMI_VERSION" ]; then
+    AMI_DOCKER_VERSION=$(echo "$AMI_VERSION" | sed 's/^v//')
 else
-    MEMOH_DOCKER_VERSION="latest"
+    AMI_DOCKER_VERSION="latest"
 fi
-echo "${GREEN}✓ Docker image version: ${MEMOH_DOCKER_VERSION}${NC}"
+echo "${GREEN}✓ Docker image version: ${AMI_DOCKER_VERSION}${NC}"
 
 # Generate random JWT secret
 gen_secret() {
@@ -747,30 +747,30 @@ gen_password() {
 }
 
 # Configuration defaults (expand ~ for paths)
-WORKSPACE_DEFAULT="${HOME:-/tmp}/memoh"
-MEMOH_DATA_DIR_DEFAULT="${HOME:-/tmp}/memoh/data"
+WORKSPACE_DEFAULT="${HOME:-/tmp}/ami"
+AMI_DATA_DIR_DEFAULT="${HOME:-/tmp}/ami/data"
 ADMIN_USER="admin"
 ADMIN_PASS="$(gen_password)"
 JWT_SECRET="$(gen_secret)"
-MEMOH_INTERNAL_RPC_SHARED_SECRET="${MEMOH_INTERNAL_RPC_SHARED_SECRET:-$(gen_secret)}"
-MEMOH_CONNECT_IT_MODE="${MEMOH_CONNECT_IT_MODE:-}"
-MEMOH_CONNECT_IT_ADMIN_PASSWORD="${MEMOH_CONNECT_IT_ADMIN_PASSWORD:-}"
-MEMOH_CONNECT_IT_SECRET_KEY="${MEMOH_CONNECT_IT_SECRET_KEY:-}"
-MEMOH_CONNECT_IT_COOKIE_SECRET="${MEMOH_CONNECT_IT_COOKIE_SECRET:-}"
-MEMOH_CONNECT_IT_API_TOKEN="${MEMOH_CONNECT_IT_API_TOKEN:-}"
-MEMOH_CONNECT_IT_PUBLIC_BASE_URL="${MEMOH_CONNECT_IT_PUBLIC_BASE_URL:-}"
-MEMOH_CONNECT_IT_PORT="${MEMOH_CONNECT_IT_PORT:-8421}"
-MEMOH_CONNECT_IT_IMAGE="${MEMOH_CONNECT_IT_IMAGE:-}"
-PG_PASS="memoh123"
+AMI_INTERNAL_RPC_SHARED_SECRET="${AMI_INTERNAL_RPC_SHARED_SECRET:-$(gen_secret)}"
+AMI_CONNECT_IT_MODE="${AMI_CONNECT_IT_MODE:-}"
+AMI_CONNECT_IT_ADMIN_PASSWORD="${AMI_CONNECT_IT_ADMIN_PASSWORD:-}"
+AMI_CONNECT_IT_SECRET_KEY="${AMI_CONNECT_IT_SECRET_KEY:-}"
+AMI_CONNECT_IT_COOKIE_SECRET="${AMI_CONNECT_IT_COOKIE_SECRET:-}"
+AMI_CONNECT_IT_API_TOKEN="${AMI_CONNECT_IT_API_TOKEN:-}"
+AMI_CONNECT_IT_PUBLIC_BASE_URL="${AMI_CONNECT_IT_PUBLIC_BASE_URL:-}"
+AMI_CONNECT_IT_PORT="${AMI_CONNECT_IT_PORT:-8421}"
+AMI_CONNECT_IT_IMAGE="${AMI_CONNECT_IT_IMAGE:-}"
+PG_PASS="ami123"
 WORKSPACE="$WORKSPACE_DEFAULT"
-MEMOH_DATA_DIR="$MEMOH_DATA_DIR_DEFAULT"
+AMI_DATA_DIR="$AMI_DATA_DIR_DEFAULT"
 USE_CN_MIRROR="${USE_CN_MIRROR:-false}"
 
 if [ "$SILENT" = false ]; then
-  echo "Configure Memoh (press Enter to use defaults):" > /dev/tty
+  echo "Configure Ami (press Enter to use defaults):" > /dev/tty
   echo "" > /dev/tty
 
-  printf "  Workspace (install and clone here) [%s]: " "~/memoh" > /dev/tty
+  printf "  Workspace (install and clone here) [%s]: " "~/ami" > /dev/tty
   read -r input < /dev/tty || true
   if [ -n "$input" ]; then
     case "$input" in
@@ -814,8 +814,8 @@ esac
 # discard the old state and fall back to PostgreSQL.
 if [ "$DATABASE_DRIVER_SET" = false ] && ! normalize_database_driver "$DATABASE_DRIVER" >/dev/null 2>&1; then
   if [ "$INSTALL_MODE" = "upgrade" ]; then
-    echo "${RED}Error: existing installation uses unsupported database driver '${DATABASE_DRIVER}'. Memoh now supports postgres only.${NC}"
-    echo "Run again with MEMOH_INSTALL_MODE=reinstall to wipe the old state and start on PostgreSQL."
+    echo "${RED}Error: existing installation uses unsupported database driver '${DATABASE_DRIVER}'. Ami now supports postgres only.${NC}"
+    echo "Run again with AMI_INSTALL_MODE=reinstall to wipe the old state and start on PostgreSQL."
     exit 1
   fi
   echo "${YELLOW}ℹ Existing config uses unsupported database driver '${DATABASE_DRIVER}'; ${INSTALL_MODE} install will use PostgreSQL.${NC}"
@@ -829,20 +829,20 @@ if [ "$INSTALL_MODE" = "upgrade" ] && [ -z "$EXISTING_CONFIG_SOURCE" ]; then
 fi
 
 if [ "$INSTALL_MODE" = "fresh" ] && [ "$EXISTING_DOCKER_STATE" = true ]; then
-  echo "${RED}Error: Existing Memoh Docker state was detected. Use upgrade or reinstall instead of fresh.${NC}"
+  echo "${RED}Error: Existing Ami Docker state was detected. Use upgrade or reinstall instead of fresh.${NC}"
   exit 1
 fi
 enforce_compose_container_backend
 select_workspace_image
 
 if [ "$SILENT" = false ] && [ "$INSTALL_MODE" != "upgrade" ]; then
-  printf "  Data directory (reserved for future bind-mount support) [%s]: " "$MEMOH_DATA_DIR" > /dev/tty
+  printf "  Data directory (reserved for future bind-mount support) [%s]: " "$AMI_DATA_DIR" > /dev/tty
   read -r input < /dev/tty || true
   if [ -n "$input" ]; then
     case "$input" in
-      "~") MEMOH_DATA_DIR="${HOME:-/tmp}" ;;
-      "~"/*) MEMOH_DATA_DIR="${HOME:-/tmp}${input#\~}" ;;
-      *) MEMOH_DATA_DIR="$input" ;;
+      "~") AMI_DATA_DIR="${HOME:-/tmp}" ;;
+      "~"/*) AMI_DATA_DIR="${HOME:-/tmp}${input#\~}" ;;
+      *) AMI_DATA_DIR="$input" ;;
     esac
   fi
 
@@ -867,7 +867,7 @@ if [ "$SILENT" = false ] && [ "$INSTALL_MODE" != "upgrade" ]; then
   read -r input < /dev/tty || true
   [ -n "$input" ] && PG_PASS="$input"
 
-  echo "  Workspace backend: containerd (Docker Compose default; starts an embedded containerd inside memoh-server)" > /dev/tty
+  echo "  Workspace backend: containerd (Docker Compose default; starts an embedded containerd inside ami-server)" > /dev/tty
   echo "  Other backends such as docker and apple are configured manually in config.toml." > /dev/tty
 
   echo "" > /dev/tty
@@ -886,18 +886,18 @@ CLONED_FRESH=false
 if [ -d "$DIR" ]; then
     echo "Updating existing installation in $WORKSPACE..."
     cd "$DIR"
-    if [ -n "$MEMOH_VERSION" ]; then
-        git fetch --depth 1 origin tag "$MEMOH_VERSION"
-        git checkout "$MEMOH_VERSION"
+    if [ -n "$AMI_VERSION" ]; then
+        git fetch --depth 1 origin tag "$AMI_VERSION"
+        git checkout "$AMI_VERSION"
     else
         git fetch --depth 1 origin main
         git checkout main 2>/dev/null || git checkout -b main --track origin/main
         git reset --hard origin/main
     fi
 else
-    echo "Cloning Memoh into $WORKSPACE..."
-    if [ -n "$MEMOH_VERSION" ]; then
-        git clone --depth 1 --recurse-submodules --shallow-submodules --branch "$MEMOH_VERSION" "$REPO" "$DIR"
+    echo "Cloning Ami into $WORKSPACE..."
+    if [ -n "$AMI_VERSION" ]; then
+        git clone --depth 1 --recurse-submodules --shallow-submodules --branch "$AMI_VERSION" "$REPO" "$DIR"
     else
         git clone --depth 1 --recurse-submodules --shallow-submodules "$REPO" "$DIR"
     fi
@@ -918,28 +918,28 @@ fi
 COMPOSE_FILE_NAME="docker-compose.yml"
 CN_COMPOSE_FILE_NAME="docker/docker-compose.cn.yml"
 if [ ! -f "$COMPOSE_FILE_NAME" ]; then
-  echo "${RED}Error: ${COMPOSE_FILE_NAME} is missing in ${MEMOH_VERSION:-the selected checkout}.${NC}"
-  echo "Use a newer Memoh version."
+  echo "${RED}Error: ${COMPOSE_FILE_NAME} is missing in ${AMI_VERSION:-the selected checkout}.${NC}"
+  echo "Use a newer Ami version."
   exit 1
 fi
 if [ "$USE_CN_MIRROR" = true ] && [ ! -f "$CN_COMPOSE_FILE_NAME" ]; then
-  echo "${RED}Error: ${CN_COMPOSE_FILE_NAME} is missing in ${MEMOH_VERSION:-the selected checkout}.${NC}"
-  echo "Use a newer Memoh version or disable USE_CN_MIRROR."
+  echo "${RED}Error: ${CN_COMPOSE_FILE_NAME} is missing in ${AMI_VERSION:-the selected checkout}.${NC}"
+  echo "Use a newer Ami version or disable USE_CN_MIRROR."
   exit 1
 fi
 
 # Pin Docker image versions in the selected compose file.
-if [ "$MEMOH_DOCKER_VERSION" != "latest" ]; then
-    sed -i.bak "s|memohai/server:latest|memohai/server:${MEMOH_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
-    sed -i.bak "s|memohai/agent:latest|memohai/agent:${MEMOH_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
-    sed -i.bak "s|memohai/web:latest|memohai/web:${MEMOH_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
+if [ "$AMI_DOCKER_VERSION" != "latest" ]; then
+    sed -i.bak "s|amiai/server:latest|amiai/server:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
+    sed -i.bak "s|amiai/agent:latest|amiai/agent:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
+    sed -i.bak "s|amiai/web:latest|amiai/web:${AMI_DOCKER_VERSION}|g" "$COMPOSE_FILE_NAME"
     rm -f "${COMPOSE_FILE_NAME}.bak"
     if [ "$USE_CN_MIRROR" = true ]; then
-      sed -i.bak "s|memoh.cn/memohai/server:latest|memoh.cn/memohai/server:${MEMOH_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
-      sed -i.bak "s|memoh.cn/memohai/web:latest|memoh.cn/memohai/web:${MEMOH_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
+      sed -i.bak "s|ami.cn/amiai/server:latest|ami.cn/amiai/server:${AMI_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
+      sed -i.bak "s|ami.cn/amiai/web:latest|ami.cn/amiai/web:${AMI_DOCKER_VERSION}|g" "$CN_COMPOSE_FILE_NAME"
       rm -f "${CN_COMPOSE_FILE_NAME}.bak"
     fi
-    echo "${GREEN}✓ Docker images pinned to ${MEMOH_DOCKER_VERSION}${NC}"
+    echo "${GREEN}✓ Docker images pinned to ${AMI_DOCKER_VERSION}${NC}"
 fi
 
 if [ "$INSTALL_MODE" = "upgrade" ]; then
@@ -959,7 +959,7 @@ else
     set_toml_bool_value config.toml "pgvector" "enabled" "false"
   fi
   if [ "$USE_CN_MIRROR" = true ]; then
-    sed -i.bak 's|# registry = "memoh.cn"|registry = "memoh.cn"|' config.toml
+    sed -i.bak 's|# registry = "ami.cn"|registry = "ami.cn"|' config.toml
   fi
   rm -f config.toml.bak
 fi
@@ -977,20 +977,20 @@ else
 fi
 
 INSTALL_DIR="$(pwd)"
-mkdir -p "$MEMOH_DATA_DIR"
-MEMOH_DATA_DIR=$(cd "$MEMOH_DATA_DIR" && pwd)
-export MEMOH_CONFIG=./config.toml
-export MEMOH_DATA_DIR
+mkdir -p "$AMI_DATA_DIR"
+AMI_DATA_DIR=$(cd "$AMI_DATA_DIR" && pwd)
+export AMI_CONFIG=./config.toml
+export AMI_DATA_DIR
 export POSTGRES_PASSWORD="${PG_PASS}"
-export MEMOH_INTERNAL_RPC_SHARED_SECRET
+export AMI_INTERNAL_RPC_SHARED_SECRET
 
 COMPOSE_FILES="-f ${COMPOSE_FILE_NAME}"
 COMPOSE_PROFILES=""
 if [ "$USE_CN_MIRROR" = true ]; then
   COMPOSE_FILES="$COMPOSE_FILES -f ${CN_COMPOSE_FILE_NAME}"
-  echo "${GREEN}✓ Using China mainland mirror (memoh.cn)${NC}"
+  echo "${GREEN}✓ Using China mainland mirror (ami.cn)${NC}"
 fi
-WEBHOOK_TUNNEL_MODE=$(printf '%s' "${MEMOH_WEBHOOK_TUNNEL_MODE:-}" | tr '[:upper:]' '[:lower:]')
+WEBHOOK_TUNNEL_MODE=$(printf '%s' "${AMI_WEBHOOK_TUNNEL_MODE:-}" | tr '[:upper:]' '[:lower:]')
 case "$WEBHOOK_TUNNEL_MODE" in
   ""|disabled)
     WEBHOOK_TUNNEL_MODE="disabled"
@@ -999,7 +999,7 @@ case "$WEBHOOK_TUNNEL_MODE" in
     COMPOSE_PROFILES="$COMPOSE_PROFILES --profile webhook-tunnel"
     echo "${GREEN}✓ Webhook tunnel sidecar enabled${NC}"
     if [ "$USE_CN_MIRROR" = true ]; then
-      echo "${YELLOW}ℹ Webhook tunnel sidecar uses cloudflare/cloudflared from Docker Hub; memoh.cn mirror does not cover this image${NC}"
+      echo "${YELLOW}ℹ Webhook tunnel sidecar uses cloudflare/cloudflared from Docker Hub; ami.cn mirror does not cover this image${NC}"
     fi
     ;;
   managed)
@@ -1007,32 +1007,32 @@ case "$WEBHOOK_TUNNEL_MODE" in
     COMPOSE_PROFILES="$COMPOSE_PROFILES --profile webhook-tunnel"
     echo "${YELLOW}ℹ Docker install uses the Cloudflare sidecar for webhook tunnels; using external mode${NC}"
     if [ "$USE_CN_MIRROR" = true ]; then
-      echo "${YELLOW}ℹ Webhook tunnel sidecar uses cloudflare/cloudflared from Docker Hub; memoh.cn mirror does not cover this image${NC}"
+      echo "${YELLOW}ℹ Webhook tunnel sidecar uses cloudflare/cloudflared from Docker Hub; ami.cn mirror does not cover this image${NC}"
     fi
     ;;
   *)
-    echo "${RED}Error: unsupported MEMOH_WEBHOOK_TUNNEL_MODE '${MEMOH_WEBHOOK_TUNNEL_MODE}'. Use disabled, external, or managed.${NC}"
+    echo "${RED}Error: unsupported AMI_WEBHOOK_TUNNEL_MODE '${AMI_WEBHOOK_TUNNEL_MODE}'. Use disabled, external, or managed.${NC}"
     exit 1
     ;;
 esac
 if [ "$WEBHOOK_TUNNEL_MODE" = "external" ]; then
-  MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR=":18734"
-  MEMOH_WEBHOOK_TUNNEL_METRICS_URL="http://webhook-tunnel:18735"
+  AMI_WEBHOOK_TUNNEL_LISTEN_ADDR=":18734"
+  AMI_WEBHOOK_TUNNEL_METRICS_URL="http://webhook-tunnel:18735"
 fi
-export MEMOH_WEBHOOK_TUNNEL_MODE="$WEBHOOK_TUNNEL_MODE"
-export MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR="${MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR:-:18734}"
-export MEMOH_WEBHOOK_TUNNEL_METRICS_URL="${MEMOH_WEBHOOK_TUNNEL_METRICS_URL:-http://webhook-tunnel:18735}"
+export AMI_WEBHOOK_TUNNEL_MODE="$WEBHOOK_TUNNEL_MODE"
+export AMI_WEBHOOK_TUNNEL_LISTEN_ADDR="${AMI_WEBHOOK_TUNNEL_LISTEN_ADDR:-:18734}"
+export AMI_WEBHOOK_TUNNEL_METRICS_URL="${AMI_WEBHOOK_TUNNEL_METRICS_URL:-http://webhook-tunnel:18735}"
 
 # Connect-It connectors: embedded runs the co-hosted Connect-It container and
-# wires Memoh to them with generated credentials; disabled leaves the feature
+# wires Ami to them with generated credentials; disabled leaves the feature
 # off. Credentials are generated once and reused across upgrades, so toggling
 # the mode later keeps existing connections working.
-CONNECT_IT_MODE=$(printf '%s' "${MEMOH_CONNECT_IT_MODE:-}" | tr '[:upper:]' '[:lower:]')
+CONNECT_IT_MODE=$(printf '%s' "${AMI_CONNECT_IT_MODE:-}" | tr '[:upper:]' '[:lower:]')
 case "$CONNECT_IT_MODE" in
   "")
     if [ "$INSTALL_MODE" = "upgrade" ]; then
       CONNECT_IT_MODE="disabled"
-      echo "${YELLOW}ℹ Connect-It connectors stay disabled on upgrade; rerun with MEMOH_CONNECT_IT_MODE=embedded to enable them${NC}"
+      echo "${YELLOW}ℹ Connect-It connectors stay disabled on upgrade; rerun with AMI_CONNECT_IT_MODE=embedded to enable them${NC}"
     else
       CONNECT_IT_MODE="embedded"
     fi
@@ -1040,60 +1040,60 @@ case "$CONNECT_IT_MODE" in
   embedded|disabled)
     ;;
   *)
-    echo "${RED}Error: unsupported MEMOH_CONNECT_IT_MODE '${MEMOH_CONNECT_IT_MODE}'. Use embedded or disabled.${NC}"
+    echo "${RED}Error: unsupported AMI_CONNECT_IT_MODE '${AMI_CONNECT_IT_MODE}'. Use embedded or disabled.${NC}"
     exit 1
     ;;
 esac
-[ -n "$MEMOH_CONNECT_IT_ADMIN_PASSWORD" ] || MEMOH_CONNECT_IT_ADMIN_PASSWORD="$(gen_password)"
-[ -n "$MEMOH_CONNECT_IT_SECRET_KEY" ] || MEMOH_CONNECT_IT_SECRET_KEY="1:$(gen_hex)"
-[ -n "$MEMOH_CONNECT_IT_COOKIE_SECRET" ] || MEMOH_CONNECT_IT_COOKIE_SECRET="$(gen_secret)"
-[ -n "$MEMOH_CONNECT_IT_API_TOKEN" ] || MEMOH_CONNECT_IT_API_TOKEN="cit_$(gen_hex)"
+[ -n "$AMI_CONNECT_IT_ADMIN_PASSWORD" ] || AMI_CONNECT_IT_ADMIN_PASSWORD="$(gen_password)"
+[ -n "$AMI_CONNECT_IT_SECRET_KEY" ] || AMI_CONNECT_IT_SECRET_KEY="1:$(gen_hex)"
+[ -n "$AMI_CONNECT_IT_COOKIE_SECRET" ] || AMI_CONNECT_IT_COOKIE_SECRET="$(gen_secret)"
+[ -n "$AMI_CONNECT_IT_API_TOKEN" ] || AMI_CONNECT_IT_API_TOKEN="cit_$(gen_hex)"
 if [ "$CONNECT_IT_MODE" = "embedded" ]; then
   COMPOSE_PROFILES="$COMPOSE_PROFILES --profile connectors"
-  MEMOH_CONNECT_IT_BASE_URL="http://connect-it:8421"
+  AMI_CONNECT_IT_BASE_URL="http://connect-it:8421"
   echo "${GREEN}✓ Connect-It connectors enabled${NC}"
-  if [ -z "$MEMOH_CONNECT_IT_PUBLIC_BASE_URL" ]; then
-    echo "${YELLOW}ℹ Connector OAuth callbacks default to http://localhost:${MEMOH_CONNECT_IT_PORT}; set MEMOH_CONNECT_IT_PUBLIC_BASE_URL when Memoh is used from other machines${NC}"
+  if [ -z "$AMI_CONNECT_IT_PUBLIC_BASE_URL" ]; then
+    echo "${YELLOW}ℹ Connector OAuth callbacks default to http://localhost:${AMI_CONNECT_IT_PORT}; set AMI_CONNECT_IT_PUBLIC_BASE_URL when Ami is used from other machines${NC}"
   fi
   if [ "$USE_CN_MIRROR" = true ]; then
-    echo "${YELLOW}ℹ Connect-It images come from ghcr.io; memoh.cn mirror does not cover them. Set MEMOH_CONNECT_IT_MODE=disabled to skip them${NC}"
+    echo "${YELLOW}ℹ Connect-It images come from ghcr.io; ami.cn mirror does not cover them. Set AMI_CONNECT_IT_MODE=disabled to skip them${NC}"
   fi
 else
-  MEMOH_CONNECT_IT_BASE_URL=""
+  AMI_CONNECT_IT_BASE_URL=""
 fi
-export MEMOH_CONNECT_IT_MODE="$CONNECT_IT_MODE"
-export MEMOH_CONNECT_IT_BASE_URL
-export MEMOH_CONNECT_IT_API_TOKEN
-export MEMOH_CONNECT_IT_ADMIN_PASSWORD
-export MEMOH_CONNECT_IT_SECRET_KEY
-export MEMOH_CONNECT_IT_COOKIE_SECRET
-export MEMOH_CONNECT_IT_PUBLIC_BASE_URL
-export MEMOH_CONNECT_IT_PORT
-export MEMOH_CONNECT_IT_IMAGE
+export AMI_CONNECT_IT_MODE="$CONNECT_IT_MODE"
+export AMI_CONNECT_IT_BASE_URL
+export AMI_CONNECT_IT_API_TOKEN
+export AMI_CONNECT_IT_ADMIN_PASSWORD
+export AMI_CONNECT_IT_SECRET_KEY
+export AMI_CONNECT_IT_COOKIE_SECRET
+export AMI_CONNECT_IT_PUBLIC_BASE_URL
+export AMI_CONNECT_IT_PORT
+export AMI_CONNECT_IT_IMAGE
 
 : > .env
 write_env_value "POSTGRES_PASSWORD" "$PG_PASS"
-write_env_value "MEMOH_INTERNAL_RPC_SHARED_SECRET" "$MEMOH_INTERNAL_RPC_SHARED_SECRET"
-write_env_value "MEMOH_CONFIG" "./config.toml"
-write_env_value "MEMOH_DATA_DIR" "$MEMOH_DATA_DIR"
-write_env_value "MEMOH_DATABASE_DRIVER" "$DATABASE_DRIVER"
-write_env_value "MEMOH_CONTAINER_BACKEND" "$CONTAINER_BACKEND"
+write_env_value "AMI_INTERNAL_RPC_SHARED_SECRET" "$AMI_INTERNAL_RPC_SHARED_SECRET"
+write_env_value "AMI_CONFIG" "./config.toml"
+write_env_value "AMI_DATA_DIR" "$AMI_DATA_DIR"
+write_env_value "AMI_DATABASE_DRIVER" "$DATABASE_DRIVER"
+write_env_value "AMI_CONTAINER_BACKEND" "$CONTAINER_BACKEND"
 if [ "$WORKSPACE_IMAGE_MANAGED" = true ]; then
-  write_env_value "MEMOH_INSTALLER_WORKSPACE_IMAGE" "$WORKSPACE_IMAGE"
+  write_env_value "AMI_INSTALLER_WORKSPACE_IMAGE" "$WORKSPACE_IMAGE"
 fi
-write_env_value "MEMOH_WEBHOOK_PUBLIC_BASE_URL" "${MEMOH_WEBHOOK_PUBLIC_BASE_URL:-}"
-write_env_value "MEMOH_WEBHOOK_TUNNEL_MODE" "$WEBHOOK_TUNNEL_MODE"
-write_env_value "MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR" "$MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR"
-write_env_value "MEMOH_WEBHOOK_TUNNEL_METRICS_URL" "$MEMOH_WEBHOOK_TUNNEL_METRICS_URL"
-write_env_value "MEMOH_CONNECT_IT_MODE" "$CONNECT_IT_MODE"
-write_env_value "MEMOH_CONNECT_IT_BASE_URL" "$MEMOH_CONNECT_IT_BASE_URL"
-write_env_value "MEMOH_CONNECT_IT_ADMIN_PASSWORD" "$MEMOH_CONNECT_IT_ADMIN_PASSWORD"
-write_env_value "MEMOH_CONNECT_IT_SECRET_KEY" "$MEMOH_CONNECT_IT_SECRET_KEY"
-write_env_value "MEMOH_CONNECT_IT_COOKIE_SECRET" "$MEMOH_CONNECT_IT_COOKIE_SECRET"
-write_env_value "MEMOH_CONNECT_IT_API_TOKEN" "$MEMOH_CONNECT_IT_API_TOKEN"
-write_env_value "MEMOH_CONNECT_IT_PUBLIC_BASE_URL" "$MEMOH_CONNECT_IT_PUBLIC_BASE_URL"
-write_env_value "MEMOH_CONNECT_IT_PORT" "$MEMOH_CONNECT_IT_PORT"
-write_env_value "MEMOH_CONNECT_IT_IMAGE" "$MEMOH_CONNECT_IT_IMAGE"
+write_env_value "AMI_WEBHOOK_PUBLIC_BASE_URL" "${AMI_WEBHOOK_PUBLIC_BASE_URL:-}"
+write_env_value "AMI_WEBHOOK_TUNNEL_MODE" "$WEBHOOK_TUNNEL_MODE"
+write_env_value "AMI_WEBHOOK_TUNNEL_LISTEN_ADDR" "$AMI_WEBHOOK_TUNNEL_LISTEN_ADDR"
+write_env_value "AMI_WEBHOOK_TUNNEL_METRICS_URL" "$AMI_WEBHOOK_TUNNEL_METRICS_URL"
+write_env_value "AMI_CONNECT_IT_MODE" "$CONNECT_IT_MODE"
+write_env_value "AMI_CONNECT_IT_BASE_URL" "$AMI_CONNECT_IT_BASE_URL"
+write_env_value "AMI_CONNECT_IT_ADMIN_PASSWORD" "$AMI_CONNECT_IT_ADMIN_PASSWORD"
+write_env_value "AMI_CONNECT_IT_SECRET_KEY" "$AMI_CONNECT_IT_SECRET_KEY"
+write_env_value "AMI_CONNECT_IT_COOKIE_SECRET" "$AMI_CONNECT_IT_COOKIE_SECRET"
+write_env_value "AMI_CONNECT_IT_API_TOKEN" "$AMI_CONNECT_IT_API_TOKEN"
+write_env_value "AMI_CONNECT_IT_PUBLIC_BASE_URL" "$AMI_CONNECT_IT_PUBLIC_BASE_URL"
+write_env_value "AMI_CONNECT_IT_PORT" "$AMI_CONNECT_IT_PORT"
+write_env_value "AMI_CONNECT_IT_IMAGE" "$AMI_CONNECT_IT_IMAGE"
 echo "${GREEN}✓ Database backend: ${DATABASE_DRIVER}${NC}"
 echo "${GREEN}✓ Workspace backend: ${CONTAINER_BACKEND}${NC}"
 
@@ -1130,7 +1130,7 @@ if [ "$CLONED_FRESH" = true ]; then
 fi
 
 echo ""
-echo "${GREEN}✅ Memoh is running!${NC}"
+echo "${GREEN}✅ Ami is running!${NC}"
 echo ""
 echo "  🌐 Web UI:            http://localhost:8082"
 echo "  🔌 API:               http://localhost:8080"
@@ -1138,7 +1138,7 @@ echo ""
 echo "  🔑 Admin login:       ${ADMIN_USER} / ${ADMIN_PASS}"
 echo ""
 if [ "$CONNECT_IT_MODE" = "embedded" ]; then
-  echo "  🔗 Connect-It admin:  ${MEMOH_CONNECT_IT_PUBLIC_BASE_URL:-http://localhost:${MEMOH_CONNECT_IT_PORT}} (admin / ${MEMOH_CONNECT_IT_ADMIN_PASSWORD})"
+  echo "  🔗 Connect-It admin:  ${AMI_CONNECT_IT_PUBLIC_BASE_URL:-http://localhost:${AMI_CONNECT_IT_PORT}} (admin / ${AMI_CONNECT_IT_ADMIN_PASSWORD})"
   echo ""
 fi
 COMPOSE_CMD="$DOCKER compose $COMPOSE_FILES $COMPOSE_PROFILES"

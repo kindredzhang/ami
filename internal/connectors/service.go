@@ -17,11 +17,11 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 var (
@@ -32,7 +32,7 @@ var (
 
 const bindingRollbackTimeout = 5 * time.Second
 
-// Connector is Memoh's bot-level view of one Connect-It connection.
+// Connector is Ami's bot-level view of one Connect-It connection.
 // Provider credentials and MCP session tokens are deliberately absent.
 type Connector struct {
 	ConnectionID  string `json:"connection_id"`

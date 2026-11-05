@@ -13,7 +13,7 @@ const chat = vi.hoisted(() => ({
   initializeWithRecovery: vi.fn(async () => {}),
 }))
 
-vi.mock('@memohai/sdk', () => ({ getBotsById: sdk.getBot, getBotsByBotIdAgents: vi.fn() }))
+vi.mock('@ami/sdk', () => ({ getBotsById: sdk.getBot, getBotsByBotIdAgents: vi.fn() }))
 vi.mock('vue-router', () => ({ useRoute: () => route.value, useRouter: () => router }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 vi.mock('@felinic/ui', async () => {

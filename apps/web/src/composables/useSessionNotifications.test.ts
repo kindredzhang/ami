@@ -81,7 +81,7 @@ describe('system notification delivery', () => {
     await emit()
     expect(sent).toHaveLength(1)
     expect(sent[0]?.title).toBe('Atlas · Review')
-    expect(sent[0]?.options).toEqual({ body: 'notifications.kind.reply', tag: 'memoh:s1' })
+    expect(sent[0]?.options).toEqual({ body: 'notifications.kind.reply', tag: 'ami:s1' })
     sent[0]?.onclick?.()
     expect(deps.push).toHaveBeenCalledWith('/bot/b1?session=s1')
   })

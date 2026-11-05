@@ -39,7 +39,7 @@ test('fenced examples and comments cannot forge headings or identity', () => {
   assert.ok(validate(validPR().replace('- [x] Agent', '~~~\n- [x] Agent\n~~~'), true).errors.length);
 });
 test('fenced reproduction text is allowed and duplicate headings are rejected', () => {
-  assert.deepEqual(validate(issue('bug').replace('Specific reproducible details', '```sh\nmemoh start\n```'), false).errors, []);
+  assert.deepEqual(validate(issue('bug').replace('Specific reproducible details', '```sh\nami start\n```'), false).errors, []);
   assert.ok(validate(validPR() + '\n## Type\n- [x] test', true).errors.some(error => error.includes('Duplicate')));
 });
 test('single QA checkbox accepts checked and unchecked states without a record', () => {

@@ -14,21 +14,21 @@ import (
 )
 
 const (
-	enableEnv        = "MEMOH_SESSION_RUNTIME_ACCEPTANCE"
-	requiredEnv      = "MEMOH_SESSION_RUNTIME_ACCEPTANCE_REQUIRED"
-	crashEnv         = "MEMOH_SESSION_RUNTIME_ACCEPTANCE_CRASH"
-	backendLossEnv   = "MEMOH_SESSION_RUNTIME_ACCEPTANCE_BACKEND_LOSS"
-	modeEnv          = "MEMOH_SESSION_RUNTIME_ACCEPTANCE_MODE"
-	primaryURLEnv    = "MEMOH_SESSION_RUNTIME_PRIMARY_URL"
-	secondaryURLEnv  = "MEMOH_SESSION_RUNTIME_SECONDARY_URL"
-	primaryRPCEnv    = "MEMOH_SESSION_RUNTIME_PRIMARY_RPC_TARGET"
-	secondaryRPCEnv  = "MEMOH_SESSION_RUNTIME_SECONDARY_RPC_TARGET"
-	rpcSecretEnv     = "MEMOH_SESSION_RUNTIME_RPC_SECRET"
-	usernameEnv      = "MEMOH_SESSION_RUNTIME_USERNAME"
-	passwordEnv      = "MEMOH_SESSION_RUNTIME_PASSWORD" //nolint:gosec // environment variable name, not a credential
-	containerEnv     = "MEMOH_SESSION_RUNTIME_PRIMARY_CONTAINER"
-	fakeModelPortEnv = "MEMOH_SESSION_RUNTIME_FAKE_MODEL_PORT"
-	redisURLEnv      = "MEMOH_SESSION_RUNTIME_REDIS_URL"
+	enableEnv        = "AMI_SESSION_RUNTIME_ACCEPTANCE"
+	requiredEnv      = "AMI_SESSION_RUNTIME_ACCEPTANCE_REQUIRED"
+	crashEnv         = "AMI_SESSION_RUNTIME_ACCEPTANCE_CRASH"
+	backendLossEnv   = "AMI_SESSION_RUNTIME_ACCEPTANCE_BACKEND_LOSS"
+	modeEnv          = "AMI_SESSION_RUNTIME_ACCEPTANCE_MODE"
+	primaryURLEnv    = "AMI_SESSION_RUNTIME_PRIMARY_URL"
+	secondaryURLEnv  = "AMI_SESSION_RUNTIME_SECONDARY_URL"
+	primaryRPCEnv    = "AMI_SESSION_RUNTIME_PRIMARY_RPC_TARGET"
+	secondaryRPCEnv  = "AMI_SESSION_RUNTIME_SECONDARY_RPC_TARGET"
+	rpcSecretEnv     = "AMI_SESSION_RUNTIME_RPC_SECRET"
+	usernameEnv      = "AMI_SESSION_RUNTIME_USERNAME"
+	passwordEnv      = "AMI_SESSION_RUNTIME_PASSWORD" //nolint:gosec // environment variable name, not a credential
+	containerEnv     = "AMI_SESSION_RUNTIME_PRIMARY_CONTAINER"
+	fakeModelPortEnv = "AMI_SESSION_RUNTIME_FAKE_MODEL_PORT"
+	redisURLEnv      = "AMI_SESSION_RUNTIME_REDIS_URL"
 )
 
 type acceptanceEnvironment struct {
@@ -165,10 +165,10 @@ func loadEnvironment() acceptanceEnvironment {
 		secondaryURL:     envOr(secondaryURLEnv, "http://127.0.0.1:18083"),
 		primaryRPC:       envOr(primaryRPCEnv, "127.0.0.1:19091"),
 		secondaryRPC:     envOr(secondaryRPCEnv, "127.0.0.1:19092"),
-		rpcSecret:        envOr(rpcSecretEnv, "memoh-dev-internal-rpc-secret"),
+		rpcSecret:        envOr(rpcSecretEnv, "ami-dev-internal-rpc-secret"),
 		username:         envOr(usernameEnv, "admin"),
 		password:         envOr(passwordEnv, "admin123"),
-		primaryContainer: envOr(containerEnv, "memoh-dev-server"),
+		primaryContainer: envOr(containerEnv, "ami-dev-server"),
 		redisURL:         envOr(redisURLEnv, "redis://127.0.0.1:16379/0"),
 		mode:             strings.ToLower(envOr(modeEnv, "cluster")),
 	}

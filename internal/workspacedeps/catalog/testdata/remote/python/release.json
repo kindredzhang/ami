@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "registry_id": "memoh",
+  "registry_id": "ami",
   "dependency_id": "python",
   "manifest": {
     "schema_version": "1",
@@ -59,7 +59,7 @@
   },
   "manifest_digest": "sha256:8bb8fabd9c6754bd186d6fb5d706eaf3339f1af68d6ed000983fb7da0aee25b0",
   "artifact": {
-    "format": "memoh_dependency_v1",
+    "format": "ami_dependency_v1",
     "digest": "df5f8f81183cb8d443b24d52f8ff7fcb24e0cb5d0257dc59b2e5cbfdaffbed47",
     "size": 4900,
     "uncompressed_size": 16979,

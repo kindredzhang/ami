@@ -176,10 +176,10 @@
 </template>
 
 <script setup lang="ts">
-import { AddIcon, SettingsIcon, CloudIcon, ComputerIcon, ExpandIcon } from '@memohai/icon/ui'
+import { AddIcon, SettingsIcon, CloudIcon, ComputerIcon, ExpandIcon } from '@ami/icon/ui'
 import { computed, inject, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { WorkspaceWorkspaceTarget } from '@memohai/sdk'
+import type { WorkspaceWorkspaceTarget } from '@ami/sdk'
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Spinner } from '@felinic/ui'
 import { Check, ChevronDown } from 'lucide-vue-next'
 import {

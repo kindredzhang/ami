@@ -13,7 +13,7 @@ import (
 
 const deleteBotChannelAdmin = `-- name: DeleteBotChannelAdmin :exec
 DELETE FROM bot_channel_admins
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND channel_identity_id = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND channel_identity_id = $2
 `
 
 type DeleteBotChannelAdminParams struct {
@@ -29,7 +29,7 @@ func (q *Queries) DeleteBotChannelAdmin(ctx context.Context, arg DeleteBotChanne
 const getBotChannelAdmin = `-- name: GetBotChannelAdmin :one
 SELECT id, bot_id, channel_identity_id, granted, created_by_user_id, created_at, updated_at, team_id
 FROM bot_channel_admins
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND channel_identity_id = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND channel_identity_id = $2
 `
 
 type GetBotChannelAdminParams struct {
@@ -67,8 +67,8 @@ SELECT
   ci.display_name AS channel_identity_display_name,
   ci.avatar_url AS channel_identity_avatar_url
 FROM bot_channel_admins a
-LEFT JOIN channel_identities ci ON ci.id = a.channel_identity_id AND ci.team_id = public.memoh_current_team_id()
-WHERE a.team_id = public.memoh_current_team_id() AND a.bot_id = $1
+LEFT JOIN channel_identities ci ON ci.id = a.channel_identity_id AND ci.team_id = public.ami_current_team_id()
+WHERE a.team_id = public.ami_current_team_id() AND a.bot_id = $1
 ORDER BY a.created_at DESC
 `
 

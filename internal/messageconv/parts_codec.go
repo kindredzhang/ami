@@ -6,13 +6,13 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/partmeta"
+	"github.com/kindredzhang/ami/internal/agent/partmeta"
 )
 
 // The SDK types a tool call's arguments as sdk.ToolArguments{json|text}, a
 // tool's output as sdk.ToolOutput{text|json} and provider metadata as
 // namespace → name → string. bot_history_messages predates those types: it
-// holds the arguments object itself, the output value itself and Memoh's
+// holds the arguments object itself, the output value itself and Ami's
 // annotations as nested objects. The two rewrites below keep the stored shape
 // exactly as it was, so existing rows replay and rows written now read back
 // on either side of the change.

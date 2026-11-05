@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -17,7 +17,7 @@ const (
 	// workspace image does not ship an agent CLI, so this only resolves in
 	// custom images that provide one; with a resolver the copy to execute
 	// follows source precedence (managed → toolkit → PATH).
-	defaultLauncherPath = "/opt/memoh/toolkit/bin/claude"
+	defaultLauncherPath = "/opt/ami/toolkit/bin/claude"
 	configDir           = "/data/.claude"
 	defaultProjectPath  = "/data"
 )

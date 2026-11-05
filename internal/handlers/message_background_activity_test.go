@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 func TestDependencyNotificationActivityRefreshesHistoryWithoutPublishingContent(t *testing.T) {

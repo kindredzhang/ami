@@ -14,7 +14,7 @@ vi.mock('@/store/user', () => ({
 
 vi.mock('@/pages/onboarding/constants', () => ({
   ONBOARDING_KEYS: {
-    forceOnboarding: 'memoh:onboarding:force',
+    forceOnboarding: 'ami:onboarding:force',
   },
 }))
 

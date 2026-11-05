@@ -6,13 +6,13 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // FailureKind names a runtime failure the user can act on. There are three
 // sorts: what the agent or its process said, shown as it said it
 // (FailureReported); a sign-in the agent's protocol marked as such
-// (FailureAuthRequired); and Memoh's own rules refusing a request, which
+// (FailureAuthRequired); and Ami's own rules refusing a request, which
 // have no upstream words (the rest). The application chooses the public
 // error for each kind.
 type FailureKind int

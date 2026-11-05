@@ -17,11 +17,11 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/attachment"
-	audiopkg "github.com/felinics/memoh/internal/audio"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/attachment"
+	audiopkg "github.com/kindredzhang/ami/internal/audio"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type TranscriptionProvider struct {
@@ -75,7 +75,7 @@ func (p *TranscriptionProvider) Tools(ctx context.Context, session SessionContex
 // (audio_path, file_path, audio_url, content_type) are not in the schema
 // but have always been accepted, so decoding folds them in.
 type transcribeArgs struct {
-	Path        string `json:"path,omitempty" jsonschema:"Audio file path from the message context, usually under /data/.memoh/media/..."`
+	Path        string `json:"path,omitempty" jsonschema:"Audio file path from the message context, usually under /data/.ami/media/..."`
 	URL         string `json:"url,omitempty" jsonschema:"Direct audio URL when a path is unavailable"`
 	Language    string `json:"language,omitempty" jsonschema:"Optional language hint"`
 	Prompt      string `json:"prompt,omitempty" jsonschema:"Optional transcription prompt"`
@@ -110,7 +110,7 @@ func (a *transcribeArgs) UnmarshalJSON(data []byte) error {
 func (p *TranscriptionProvider) transcribeTools(session SessionContext) []toolexec.Tool {
 	sess := session
 	return []toolexec.Tool{toolexec.Define(ToolTranscribeAudio().String(),
-		"Transcribe an audio or voice message into text. Use this when the user sent a voice message and you need to understand its contents. Accepts a bot media path such as /data/.memoh/media/... or a direct URL.",
+		"Transcribe an audio or voice message into text. Use this when the user sent a voice message and you need to understand its contents. Accepts a bot media path such as /data/.ami/media/... or a direct URL.",
 		func(execCtx *toolexec.ToolExecContext, args transcribeArgs) (sdk.ToolOutput, error) {
 			return toolexec.OutputPair(p.execTranscribe(execCtx.Context, sess, args))
 		},

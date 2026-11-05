@@ -36,7 +36,7 @@ test('explicit full checks', () => assert.deepEqual(planChecks([], tracked, true
 
 const runner = fileURLToPath(new URL('../.husky/checks.mjs', import.meta.url))
 function fixture(t) {
-  const cwd = mkdtempSync(join(tmpdir(), 'memoh-hook-test-'))
+  const cwd = mkdtempSync(join(tmpdir(), 'ami-hook-test-'))
   t.after(() => rmSync(cwd, { recursive: true, force: true }))
   // Git hooks export repository-local variables; a fixture must not inherit
   // the caller's index, worktree or object store. Ask Git for the complete list.
@@ -83,7 +83,7 @@ if (process.env.BUSY_COMMAND === '${name}') setInterval(() => {}, 1000)
   }
   const run = (env = {}, args = [], runCwd = cwd) => spawnSync(process.execPath, [runner, ...args], {
     cwd: runCwd, encoding: 'utf8', timeout: 10000,
-    env: { ...fixtureEnv, MEMOH_FULL_CHECKS: '0', PATH: `${bin}:${process.env.PATH}`, ...env },
+    env: { ...fixtureEnv, AMI_FULL_CHECKS: '0', PATH: `${bin}:${process.env.PATH}`, ...env },
   })
   return { cwd, git, stage, run }
 }
@@ -126,17 +126,17 @@ test('Go package checks run sequentially and failures stop the chain', t => {
 test('timeout fails rather than silently skipping checks', t => {
   const { stage, run } = fixture(t)
   stage('internal/a/a.go', 'package a')
-  const result = run({ BUSY_COMMAND: 'golangci-lint', MEMOH_CHECK_TIMEOUT_SECONDS: '0.1' })
+  const result = run({ BUSY_COMMAND: 'golangci-lint', AMI_CHECK_TIMEOUT_SECONDS: '0.1' })
   assert.equal(result.status, 1)
   assert.match(result.stderr, /exceeded/)
   assert.match(result.stderr, /includes tool startup and compilation/)
-  assert.match(result.stderr, /MEMOH_CHECK_TIMEOUT_SECONDS/)
+  assert.match(result.stderr, /AMI_CHECK_TIMEOUT_SECONDS/)
   assert.doesNotMatch(result.stdout, /CALLED go \[/)
 })
 
 test('full mode runs all three checks even without staged changes', t => {
   const { run } = fixture(t)
-  const result = run({ MEMOH_FULL_CHECKS: '1' })
+  const result = run({ AMI_FULL_CHECKS: '1' })
   assert.equal(result.status, 0, result.stderr)
   assert.match(result.stdout, /CALLED pnpm \["exec","eslint","\."\]/)
   assert.match(result.stdout, /CALLED golangci-lint \["run","--concurrency=2","\.\/\.\.\."\]/)

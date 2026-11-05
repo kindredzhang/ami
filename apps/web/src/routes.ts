@@ -320,7 +320,7 @@ export function createAppRoutes(platform: 'web' | 'desktop'): RouteRecordRaw[] {
     },
     // Dev-only component wall. Registered ONLY in dev builds, so the chunk and
     // its auth-bypass guard never exist in production. Reached by setting the
-    // `memoh:dev-tools` localStorage flag and navigating to /dev/components.
+    // `ami:dev-tools` localStorage flag and navigating to /dev/components.
     ...(import.meta.env.DEV
       ? [
           {

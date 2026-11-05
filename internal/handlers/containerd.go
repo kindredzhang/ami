@@ -14,19 +14,19 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/botworkspace"
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	displaypkg "github.com/felinics/memoh/internal/display"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/policy"
-	"github.com/felinics/memoh/internal/server"
-	"github.com/felinics/memoh/internal/workspace"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/botworkspace"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	displaypkg "github.com/kindredzhang/ami/internal/display"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/policy"
+	"github.com/kindredzhang/ami/internal/server"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 type ContainerdHandler struct {

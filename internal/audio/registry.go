@@ -22,8 +22,8 @@ import (
 	volcenginespeech "github.com/felinics/twilight/provider/volcengine/speech"
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/audio/adapter/alibabacloud"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/audio/adapter/alibabacloud"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 type (

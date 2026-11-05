@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 func TestServerRedactsChannelCause(t *testing.T) {

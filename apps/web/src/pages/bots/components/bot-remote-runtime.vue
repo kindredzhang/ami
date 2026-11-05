@@ -172,7 +172,7 @@ import {
   getBotsByBotIdWorkspaceTargets,
   putBotsByBotIdWorkspaceTargetsPrimary,
   type WorkspaceWorkspaceTarget,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import {
   Badge,
   Button,

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
 )
 
 // Commands reports what the conversation's session offers, opening it when

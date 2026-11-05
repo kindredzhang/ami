@@ -8,7 +8,7 @@ import {
   Progress,
 } from '@felinic/ui'
 import { toast } from '@felinic/ui'
-import { ErrorIcon } from '@memohai/icon/ui'
+import { ErrorIcon } from '@ami/icon/ui'
 import { CircleAlert, Inbox } from 'lucide-vue-next'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import SectionShell from '../components/SectionShell.vue'
@@ -147,7 +147,7 @@ const rawChatError = 'Upstream 429: rate limit exceeded for organization org_7Hq
       </Specimen>
 
       <Specimen
-        label="error glyph — <ErrorIcon> (@memohai/icon/ui) vs lucide CircleAlert"
+        label="error glyph — <ErrorIcon> (@ami/icon/ui) vs lucide CircleAlert"
         note="12 / 14 / 16px, top row the error glyph every destructive notice and field error uses, bottom row the lucide original it replaced"
       >
         <div class="flex flex-col gap-3 text-destructive">
@@ -238,7 +238,7 @@ const rawChatError = 'Upstream 429: rate limit exceeded for organization org_7Hq
           <Button
             variant="outline"
             size="sm"
-            @click="toast.error('not found: readdir: open /Users/qqqqqf/.memoh/workspaces/1/documents/项目: no such file or directory')"
+            @click="toast.error('not found: readdir: open /Users/qqqqqf/.amiai/workspaces/1/documents/项目: no such file or directory')"
           >
             Raw backend error
           </Button>
@@ -252,14 +252,14 @@ const rawChatError = 'Upstream 429: rate limit exceeded for organization org_7Hq
           <Button
             variant="outline"
             size="sm"
-            @click="toast.error('Upload failed', { description: 'Could not write /Users/qqqqqf/.memoh/workspaces/1/documents/项目/long-unbreakable-filename-without-spaces-1234567890.bin — the destination directory does not exist.' })"
+            @click="toast.error('Upload failed', { description: 'Could not write /Users/qqqqqf/.amiai/workspaces/1/documents/项目/long-unbreakable-filename-without-spaces-1234567890.bin — the destination directory does not exist.' })"
           >
             Long title + desc
           </Button>
           <Button
             variant="outline"
             size="sm"
-            @click="toast.warning('connection_string=postgresql://memoh_user:supersecretpassword@db.internal.memoh.example.com:5432/memoh_production?sslmode=require', { action: { label: 'Copy', onClick: () => {} } })"
+            @click="toast.warning('connection_string=postgresql://ami_user:supersecretpassword@db.internal.ami.example.com:5432/ami_production?sslmode=require', { action: { label: 'Copy', onClick: () => {} } })"
           >
             Long blob + action
           </Button>

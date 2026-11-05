@@ -9,70 +9,70 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestIsMatrixBotMentionedByMentionsMetadata(t *testing.T) {
 	content := map[string]any{
 		"body": "hi bot",
 		"m.mentions": map[string]any{
-			"user_ids": []any{"@memoh:example.com"},
+			"user_ids": []any{"@ami:example.com"},
 		},
 	}
-	if !isMatrixBotMentioned("@memoh:example.com", content) {
+	if !isMatrixBotMentioned("@ami:example.com", content) {
 		t.Fatal("expected mention metadata to be detected")
 	}
 }
 
 func TestIsMatrixBotMentionedByFormattedBody(t *testing.T) {
 	content := map[string]any{
-		"body":           "hello Memoh",
-		"formatted_body": `<a href="https://matrix.to/#/@memoh:example.com">Memoh</a> hello`,
+		"body":           "hello Ami",
+		"formatted_body": `<a href="https://matrix.to/#/@ami:example.com">Ami</a> hello`,
 	}
-	if !isMatrixBotMentioned("@memoh:example.com", content) {
+	if !isMatrixBotMentioned("@ami:example.com", content) {
 		t.Fatal("expected formatted body mention to be detected")
 	}
 }
 
 func TestIsMatrixBotMentionedByBodyFallback(t *testing.T) {
 	content := map[string]any{
-		"body": "@memoh:example.com ping",
+		"body": "@ami:example.com ping",
 	}
-	if !isMatrixBotMentioned("@memoh:example.com", content) {
+	if !isMatrixBotMentioned("@ami:example.com", content) {
 		t.Fatal("expected body fallback mention to be detected")
 	}
 }
 
 func TestIsMatrixBotMentionedByLocalpartBodyFallback(t *testing.T) {
 	content := map[string]any{
-		"body": "@memoh ping",
+		"body": "@ami ping",
 	}
-	if !isMatrixBotMentioned("@memoh:example.com", content) {
+	if !isMatrixBotMentioned("@ami:example.com", content) {
 		t.Fatal("expected localpart body fallback mention to be detected")
 	}
 }
 
 func TestMatrixBotMentionAliasesIncludeFullIDAndLocalpart(t *testing.T) {
-	aliases := matrixBotMentionAliases("@memoh:example.com")
-	if len(aliases) != 2 || aliases[0] != "@memoh:example.com" || aliases[1] != "@memoh" {
+	aliases := matrixBotMentionAliases("@ami:example.com")
+	if len(aliases) != 2 || aliases[0] != "@ami:example.com" || aliases[1] != "@ami" {
 		t.Fatalf("aliases = %#v, want full Matrix ID and localpart", aliases)
 	}
 }
 
 func TestIsMatrixBotMentionedDoesNotMatchSubstring(t *testing.T) {
 	content := map[string]any{
-		"body": "@memoh-helper:example.com ping",
+		"body": "@ami-helper:example.com ping",
 	}
-	if isMatrixBotMentioned("@memoh:example.com", content) {
+	if isMatrixBotMentioned("@ami:example.com", content) {
 		t.Fatal("expected substring match not to count as mention")
 	}
 }
 
 func TestIsMatrixBotMentionedDoesNotMatchPlainMatrixURL(t *testing.T) {
 	content := map[string]any{
-		"body": "see https://matrix.to/#/@memoh:example.com",
+		"body": "see https://matrix.to/#/@ami:example.com",
 	}
-	if isMatrixBotMentioned("@memoh:example.com", content) {
+	if isMatrixBotMentioned("@ami:example.com", content) {
 		t.Fatal("expected plain Matrix URL not to count as mention")
 	}
 }
@@ -195,7 +195,7 @@ func TestValidateConnectionChecksHomeserverVersions(t *testing.T) {
 	err := adapter.validateConnection(context.Background(), Config{
 		HomeserverURL: "https://matrix.example.com",
 		AccessToken:   "tok",
-		UserID:        "@memoh:example.com",
+		UserID:        "@ami:example.com",
 	})
 	if err == nil {
 		t.Fatal("expected homeserver validation to fail")
@@ -232,12 +232,12 @@ func TestValidateConnectionRejectsTokenUserMismatch(t *testing.T) {
 	err := adapter.validateConnection(context.Background(), Config{
 		HomeserverURL: "https://matrix.example.com",
 		AccessToken:   "tok",
-		UserID:        "@memoh:example.com",
+		UserID:        "@ami:example.com",
 	})
 	if err == nil {
 		t.Fatal("expected token mismatch validation to fail")
 	}
-	if !strings.Contains(err.Error(), "token belongs to @alice:example.com, expected @memoh:example.com") {
+	if !strings.Contains(err.Error(), "token belongs to @alice:example.com, expected @ami:example.com") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(requests) != 2 {
@@ -260,7 +260,7 @@ func TestValidateConnectionSkipsSyncProbe(t *testing.T) {
 		case "/_matrix/client/v3/account/whoami":
 			return &http.Response{
 				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(strings.NewReader(`{"user_id":"@memoh:example.com"}`)),
+				Body:       io.NopCloser(strings.NewReader(`{"user_id":"@ami:example.com"}`)),
 				Header:     make(http.Header),
 			}, nil
 		case "/_matrix/client/v3/sync":
@@ -275,7 +275,7 @@ func TestValidateConnectionSkipsSyncProbe(t *testing.T) {
 	err := adapter.validateConnection(context.Background(), Config{
 		HomeserverURL: "https://matrix.example.com",
 		AccessToken:   "tok",
-		UserID:        "@memoh:example.com",
+		UserID:        "@ami:example.com",
 	})
 	if err != nil {
 		t.Fatalf("validateConnection returned error: %v", err)
@@ -399,7 +399,7 @@ func TestBuildMatrixMessageContentAddsFormattedHTMLToEdits(t *testing.T) {
 }
 
 func TestStripMatrixReplyFallback(t *testing.T) {
-	body := "> <@memoh:example.com> This looks like Antelope Canyon\n>\nWhere is Antelope Canyon?"
+	body := "> <@ami:example.com> This looks like Antelope Canyon\n>\nWhere is Antelope Canyon?"
 	if got := stripMatrixReplyFallback(body); got != "Where is Antelope Canyon?" {
 		t.Fatalf("unexpected stripped body: %q", got)
 	}
@@ -417,8 +417,8 @@ func TestMatrixHandleEventExpandsRepliedImageContext(t *testing.T) {
 			Body: io.NopCloser(strings.NewReader(`{
 				"event_id":"$img1",
 				"type":"m.room.message",
-				"sender":"@memoh:example.com",
-				"unsigned":{"displayname":"Memoh"},
+				"sender":"@ami:example.com",
+				"unsigned":{"displayname":"Ami"},
 				"content":{
 					"msgtype":"m.image",
 					"body":"canyon.jpg",
@@ -434,7 +434,7 @@ func TestMatrixHandleEventExpandsRepliedImageContext(t *testing.T) {
 	delivered, err := adapter.handleEvent(
 		context.Background(),
 		channel.ChannelConfig{ID: "cfg-1", BotID: "bot-1"},
-		Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@memoh:example.com"},
+		Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@ami:example.com"},
 		matrixEvent{
 			EventID: "$evt2",
 			Type:    "m.room.message",
@@ -442,7 +442,7 @@ func TestMatrixHandleEventExpandsRepliedImageContext(t *testing.T) {
 			RoomID:  "!room:example.com",
 			Content: map[string]any{
 				"msgtype": "m.text",
-				"body":    "> <@memoh:example.com> photo\n>\nWhere is Antelope Canyon?",
+				"body":    "> <@ami:example.com> photo\n>\nWhere is Antelope Canyon?",
 				"m.relates_to": map[string]any{
 					"m.in_reply_to": map[string]any{"event_id": "$img1"},
 				},
@@ -465,7 +465,7 @@ func TestMatrixHandleEventExpandsRepliedImageContext(t *testing.T) {
 	if captured.Message.Reply == nil {
 		t.Fatal("expected ReplyRef to be set")
 	}
-	if captured.Message.Reply.Sender != "Memoh" {
+	if captured.Message.Reply.Sender != "Ami" {
 		t.Fatalf("unexpected reply sender: %q", captured.Message.Reply.Sender)
 	}
 	if len(captured.Message.Attachments) != 0 {
@@ -491,7 +491,7 @@ func TestMatrixHandleEventUsesImageCaptionAsMessageText(t *testing.T) {
 	delivered, err := adapter.handleEvent(
 		context.Background(),
 		channel.ChannelConfig{ID: "cfg-1", BotID: "bot-1"},
-		Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@memoh:example.com"},
+		Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@ami:example.com"},
 		matrixEvent{
 			EventID: "$evt2",
 			Type:    "m.room.message",
@@ -531,11 +531,11 @@ func TestMatrixHandleEventUsesImageCaptionAsMessageText(t *testing.T) {
 	if rawText, _ := captured.Metadata["raw_text"].(string); rawText != "A hand-drawn system architecture diagram" {
 		t.Fatalf("unexpected raw_text metadata: %q", rawText)
 	}
-	if alias, _ := captured.Metadata["bot_alias"].(string); alias != "@memoh:example.com" {
+	if alias, _ := captured.Metadata["bot_alias"].(string); alias != "@ami:example.com" {
 		t.Fatalf("bot_alias = %q, want Matrix bot user id", alias)
 	}
 	aliases, _ := captured.Metadata["bot_aliases"].([]string)
-	if len(aliases) != 2 || aliases[0] != "@memoh:example.com" || aliases[1] != "@memoh" {
+	if len(aliases) != 2 || aliases[0] != "@ami:example.com" || aliases[1] != "@ami" {
 		t.Fatalf("bot_aliases = %#v, want full Matrix ID and localpart", aliases)
 	}
 }
@@ -552,7 +552,7 @@ func TestMatrixHandleEventMarksDirectConversationFromJoinedMembers(t *testing.T)
 				Body: io.NopCloser(strings.NewReader(`{
 					"joined": {
 						"@alex:example.com": {"display_name": "Alex"},
-						"@memoh:example.com": {"display_name": "Memoh"}
+						"@ami:example.com": {"display_name": "Ami"}
 					}
 				}`)),
 				Header: make(http.Header),
@@ -568,7 +568,7 @@ func TestMatrixHandleEventMarksDirectConversationFromJoinedMembers(t *testing.T)
 		delivered, err := adapter.handleEvent(
 			context.Background(),
 			channel.ChannelConfig{ID: "cfg-1", BotID: "bot-1"},
-			Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@memoh:example.com"},
+			Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@ami:example.com"},
 			matrixEvent{
 				EventID: fmt.Sprintf("$evt%d", i+1),
 				Type:    "m.room.message",
@@ -638,7 +638,7 @@ func TestMatrixSyncOnceAutoJoinsInvitedRooms(t *testing.T) {
 	nextSince, healthy, err := adapter.syncOnce(
 		context.Background(),
 		channel.ChannelConfig{ID: "cfg-1", BotID: "bot-1"},
-		Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@memoh:example.com", SyncTimeoutSeconds: 30, AutoJoinInvites: true},
+		Config{HomeserverURL: "https://matrix.example.com", AccessToken: "tok", UserID: "@ami:example.com", SyncTimeoutSeconds: 30, AutoJoinInvites: true},
 		"s123",
 		func(_ context.Context, _ channel.ChannelConfig, msg channel.InboundMessage) error {
 			captured = msg
@@ -725,7 +725,7 @@ func TestEnsureDirectRoomReusesExistingRoom(t *testing.T) {
 			joinedMembersRequests++
 			return &http.Response{
 				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(strings.NewReader(`{"joined":{"@memoh:example.com":{},"@alice:example.com":{}}}`)),
+				Body:       io.NopCloser(strings.NewReader(`{"joined":{"@ami:example.com":{},"@alice:example.com":{}}}`)),
 				Header:     make(http.Header),
 			}, nil
 		case "/_matrix/client/v3/createRoom":
@@ -744,7 +744,7 @@ func TestEnsureDirectRoomReusesExistingRoom(t *testing.T) {
 	cfg := Config{
 		HomeserverURL: "https://matrix.example.com",
 		AccessToken:   "tok",
-		UserID:        "@memoh:example.com",
+		UserID:        "@ami:example.com",
 	}
 
 	roomID, err := adapter.ensureDirectRoom(context.Background(), cfg, "@alice:example.com")
@@ -801,7 +801,7 @@ func TestEnsureDirectRoomCachesCreatedRoom(t *testing.T) {
 	cfg := Config{
 		HomeserverURL: "https://matrix.example.com",
 		AccessToken:   "tok",
-		UserID:        "@memoh:example.com",
+		UserID:        "@ami:example.com",
 	}
 
 	roomID, err := adapter.ensureDirectRoom(context.Background(), cfg, "@alice:example.com")
@@ -931,7 +931,7 @@ func TestMatrixSendUploadsBase64AttachmentAndSendsMediaEvent(t *testing.T) {
 		BotID: "bot-1",
 		Credentials: map[string]any{
 			"homeserverUrl": "https://matrix.example.com",
-			"userId":        "@memoh:example.com",
+			"userId":        "@ami:example.com",
 			"accessToken":   "tok",
 		},
 	}, channel.PreparedOutboundMessage{
@@ -989,7 +989,7 @@ func TestMatrixSendResolvesRoomAlias(t *testing.T) {
 	err := adapter.Send(context.Background(), channel.ChannelConfig{
 		Credentials: map[string]any{
 			"homeserverUrl": "https://matrix.example.com",
-			"userId":        "@memoh:example.com",
+			"userId":        "@ami:example.com",
 			"accessToken":   "tok",
 		},
 	}, channel.PreparedOutboundMessage{
@@ -1030,7 +1030,7 @@ func TestMatrixSendPreservesRichPartsAsFormattedHTML(t *testing.T) {
 	err := adapter.Send(context.Background(), channel.ChannelConfig{
 		Credentials: map[string]any{
 			"homeserverUrl": "https://matrix.example.com",
-			"userId":        "@memoh:example.com",
+			"userId":        "@ami:example.com",
 			"accessToken":   "tok",
 		},
 	}, channel.PreparedOutboundMessage{
@@ -1090,7 +1090,7 @@ func TestMatrixResolveAttachmentDownloadsMXC(t *testing.T) {
 	payload, err := adapter.ResolveAttachment(context.Background(), channel.ChannelConfig{
 		Credentials: map[string]any{
 			"homeserverUrl": "https://matrix.example.com",
-			"userId":        "@memoh:example.com",
+			"userId":        "@ami:example.com",
 			"accessToken":   "tok",
 		},
 	}, channel.Attachment{
@@ -1140,7 +1140,7 @@ func TestMatrixResolveAttachmentFallsBackToLegacyMediaDownload(t *testing.T) {
 	payload, err := adapter.ResolveAttachment(context.Background(), channel.ChannelConfig{
 		Credentials: map[string]any{
 			"homeserverUrl": "https://matrix.example.com",
-			"userId":        "@memoh:example.com",
+			"userId":        "@ami:example.com",
 			"accessToken":   "tok",
 		},
 	}, channel.Attachment{

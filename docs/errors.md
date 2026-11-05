@@ -47,7 +47,7 @@ when the status would attribute the code wrongly (see
   registered under the value that was written. New codes are lowercase and
   dotted.
 - The status tells the client what to do about its own request. 401 is only
-  for a missing or invalid Memoh session, because the Web app signs out on a
+  for a missing or invalid Ami session, because the Web app signs out on a
   401. A code for a dependency's failure answers 5xx, or 429 when the client
   should back off. `agent.provider_quota_exhausted` answers 402 because the
   provider account needs balance or quota rather than a retry; its fault
@@ -126,13 +126,13 @@ the agent rejected. It is shown and stored as it was said, under
 problem. The user reads it as they would in the agent's own client; mapping it
 onto categories of ours could never cover every agent and only hid what
 happened. `external.Reported` and `external.Upstream` strip the credentials and
-queries of URLs in it and bound its length. A failure inside Memoh on the way
+queries of URLs in it and bound its length. A failure inside Ami on the way
 (reading the Agent's configuration, looking the workspace up) is not the
 agent's and stays internal.
 
 A runtime driver reports a failure as an `external.Failure` of one of three
 sorts: what the agent said (`FailureReported`), a sign-in
-(`FailureAuthRequired`), or one of Memoh's own rules refusing the request
+(`FailureAuthRequired`), or one of Ami's own rules refusing the request
 (`FailureForkLatestOnly`, `FailureGoalRequiresDefaultMode`,
 `FailureModeUnavailable` for a model, effort or mode the agent does not offer,
 `FailureCredential`, `FailureCredentialBusy`, `FailureRuntimeBusy`). An ACP
@@ -150,7 +150,7 @@ type `application/problem+json`:
 
 ```json
 {
-  "type": "urn:memoh:error:workspace.unreachable",
+  "type": "urn:ami:error:workspace.unreachable",
   "code": "workspace.unreachable",
   "status": 503,
   "detail": "The workspace is not reachable.",
@@ -240,7 +240,7 @@ then this process sent a request it refused, and the fault is `server`. An
 error with no public error is attributed by its cause the same way. The HTTP Problem, the result record of
 every boundary and the RPC envelope all take the fault from this one rule.
 
-A model provider is outside Memoh, whoever holds the credential. Every code
+A model provider is outside Ami, whoever holds the credential. Every code
 that reports a provider's answer declares `dependency`, including a rejected
 key, an exhausted quota and a rate limit (429); a content
 moderation refusal would be the one `client` code. The codes an external

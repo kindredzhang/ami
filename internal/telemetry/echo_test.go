@@ -18,8 +18,8 @@ import (
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 // recordSpans points the global provider at an in-memory exporter for the

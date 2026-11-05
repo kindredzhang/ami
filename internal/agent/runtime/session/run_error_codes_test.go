@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // Every code this package writes to session_runs.error_code is shown to users

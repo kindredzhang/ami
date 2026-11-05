@@ -1,4 +1,4 @@
-import type { McpToolDescriptor } from '@memohai/sdk'
+import type { McpToolDescriptor } from '@ami/sdk'
 
 // Shared shape between the MCP list (bot-mcp.vue) and the per-server detail
 // (mcp-server-detail.vue). The list seeds the detail with one of these; the

@@ -10,7 +10,7 @@
 //     shadow / disabled opacity / field-edge / selection ring). The library is the
 //     single source the app consumes.
 //   · px-SCALING rules — packages/ui AND apps/web. The root font-size is driven by
-//     --memoh-ui-font-size, so rem scales with the user's font setting / browser zoom
+//     --ami-ui-font-size, so rem scales with the user's font setting / browser zoom
 //     while a hardcoded px does NOT. A px on a property that gates TEXT therefore
 //     stops growing while the surrounding text grows → clipped / misaligned controls.
 //   · APP-INJECTION rules — apps/web (ratcheted). Interaction chrome, color and

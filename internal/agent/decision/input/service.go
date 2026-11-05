@@ -14,11 +14,11 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/agent/decision"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/agent/decision"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 const (
@@ -1067,11 +1067,11 @@ func (s *Service) optionalChannelIdentityUUID(ctx context.Context, value string)
 	return id, nil
 }
 
-// Memoh ask_user options are shortcuts, not a closed answer schema. Apply this
+// Ami ask_user options are shortcuts, not a closed answer schema. Apply this
 // on both creation and loading so pending questions from older versions also
 // accept text. External elicitation forms retain their provider's constraints.
 func enableConversationalAnswers(payload *UIPayload, metadata map[string]any) {
-	if source, exists := metadata["source"]; exists && source != "" && source != ProviderSourceMemohTool {
+	if source, exists := metadata["source"]; exists && source != "" && source != ProviderSourceAmiTool {
 		return
 	}
 	for i := range payload.Questions {

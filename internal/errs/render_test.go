@@ -14,7 +14,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 func TestText(t *testing.T) {
@@ -35,9 +35,9 @@ func TestRedactURLs(t *testing.T) {
 
 func TestRedactURLsAnyScheme(t *testing.T) {
 	for in, want := range map[string]string{ //nolint:gosec // fake credentials the redaction must remove
-		`parse database url: postgres://app:hunter2@db:5432/memoh?sslmode=disable`: `parse database url: postgres://db:5432/memoh`,
-		`dial postgres:///memoh?host=/tmp&password=hunter2`:                        `dial postgres:///memoh`,
-		`bad dsn postgres://app:hun%zzter2@db/memoh`:                               `bad dsn postgres://[redacted]`,
+		`parse database url: postgres://app:hunter2@db:5432/ami?sslmode=disable`: `parse database url: postgres://db:5432/ami`,
+		`dial postgres:///ami?host=/tmp&password=hunter2`:                        `dial postgres:///ami`,
+		`bad dsn postgres://app:hun%zzter2@db/ami`:                               `bad dsn postgres://[redacted]`,
 		`redis://:hunter2@cache:6379/0 refused`:                                    `redis://cache:6379/0 refused`,
 	} {
 		if got := RedactURLs(in); got != want || strings.Contains(got, "hunter2") {

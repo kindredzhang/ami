@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 var (

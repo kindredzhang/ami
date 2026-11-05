@@ -39,7 +39,7 @@
 import { ChevronsUpDown } from 'lucide-vue-next'
 import { selectTriggerClass } from '@felinic/ui'
 import { computed } from 'vue'
-import type { FetchprovidersGetResponse } from '@memohai/sdk'
+import type { FetchprovidersGetResponse } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import SearchableSelectPopover from '@/components/searchable-select-popover/index.vue'
 import type { SearchableSelectOption } from '@/components/searchable-select-popover/index.vue'

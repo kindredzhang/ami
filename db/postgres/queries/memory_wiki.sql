@@ -40,34 +40,34 @@ RETURNING *;
 
 -- name: GetMemoryNode :one
 SELECT * FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2;
 
 -- name: ListMemoryNodesByBot :many
 SELECT * FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY captured_at ASC;
 
 -- name: ListMemoryNodesByBotLayer :many
 SELECT * FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND layer = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND layer = $2
 ORDER BY captured_at ASC;
 
 -- name: ListMemoryNodesByBotProfile :many
 SELECT * FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND profile_ref = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND profile_ref = $2
 ORDER BY captured_at ASC;
 
 -- name: DeleteMemoryNode :exec
 DELETE FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2;
 
 -- name: DeleteAllMemoryNodesByBot :exec
 DELETE FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1;
 
 -- name: CountMemoryNodesByBot :one
 SELECT COUNT(*) FROM memory_nodes
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1;
 
 -- name: InsertMemoryEdge :exec
 INSERT INTO memory_edges (bot_id, src_node, dst_node, rel, weight, metadata)
@@ -78,29 +78,29 @@ ON CONFLICT (team_id, bot_id, src_node, dst_node, rel) DO UPDATE SET
 
 -- name: ListMemoryEdgesFromNode :many
 SELECT * FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND src_node = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND src_node = $2
 ORDER BY weight DESC;
 
 -- name: ListMemoryEdgesByBot :many
 SELECT * FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1;
 
 -- name: ListMemoryEdgesByRel :many
 SELECT * FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND rel = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND rel = $2;
 
 -- name: DeleteMemoryEdgesForNode :exec
 DELETE FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND (src_node = $2 OR dst_node = $2);
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND (src_node = $2 OR dst_node = $2);
 
 -- name: DeleteAllMemoryEdgesByBot :exec
 DELETE FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1;
 
 -- name: CountMemoryEdgesByBot :one
 SELECT COUNT(*) FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1;
 
 -- name: DeleteMemoryEdgesByRelForBot :exec
 DELETE FROM memory_edges
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND rel = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND rel = $2;

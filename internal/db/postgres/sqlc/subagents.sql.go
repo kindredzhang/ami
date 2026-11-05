@@ -59,12 +59,12 @@ WITH target_session AS MATERIALIZED (
   SELECT child.id, child.bot_id, child.team_id
   FROM bot_sessions child
   JOIN bot_sessions parent
-    ON parent.team_id = public.memoh_current_team_id()
+    ON parent.team_id = public.ami_current_team_id()
    AND parent.id = $1
    AND parent.id = child.parent_session_id
    AND parent.bot_id = child.bot_id
    AND parent.deleted_at IS NULL
-  WHERE child.team_id = public.memoh_current_team_id()
+  WHERE child.team_id = public.ami_current_team_id()
     AND child.id = $2
     AND child.type = 'subagent'
     AND child.deleted_at IS NULL
@@ -105,7 +105,7 @@ prepared_messages AS MATERIALIZED (
   FROM context_entries entries
   CROSS JOIN target_session target
   LEFT JOIN bot_history_messages source
-    ON source.team_id = public.memoh_current_team_id()
+    ON source.team_id = public.ami_current_team_id()
    AND source.id = NULLIF(entries.entry->>'source_message_id', '')::uuid
    AND source.session_id = $1
    AND source.bot_id = target.bot_id
@@ -114,7 +114,7 @@ updated_session AS (
   UPDATE bot_sessions session
   SET next_turn_position = (SELECT count(*)::bigint + 1 FROM context_entries)
   FROM target_session target
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = target.id
   RETURNING session.id
 ),
@@ -191,7 +191,7 @@ copied_assets AS (
   FROM prepared_messages prepared
   JOIN inserted_messages inserted ON inserted.id = prepared.id
   JOIN bot_history_message_assets asset
-    ON asset.team_id = public.memoh_current_team_id()
+    ON asset.team_id = public.ami_current_team_id()
    AND asset.message_id = prepared.source_id
   RETURNING id
 )
@@ -243,7 +243,7 @@ func (q *Queries) GetSubagentConfig(ctx context.Context, sessionID pgtype.UUID) 
 const listSubagentForkContext = `-- name: ListSubagentForkContext :many
 SELECT role, content
 FROM bot_history_messages
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = $1
   AND session_mode = 'subagent'
   AND turn_visible = false

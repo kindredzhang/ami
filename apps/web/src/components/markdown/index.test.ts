@@ -71,7 +71,7 @@ describe('registerSharedMarkdownComponents', () => {
 
 describe('chat Markdown media', () => {
   it('shows a failed image as a status instead of leaking its workspace path', async () => {
-    const host = await renderChatMarkdown('![image](memoh-media-error:media.reference_unavailable)')
+    const host = await renderChatMarkdown('![image](ami-media-error:media.reference_unavailable)')
     expect(host.querySelector('[role="status"]')?.textContent).toContain('errors.media.reference_unavailable')
     expect(host.querySelector('img')).toBeNull()
   })

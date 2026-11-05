@@ -1,5 +1,5 @@
 import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
-import { getWebhookTunnelStatus, type WebhooktunnelStatus } from '@memohai/sdk'
+import { getWebhookTunnelStatus, type WebhooktunnelStatus } from '@ami/sdk'
 import { normalizePublicWebhookBase } from '@/utils/webhook-public-base'
 
 type PublicBaseState = { url: string; reason: 'missing' | 'invalid' | '' }

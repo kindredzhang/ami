@@ -47,9 +47,9 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Spinner } from '@felinic/ui'
 import { CircleCheck, CircleX } from 'lucide-vue-next'
-import { postBotsByBotIdMcpByIdOauthExchange } from '@memohai/sdk'
+import { postBotsByBotIdMcpByIdOauthExchange } from '@ami/sdk'
 import CopyActionButton from '@/pages/home/components/copy-action-button.vue'
-import { parseMemohError, resolveApiErrorMessage } from '@/utils/api-error'
+import { parseAmiError, resolveApiErrorMessage } from '@/utils/api-error'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -100,7 +100,7 @@ onMounted(async () => {
     success.value = true
     notify('success')
   } catch (err: unknown) {
-    requestId.value = parseMemohError(err)?.requestId ?? ''
+    requestId.value = parseAmiError(err)?.requestId ?? ''
     fail(resolveApiErrorMessage(err, ''))
   }
 })

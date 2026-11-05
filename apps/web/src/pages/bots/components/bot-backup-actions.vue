@@ -18,7 +18,7 @@ import {
   postBotsByBotIdBackupExport,
   getBotsByBotIdBackupSummary,
   type BotbackupSummaryResult,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import BotImportPanel from './bot-import-panel.vue'
 import BackupSectionCards from './backup-section-cards.vue'
@@ -99,7 +99,7 @@ async function loadSummary() {
 function filename() {
   const name = (props.botName || props.botId).trim().replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '')
   const timestamp = new Date().toISOString().replaceAll(':', '-')
-  return `bot-${name || props.botId}-${timestamp}.memoh.zip`
+  return `bot-${name || props.botId}-${timestamp}.ami.zip`
 }
 
 function downloadBlob(blob: Blob, name: string) {

@@ -57,7 +57,7 @@ const primitiveRungs = [
   <SectionShell
     id="spacing"
     label="Spacing"
-    description="Semantic owners for recurring Memoh spacing relationships."
+    description="Semantic owners for recurring Ami spacing relationships."
   >
     <div class="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
       <Specimen

@@ -6,7 +6,7 @@ import (
 
 	"github.com/felinics/dingtalk-stream-sdk-go/chatbot"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestBuildInboundMessageTextGroup(t *testing.T) {

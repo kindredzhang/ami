@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel/inbound"
+	"github.com/kindredzhang/ami/internal/channel/inbound"
 )
 
 type queueHandlerStub struct {

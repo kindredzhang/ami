@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/media"
-	intrpc "github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/rpc/storagepb"
-	"github.com/felinics/memoh/internal/storage"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/media"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/rpc/storagepb"
+	"github.com/kindredzhang/ami/internal/storage"
 )
 
 const streamChunkBytes = 256 << 10
@@ -58,7 +58,7 @@ func (s *Server) Put(stream storagepb.StorageService_PutServer) error {
 	// The fallback provider may retry a failed primary write against secondary
 	// storage and therefore requires a seekable reader. Spooling here preserves
 	// that contract without buffering a media object in memory.
-	tempFile, err := os.CreateTemp("", "memoh-storage-rpc-*")
+	tempFile, err := os.CreateTemp("", "ami-storage-rpc-*")
 	if err != nil {
 		return s.mapError(stream.Context(), "create put spool", err)
 	}

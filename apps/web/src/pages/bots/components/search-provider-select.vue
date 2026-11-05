@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { SearchprovidersGetResponse } from '@memohai/sdk'
+import type { SearchprovidersGetResponse } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import SearchableSelectPopover from '@/components/searchable-select-popover/index.vue'
 import type { SearchableSelectOption } from '@/components/searchable-select-popover/index.vue'

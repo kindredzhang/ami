@@ -25,8 +25,8 @@
 -- it has.
 
 -- Every table this migration reads or writes is under FORCE row level security
--- keyed on memoh.team_id, which a migration connection never sets: a bare
--- statement raises "memoh.team_id is not set" from memoh_current_team_id() and
+-- keyed on ami.team_id, which a migration connection never sets: a bare
+-- statement raises "ami.team_id is not set" from ami_current_team_id() and
 -- aborts the whole migration. models is in the list because the always-on rule
 -- reads it from a subquery, not just because it is written to. Lift the policy on
 -- all of them for the data steps and restore it after, the same way 0125, 0128 and

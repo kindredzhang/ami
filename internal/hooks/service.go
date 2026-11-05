@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/prune"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/prune"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type ToolRunner interface {
@@ -245,10 +245,10 @@ func (s *Service) runCommand(ctx context.Context, cfg Config, req Request, actio
 		env = append(env, key+"="+value)
 	}
 	env = append(env,
-		"MEMOH_HOOK_EVENT="+req.Event,
-		"MEMOH_HOOK_NAME="+req.HookName,
-		"MEMOH_BOT_ID="+req.BotID,
-		"MEMOH_SESSION_ID="+req.SessionID,
+		"AMI_HOOK_EVENT="+req.Event,
+		"AMI_HOOK_NAME="+req.HookName,
+		"AMI_BOT_ID="+req.BotID,
+		"AMI_SESSION_ID="+req.SessionID,
 	)
 	timeoutUnits := timeout.Round(time.Second) / time.Second
 	if timeoutUnits <= 0 {

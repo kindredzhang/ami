@@ -8,15 +8,15 @@ import (
 	"strings"
 	"time"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/job"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/memory/storefs"
-	"github.com/felinics/memoh/internal/runtimekind"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/job"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/storefs"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 const defaultMemorySearchTimeout = 1200 * time.Millisecond

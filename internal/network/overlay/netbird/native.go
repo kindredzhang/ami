@@ -5,10 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	ctr "github.com/felinics/memoh/internal/container"
-	netctl "github.com/felinics/memoh/internal/network"
-	"github.com/felinics/memoh/internal/network/overlay/internal/configutil"
-	"github.com/felinics/memoh/internal/network/overlay/internal/sidecar"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	netctl "github.com/kindredzhang/ami/internal/network"
+	"github.com/kindredzhang/ami/internal/network/overlay/internal/configutil"
+	"github.com/kindredzhang/ami/internal/network/overlay/internal/sidecar"
 )
 
 type nativeDriver struct {

@@ -49,10 +49,10 @@ func TestClassifyDirectSkillActivationAllowsEmptyPrompt(t *testing.T) {
 
 func TestClassifyChannelDirectSkillActivationWithBotSuffix(t *testing.T) {
 	decision := Classify(ClassifyInput{
-		Text:       "/alpha@Memoh do it",
+		Text:       "/alpha@Ami do it",
 		Surface:    SurfaceChannel,
 		IsGroup:    true,
-		BotAliases: []string{"Memoh"},
+		BotAliases: []string{"Ami"},
 	})
 	if decision.Kind != DecisionSkillIntent {
 		t.Fatalf("kind = %s, want %s", decision.Kind, DecisionSkillIntent)
@@ -76,12 +76,12 @@ func TestClassifyChannelCommandAddressingForms(t *testing.T) {
 		text string
 		want string
 	}{
-		{name: "leading mention", text: "@memoh1bot /new discuss", want: "/new discuss"},
-		{name: "command suffix", text: "/new@memoh1bot discuss", want: "/new discuss"},
-		{name: "action suffix", text: "/new discuss@memoh1bot", want: "/new discuss"},
-		{name: "mention after command", text: "/new @memoh1bot", want: "/new"},
-		{name: "mention after action", text: "/new discuss @memoh1bot", want: "/new discuss"},
-		{name: "multiple leading mentions", text: "@alice @memoh1bot /new discuss", want: "/new discuss"},
+		{name: "leading mention", text: "@ami1bot /new discuss", want: "/new discuss"},
+		{name: "command suffix", text: "/new@ami1bot discuss", want: "/new discuss"},
+		{name: "action suffix", text: "/new discuss@ami1bot", want: "/new discuss"},
+		{name: "mention after command", text: "/new @ami1bot", want: "/new"},
+		{name: "mention after action", text: "/new discuss @ami1bot", want: "/new discuss"},
+		{name: "multiple leading mentions", text: "@alice @ami1bot /new discuss", want: "/new discuss"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -90,7 +90,7 @@ func TestClassifyChannelCommandAddressingForms(t *testing.T) {
 				Text:       tt.text,
 				Surface:    SurfaceChannel,
 				IsGroup:    true,
-				BotAliases: []string{"memoh1bot"},
+				BotAliases: []string{"ami1bot"},
 				KnownCommand: func(resource string) bool {
 					return resource == "new"
 				},
@@ -119,7 +119,7 @@ func TestClassifyChannelCommandForOtherBotIsIgnored(t *testing.T) {
 				Surface:    SurfaceChannel,
 				IsGroup:    true,
 				Directed:   true,
-				BotAliases: []string{"memoh1bot"},
+				BotAliases: []string{"ami1bot"},
 				KnownCommand: func(resource string) bool {
 					return resource == "new"
 				},
@@ -153,7 +153,7 @@ func TestClassifyFixedCommandBeatsSkillSelector(t *testing.T) {
 func TestClassifyLegacySkillUseSyntaxRejects(t *testing.T) {
 	tests := []string{
 		"/skill use alpha -- do it",
-		"/skill@Memoh use alpha -- do it",
+		"/skill@Ami use alpha -- do it",
 	}
 	for _, text := range tests {
 		t.Run(text, func(t *testing.T) {
@@ -161,7 +161,7 @@ func TestClassifyLegacySkillUseSyntaxRejects(t *testing.T) {
 				Text:       text,
 				Surface:    SurfaceChannel,
 				Directed:   true,
-				BotAliases: []string{"Memoh"},
+				BotAliases: []string{"Ami"},
 			})
 			if decision.Kind != DecisionReject || decision.Code != CodeInvalidSkillSlashSyntax {
 				t.Fatalf("decision = %#v, want reject %s", decision, CodeInvalidSkillSlashSyntax)

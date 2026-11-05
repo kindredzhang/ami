@@ -1,4 +1,4 @@
-This WeChat (Weixin) channel adapter for Memoh is derived from the
+This WeChat (Weixin) channel adapter for Ami is derived from the
 OpenClaw WeChat plugin ("@tencent-weixin/openclaw-weixin"), which is
 licensed under the MIT License. The protocol logic, API structures,
 CDN encryption scheme, and QR login flow were ported from that

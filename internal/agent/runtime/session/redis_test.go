@@ -14,8 +14,8 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 var runtimeBackendPrefixSequence atomic.Uint64
@@ -140,7 +140,7 @@ func (b delayedCommandSubscriptionBackend) SubscribeCommands(ctx context.Context
 }
 
 func uniqueRuntimeBackendPrefix(scope string) string {
-	return fmt.Sprintf("memoh:test:session_runtime:%s:%d:%d:", scope, time.Now().UnixNano(), runtimeBackendPrefixSequence.Add(1))
+	return fmt.Sprintf("ami:test:session_runtime:%s:%d:%d:", scope, time.Now().UnixNano(), runtimeBackendPrefixSequence.Add(1))
 }
 
 func redisRuntimeBackendSuite(redisURL string) distributedRuntimeBackendContractSuite {
@@ -178,8 +178,8 @@ func TestRedisValkeyRuntimeManagerContractOptional(t *testing.T) {
 		name string
 		url  string
 	}{
-		{name: "redis", url: os.Getenv("MEMOH_TEST_REDIS_URL")},
-		{name: "valkey", url: os.Getenv("MEMOH_TEST_VALKEY_URL")},
+		{name: "redis", url: os.Getenv("AMI_TEST_REDIS_URL")},
+		{name: "valkey", url: os.Getenv("AMI_TEST_VALKEY_URL")},
 	}
 	var ran bool
 	for _, target := range targets {
@@ -203,10 +203,10 @@ func TestRedisValkeyRuntimeManagerContractOptional(t *testing.T) {
 		})
 	}
 	if !ran {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("distributed session runtime contracts are required, but neither MEMOH_TEST_REDIS_URL nor MEMOH_TEST_VALKEY_URL is set")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("distributed session runtime contracts are required, but neither AMI_TEST_REDIS_URL nor AMI_TEST_VALKEY_URL is set")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL and/or MEMOH_TEST_VALKEY_URL to run Redis and/or Valkey session runtime contracts")
+		t.Skip("set AMI_TEST_REDIS_URL and/or AMI_TEST_VALKEY_URL to run Redis and/or Valkey session runtime contracts")
 	}
 }
 
@@ -785,7 +785,7 @@ func runRedisSubscriptionReconnectContract(t *testing.T, redisURL string) {
 	t.Helper()
 
 	prefix := uniqueRuntimeBackendPrefix("reconnect")
-	clientName := fmt.Sprintf("memoh-runtime-reconnect-%d", runtimeBackendPrefixSequence.Add(1))
+	clientName := fmt.Sprintf("ami-runtime-reconnect-%d", runtimeBackendPrefixSequence.Add(1))
 	parsedURL, err := url.Parse(redisURL)
 	if err != nil {
 		t.Fatalf("parse redis url: %v", err)

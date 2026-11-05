@@ -3,7 +3,7 @@ package local
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // RouteHubBroadcaster implements channel.StreamObserver by forwarding events

@@ -19,7 +19,7 @@ type Caps struct {
 	Command    string
 
 	// ForkNeedsRuntime: the conversation's native session lives in its
-	// runtime metadata with no owner, so a Memoh-side copy would share it. A
+	// runtime metadata with no owner, so a Ami-side copy would share it. A
 	// fork must then go through the runtime (ThreadForker); without one the
 	// conversation cannot be forked at all.
 	ForkNeedsRuntime bool

@@ -10,8 +10,8 @@ import {
   type DesktopRuntimeBridge,
   type DesktopUpdateBridge,
   type DesktopWindowBridge,
-} from '@memohai/web/lib/desktop-shell'
-import MainSection from '@memohai/web/pages/main-section/index.vue'
+} from '@ami/web/lib/desktop-shell'
+import MainSection from '@ami/web/pages/main-section/index.vue'
 
 provide(DesktopShellKey, true)
 provide(DesktopWindowKey, {

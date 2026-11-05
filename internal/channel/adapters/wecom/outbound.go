@@ -10,8 +10,8 @@ import (
 	"io"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func (a *WeComAdapter) ResolveAttachment(ctx context.Context, cfg channel.ChannelConfig, attachment channel.Attachment) (channel.AttachmentPayload, error) {

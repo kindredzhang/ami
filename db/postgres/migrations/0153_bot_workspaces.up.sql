@@ -14,7 +14,7 @@ ALTER TABLE public.bots ADD CONSTRAINT bots_status_check
 
 CREATE TABLE IF NOT EXISTS public.bot_workspaces (
     bot_id              UUID        PRIMARY KEY,
-    team_id             UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+    team_id             UUID        NOT NULL DEFAULT public.ami_current_team_id()
                                     REFERENCES public.teams(id) ON DELETE RESTRICT,
     -- Intent, written only by the API layer.
     desired_state       TEXT        NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS public.bot_workspaces (
     version             BIGINT      NOT NULL DEFAULT 1,
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-    CONSTRAINT memoh_team_key_7443107a7495 UNIQUE (team_id, bot_id),
+    CONSTRAINT ami_team_key_7443107a7495 UNIQUE (team_id, bot_id),
     CONSTRAINT bot_workspaces_desired_state_check
         CHECK (desired_state IN ('present', 'absent')),
     CONSTRAINT bot_workspaces_observed_state_check
@@ -66,15 +66,15 @@ DROP POLICY IF EXISTS bot_workspaces_team_update ON public.bot_workspaces;
 DROP POLICY IF EXISTS bot_workspaces_team_delete ON public.bot_workspaces;
 
 CREATE POLICY bot_workspaces_team_select ON public.bot_workspaces
-    FOR SELECT USING (team_id = public.memoh_current_team_id());
+    FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workspaces_team_insert ON public.bot_workspaces
-    FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+    FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workspaces_team_update ON public.bot_workspaces
     FOR UPDATE
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_workspaces_team_delete ON public.bot_workspaces
-    FOR DELETE USING (team_id = public.memoh_current_team_id());
+    FOR DELETE USING (team_id = public.ami_current_team_id());
 
 -- Backfill from the imperative model.
 --   * A bot with a container record keeps it: desired present, observed by the
@@ -87,7 +87,7 @@ CREATE POLICY bot_workspaces_team_delete ON public.bot_workspaces
 --     so its intent is absent; the user creates one explicitly.
 --
 -- The backfill spans every team. Like other cross-team migrations, lift the
--- request-scoped policies (memoh.team_id is not set while migrating, and the
+-- request-scoped policies (ami.team_id is not set while migrating, and the
 -- migration role need not have BYPASSRLS) and restore FORCE RLS before
 -- committing.
 ALTER TABLE public.bots NO FORCE ROW LEVEL SECURITY;

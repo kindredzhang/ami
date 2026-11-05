@@ -10,21 +10,21 @@ import (
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 
-	channelmodule "github.com/felinics/memoh/cmd/internal/channel"
-	coremodule "github.com/felinics/memoh/cmd/internal/core"
-	"github.com/felinics/memoh/internal/agent/application"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	channelpkg "github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/adapters/weixin"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/handlers"
-	"github.com/felinics/memoh/internal/telemetry"
+	channelmodule "github.com/kindredzhang/ami/cmd/internal/channel"
+	coremodule "github.com/kindredzhang/ami/cmd/internal/core"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	channelpkg "github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/adapters/weixin"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/handlers"
+	"github.com/kindredzhang/ami/internal/telemetry"
 )
 
 func runServe() {
 	cfg, err := provideConfig()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "memoh: %v\n", err)
+		fmt.Fprintf(os.Stderr, "ami: %v\n", err)
 		os.Exit(1)
 	}
 	fx.New(optionsFor(cfg), fx.StopTimeout(30*time.Second)).Run()
@@ -75,7 +75,7 @@ func embeddedOptions() fx.Option {
 func commonOptions() fx.Option {
 	return fx.Options(
 		fx.Provide(provideConfig),
-		fx.Supply(telemetry.Service{Name: "memoh-server"}),
+		fx.Supply(telemetry.Service{Name: "ami-server"}),
 		coremodule.FoundationModule(),
 		channelmodule.FoundationModule(),
 		coremodule.ServerModule(),

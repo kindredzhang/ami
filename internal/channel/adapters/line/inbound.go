@@ -11,9 +11,9 @@ import (
 
 	"github.com/line/line-bot-sdk-go/v8/linebot/webhook"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 type eventResult string

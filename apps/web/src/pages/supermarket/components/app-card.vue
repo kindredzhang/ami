@@ -17,7 +17,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import type { HandlersSupermarketAppSummary } from '@memohai/sdk'
+import type { HandlersSupermarketAppSummary } from '@ami/sdk'
 import { appDisplayDescription, appDisplayName } from '@/composables/api/useApps'
 import MarketItemCard from './market-item-card.vue'
 import SkillIcon from './skill-icon.vue'

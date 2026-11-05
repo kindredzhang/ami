@@ -16,8 +16,8 @@ import (
 	"github.com/slack-go/slack/slackevents"
 	"github.com/slack-go/slack/socketmode"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 const (
@@ -772,9 +772,9 @@ func slackURLActionBlocks(text string, actions []channel.Action) ([]slack.Block,
 		if len(elements) == 0 {
 			return
 		}
-		blockID := "memoh_url_actions"
+		blockID := "ami_url_actions"
 		if actionBlockIndex > 0 || len(actions) > slackMaxActionBlockElements {
-			blockID = fmt.Sprintf("memoh_url_actions_%d", actionBlockIndex)
+			blockID = fmt.Sprintf("ami_url_actions_%d", actionBlockIndex)
 		}
 		blocks = append(blocks, slack.NewActionBlock(blockID, elements...))
 		elements = make([]slack.BlockElement, 0, slackMaxActionBlockElements)
@@ -796,7 +796,7 @@ func slackURLActionBlocks(text string, actions []channel.Action) ([]slack.Block,
 			label = rawURL
 		}
 		button := slack.NewButtonBlockElement(
-			fmt.Sprintf("memoh_url_%d", i),
+			fmt.Sprintf("ami_url_%d", i),
 			fmt.Sprintf("url_%d", i),
 			slack.NewTextBlockObject("plain_text", truncateSlackRunes(label, slackMaxButtonText), false, false),
 		).WithURL(rawURL)

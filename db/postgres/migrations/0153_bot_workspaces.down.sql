@@ -8,7 +8,7 @@ BEGIN;
 DROP TABLE IF EXISTS public.bot_workspaces;
 
 -- The status fold-back spans every team; lift the request-scoped policies
--- (memoh.team_id is not set while migrating) and restore FORCE RLS after.
+-- (ami.team_id is not set while migrating) and restore FORCE RLS after.
 ALTER TABLE public.bots NO FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.bots DISABLE ROW LEVEL SECURITY;
 

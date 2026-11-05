@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/contextview"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/contextview"
 )
 
 func TestSpawnFragmentsRenderLegacyProviderBytes(t *testing.T) {

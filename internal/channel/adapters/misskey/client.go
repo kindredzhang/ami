@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 var httpClient = &http.Client{Timeout: 30 * time.Second}

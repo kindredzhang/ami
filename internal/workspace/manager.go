@@ -15,27 +15,27 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/identity"
-	netctl "github.com/felinics/memoh/internal/network"
-	"github.com/felinics/memoh/internal/settings"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	workspacetemplates "github.com/felinics/memoh/templates"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/identity"
+	netctl "github.com/kindredzhang/ami/internal/network"
+	"github.com/kindredzhang/ami/internal/settings"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	workspacetemplates "github.com/kindredzhang/ami/templates"
 )
 
 const (
-	BotLabelKey                 = "memoh.bot_id"
-	WorkspaceLabelKey           = "memoh.workspace"
+	BotLabelKey                 = "ami.bot_id"
+	WorkspaceLabelKey           = "ami.workspace"
 	WorkspaceLabelValue         = "v3"
-	WorkspaceCDIDevicesLabelKey = "memoh.workspace.cdi_devices"
+	WorkspaceCDIDevicesLabelKey = "ami.workspace.cdi_devices"
 	ContainerPrefix             = "workspace-"
 	LegacyContainerPrefix       = "mcp-"
 	DisplayRFBSocketName        = "display.rfb.sock"
@@ -46,7 +46,7 @@ const (
 	// mount point of the Server-supplied bridge binary. A container missing
 	// either never starts, so WaitForWorkspaceReady surfaces that on its own.
 	WorkspaceInitPath   = "/usr/bin/tini"
-	WorkspaceBridgePath = "/opt/memoh/bridge"
+	WorkspaceBridgePath = "/opt/ami/bridge"
 
 	legacyGRPCPort           = 9090
 	bridgeReadyTimeout       = 45 * time.Second
@@ -211,7 +211,7 @@ func (m *Manager) lockContainer(containerID string) func() {
 }
 
 // socketDir returns the host-side directory that is bind-mounted into the
-// container at /run/memoh, holding the UDS socket file.
+// container at /run/ami, holding the UDS socket file.
 func (m *Manager) socketDir(botID string) string {
 	return filepath.Join(m.dataRoot(), "run", botID)
 }
@@ -222,7 +222,7 @@ func (m *Manager) socketPath(botID string) string {
 }
 
 // DisplaySocketPath returns the host-side path to the workspace display RFB
-// Unix socket. The directory is mounted into the container at /run/memoh.
+// Unix socket. The directory is mounted into the container at /run/ami.
 func (m *Manager) DisplaySocketPath(botID string) string {
 	return filepath.Join(m.socketDir(botID), DisplayRFBSocketName)
 }
@@ -593,7 +593,7 @@ func (m *Manager) buildWorkspaceContainerSpec(ctx context.Context, botID string,
 			Options:     []string{"bind", "ro"},
 		},
 		{
-			Destination: "/run/memoh",
+			Destination: "/run/ami",
 			Type:        "bind",
 			Source:      sockDir,
 			Options:     []string{"rbind", "rw"},
@@ -621,12 +621,12 @@ func (m *Manager) buildWorkspaceContainerSpec(ctx context.Context, botID string,
 	skillEnv := skillset.ContainerEnv(skillRoots)
 	env := make([]string, 0, len(tzEnv)+1+len(skillEnv))
 	env = append(env, tzEnv...)
-	env = append(env, "BRIDGE_SOCKET_PATH=/run/memoh/bridge.sock")
+	env = append(env, "BRIDGE_SOCKET_PATH=/run/ami/bridge.sock")
 	env = m.appendBridgeTLSEnv(env)
 	if m.botDisplayEnabled(ctx, botID) {
 		env = append(env,
-			"MEMOH_DISPLAY_ENABLED=true",
-			"MEMOH_DISPLAY_RFB_TCP_ADDR=127.0.0.1:5999",
+			"AMI_DISPLAY_ENABLED=true",
+			"AMI_DISPLAY_RFB_TCP_ADDR=127.0.0.1:5999",
 			"DISPLAY=:99",
 		)
 	}

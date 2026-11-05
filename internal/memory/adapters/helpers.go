@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/memory/migrate"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
 )
 
 // TruncateSnippet truncates a string to n runes, appending "..." if truncated.

@@ -1,4 +1,4 @@
-# Memoh configuration template
+# Ami configuration template
 # Copy to config.toml and adjust values for your environment.
 # For local development, use: cp devenv/app.dev.toml config.toml
 
@@ -15,7 +15,7 @@ format = "text"
 [server]
 addr = ":8080"
 # Externally reachable Web origin for capability setup links and MCP OAuth.
-# May also be set with MEMOH_SERVER_PUBLIC_URL.
+# May also be set with AMI_SERVER_PUBLIC_URL.
 public_url = ""
 rpc_listen_addr = "127.0.0.1:9090"
 
@@ -26,13 +26,13 @@ rpc_listen_addr = "127.0.0.1:9091"
 [internal_rpc]
 # Leave shared_secret empty to run the pre-split all-in-one deployment: the
 # server embeds the channel runtime (external channels, webhooks) and
-# no memoh-channel process or internal RPC is needed.
+# no ami-channel process or internal RPC is needed.
 # Set a secret (e.g. `openssl rand -hex 32`) to split the channel runtime
-# into its own memoh-channel process; the internal RPC is plaintext, so keep
+# into its own ami-channel process; the internal RPC is plaintext, so keep
 # the listeners loopback-only unless the link is otherwise protected.
 server_target = "127.0.0.1:9090"
 channel_target = "127.0.0.1:9091"
-# May also be set with MEMOH_INTERNAL_RPC_SHARED_SECRET.
+# May also be set with AMI_INTERNAL_RPC_SHARED_SECRET.
 shared_secret = ""
 
 [webhook_tunnel]
@@ -41,7 +41,7 @@ shared_secret = ""
 # an already-running cloudflared metrics endpoint, useful for Docker sidecars.
 mode = "disabled"
 # Public HTTPS base used for channel webhook callbacks and signed public media
-# URLs. Set this to a public HTTPS origin without a path or port when Memoh is
+# URLs. Set this to a public HTTPS origin without a path or port when Ami is
 # already reachable via your own domain; leave empty to use the Cloudflare Quick
 # Tunnel URL when tunnel mode is enabled.
 public_base_url = ""
@@ -61,7 +61,7 @@ metrics_url = ""
 [admin]
 username = "admin"
 password = "admin123"
-email = "admin@memoh.local"
+email = "admin@ami.local"
 
 [auth]
 jwt_secret = "CHANGE-ME-TO-A-RANDOM-SECRET"
@@ -102,10 +102,10 @@ cluster = false
 [session_runtime.redis]
 # Redis or Valkey server URL. Keep the redis:// scheme.
 url = "redis://127.0.0.1:6379/0"
-key_prefix = "memoh:session_runtime:"
+key_prefix = "ami:session_runtime:"
 
 [database]
-# Memoh now supports PostgreSQL only.
+# Ami now supports PostgreSQL only.
 driver = "postgres"
 
 [container]
@@ -115,8 +115,8 @@ driver = "postgres"
 #   workspace bind-mount source paths are valid on the Docker host.
 # - apple: macOS Apple Container backend via socktainer.
 backend = "docker"
-# registry = "memoh.cn"  # Uncomment for China mainland mirror
-default_image = "memohai/workspace:debian-latest"
+# registry = "ami.cn"  # Uncomment for China mainland mirror
+default_image = "amiai/workspace:debian-latest"
 # Workspace image pull policy: if_not_present, always, or never.
 # The selected container backend applies it before creating the workspace.
 image_pull_policy = "if_not_present"
@@ -125,7 +125,7 @@ snapshotter = "overlayfs"
 # Host/runtime data root for sockets, CNI state, overlay sidecars, and workspace metadata.
 data_root = "data"
 # Host path to the bridge binary mounted read-only into workspace containers.
-bridge_path = "/opt/memoh/runtime/bridge"
+bridge_path = "/opt/ami/runtime/bridge"
 # CNI paths used by containerd-backed runtime networking.
 cni_bin_dir = "/opt/cni/bin"
 cni_conf_dir = "/etc/cni/net.d"
@@ -145,7 +145,7 @@ host = ""
 # workspace containers. Host deployments keep this empty. Network routing
 # requires [bridge_tls].mode = "strict".
 network = ""
-# Container ID or unique name of this Memoh server on the configured Docker
+# Container ID or unique name of this Ami server on the configured Docker
 # daemon. Required together with network.
 server_container = ""
 
@@ -154,18 +154,18 @@ server_container = ""
 # strict: TCP workspace bridge requires mTLS. UDS workspace bridges keep using
 # their socket trust model.
 # Generate material with:
-#   scripts/gen-bridge-mtls.sh -instance-id <uuid> -out /opt/memoh/bridge-mtls
+#   scripts/gen-bridge-mtls.sh -instance-id <uuid> -out /opt/ami/bridge-mtls
 mode = "disabled"
-# Directory readable by the Memoh server process. It must contain:
+# Directory readable by the Ami server process. It must contain:
 # server-client.crt, server-client.key, bridge-server-ca.crt.
 server_dir = ""
 # Directory mounted read-only into workspace containers. It must contain only
 # bridge-server.crt, bridge-server.key, server-client-ca.crt. Strict mode
 # rejects unexpected files here. Do not point this at server_dir, because
-# server_dir contains the Memoh server client key.
+# server_dir contains the Ami server client key.
 bridge_dir = ""
 # Optional synthetic TLS ServerName. Empty derives
-# memoh-bridge.<instance_id>.bridge.memoh.internal.
+# ami-bridge.<instance_id>.bridge.ami.internal.
 server_name = ""
 
 [apple]
@@ -178,20 +178,20 @@ binary_path = ""
 [postgres]
 host = "127.0.0.1"
 port = 5432
-user = "memoh"
-password = "memoh123"
-database = "memoh"
+user = "ami"
+password = "ami123"
+database = "ami"
 sslmode = "disable"
 
-## pgvector auxiliary index database (optional). When enabled, Memoh maintains
+## pgvector auxiliary index database (optional). When enabled, Ami maintains
 ## a semantic seed vector index in a separate Postgres + pgvector service.
 [pgvector]
 enabled = false
 host = "127.0.0.1"
 port = 5432
-user = "memoh"
+user = "ami"
 password = ""
-database = "memoh_vector"
+database = "ami_vector"
 sslmode = "disable"
 
 [registry]
@@ -246,8 +246,8 @@ discovery_cache_ttl_seconds = 600
 # Fraction of traces this process starts that are recorded, 0 to 1. A trace
 # already sampled by the caller is always kept, whatever this says.
 # sample_ratio = 1.0
-# Reported service.name. Defaults to the binary's own ("memoh-server",
-# "memoh-channel").
+# Reported service.name. Defaults to the binary's own ("ami-server",
+# "ami-channel").
 # service_name = ""
 # Sent with every export, for collectors that authenticate.
 # [telemetry.headers]

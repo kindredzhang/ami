@@ -10,7 +10,7 @@ import (
 
 	"github.com/google/uuid"
 
-	chatview "github.com/felinics/memoh/internal/agent/view"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
 )
 
 // subscriberSet tracks per-key subscriber channels. All methods must be called

@@ -10,16 +10,16 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 const (
 	codexDefaultBaseURL = "https://chatgpt.com/backend-api"
 	// The catalog endpoint uses the client version for model-availability gates.
-	// Use the stable protocol target instead of coupling discovery to Memoh's release version.
+	// Use the stable protocol target instead of coupling discovery to Ami's release version.
 	codexModelsClientVersion = "1.0.0"
 	codexModelsResponseLimit = 8 << 20
 )

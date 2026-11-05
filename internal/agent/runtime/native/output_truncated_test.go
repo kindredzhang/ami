@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	agentevent "github.com/felinics/memoh/internal/agent/event"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
 )
 
 func finishingStream(reason sdk.FinishReason, requests *[]sdk.Request) func(context.Context, sdk.Request) (<-chan sdk.StreamPart, error) {

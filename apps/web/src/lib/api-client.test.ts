@@ -4,7 +4,7 @@ vi.mock('./auth-session', () => ({
   notifyAuthSessionCleared: vi.fn(),
 }))
 
-let client: typeof import('@memohai/sdk/client')['client']
+let client: typeof import('@ami/sdk/client')['client']
 let setupApiClient: typeof import('./api-client')['setupApiClient']
 let sdkApiBaseUrl: typeof import('./api-client')['sdkApiBaseUrl']
 let mockedNotifyAuthSessionCleared: ReturnType<typeof vi.fn>
@@ -35,7 +35,7 @@ describe('setupApiClient auth handling', () => {
     vi.resetModules()
     stubLocalStorage()
     localStorage.clear()
-    const sdkClientModule = await import('@memohai/sdk/client')
+    const sdkClientModule = await import('@ami/sdk/client')
     const apiClientModule = await import('./api-client')
     const authSession = await import('./auth-session')
     client = sdkClientModule.client
@@ -304,20 +304,20 @@ describe('setupApiClient auth handling', () => {
     vi.stubGlobal('window', {
       location: {
         protocol: 'https:',
-        host: 'memoh.example.test',
-        origin: 'https://memoh.example.test',
+        host: 'ami.example.test',
+        origin: 'https://ami.example.test',
       },
     })
     setupApiClient({ baseUrl: '/api' })
 
-    expect(sdkApiBaseUrl()).toBe('https://memoh.example.test/api')
+    expect(sdkApiBaseUrl()).toBe('https://ami.example.test/api')
   })
 
   it('keeps the desktop direct-server API base for Remote Runtime commands', () => {
     vi.stubGlobal('window', {
       location: {
         protocol: 'app:',
-        host: 'memoh.local',
+        host: 'ami.local',
         origin: 'null',
       },
     })

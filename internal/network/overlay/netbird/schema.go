@@ -1,6 +1,6 @@
 package netbird
 
-import netctl "github.com/felinics/memoh/internal/network"
+import netctl "github.com/kindredzhang/ami/internal/network"
 
 func schema() netctl.ConfigSchema {
 	return netctl.ConfigSchema{

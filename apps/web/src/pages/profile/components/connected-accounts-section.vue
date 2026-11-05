@@ -187,8 +187,8 @@ import {
   getUsersMeChannelIdentities,
   postUsersMeChannelLinks,
   deleteUsersMeChannelIdentitiesByChannelIdentityId,
-} from '@memohai/sdk'
-import type { ChannelaccessBinding } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { ChannelaccessBinding } from '@ami/sdk'
 
 const { t } = useI18n()
 const router = useRouter()

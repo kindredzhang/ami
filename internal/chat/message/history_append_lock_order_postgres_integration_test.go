@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 func TestPostgresHistoryAppendAndAssetLinkShareSessionLockOrder(t *testing.T) {

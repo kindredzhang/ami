@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 func TestOutboundStreamSnapshotBuffersVisibleTextAndAttachments(t *testing.T) {

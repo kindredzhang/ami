@@ -34,7 +34,7 @@ pub fn discovery_log() -> Vec<String> {
 /// Open the accessibility bus on the current session.
 ///
 /// `AccessibilityConnection::new()` always tries the session bus first and
-/// queries `org.a11y.Bus.GetAddress`. In the Memoh workspace container the
+/// queries `org.a11y.Bus.GetAddress`. In the Ami workspace container the
 /// helper is exec'd from the Go bridge in a fresh shell with no session bus
 /// running, so we discover the a11y bus address ourselves (via /proc and
 /// cache-path probing) and feed it straight into `from_address`, bypassing

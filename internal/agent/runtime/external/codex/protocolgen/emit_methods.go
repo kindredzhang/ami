@@ -11,13 +11,13 @@ func (g *generator) emitMethods(b *strings.Builder, version string) error {
 	b.WriteString("// PinnedCodexVersion is the codex CLI version these generated types came from.\n")
 	fmt.Fprintf(b, "const PinnedCodexVersion = %q\n\n", version)
 
-	b.WriteString("// Client request methods (Memoh → app-server).\nconst (\n")
+	b.WriteString("// Client request methods (Ami → app-server).\nconst (\n")
 	for _, m := range clientMethods {
 		fmt.Fprintf(b, "\tMethod%s = %q\n", exportedName(m.Method), m.Method)
 	}
 	b.WriteString(")\n\n")
 
-	b.WriteString("// Server request methods (app-server → Memoh, expect a response).\nconst (\n")
+	b.WriteString("// Server request methods (app-server → Ami, expect a response).\nconst (\n")
 	for _, m := range serverRequestMethods {
 		fmt.Fprintf(b, "\tMethod%s = %q\n", exportedName(m.Method), m.Method)
 	}
@@ -41,7 +41,7 @@ func (g *generator) emitMethods(b *strings.Builder, version string) error {
 	}
 	b.WriteString("\t}\n\treturn nil, false\n}\n\n")
 
-	b.WriteString("// DecodeServerRequestParams decodes the params of an app-server → Memoh\n")
+	b.WriteString("// DecodeServerRequestParams decodes the params of an app-server → Ami\n")
 	b.WriteString("// request into its generated type. ok is false for unknown methods; the\n")
 	b.WriteString("// caller keeps the raw envelope in that case.\n")
 	b.WriteString("func DecodeServerRequestParams(method string, params []byte) (decoded any, ok bool, err error) {\n\tswitch method {\n")

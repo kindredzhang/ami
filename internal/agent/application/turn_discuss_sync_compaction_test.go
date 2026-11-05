@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 const (

@@ -10,7 +10,7 @@ BEGIN
   END IF;
 END
 $drop_team_members_guard$;
-DROP FUNCTION IF EXISTS public.memoh_guard_last_active_team_admin();
+DROP FUNCTION IF EXISTS public.ami_guard_last_active_team_admin();
 
 DROP TABLE IF EXISTS memory_edges CASCADE;
 DROP TABLE IF EXISTS memory_nodes CASCADE;
@@ -77,9 +77,9 @@ DROP TABLE IF EXISTS channel_identities CASCADE;
 DROP TABLE IF EXISTS team_members CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS teams CASCADE;
-DROP FUNCTION IF EXISTS public.memoh_rewind_history_checkpoint(uuid, bigint, bigint);
-DROP FUNCTION IF EXISTS public.memoh_history_checkpoint_kept(uuid, bigint, bigint);
-DROP FUNCTION IF EXISTS public.memoh_current_team_id() CASCADE;
+DROP FUNCTION IF EXISTS public.ami_rewind_history_checkpoint(uuid, bigint, bigint);
+DROP FUNCTION IF EXISTS public.ami_history_checkpoint_kept(uuid, bigint, bigint);
+DROP FUNCTION IF EXISTS public.ami_current_team_id() CASCADE;
 DROP TYPE IF EXISTS user_role;
 
 DROP TABLE IF EXISTS template.provider_template_models CASCADE;

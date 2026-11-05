@@ -158,8 +158,8 @@ import {
   getBotsByBotIdSchedule,
   getBotsByBotIdSettings,
   putBotsByBotIdScheduleById,
-} from '@memohai/sdk'
-import type { ScheduleSchedule } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { ScheduleSchedule } from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { formatCalendarTime } from '@/utils/date-time'
 import { describeCron, nextRuns } from '@/utils/cron-pattern'

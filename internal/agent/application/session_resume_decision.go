@@ -7,10 +7,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/decision"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/agent/decision"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // Resume the reasoning with the accepted answer, not by calling the approved

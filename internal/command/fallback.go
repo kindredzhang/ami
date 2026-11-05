@@ -3,7 +3,7 @@ package command
 import (
 	"strings"
 
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // HintVerb names the shape of a typeable affordance when rendering the

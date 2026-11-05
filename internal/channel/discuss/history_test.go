@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 type lightweightHistoryStub struct {

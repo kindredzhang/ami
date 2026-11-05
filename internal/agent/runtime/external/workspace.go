@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // Workspaces gives a runtime the bridge into a bot's workspace; the workspace

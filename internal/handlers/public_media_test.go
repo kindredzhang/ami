@@ -15,10 +15,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/channel/publicmedia"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/media"
-	"github.com/felinics/memoh/internal/storage/providers/localfs"
+	"github.com/kindredzhang/ami/internal/channel/publicmedia"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/media"
+	"github.com/kindredzhang/ami/internal/storage/providers/localfs"
 )
 
 const testPublicMediaSecret = "public-media-test-secret" //nolint:gosec // G101: test-only fixed secret.

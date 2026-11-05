@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/slash"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 func (s *Service) rejectRequestedSkillsIfUnsupportedContext(ctx context.Context, req ChatRequest) error {

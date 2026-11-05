@@ -40,7 +40,7 @@ func TestClientPinsRequestsToConfiguredOrigin(t *testing.T) {
 
 func TestClientPreservesConfiguredBasePath(t *testing.T) {
 	requested := make([]string, 0, 2)
-	client := NewClient("https://gateway.example/memoh/supermarket", &http.Client{
+	client := NewClient("https://gateway.example/ami/supermarket", &http.Client{
 		Transport: roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			requested = append(requested, req.URL.String())
 			return &http.Response{
@@ -62,8 +62,8 @@ func TestClientPreservesConfiguredBasePath(t *testing.T) {
 	}
 	_ = artifactResp.Body.Close()
 	want := []string{
-		"https://gateway.example/memoh/supermarket/api/apps?q=docs",
-		"https://gateway.example/memoh/supermarket/api/artifacts/skill/digest",
+		"https://gateway.example/ami/supermarket/api/apps?q=docs",
+		"https://gateway.example/ami/supermarket/api/artifacts/skill/digest",
 	}
 	if len(requested) != len(want) || requested[0] != want[0] || requested[1] != want[1] {
 		t.Fatalf("requested URLs = %#v, want %#v", requested, want)
@@ -97,7 +97,7 @@ func TestClientForwardsHeadersAndRejectsCrossOriginRedirect(t *testing.T) {
 }
 
 func TestClientRejectsInvalidBaseURL(t *testing.T) {
-	for _, rawURL := range []string{"file:///tmp/supermarket", "https://supermarket.example?tenant=memoh"} {
+	for _, rawURL := range []string{"file:///tmp/supermarket", "https://supermarket.example?tenant=ami"} {
 		client := NewClient(rawURL, nil)
 		resp, err := client.Get(context.Background(), "/api/apps", "application/json")
 		if resp != nil {

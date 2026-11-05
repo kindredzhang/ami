@@ -33,7 +33,7 @@ The suite has two isolated deployment shapes:
 Both use real PostgreSQL 18 and a controllable OpenAI-compatible fake model.
 The cluster topology uses a test-only TOML config and a non-persistent Valkey on
 host port `16379`. Normal development and production configs are not modified.
-Set `MEMOH_SESSION_RUNTIME_FIXTURE_NAME` to a distinct Bot/provider name when
+Set `AMI_SESSION_RUNTIME_FIXTURE_NAME` to a distinct Bot/provider name when
 running in a shared development environment to preserve existing model settings.
 
 Start one topology, run it, then stop it before switching:
@@ -86,10 +86,10 @@ blocking and decision modes:
 ## Direct invocation
 
 ```bash
-MEMOH_SESSION_RUNTIME_ACCEPTANCE=1 \
-MEMOH_SESSION_RUNTIME_ACCEPTANCE_REQUIRED=1 \
-MEMOH_SESSION_RUNTIME_ACCEPTANCE_MODE=cluster \
-MEMOH_SESSION_RUNTIME_ACCEPTANCE_BACKEND_LOSS=1 \
+AMI_SESSION_RUNTIME_ACCEPTANCE=1 \
+AMI_SESSION_RUNTIME_ACCEPTANCE_REQUIRED=1 \
+AMI_SESSION_RUNTIME_ACCEPTANCE_MODE=cluster \
+AMI_SESSION_RUNTIME_ACCEPTANCE_BACKEND_LOSS=1 \
 go test -tags=integration -count=1 -timeout=5m \
   ./internal/agent/runtime/session/acceptance
 ```
@@ -98,18 +98,18 @@ Useful environment variables:
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `MEMOH_SESSION_RUNTIME_PRIMARY_URL` | `http://127.0.0.1:18080` | Primary Server API |
-| `MEMOH_SESSION_RUNTIME_SECONDARY_URL` | `http://127.0.0.1:18083` | Secondary Server API |
-| `MEMOH_SESSION_RUNTIME_PRIMARY_RPC_TARGET` | `127.0.0.1:19091` | Primary authenticated Turn gRPC endpoint |
-| `MEMOH_SESSION_RUNTIME_SECONDARY_RPC_TARGET` | `127.0.0.1:19092` | Secondary authenticated Turn gRPC endpoint |
-| `MEMOH_SESSION_RUNTIME_RPC_SECRET` | acceptance config value | Shared secret for the test-only Turn gRPC connection |
-| `MEMOH_SESSION_RUNTIME_POSTGRES_URL` | `postgres://memoh:…@127.0.0.1:15432/memoh` | Read-only acceptance probe target |
-| `MEMOH_SESSION_RUNTIME_REDIS_URL` | `redis://127.0.0.1:16379/0` | Isolated Valkey used by backend-loss injection |
-| `MEMOH_SESSION_RUNTIME_ACCEPTANCE_MODE` | `cluster` | `single` skips two-Server scenarios |
-| `MEMOH_SESSION_RUNTIME_ACCEPTANCE_CRASH` | unset | Enable destructive owner/decision restart cases |
-| `MEMOH_SESSION_RUNTIME_ACCEPTANCE_BACKEND_LOSS` | unset | Enable `FLUSHDB`; the cluster mise task sets it for isolated Valkey |
-| `MEMOH_SESSION_RUNTIME_PRIMARY_CONTAINER` | `memoh-dev-server` | Container killed by crash tests |
-| `MEMOH_SESSION_RUNTIME_FAKE_MODEL_PORT` | `19090` | Host port reachable by both Servers |
+| `AMI_SESSION_RUNTIME_PRIMARY_URL` | `http://127.0.0.1:18080` | Primary Server API |
+| `AMI_SESSION_RUNTIME_SECONDARY_URL` | `http://127.0.0.1:18083` | Secondary Server API |
+| `AMI_SESSION_RUNTIME_PRIMARY_RPC_TARGET` | `127.0.0.1:19091` | Primary authenticated Turn gRPC endpoint |
+| `AMI_SESSION_RUNTIME_SECONDARY_RPC_TARGET` | `127.0.0.1:19092` | Secondary authenticated Turn gRPC endpoint |
+| `AMI_SESSION_RUNTIME_RPC_SECRET` | acceptance config value | Shared secret for the test-only Turn gRPC connection |
+| `AMI_SESSION_RUNTIME_POSTGRES_URL` | `postgres://ami:…@127.0.0.1:15432/ami` | Read-only acceptance probe target |
+| `AMI_SESSION_RUNTIME_REDIS_URL` | `redis://127.0.0.1:16379/0` | Isolated Valkey used by backend-loss injection |
+| `AMI_SESSION_RUNTIME_ACCEPTANCE_MODE` | `cluster` | `single` skips two-Server scenarios |
+| `AMI_SESSION_RUNTIME_ACCEPTANCE_CRASH` | unset | Enable destructive owner/decision restart cases |
+| `AMI_SESSION_RUNTIME_ACCEPTANCE_BACKEND_LOSS` | unset | Enable `FLUSHDB`; the cluster mise task sets it for isolated Valkey |
+| `AMI_SESSION_RUNTIME_PRIMARY_CONTAINER` | `ami-dev-server` | Container killed by crash tests |
+| `AMI_SESSION_RUNTIME_FAKE_MODEL_PORT` | `19090` | Host port reachable by both Servers |
 
 Crash and backend-loss cases are guarded because they intentionally kill a
 container or erase the configured Redis database. The dedicated
@@ -137,7 +137,7 @@ peer Server. Releasing the original request before asserting replacement would
 test only eventual step-boundary consumption and is not a passing steer test.
 
 `TestSRDUR002PreparedFinishSurvivesProcessCrash` is opt-in with
-`MEMOH_SESSION_RUNTIME_ACCEPTANCE_CRASH=1` and requires two Servers. Its temporary
+`AMI_SESSION_RUNTIME_ACCEPTANCE_CRASH=1` and requires two Servers. Its temporary
 PostgreSQL trigger gates only the generated invocation's terminal UPDATE after
 the finishing proposal has committed. The real owner is killed, the gate is
 released, and the peer must converge to the original outcome with unchanged

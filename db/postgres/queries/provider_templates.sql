@@ -6,7 +6,7 @@ SELECT
   t.*,
   EXISTS (
     SELECT 1 FROM public.providers p
-     WHERE p.team_id = public.memoh_current_team_id()
+     WHERE p.team_id = public.ami_current_team_id()
        AND (
          p.provider_template_id = t.id
          OR p.metadata->'template'->>'id' = t.id::text

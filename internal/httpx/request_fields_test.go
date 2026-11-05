@@ -7,8 +7,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/httpx"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/httpx"
 )
 
 func TestRequiredParamsNameTheMissingField(t *testing.T) {

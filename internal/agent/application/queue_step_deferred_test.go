@@ -5,10 +5,10 @@ import (
 	"errors"
 	"testing"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/testutil/sessionledger"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/testutil/sessionledger"
 )
 
 type nilQueries struct{ dbstore.Queries }

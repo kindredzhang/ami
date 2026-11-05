@@ -15,7 +15,7 @@ const botAgentIsDefault = `-- name: BotAgentIsDefault :one
 SELECT EXISTS (
   SELECT 1
   FROM bots
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND id = $1
     AND default_bot_agent_id = $2
 ) AS is_default
@@ -81,7 +81,7 @@ func (q *Queries) CreateBotAgent(ctx context.Context, arg CreateBotAgentParams) 
 const findActiveBotAgentByRuntimeProvider = `-- name: FindActiveBotAgentByRuntimeProvider :one
 SELECT team_id, id, bot_id, name, runtime, enabled, metadata, created_at, updated_at, deleted_at, agent_credential_id
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND runtime = $2
   AND metadata->>'provider' = $3::text
@@ -119,7 +119,7 @@ func (q *Queries) FindActiveBotAgentByRuntimeProvider(ctx context.Context, arg F
 const getActiveBotAgentByID = `-- name: GetActiveBotAgentByID :one
 SELECT team_id, id, bot_id, name, runtime, enabled, metadata, created_at, updated_at, deleted_at, agent_credential_id
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
   AND enabled
@@ -153,7 +153,7 @@ func (q *Queries) GetActiveBotAgentByID(ctx context.Context, arg GetActiveBotAge
 const getBotAgentByID = `-- name: GetBotAgentByID :one
 SELECT team_id, id, bot_id, name, runtime, enabled, metadata, created_at, updated_at, deleted_at, agent_credential_id
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 `
@@ -185,7 +185,7 @@ func (q *Queries) GetBotAgentByID(ctx context.Context, arg GetBotAgentByIDParams
 const listBotAgents = `-- name: ListBotAgents :many
 SELECT team_id, id, bot_id, name, runtime, enabled, metadata, created_at, updated_at, deleted_at, agent_credential_id
 FROM bot_agents
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND deleted_at IS NULL
 ORDER BY created_at, id
@@ -226,7 +226,7 @@ func (q *Queries) ListBotAgents(ctx context.Context, botID pgtype.UUID) ([]BotAg
 const lockBotForAgentMutation = `-- name: LockBotForAgentMutation :one
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
 FOR NO KEY UPDATE
 `
@@ -243,14 +243,14 @@ UPDATE bot_agents
 SET enabled = false,
     deleted_at = now(),
     updated_at = now()
-WHERE bot_agents.team_id = public.memoh_current_team_id()
+WHERE bot_agents.team_id = public.ami_current_team_id()
   AND bot_agents.bot_id = $1
   AND bot_agents.id = $2
   AND bot_agents.deleted_at IS NULL
   AND NOT EXISTS (
     SELECT 1
     FROM bots
-    WHERE bots.team_id = public.memoh_current_team_id()
+    WHERE bots.team_id = public.ami_current_team_id()
       AND bots.id = $1
       AND bots.default_bot_agent_id = bot_agents.id
   )
@@ -290,7 +290,7 @@ SET name = $1,
       ELSE bot_agents.metadata
     END,
     updated_at = now()
-WHERE bot_agents.team_id = public.memoh_current_team_id()
+WHERE bot_agents.team_id = public.ami_current_team_id()
   AND bot_agents.bot_id = $5
   AND bot_agents.id = $6
   AND bot_agents.deleted_at IS NULL
@@ -299,7 +299,7 @@ WHERE bot_agents.team_id = public.memoh_current_team_id()
     OR NOT EXISTS (
       SELECT 1
       FROM bots
-      WHERE bots.team_id = public.memoh_current_team_id()
+      WHERE bots.team_id = public.ami_current_team_id()
         AND bots.id = $5
         AND bots.default_bot_agent_id = bot_agents.id
     )

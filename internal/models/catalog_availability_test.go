@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 func TestConvertToEnabledGetResponseListFiltersUnavailableCatalogModels(t *testing.T) {

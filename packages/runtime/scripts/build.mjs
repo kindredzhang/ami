@@ -7,8 +7,8 @@ import { build } from 'esbuild'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const outdir = resolve(root, 'dist')
 const commonJSBridge = [
-  "import { createRequire as __memohCreateRequire } from 'node:module'",
-  'const require = __memohCreateRequire(import.meta.url)',
+  "import { createRequire as __amiCreateRequire } from 'node:module'",
+  'const require = __amiCreateRequire(import.meta.url)',
 ].join('\n')
 
 await rm(outdir, { recursive: true, force: true })

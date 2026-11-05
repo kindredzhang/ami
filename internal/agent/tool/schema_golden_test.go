@@ -9,13 +9,13 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	pgstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/messaging"
-	"github.com/felinics/memoh/internal/searchproviders"
-	"github.com/felinics/memoh/internal/settings"
-	"github.com/felinics/memoh/internal/workdir"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	pgstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/messaging"
+	"github.com/kindredzhang/ami/internal/searchproviders"
+	"github.com/kindredzhang/ami/internal/settings"
+	"github.com/kindredzhang/ami/internal/workdir"
 )
 
 // schemaGoldenTools builds every tool set whose schemas are pinned under

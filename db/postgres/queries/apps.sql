@@ -3,7 +3,7 @@ SELECT id, team_id, bot_id, registry_id, app_id, revision, version,
        status, reason, available_revision, available_version, last_checked_at, last_error, last_error_code,
        release, installed_at, updated_at
 FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND registry_id = $2
   AND app_id = $3
@@ -14,7 +14,7 @@ SELECT id, team_id, bot_id, registry_id, app_id, revision, version,
        status, reason, available_revision, available_version, last_checked_at, last_error, last_error_code,
        release, installed_at, updated_at
 FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 LIMIT 1;
@@ -24,7 +24,7 @@ SELECT id, team_id, bot_id, registry_id, app_id, revision, version,
        status, reason, available_revision, available_version, last_checked_at, last_error, last_error_code,
        release, installed_at, updated_at
 FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY registry_id, app_id;
 
 -- name: UpsertBotAppInstallation :one
@@ -51,7 +51,7 @@ SET status = sqlc.arg(status),
     last_error = '',
     last_error_code = sqlc.arg(last_error_code),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND id = sqlc.arg(id)
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -66,7 +66,7 @@ SET revision = sqlc.arg(revision),
     available_revision = '',
     available_version = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND id = sqlc.arg(id)
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -79,7 +79,7 @@ SET available_revision = sqlc.arg(available_revision),
     available_version = sqlc.arg(available_version),
     last_checked_at = sqlc.arg(last_checked_at),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND id = sqlc.arg(id)
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -88,7 +88,7 @@ RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
 
 -- name: DeleteBotAppInstallation :one
 DELETE FROM bot_app_installations
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND id = $2
 RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
@@ -98,7 +98,7 @@ RETURNING id, team_id, bot_id, registry_id, app_id, revision, version,
 -- name: ListAppDependencyRefs :many
 SELECT id, team_id, installation_id, dependency_id, created_at
 FROM bot_app_dependency_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
 ORDER BY dependency_id;
 
@@ -108,7 +108,7 @@ SELECT r.id, r.team_id, r.installation_id, r.dependency_id, r.created_at,
 FROM bot_app_dependency_refs r
 JOIN bot_app_installations i
   ON i.team_id = r.team_id AND i.id = r.installation_id
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND i.bot_id = $1
 ORDER BY r.dependency_id, i.registry_id, i.app_id;
 
@@ -120,14 +120,14 @@ RETURNING id, team_id, installation_id, dependency_id, created_at;
 
 -- name: DeleteAppDependencyRef :execrows
 DELETE FROM bot_app_dependency_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
   AND dependency_id = $2;
 
 -- name: ListAppConnectorRefs :many
 SELECT id, team_id, installation_id, connector_type, connection_id, required, created_at, updated_at
 FROM bot_app_connector_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
 ORDER BY connector_type;
 
@@ -137,7 +137,7 @@ SELECT r.id, r.team_id, r.installation_id, r.connector_type, r.connection_id, r.
 FROM bot_app_connector_refs r
 JOIN bot_app_installations i
   ON i.team_id = r.team_id AND i.id = r.installation_id
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND i.bot_id = $1
 ORDER BY r.connector_type, i.registry_id, i.app_id;
 
@@ -154,7 +154,7 @@ RETURNING id, team_id, installation_id, connector_type, connection_id, required,
 UPDATE bot_app_connector_refs
 SET connection_id = sqlc.arg(connection_id),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = sqlc.arg(installation_id)
   AND connector_type = sqlc.arg(connector_type)
 RETURNING id, team_id, installation_id, connector_type, connection_id, required, created_at, updated_at;
@@ -163,11 +163,11 @@ RETURNING id, team_id, installation_id, connector_type, connection_id, required,
 UPDATE bot_app_connector_refs
 SET connection_id = '',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND connection_id = $1;
 
 -- name: DeleteAppConnectorRef :execrows
 DELETE FROM bot_app_connector_refs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND installation_id = $1
   AND connector_type = $2;

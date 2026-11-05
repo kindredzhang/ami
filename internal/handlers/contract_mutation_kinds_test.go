@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 // TestGeneratedContractsCarryEveryMutationKind pins the generated OpenAPI enum

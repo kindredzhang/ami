@@ -1,2 +1,2 @@
-# @memohai/config
+# @ami/config
 

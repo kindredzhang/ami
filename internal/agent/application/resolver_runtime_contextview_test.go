@@ -7,20 +7,20 @@ import (
 	"strings"
 	"testing"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/contextview"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/contextview"
 )
 
 func TestRuntimeContextViaContextViewAssemblesSections(t *testing.T) {
 	t.Parallel()
 
 	sections := []contextview.RuntimeSection{
-		{ID: "runtime.preamble", Text: "# Memoh Runtime Context\n\npreamble body"},
+		{ID: "runtime.preamble", Text: "# Ami Runtime Context\n\npreamble body"},
 		{ID: "runtime.section.current-runtime", Text: "## Current Runtime\n\n- Bot ID: bot-1"},
 	}
 	markdown, uri, manifest := runtimeContextViaContextView(context.Background(), nil, sections, "")
 
-	const want = "# Memoh Runtime Context\n\npreamble body\n\n## Current Runtime\n\n- Bot ID: bot-1\n\n"
+	const want = "# Ami Runtime Context\n\npreamble body\n\n## Current Runtime\n\n- Bot ID: bot-1\n\n"
 	if markdown != want {
 		t.Fatalf("markdown = %q, want structural assembly %q", markdown, want)
 	}
@@ -40,7 +40,7 @@ func TestRuntimeContextViaContextViewFallbackCarriesContentLightManifest(t *test
 
 	const privateText = "PRIVATE ACP FALLBACK CONTENT"
 	sections := []contextview.RuntimeSection{
-		{ID: "duplicate", Text: "# Memoh Runtime Context\n\n" + privateText},
+		{ID: "duplicate", Text: "# Ami Runtime Context\n\n" + privateText},
 		{ID: "duplicate", Text: "## Current Runtime\n\nkeep fallback output"},
 	}
 
@@ -78,7 +78,7 @@ func TestRuntimeContextSectionsSafeWithHeadingInsideFileExcerpt(t *testing.T) {
 
 	fileBlock := "## Long-Term Memory\n\nEmbedded excerpt from `/data/MEMORY.md`.\n\n```markdown\n# User Memory\nline before heading\n## Preferences\nprefers small patches\n```"
 	sections := []contextview.RuntimeSection{
-		{ID: "runtime.preamble", Text: "# Memoh Runtime Context\n\npreamble"},
+		{ID: "runtime.preamble", Text: "# Ami Runtime Context\n\npreamble"},
 		{ID: "runtime.section.file.000", Text: fileBlock},
 	}
 	markdown, _, _ := runtimeContextViaContextView(context.Background(), nil, sections, "")
@@ -94,7 +94,7 @@ func TestFinalizeRuntimeSectionsDropsOversizedDynamicSections(t *testing.T) {
 	sections := []contextview.RuntimeSection{
 		{
 			ID:     "runtime.preamble",
-			Text:   "# Memoh Runtime Context",
+			Text:   "# Ami Runtime Context",
 			Budget: contextfrag.BudgetPolicy{MaxChars: 1, Overflow: contextfrag.OverflowKeep},
 		},
 		{
@@ -111,7 +111,7 @@ func TestFinalizeRuntimeSectionsDropsOversizedDynamicSections(t *testing.T) {
 	}
 
 	markdown := finalizeRuntimeSections(sections)
-	if !strings.Contains(markdown, "# Memoh Runtime Context") || !strings.Contains(markdown, "keep me") {
+	if !strings.Contains(markdown, "# Ami Runtime Context") || !strings.Contains(markdown, "keep me") {
 		t.Fatalf("fallback dropped retained sections: %q", markdown)
 	}
 	if strings.Contains(markdown, "Retrieved Memory") || strings.Contains(markdown, "Memory Hook Context") {

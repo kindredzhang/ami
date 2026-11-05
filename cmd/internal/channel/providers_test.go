@@ -8,11 +8,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel/inbound"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/logger"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel/inbound"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/logger"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 func TestNewSessionCreatedByUserIDPrefersCreator(t *testing.T) {

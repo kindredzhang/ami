@@ -42,7 +42,7 @@ func TestWebFetchProviderNativeTextIncludesProvider(t *testing.T) {
 func TestWebFetchProviderJinaReader(t *testing.T) {
 	t.Parallel()
 
-	targetURL := "https://example.com/page?q=memoh"
+	targetURL := "https://example.com/page?q=ami"
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if got := r.Method; got != http.MethodGet {
 			t.Fatalf("method = %s, want GET", got)

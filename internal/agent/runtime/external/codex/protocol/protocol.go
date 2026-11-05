@@ -1,4 +1,4 @@
-// Package protocol implements the wire contract Memoh speaks with the codex
+// Package protocol implements the wire contract Ami speaks with the codex
 // app-server: JSON-RPC 2.0 semantics over newline-delimited JSON on stdio,
 // with the `jsonrpc` version field omitted, as the app-server does.
 //
@@ -20,7 +20,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // RequestID mirrors the app-server RequestId, which is a string or a number.
@@ -57,7 +57,7 @@ func (id RequestID) Key() string { return string(id.raw) }
 
 func (id RequestID) String() string { return string(id.raw) }
 
-// Request is an outbound Memoh → app-server request.
+// Request is an outbound Ami → app-server request.
 type Request struct {
 	ID     RequestID `json:"id"`
 	Method string    `json:"method"`
@@ -71,7 +71,7 @@ func (r Request) MarshalJSON() ([]byte, error) {
 	return json.Marshal(p)
 }
 
-// Notification is an outbound Memoh → app-server notification.
+// Notification is an outbound Ami → app-server notification.
 type Notification struct {
 	Method string `json:"method"`
 	Params any    `json:"params,omitempty"`
@@ -102,13 +102,13 @@ func normalizeParams(params any) any {
 	return params
 }
 
-// Response answers an app-server → Memoh request.
+// Response answers an app-server → Ami request.
 type Response struct {
 	ID     RequestID `json:"id"`
 	Result any       `json:"result"`
 }
 
-// ErrorResponse rejects an app-server → Memoh request.
+// ErrorResponse rejects an app-server → Ami request.
 type ErrorResponse struct {
 	ID    RequestID `json:"id"`
 	Error *RPCError `json:"error"`

@@ -43,7 +43,7 @@ func TestNewProviderHTTPClientWithTimeout(t *testing.T) {
 	}
 }
 
-func TestNewProviderHTTPClientSetsMemohUserAgent(t *testing.T) {
+func TestNewProviderHTTPClientSetsAmiUserAgent(t *testing.T) {
 	gotCh := make(chan string, 1)
 	server := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
 		gotCh <- req.Header.Get("User-Agent")

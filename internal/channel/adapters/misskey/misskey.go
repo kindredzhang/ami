@@ -12,10 +12,10 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/redact"
-	"github.com/felinics/memoh/internal/textutil"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/redact"
+	"github.com/kindredzhang/ami/internal/textutil"
 )
 
 const (
@@ -256,7 +256,7 @@ func (a *MisskeyAdapter) runStream(ctx context.Context, cfg channel.ChannelConfi
 		"type": "connect",
 		"body": map[string]any{
 			"channel": "main",
-			"id":      "memoh-main",
+			"id":      "ami-main",
 		},
 	}
 	if err := conn.WriteJSON(connectMsg); err != nil {

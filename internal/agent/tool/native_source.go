@@ -11,11 +11,11 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/uuid"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/toolcontext"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 type NativeToolSourceOptions struct {
@@ -53,7 +53,7 @@ type NativeToolEventSink interface {
 	AppendToolEvent(session mcp.ToolSessionContext, event mcp.ToolStreamEvent) bool
 }
 
-// NativeToolSource exposes Memoh-native ToolProvider tools through the MCP
+// NativeToolSource exposes Ami-native ToolProvider tools through the MCP
 // ToolSource interface used by ACP and external tool gateways.
 type NativeToolSource struct {
 	logger     *slog.Logger
@@ -256,7 +256,7 @@ func (s *NativeToolSource) callAskUser(ctx context.Context, session mcp.ToolSess
 			ToolName:                     ToolAskUser().String(),
 			Input:                        arguments,
 			ProviderMetadata: map[string]any{
-				"source":     userinput.ProviderSourceMemohTool,
+				"source":     userinput.ProviderSourceAmiTool,
 				"runtime_id": session.RuntimeID,
 				"run_id":     session.RunID,
 			},

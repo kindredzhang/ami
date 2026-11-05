@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 // Compare the bounded index walk to the cumulative-window definition of the
@@ -52,7 +52,7 @@ func TestPostgresHistoryIndexWalkPreservesAdmission(t *testing.T) {
         (ORDER BY m.turn_position DESC,m.turn_message_seq DESC,m.created_at DESC,m.id DESC)
         - octet_length(m.content::text) AS preceding_bytes
       FROM bot_visible_history_messages m
-      WHERE m.team_id=public.memoh_current_team_id() AND m.session_id=$1
+      WHERE m.team_id=public.ami_current_team_id() AND m.session_id=$1
        AND (m.turn_position,m.turn_message_seq) > ($2,$3)
        AND ($4::bigint IS NULL OR (m.turn_position,m.turn_message_seq) < ($4,$5))
        AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode'<>'passive_sync')

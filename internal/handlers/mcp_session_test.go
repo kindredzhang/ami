@@ -14,7 +14,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/jsonrpc"
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	mcptools "github.com/felinics/memoh/internal/mcp"
+	mcptools "github.com/kindredzhang/ami/internal/mcp"
 )
 
 // newStdioPipePair returns the two pipe ends an in-container process would
@@ -463,7 +463,7 @@ type teeReadCloser struct {
 
 // A proxy session started by an external initialize must handshake with THAT
 // client's capabilities and clientInfo — the container server negotiates
-// against the real client, not memoh's fixed empty identity. Asserted at the
+// against the real client, not ami's fixed empty identity. Asserted at the
 // wire: the SDK exposes no getter for what it advertised.
 func TestSDKClientForInitializeHandshake(t *testing.T) {
 	clientStdin, clientStdout, serverStdin, serverStdout := newStdioPipePair()

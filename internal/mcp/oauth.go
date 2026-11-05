@@ -18,10 +18,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // OAuthService manages OAuth flows for MCP connections.
@@ -501,7 +501,7 @@ func (s *OAuthService) probeForAuth(ctx context.Context, serverURL string) (reso
 			ProtocolVersion: "2025-06-18",
 			Capabilities:    map[string]any{},
 			ClientInfo: mcpOAuthProbeClientInfo{
-				Name:    "Memoh",
+				Name:    "Ami",
 				Version: "dev",
 			},
 		},
@@ -791,7 +791,7 @@ type dcrResponse struct {
 
 func (s *OAuthService) registerClient(ctx context.Context, registrationEndpoint, callbackURL string) (*dcrResponse, error) {
 	body := dcrRequest{
-		ClientName:              "Memoh",
+		ClientName:              "Ami",
 		RedirectURIs:            []string{callbackURL},
 		GrantTypes:              []string{"authorization_code", "refresh_token"},
 		ResponseTypes:           []string{"code"},

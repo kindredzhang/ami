@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/bots"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/bots"
 )
 
 type recordingToolApprovalPermissionChecker struct {
@@ -110,7 +110,7 @@ func TestLegacyPermissionOptionID(t *testing.T) {
 		t.Fatalf("legacy approve = %q, %v", got, err)
 	}
 	// Without allow_once every remaining allow option carries persistence the
-	// binary surface could not show; Memoh never persists ACP grants on the
+	// binary surface could not show; Ami never persists ACP grants on the
 	// user's behalf, so the binary approve fails with an explicit error.
 	if got, err := legacyPermissionOptionID(options[:2], "approve"); got != "" || !errors.Is(err, toolapproval.ErrOptionUnavailable) {
 		t.Fatalf("approve without allow_once = %q, %v, want option-unavailable", got, err)

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // ─── fakes ───────────────────────────────────────────────────────────────────
@@ -745,7 +745,7 @@ func TestFailureStoresCodeNotText(t *testing.T) {
 		err  error
 		want string
 	}{
-		{"unknown failure", errors.New("pull https://admin:s3cr3t@registry.example.com/v2/memoh?token=abc123: unauthorized"), "workspace_setup_failed"},
+		{"unknown failure", errors.New("pull https://admin:s3cr3t@registry.example.com/v2/ami?token=abc123: unauthorized"), "workspace_setup_failed"},
 		{"image missing", fmt.Errorf("%w: not found", ErrImageNotFound), "workspace.image_not_found"},
 		{"registry down", fmt.Errorf("%w: dial tcp", ErrImageRegistryUnavailable), "workspace.image_registry_unavailable"},
 	}

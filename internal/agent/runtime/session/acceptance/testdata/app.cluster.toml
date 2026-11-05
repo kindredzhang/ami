@@ -17,15 +17,15 @@ rpc_listen_addr = ":9091"
 [internal_rpc]
 server_target = "server:9090"
 channel_target = "channel:9091"
-shared_secret = "memoh-dev-internal-rpc-secret"
+shared_secret = "ami-dev-internal-rpc-secret"
 
 [admin]
 username = "admin"
 password = "admin123"
-email = "dev@memoh.local"
+email = "dev@ami.local"
 
 [auth]
-jwt_secret = "memoh-dev-secret-do-not-use-in-production"
+jwt_secret = "ami-dev-secret-do-not-use-in-production"
 jwt_expires_in = "168h"
 
 timezone = "UTC"
@@ -35,11 +35,11 @@ driver = "postgres"
 
 [container]
 backend = "containerd"
-default_image = "memohai/workspace:debian"
+default_image = "amiai/workspace:debian"
 image_pull_policy = "if_not_present"
 snapshotter = "overlayfs"
-data_root = "/opt/memoh/data"
-bridge_path = "/opt/memoh/runtime/bridge"
+data_root = "/opt/ami/data"
+bridge_path = "/opt/ami/runtime/bridge"
 cni_bin_dir = "/opt/cni/bin"
 cni_conf_dir = "/etc/cni/net.d"
 
@@ -54,18 +54,18 @@ host = ""
 [postgres]
 host = "postgres"
 port = 5432
-user = "memoh"
-password = "memoh123"
-database = "memoh"
+user = "ami"
+password = "ami123"
+database = "ami"
 sslmode = "disable"
 
 [pgvector]
 enabled = true
 host = "127.0.0.1"
 port = 5433
-user = "memoh"
-password = "memoh123"
-database = "memoh_vector"
+user = "ami"
+password = "ami123"
+database = "ami_vector"
 sslmode = "disable"
 
 [registry]
@@ -90,4 +90,4 @@ backend_loss_grace = "6s"
 
 [session_runtime.redis]
 url = "redis://valkey:6379/0"
-key_prefix = "memoh:session_runtime:acceptance:"
+key_prefix = "ami:session_runtime:acceptance:"

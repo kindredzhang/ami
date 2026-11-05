@@ -12,7 +12,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 // serveWebhook serves one request through an HTTP shell with the access log

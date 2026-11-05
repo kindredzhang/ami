@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/felinics/memoh/internal/db"
+	"github.com/kindredzhang/ami/internal/db"
 )
 
 func (s *Service) Resolve(ctx context.Context, botID string) (BotOverlayConfig, error) {

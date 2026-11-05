@@ -12,11 +12,11 @@ const (
 	// Provider sources record which surface created a request. Whether an
 	// answer feeds an in-process waiter or a native continuation is decided by
 	// the session's runtime (runtimekind.UsesDecisionWaiter), never by them.
-	// The one distinction drawn on them: Memoh's own ask_user, which an
+	// The one distinction drawn on them: Ami's own ask_user, which an
 	// external agent calls through the tool gateway, accepts a free-text
 	// answer to any choice; an agent's own question keeps its constraints.
-	// The stored value of ProviderSourceMemohTool predates its name.
-	ProviderSourceMemohTool         = "acp_mcp"
+	// The stored value of ProviderSourceAmiTool predates its name.
+	ProviderSourceAmiTool         = "acp_mcp"
 	ProviderSourceACPElicitation    = "acp_elicitation"
 	ProviderSourceACPAgentQuestion  = "acp_agent_question"
 	ProviderSourceCodexUserInput    = "codex_request_user_input"

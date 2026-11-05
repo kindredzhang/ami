@@ -748,7 +748,7 @@ var catalog = map[Code]Definition{
 	},
 	CodeSkillBuiltinReadOnly: {
 		HTTPStatus: http.StatusConflict,
-		Detail:     "Built-in Skills are managed by Memoh and cannot be edited or deleted.",
+		Detail:     "Built-in Skills are managed by Ami and cannot be edited or deleted.",
 	},
 	CodeSkillNameTaken: {
 		HTTPStatus: http.StatusConflict,
@@ -793,7 +793,7 @@ var catalog = map[Code]Definition{
 	},
 	CodeFetchProviderNativeManaged: {
 		HTTPStatus: http.StatusConflict,
-		Detail:     "The built-in fetch provider is managed by Memoh.",
+		Detail:     "The built-in fetch provider is managed by Ami.",
 	},
 	CodeAppNotFound: {
 		HTTPStatus: http.StatusNotFound,
@@ -1147,10 +1147,10 @@ var catalog = map[Code]Definition{
 		Detail:     "Scheduled runs can only continue chat or schedule sessions. Choose another target session.",
 	},
 	CodeVideoJobOutcomeUnknown: {HTTPStatus: http.StatusBadGateway, Detail: "The video job status could not be confirmed. Check the saved job before creating another video."},
-	// Model provider codes. The provider is outside Memoh whoever holds the
+	// Model provider codes. The provider is outside Ami whoever holds the
 	// credential, so each is a dependency fault regardless of its status: a
 	// rejected key or an exhausted quota is the provider's answer, not a
-	// request Memoh refused. A content moderation refusal would be the one
+	// request Ami refused. A content moderation refusal would be the one
 	// client fault.
 	CodeAgentResponseTimeout: {
 		HTTPStatus: http.StatusGatewayTimeout,
@@ -1195,7 +1195,7 @@ var catalog = map[Code]Definition{
 	},
 	CodeAgentProviderUnreachable: {
 		HTTPStatus: http.StatusBadGateway,
-		Detail:     "Memoh could not reach the model provider. Check the provider address and that the service is running.",
+		Detail:     "Ami could not reach the model provider. Check the provider address and that the service is running.",
 		Fault:      FaultDependency,
 	},
 	CodeQueueSteerUnsupported: {
@@ -1208,7 +1208,7 @@ var catalog = map[Code]Definition{
 	},
 	CodeRuntimeToolsUnavailable: {
 		HTTPStatus: http.StatusServiceUnavailable,
-		Detail:     "Memoh tools are unavailable for this conversation. Start a new session to restore them.",
+		Detail:     "Ami tools are unavailable for this conversation. Start a new session to restore them.",
 	},
 	CodeRuntimeElicitationDeclined: {
 		HTTPStatus: http.StatusUnprocessableEntity,
@@ -1358,8 +1358,8 @@ var catalog = map[Code]Definition{
 	CodeACPImageInputUnsupported: {HTTPStatus: http.StatusBadRequest, Detail: "This external agent cannot read the attached image."},
 	CodeInvalidChatRuntime:       {HTTPStatus: http.StatusBadRequest, Detail: "The selected chat runtime is invalid."},
 	CodeAgentDependencyMissing:   {HTTPStatus: http.StatusConflict, Detail: "A dependency the agent needs is not installed in this workspace. Install it from the bot's dependencies, or wait for the running installation to finish, then send the message again.", AllowedArgs: []string{"dep_id", "install_task_id", "operation_in_progress"}},
-	// The IM identity is not linked to a Memoh account; link carries the /link command reference.
-	CodeExternalAgentAccountUnbound:             {HTTPStatus: http.StatusForbidden, Detail: "Your chat account is not linked to a Memoh account, so it cannot use this bot's workspace. Link it from Profile, Connected Accounts, then try again.", AllowedArgs: []string{"link"}},
+	// The IM identity is not linked to a Ami account; link carries the /link command reference.
+	CodeExternalAgentAccountUnbound:             {HTTPStatus: http.StatusForbidden, Detail: "Your chat account is not linked to a Ami account, so it cannot use this bot's workspace. Link it from Profile, Connected Accounts, then try again.", AllowedArgs: []string{"link"}},
 	CodeExternalAgentContainerWorkspaceRequired: {HTTPStatus: http.StatusConflict, Detail: "This agent runtime needs a container workspace. Switch the bot to its container workspace, then try again."},
 	CodeAgentChatModelNotConfigured:             {HTTPStatus: http.StatusConflict, Detail: "No chat model is selected. Set a default chat model in Bot settings → General, then try again."},
 	CodeRuntimeRunFailed:                        {HTTPStatus: http.StatusInternalServerError, Detail: "The response could not be completed. Please try again."},
@@ -1518,7 +1518,7 @@ func Lookup(code Code) (Definition, bool) {
 }
 
 func TypeURI(code Code) string {
-	return "urn:memoh:error:" + string(code)
+	return "urn:ami:error:" + string(code)
 }
 
 func cloneArgs(args map[string]string) map[string]string {

@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/memory/migrate"
-	memseg "github.com/felinics/memoh/internal/memory/segment"
-	"github.com/felinics/memoh/internal/memory/wikistore"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
+	memseg "github.com/kindredzhang/ami/internal/memory/segment"
+	"github.com/kindredzhang/ami/internal/memory/wikistore"
 )
 
 // graphCacheTTL is how long a cached bot graph stays fresh before it is rebuilt

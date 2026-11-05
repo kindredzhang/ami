@@ -1,7 +1,7 @@
 import {
   getBotsByBotIdScheduleByIdSessions,
   type ScheduleRunSession,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 // One fire of a schedule and the session it ran in. session_id is empty when
 // the fire failed before any session existed; completed_at is null while the

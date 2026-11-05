@@ -10,10 +10,10 @@ import (
 	openaicompletions "github.com/felinics/twilight/provider/openai/completions"
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/models"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func applyProviderRunConfigOK(ctx context.Context, _ any, cfg agentpkg.RunConfig) agentpkg.RunConfig {

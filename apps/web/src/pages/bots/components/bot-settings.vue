@@ -118,7 +118,7 @@ import {
   Input,
 } from '@felinic/ui'
 import { Check, X, LoaderCircle } from 'lucide-vue-next'
-import { getBotsQueryKey } from '@memohai/sdk/colada'
+import { getBotsQueryKey } from '@ami/sdk/colada'
 import { reactive, ref, computed, watch, onMounted, onActivated, nextTick } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
@@ -132,11 +132,11 @@ import SettingsMultimediaCard from './settings-multimedia-card.vue'
 import SettingsDangerZone from './settings-danger-zone.vue'
 import BotBackupActions from './bot-backup-actions.vue'
 import { useQuery, useMutation, useQueryCache } from '@pinia/colada'
-import { putBotsById, getBotsByBotIdAgents, getBotsByBotIdSettings, putBotsByBotIdSettings, deleteBotsById, getModels, getProviders, getSearchProviders, getFetchProviders, getSpeechProviders, getSpeechModels, getTranscriptionProviders, getTranscriptionModels, getVideoProviders, getVideoModels, getBotsNameAvailability, getAcpProfiles } from '@memohai/sdk'
+import { putBotsById, getBotsByBotIdAgents, getBotsByBotIdSettings, putBotsByBotIdSettings, deleteBotsById, getModels, getProviders, getSearchProviders, getFetchProviders, getSpeechProviders, getSpeechModels, getTranscriptionProviders, getTranscriptionModels, getVideoProviders, getVideoModels, getBotsNameAvailability, getAcpProfiles } from '@ami/sdk'
 import { useBotQuery } from '@/composables/api/useBot'
-import type { AcpprofilePublicProfile, BotagentsBotAgent, SettingsSettings, SettingsUpsertRequest } from '@memohai/sdk'
+import type { AcpprofilePublicProfile, BotagentsBotAgent, SettingsSettings, SettingsUpsertRequest } from '@ami/sdk'
 import type { Ref } from 'vue'
-import { apiErrorStatus, parseMemohError, resolveApiErrorMessage } from '@/utils/api-error'
+import { apiErrorStatus, parseAmiError, resolveApiErrorMessage } from '@/utils/api-error'
 import { useChatStore } from '@/store/chat-list'
 import { useAutosaveQueue, type AutosaveJob } from '@/composables/use-autosave-queue'
 import { saveQueryCacheToDiskNow } from '@/lib/query-cache-persistence'
@@ -604,7 +604,7 @@ const { scheduleSync } = useAutosaveQueue<SettingsForm>({
 })
 
 function isNameConflict(error: unknown): boolean {
-  const code = parseMemohError(error)?.code
+  const code = parseAmiError(error)?.code
   if (code) return code === 'bot.name_taken'
   if (apiErrorStatus(error) === 409) return true
   // Desktop can connect to older hosted servers whose conflict response

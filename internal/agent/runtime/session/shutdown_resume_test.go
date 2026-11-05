@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 func TestGracefulShutdownMarksBeforeCancelAndClosesAdmission(t *testing.T) {

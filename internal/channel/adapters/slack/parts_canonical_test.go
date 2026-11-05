@@ -3,8 +3,8 @@ package slack
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/partsfixture"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/partsfixture"
 )
 
 // TestCanonicalPartsRendering pins the Slack adapter's mrkdwn output for

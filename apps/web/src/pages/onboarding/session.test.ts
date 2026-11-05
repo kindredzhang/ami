@@ -93,28 +93,28 @@ describe('onboarding session handoff', () => {
       botId: 'bot-id',
       modelConfigured: true,
     }))
-    sessionStorage.setItem('memoh:onboarding:runtime-state', JSON.stringify({
+    sessionStorage.setItem('ami:onboarding:runtime-state', JSON.stringify({
       selection: { kind: 'acp', selection: { managed: { api_key: 'secret' } } },
     }))
-    sessionStorage.setItem('memoh:onboarding:acp-selection', JSON.stringify({
+    sessionStorage.setItem('ami:onboarding:acp-selection', JSON.stringify({
       agentId: 'codex',
       setupMode: 'api_key',
       managed: { api_key: 'secret' },
     }))
 
     const session = await import('./session')
-    expect(sessionStorage.getItem('memoh:onboarding:runtime-state')).toBeNull()
-    expect(sessionStorage.getItem('memoh:onboarding:acp-selection')).toBeNull()
+    expect(sessionStorage.getItem('ami:onboarding:runtime-state')).toBeNull()
+    expect(sessionStorage.getItem('ami:onboarding:acp-selection')).toBeNull()
 
-    sessionStorage.setItem('memoh:onboarding:runtime-state', 'stale-again')
-    sessionStorage.setItem('memoh:onboarding:acp-selection', 'stale-again')
+    sessionStorage.setItem('ami:onboarding:runtime-state', 'stale-again')
+    sessionStorage.setItem('ami:onboarding:acp-selection', 'stale-again')
     session.resetOnboardingSession()
 
     expect(session.readOnboardingProviderId()).toBe('')
     expect(session.readOnboardingBotResult()).toBeNull()
     expect(sessionStorage.getItem(ONBOARDING_KEYS.providerId)).toBeNull()
     expect(sessionStorage.getItem(ONBOARDING_KEYS.botResult)).toBeNull()
-    expect(sessionStorage.getItem('memoh:onboarding:runtime-state')).toBeNull()
-    expect(sessionStorage.getItem('memoh:onboarding:acp-selection')).toBeNull()
+    expect(sessionStorage.getItem('ami:onboarding:runtime-state')).toBeNull()
+    expect(sessionStorage.getItem('ami:onboarding:acp-selection')).toBeNull()
   })
 })

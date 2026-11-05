@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/toolcontext"
+	"github.com/kindredzhang/ami/internal/toolcontext"
 )
 
 const (
@@ -23,7 +23,7 @@ type cachedToolRegistry struct {
 }
 
 // ToolGatewayService federates tools from gateway sources, including external
-// MCP connections and selected native Memoh tools exposed to ACP runtimes.
+// MCP connections and selected native Ami tools exposed to ACP runtimes.
 type ToolGatewayService struct {
 	logger   *slog.Logger
 	sources  []ToolSource

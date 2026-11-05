@@ -3,7 +3,7 @@ package application
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
 )
 
 // testRuntimes registers test drivers the way the server does, so a stub

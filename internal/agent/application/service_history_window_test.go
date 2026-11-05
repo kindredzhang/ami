@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // The raw history after the session's checkpoint, whatever its age: a

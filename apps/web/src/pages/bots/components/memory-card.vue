@@ -72,7 +72,7 @@
 import { Pencil } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { Badge, Button, SettingsRow } from '@felinic/ui'
-import type { AdaptersMemoryItem } from '@memohai/sdk'
+import type { AdaptersMemoryItem } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { formatRelativeTime } from '@/utils/date-time'
 import { memoryConfidence, memoryLayerOf, memoryTags } from './use-memory-filter'

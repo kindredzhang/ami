@@ -9,9 +9,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 // The error envelope of the internal RPCs is a gRPC status carrying one
@@ -26,7 +26,7 @@ import (
 // its client decoding.
 
 // errorDomain is the ErrorInfo domain of every internal RPC envelope.
-const errorDomain = "memoh.internal"
+const errorDomain = "ami.internal"
 
 // MetadataAdapterMessage is the ErrorInfo metadata key for an adapter's own
 // error text.

@@ -9,9 +9,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	session "github.com/felinics/memoh/internal/chat/thread"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 // ThreadStore is the Thread-owned persistence surface needed by Channel route

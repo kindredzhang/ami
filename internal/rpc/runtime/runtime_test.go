@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/rpc/runtimepb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/rpc/runtimepb"
 )
 
 func callWith(t *testing.T, handlerErr error) error {

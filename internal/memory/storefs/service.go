@@ -19,11 +19,11 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/felinics/memoh/internal/config"
-	memslug "github.com/felinics/memoh/internal/memory/slug"
-	"github.com/felinics/memoh/internal/textutil"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/config"
+	memslug "github.com/kindredzhang/ami/internal/memory/slug"
+	"github.com/kindredzhang/ami/internal/textutil"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const (

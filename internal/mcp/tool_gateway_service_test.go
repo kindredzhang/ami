@@ -425,7 +425,7 @@ func TestToolGatewayServiceLimitsProviderResult(t *testing.T) {
 		t.Fatalf("CallTool() error = %v", err)
 	}
 	assertJSONBytesAtMost(t, result, 512)
-	if !strings.Contains(toolResultText(result), "[memoh pruned]") {
+	if !strings.Contains(toolResultText(result), "[ami pruned]") {
 		t.Fatalf("limited gateway result missing prune marker: %#v", result)
 	}
 }
@@ -453,7 +453,7 @@ func TestToolGatewayServiceLimitsProviderError(t *testing.T) {
 	if isErr, _ := result["isError"].(bool); !isErr {
 		t.Fatalf("limited provider error lost isError: %#v", result)
 	}
-	if !strings.Contains(toolResultText(result), "[memoh pruned]") {
+	if !strings.Contains(toolResultText(result), "[ami pruned]") {
 		t.Fatalf("limited provider error missing prune marker: %#v", result)
 	}
 }

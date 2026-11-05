@@ -315,12 +315,12 @@ import {
   getUsers,
   postUsers,
   putUsersById,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type {
   AccountsAccount,
   AccountsCreateAccountRequest,
   AccountsUpdateAccountRequest,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 
 const { t } = useI18n()
 const userStore = useUserStore()

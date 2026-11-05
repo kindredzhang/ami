@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   error: vi.fn(),
   warning: vi.fn(),
 }))
-vi.mock('@memohai/sdk', () => ({ getBotsByBotIdApps: mocks.list }))
+vi.mock('@ami/sdk', () => ({ getBotsByBotIdApps: mocks.list }))
 vi.mock('@felinic/ui', () => ({ toast: { success: mocks.success, error: mocks.error, warning: mocks.warning } }))
 vi.mock('@/i18n', () => ({ default: { global: { t: (key: string) => key } } }))
 vi.mock('vue-router', () => ({ useRouter: () => ({ push: vi.fn().mockResolvedValue(undefined) }) }))
@@ -26,7 +26,7 @@ vi.mock('@/composables/api/useAppStream', () => ({ streamAppOperation: mocks.str
 import { useAppOperationsStore } from './app-operations'
 
 const target = {
-  botId: 'bot', registryId: 'memoh', appId: 'editor',
+  botId: 'bot', registryId: 'ami', appId: 'editor',
   installationId: 'installation', name: 'Editor', action: 'remove' as const,
 }
 
@@ -47,7 +47,7 @@ describe('remove operation recovery after a lost stream', () => {
 
   it('keeps failed removal as an error, including its persisted detail and retry action', async () => {
     mocks.list.mockResolvedValue({ data: { items: [{
-      registry_id: 'memoh', app_id: 'editor', installation_id: 'installation',
+      registry_id: 'ami', app_id: 'editor', installation_id: 'installation',
       status: 'failed', last_error: 'App removal failed: disconnect unavailable',
     }] } })
     const store = useAppOperationsStore()
@@ -66,7 +66,7 @@ describe('remove operation recovery after a lost stream', () => {
 
   it('renders the error code of a failed removal through the catalog', async () => {
     mocks.list.mockResolvedValue({ data: { items: [{
-      registry_id: 'memoh', app_id: 'editor', installation_id: 'installation',
+      registry_id: 'ami', app_id: 'editor', installation_id: 'installation',
       status: 'failed', last_error_code: 'workspace_dependency.busy',
     }] } })
     const store = useAppOperationsStore()
@@ -79,7 +79,7 @@ describe('remove operation recovery after a lost stream', () => {
 
   it('reports an unwatched failed removal through an error toast', async () => {
     mocks.list.mockResolvedValue({ data: { items: [{
-      registry_id: 'memoh', app_id: 'editor', installation_id: 'installation', status: 'failed', last_error: 'cleanup failed',
+      registry_id: 'ami', app_id: 'editor', installation_id: 'installation', status: 'failed', last_error: 'cleanup failed',
     }] } })
     useAppOperationsStore().start(target)
     await vi.advanceTimersByTimeAsync(3000)
@@ -89,7 +89,7 @@ describe('remove operation recovery after a lost stream', () => {
 
   it('only reports removed after the installation disappears', async () => {
     mocks.list.mockResolvedValueOnce({ data: { items: [{
-      registry_id: 'memoh', app_id: 'editor', installation_id: 'installation', status: 'installed',
+      registry_id: 'ami', app_id: 'editor', installation_id: 'installation', status: 'installed',
     }] } }).mockResolvedValue({ data: { items: [] } })
     const result = useAppOperationsStore().start(target)
     if (result.kind !== 'started') throw new Error('operation did not start')

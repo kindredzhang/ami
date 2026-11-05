@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	RuntimeMetadataHeader = "X-Memoh-Runtime-Metadata"
+	RuntimeMetadataHeader = "X-Ami-Runtime-Metadata"
 	maxMetadataBytes      = 8 * 1024
 	CapabilityFS          = "fs"
 	CapabilityExec        = "exec"

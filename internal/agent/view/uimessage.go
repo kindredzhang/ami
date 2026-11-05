@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/turn"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // UIMessageType identifies the frontend-friendly message block type.

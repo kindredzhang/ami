@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 const testWebhookConfigID = "cfg-1"

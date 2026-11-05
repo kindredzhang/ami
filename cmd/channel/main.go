@@ -18,16 +18,16 @@ import (
 	"google.golang.org/grpc"
 	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"
 
-	channelmodule "github.com/felinics/memoh/cmd/internal/channel"
-	coremodule "github.com/felinics/memoh/cmd/internal/core"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/adapters/weixin"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/handlers"
-	"github.com/felinics/memoh/internal/rpc/storagepb"
-	"github.com/felinics/memoh/internal/server"
-	"github.com/felinics/memoh/internal/telemetry"
-	"github.com/felinics/memoh/internal/version"
+	channelmodule "github.com/kindredzhang/ami/cmd/internal/channel"
+	coremodule "github.com/kindredzhang/ami/cmd/internal/core"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/adapters/weixin"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/handlers"
+	"github.com/kindredzhang/ami/internal/rpc/storagepb"
+	"github.com/kindredzhang/ami/internal/server"
+	"github.com/kindredzhang/ami/internal/telemetry"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 type healthHandler struct {
@@ -72,11 +72,11 @@ func (h *healthHandler) readiness(c echo.Context) error {
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "version" {
-		fmt.Printf("memoh-channel %s\n", version.GetInfo())
+		fmt.Printf("ami-channel %s\n", version.GetInfo())
 		return
 	}
 	if len(os.Args) > 1 && os.Args[1] != "serve" {
-		fmt.Fprintln(os.Stderr, "Usage: memoh-channel [serve|version]")
+		fmt.Fprintln(os.Stderr, "Usage: ami-channel [serve|version]")
 		os.Exit(1)
 	}
 	fx.New(options()).Run()
@@ -113,7 +113,7 @@ func provideServer(params serverParams) *server.Server {
 }
 
 func startServer(lc fx.Lifecycle, logger *slog.Logger, srv *server.Server, shutdowner fx.Shutdowner) {
-	fmt.Printf("Starting Memoh Channel %s\n", version.GetInfo())
+	fmt.Printf("Starting Ami Channel %s\n", version.GetInfo())
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			go func() {
@@ -133,7 +133,7 @@ func startServer(lc fx.Lifecycle, logger *slog.Logger, srv *server.Server, shutd
 func options() fx.Option {
 	return fx.Options(
 		fx.Provide(provideConfig),
-		fx.Supply(telemetry.Service{Name: "memoh-channel"}),
+		fx.Supply(telemetry.Service{Name: "ami-channel"}),
 		coremodule.FoundationModule(),
 		channelmodule.FoundationModule(),
 		channelmodule.RuntimeModule(),

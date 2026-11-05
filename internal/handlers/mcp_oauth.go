@@ -10,13 +10,13 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/httpx"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/httpx"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 // MCPOAuthHandler handles OAuth-related endpoints for MCP connections.
@@ -328,7 +328,7 @@ func renderMCPOAuthCallbackResult(c echo.Context, status int, result string, mes
   </head>
   <body style="font-family: sans-serif; padding: 24px;">
     <h2>{{if eq .Result "success"}}MCP server connected{{else}}MCP authorization failed{{end}}</h2>
-    {{if .Message}}<p>{{.Message}}</p>{{else}}<p>You can close this window and return to Memoh.</p>{{end}}
+    {{if .Message}}<p>{{.Message}}</p>{{else}}<p>You can close this window and return to Ami.</p>{{end}}
     <script>
       window.opener?.postMessage({ type: "mcp-oauth-callback", status: "{{.Result}}", error: "{{.Message}}" }, "*");
       if (window.opener) window.close();

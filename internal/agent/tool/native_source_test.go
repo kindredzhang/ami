@@ -10,12 +10,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/mcp"
-	sched "github.com/felinics/memoh/internal/schedule"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/mcp"
+	sched "github.com/kindredzhang/ami/internal/schedule"
 )
 
 func TestNativeToolSourceAllowlistAndCall(t *testing.T) {
@@ -407,7 +407,7 @@ func TestNativeToolSourceLimitsToolOutput(t *testing.T) {
 		t.Fatalf("CallTool(read) error = %v", err)
 	}
 	assertNativeToolResultJSONBytesAtMost(t, result, 512)
-	if !strings.Contains(fmt.Sprintf("%#v", result), "[memoh pruned]") {
+	if !strings.Contains(fmt.Sprintf("%#v", result), "[ami pruned]") {
 		t.Fatalf("result was not pruned:\n%#v", result)
 	}
 }
@@ -559,7 +559,7 @@ func TestNativeToolSourceRejectedApprovalDoesNotExecute(t *testing.T) {
 		t.Fatalf("result = %#v, want MCP error result", result)
 	}
 	assertNativeToolResultJSONBytesAtMost(t, result, 512)
-	if !strings.Contains(fmt.Sprintf("%#v", result), "[memoh pruned]") {
+	if !strings.Contains(fmt.Sprintf("%#v", result), "[ami pruned]") {
 		t.Fatalf("rejected approval result was not pruned: %#v", result)
 	}
 	if len(toolEvents.events) != 2 {
@@ -778,7 +778,7 @@ func TestNativeToolSourceAskUserWaitsForInputAndPublishesRequest(t *testing.T) {
 	if userInput.created[0].ToolCallID != "mcp-http-call-1" || userInput.created[0].ToolName != ToolAskUser().String() {
 		t.Fatalf("created input = %#v", userInput.created)
 	}
-	if userInput.created[0].ProviderMetadata["source"] != userinput.ProviderSourceMemohTool || userInput.created[0].ProviderMetadata["runtime_id"] != "runtime-1" {
+	if userInput.created[0].ProviderMetadata["source"] != userinput.ProviderSourceAmiTool || userInput.created[0].ProviderMetadata["runtime_id"] != "runtime-1" {
 		t.Fatalf("provider metadata = %#v", userInput.created[0].ProviderMetadata)
 	}
 	// The pending question must travel over the tool event channel with the
@@ -849,7 +849,7 @@ func TestNativeToolSourceAskUserLimitsSubmittedResult(t *testing.T) {
 		t.Fatalf("CallTool(ask_user) error = %v", err)
 	}
 	assertNativeToolResultJSONBytesAtMost(t, result, 512)
-	if !strings.Contains(fmt.Sprintf("%#v", result), "[memoh pruned]") {
+	if !strings.Contains(fmt.Sprintf("%#v", result), "[ami pruned]") {
 		t.Fatalf("ask_user result was not pruned: %#v", result)
 	}
 }

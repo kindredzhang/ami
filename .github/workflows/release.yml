@@ -59,7 +59,7 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="${RELEASE_TAG#v}"
-          ROOT="Memoh-${VERSION}"
+          ROOT="Ami-${VERSION}"
           STAGE="${RUNNER_TEMP}/${ROOT}"
 
           test -f packages/ui/package.json
@@ -78,12 +78,12 @@ jobs:
         run: |
           VERSION="${RELEASE_TAG#v}"
           gh release upload "$RELEASE_TAG" \
-            "${RUNNER_TEMP}/Memoh-${VERSION}-source.tar.gz" \
-            "${RUNNER_TEMP}/Memoh-${VERSION}-source.zip" \
+            "${RUNNER_TEMP}/Ami-${VERSION}-source.tar.gz" \
+            "${RUNNER_TEMP}/Ami-${VERSION}-source.zip" \
             --clobber
 
   # npm publish jobs authenticate via npm trusted publishing (OIDC), not token
-  # secrets: each published package has felinics/Memoh + this release.yml
+  # secrets: each published package has kindredzhang/ami + this release.yml
   # registered as its trusted publisher on npmjs.com, and pnpm exchanges the
   # GitHub OIDC token at publish time (requires id-token: write on the job).
   # The npm-side trusted publisher entry has NO environment name, so these jobs
@@ -110,11 +110,11 @@ jobs:
         with:
           submodules: recursive
       # Release ownership note for future maintainers and agents:
-      # packages/ui is a git submodule pinned by this repository, but Memoh
+      # packages/ui is a git submodule pinned by this repository, but Ami
       # releases intentionally publish the pinned @felinic/ui sources together
-      # with the rest of the Memoh npm workspace. In other words,
-      # @felinic/ui@<Memoh version> means "the UI package content selected by
-      # this Memoh release", not necessarily a matching tag in felinics/ui.
+      # with the rest of the Ami npm workspace. In other words,
+      # @felinic/ui@<Ami version> means "the UI package content selected by
+      # this Ami release", not necessarily a matching tag in felinics/ui.
       #
       # Do not remove packages/ui from the version-sync or publish path just
       # because it is a submodule. If @felinic/ui ever moves to an independent
@@ -147,14 +147,14 @@ jobs:
             pkg.version = version;
             // npm provenance (auto-generated for trusted publishing) requires
             // repository.url to exactly match the repo the OIDC token is
-            // minted for — always felinics/Memoh here. Stamp it at release time
+            // minted for — always kindredzhang/ami here. Stamp it at release time
             // so a missing/stale field can never fail the publish, and so
             // packages/ui (a submodule whose own repo is felinics/ui) gets the
-            // Memoh URL, matching where the publish actually runs.
+            // Ami URL, matching where the publish actually runs.
             const directory = target.replace(/\/package\.json$/, '');
             pkg.repository = {
               type: 'git',
-              url: 'git+https://github.com/felinics/Memoh.git',
+              url: 'git+https://github.com/kindredzhang/ami.git',
               ...(directory === 'package.json' || directory === '' ? {} : { directory }),
             };
             fs.writeFileSync(target, `${JSON.stringify(pkg, null, 2)}\n`);
@@ -175,8 +175,8 @@ jobs:
           NPM_PUBLISH_SCOPE: "@felinic"
         run: pnpm publish:npm
 
-  npm-publish-memohai:
-    name: Publish @memohai packages
+  npm-publish-amiai:
+    name: Publish @ami packages
     runs-on: ubuntu-latest
     timeout-minutes: 15
     # workflow_dispatch allowed for the same retry reason as the felinic job.
@@ -212,14 +212,14 @@ jobs:
             pkg.version = version;
             // npm provenance (auto-generated for trusted publishing) requires
             // repository.url to exactly match the repo the OIDC token is
-            // minted for — always felinics/Memoh here. Stamp it at release time
+            // minted for — always kindredzhang/ami here. Stamp it at release time
             // so a missing/stale field can never fail the publish, and so
             // packages/ui (a submodule whose own repo is felinics/ui) gets the
-            // Memoh URL, matching where the publish actually runs.
+            // Ami URL, matching where the publish actually runs.
             const directory = target.replace(/\/package\.json$/, '');
             pkg.repository = {
               type: 'git',
-              url: 'git+https://github.com/felinics/Memoh.git',
+              url: 'git+https://github.com/kindredzhang/ami.git',
               ...(directory === 'package.json' || directory === '' ? {} : { directory }),
             };
             fs.writeFileSync(target, `${JSON.stringify(pkg, null, 2)}\n`);
@@ -235,7 +235,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install JS dependencies
         run: pnpm install --frozen-lockfile
-      - name: Publish @memohai packages
+      - name: Publish @ami packages
         env:
-          NPM_PUBLISH_SCOPE: "@memohai"
+          NPM_PUBLISH_SCOPE: "@ami"
         run: pnpm publish:npm

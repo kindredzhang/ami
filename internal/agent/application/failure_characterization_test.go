@@ -25,22 +25,22 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/models/modelretry"
-	"github.com/felinics/memoh/internal/testutil/sessionledger"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/testutil/sessionledger"
 )
 
 const (
 	charOverloadedDetail  = "The model provider is unavailable or overloaded right now. Please try again in a moment."
 	charInterruptedDetail = "The model response was interrupted. Please try again."
 	charRejectedDetail    = "The model provider rejected the request. Check the model settings, or try another model."
-	charUnreachableDetail = "Memoh could not reach the model provider. Check the provider address and that the service is running."
+	charUnreachableDetail = "Ami could not reach the model provider. Check the provider address and that the service is running."
 )
 
 // charProviderErr is a provider's answer as the SDK reports it; its message

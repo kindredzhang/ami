@@ -31,7 +31,7 @@ func Parse(text string) (ParsedCommand, error) {
 		return ParsedCommand{}, errors.New("empty command")
 	}
 	resource := strings.ToLower(tokens[0])
-	// Strip Telegram-style @botname suffix (e.g. "help@MemohBot" -> "help").
+	// Strip Telegram-style @botname suffix (e.g. "help@AmiBot" -> "help").
 	if idx := strings.IndexByte(resource, '@'); idx > 0 {
 		resource = resource[:idx]
 	}

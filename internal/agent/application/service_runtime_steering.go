@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	chatview "github.com/felinics/memoh/internal/agent/view"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	chatview "github.com/kindredzhang/ami/internal/agent/view"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
 )
 
 type runtimeSteering struct {

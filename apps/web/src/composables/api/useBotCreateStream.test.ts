@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { BotsBot } from '@memohai/sdk'
-import { client } from '@memohai/sdk/client'
+import type { BotsBot } from '@ami/sdk'
+import { client } from '@ami/sdk/client'
 import {
   collectBotCreateProgressStream,
   postBotsStream,

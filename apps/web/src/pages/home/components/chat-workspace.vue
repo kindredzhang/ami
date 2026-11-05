@@ -2,7 +2,7 @@
   <div
     ref="rootEl"
     class="flex flex-col flex-1 h-full min-w-0 bg-background"
-    :class="{ 'memoh-dock-dragging': store.panelDragging }"
+    :class="{ 'ami-dock-dragging': store.panelDragging }"
   >
     <DockviewVue
       class="h-full w-full"
@@ -12,7 +12,7 @@
       :prefix-header-actions-component="prefixHeaderActionsComponent"
       :left-header-actions-component="leftHeaderActionsComponent"
       :right-header-actions-component="rightHeaderActionsComponent"
-      :theme="memohTheme"
+      :theme="amiTheme"
       :disable-floating-groups="true"
       :disable-tabs-overflow-list="true"
       :disable-auto-resizing="true"
@@ -159,9 +159,9 @@ const leftHeaderActionsComponent = HeaderAddActions as unknown as VueComponent
 const rightHeaderActionsComponent = GroupActions as unknown as VueComponent
 const prefixHeaderActionsComponent = PrefixHeaderActions as unknown as VueComponent
 
-const memohTheme: DockviewTheme = {
-  name: 'memoh',
-  className: 'dockview-theme-memoh',
+const amiTheme: DockviewTheme = {
+  name: 'ami',
+  className: 'dockview-theme-ami',
   gap: 0,
   dndTabIndicator: 'line',
 }

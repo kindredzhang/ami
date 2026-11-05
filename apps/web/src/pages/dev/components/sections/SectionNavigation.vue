@@ -18,7 +18,7 @@ import {
   TextButton,
 } from '@felinic/ui'
 import { Archive, ChevronDown, FolderOpen, GitFork, Home, Inbox, MoreHorizontal, SquarePen, Trash2 } from 'lucide-vue-next'
-import { SettingsIcon as Settings } from '@memohai/icon/ui'
+import { SettingsIcon as Settings } from '@ami/icon/ui'
 import SectionShell from '../components/SectionShell.vue'
 import Specimen from '../components/Specimen.vue'
 
@@ -242,7 +242,7 @@ const currentPage = ref(2)
                 class="h-full border-r border-sidebar-border"
               >
                 <SidebarHeader class="px-3 py-2 text-sm font-semibold">
-                  Memoh
+                  Ami
                 </SidebarHeader>
                 <SidebarSeparator />
                 <SidebarContent>

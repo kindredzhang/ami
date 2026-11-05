@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	netctl "github.com/felinics/memoh/internal/network"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	netctl "github.com/kindredzhang/ami/internal/network"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type legacyRouteTestService struct {
@@ -271,7 +271,7 @@ func TestBuildWorkspaceContainerSpecInjectsBridgeTLSMaterial(t *testing.T) {
 
 	env := envMap(spec.Env)
 	wantEnv := map[string]string{
-		"BRIDGE_SOCKET_PATH":             "/run/memoh/bridge.sock",
+		"BRIDGE_SOCKET_PATH":             "/run/ami/bridge.sock",
 		"BRIDGE_TLS_MODE":                config.BridgeTLSModeStrict,
 		"BRIDGE_TLS_CERT_FILE":           bridgeMTLSMountPath + "/" + bridgeServerCertFile,
 		"BRIDGE_TLS_KEY_FILE":            bridgeMTLSMountPath + "/" + bridgeServerKeyFile,
@@ -343,7 +343,7 @@ func TestStartWithImageDoesNotRecreateExistingContainer(t *testing.T) {
 		created: true,
 		container: ctr.ContainerInfo{
 			ID:    ContainerPrefix + botID,
-			Image: "docker.io/memohai/workspace:debian",
+			Image: "docker.io/amiai/workspace:debian",
 		},
 	}
 	m := newLegacyRouteTestManager(t, svc, config.WorkspaceConfig{

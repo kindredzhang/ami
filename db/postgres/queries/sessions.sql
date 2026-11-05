@@ -28,7 +28,7 @@ RETURNING *;
 -- checkpoint it takes are one state of the source.
 SELECT s.id
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = sqlc.arg(session_id)
 FOR SHARE;
 
@@ -40,7 +40,7 @@ FOR SHARE;
 WITH source_session AS (
   SELECT s.*
   FROM bot_sessions s
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = sqlc.arg(session_id)
     AND s.bot_id = sqlc.arg(bot_id)
     AND s.type = 'chat'
@@ -52,7 +52,7 @@ target_turn AS (
     vm.turn_position AS position,
     vm.id AS message_id
   FROM source_session s
-  JOIN bot_visible_history_messages vm ON vm.team_id = public.memoh_current_team_id()
+  JOIN bot_visible_history_messages vm ON vm.team_id = public.ami_current_team_id()
     AND vm.session_id = s.id
     AND vm.turn_id = sqlc.arg(turn_id)
     AND vm.role = 'assistant'
@@ -84,7 +84,7 @@ copy_messages AS (
     vm.turn_position < tt.position
     OR vm.turn_position = tt.position
   )
-  WHERE vm.team_id = public.memoh_current_team_id()
+  WHERE vm.team_id = public.ami_current_team_id()
     AND vm.session_id = sqlc.arg(session_id)
   ORDER BY vm.turn_position ASC, vm.turn_message_seq ASC, vm.created_at ASC, vm.id ASC
 ),
@@ -155,7 +155,7 @@ created_session AS (
     fp.visibility,
     -- External runtimes fork their own runtime-side session: the caller
     -- passes the new driver-owned keys (e.g. the forked codex thread id) so
-    -- the two Memoh sessions never share one runtime session.
+    -- the two Ami sessions never share one runtime session.
     COALESCE(sqlc.narg(runtime_metadata_override), fp.runtime_metadata) AS runtime_metadata,
     sqlc.arg(title),
     jsonb_set(
@@ -256,7 +256,7 @@ copied_assets AS (
   FROM bot_history_message_assets a
   JOIN copy_messages cm ON cm.old_message_id = a.message_id
   JOIN inserted_messages im ON im.id = cm.new_message_id
-  WHERE a.team_id = public.memoh_current_team_id()
+  WHERE a.team_id = public.ami_current_team_id()
   RETURNING id
 )
 SELECT cs.id,
@@ -278,7 +278,7 @@ CROSS JOIN (
 -- name: GetSessionByID :one
 SELECT *
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND deleted_at IS NULL;
 
@@ -288,7 +288,7 @@ SELECT nextval('session_runtime_fencing_token_seq')::bigint;
 -- name: ActivateSessionRuntimeFence :one
 UPDATE bot_sessions
 SET runtime_fencing_token = sqlc.arg(runtime_fencing_token)
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(session_id)
   AND bot_id = sqlc.arg(bot_id)
   AND runtime_fencing_token <= sqlc.arg(runtime_fencing_token)
@@ -298,7 +298,7 @@ RETURNING runtime_fencing_token;
 -- name: LockSessionRuntimeFenceForActivation :one
 SELECT runtime_fencing_token
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(session_id)
   AND bot_id = sqlc.arg(bot_id)
   AND deleted_at IS NULL
@@ -311,7 +311,7 @@ FOR UPDATE;
 -- not a transient condition to retry forever.
 SELECT id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(session_id)
   AND bot_id = sqlc.arg(bot_id)
 FOR UPDATE;
@@ -319,7 +319,7 @@ FOR UPDATE;
 -- name: LockSessionRuntimeFence :one
 SELECT runtime_fencing_token
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(session_id)
   AND bot_id = sqlc.arg(bot_id)
   AND runtime_fencing_token = sqlc.arg(runtime_fencing_token)
@@ -329,7 +329,7 @@ FOR NO KEY UPDATE;
 -- name: LockSessionDecisionSequence :one
 SELECT id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(session_id)
   AND bot_id = sqlc.arg(bot_id)
   AND deleted_at IS NULL
@@ -340,7 +340,7 @@ FOR UPDATE;
 -- ClearHistoryByBot does.
 SELECT id
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
 ORDER BY id;
 
@@ -349,7 +349,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = sqlc.arg(bot_id)
   AND s.deleted_at IS NULL
 ORDER BY s.updated_at DESC;
@@ -359,7 +359,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = sqlc.arg(bot_id)
   AND s.created_by_user_id = sqlc.arg(created_by_user_id)
   AND s.deleted_at IS NULL
@@ -378,7 +378,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = sqlc.arg(bot_id)
   AND s.deleted_at IS NULL
   AND s.type = ANY(sqlc.arg(types)::text[])
@@ -417,7 +417,7 @@ SELECT
   s.id, s.bot_id, s.bot_agent_id, s.route_id, s.channel_type, s.type, s.session_mode, s.runtime_type, s.visibility, s.runtime_metadata, s.title, s.metadata,
   s.parent_session_id, s.created_by_user_id, s.workdir_id, s.created_at, s.updated_at, s.deleted_at, s.preferred_chat_model_id, s.preferred_reasoning_effort, s.preferred_external_model_id, s.model_preference_revision
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.bot_id = sqlc.arg(bot_id)
   AND s.created_by_user_id = sqlc.arg(created_by_user_id)
   AND s.deleted_at IS NULL
@@ -455,7 +455,7 @@ LIMIT sqlc.arg(limit_count)::int;
 -- name: ListSessionsByRoute :many
 SELECT *
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND route_id = sqlc.arg(route_id)
   AND deleted_at IS NULL
 ORDER BY updated_at DESC;
@@ -463,13 +463,13 @@ ORDER BY updated_at DESC;
 -- name: UpdateSessionTitle :one
 UPDATE bot_sessions
 SET title = sqlc.arg(title), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL
 RETURNING *;
 
 -- name: UpdateSessionTitleWithRuntimeFence :one
 UPDATE bot_sessions
 SET title = sqlc.arg(title), updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND bot_id = sqlc.arg(bot_id)
   AND runtime_fencing_token = sqlc.arg(runtime_fencing_token)
@@ -479,7 +479,7 @@ RETURNING *;
 -- name: UpdateSessionMetadata :one
 UPDATE bot_sessions
 SET metadata = sqlc.arg(metadata), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL
 RETURNING *;
 
 -- name: UpdateSessionRuntimeMetadata :one
@@ -492,7 +492,7 @@ RETURNING *;
 -- thread. A NULL token skips the guard for callers outside any run.
 UPDATE bot_sessions
 SET runtime_metadata = sqlc.arg(runtime_metadata), updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND runtime_type = sqlc.arg(runtime_type)
   AND (sqlc.narg(fencing_token)::bigint IS NULL OR runtime_fencing_token <= sqlc.narg(fencing_token)::bigint)
@@ -502,7 +502,7 @@ RETURNING *;
 -- name: UpdateSessionMetadataWithRuntimeFence :one
 UPDATE bot_sessions
 SET metadata = sqlc.arg(metadata), updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND bot_id = sqlc.arg(bot_id)
   AND runtime_fencing_token = sqlc.arg(runtime_fencing_token)
@@ -529,7 +529,7 @@ SET type = sqlc.arg(type),
       THEN gen_random_uuid() ELSE model_preference_revision END,
     runtime_config_epoch = runtime_config_epoch + 1,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL
 RETURNING *;
 
 -- name: SoftDeleteSession :exec
@@ -540,24 +540,24 @@ SET deleted_at = now(),
     updated_at = now(),
     runtime_config_epoch = runtime_config_epoch + 1,
     runtime_fencing_token = nextval('session_runtime_fencing_token_seq')::bigint
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND deleted_at IS NULL;
 
 -- name: TouchSession :exec
 UPDATE bot_sessions
 SET updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL;
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(id) AND deleted_at IS NULL;
 
 -- name: SetSessionNextTurnPosition :exec
 UPDATE bot_sessions
 SET next_turn_position = sqlc.arg(next_turn_position)::bigint
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(session_id);
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(session_id);
 
 -- name: GetSessionDiscussCursor :one
 SELECT *
 FROM bot_session_discuss_cursors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = sqlc.arg(session_id)
   AND scope_key = sqlc.arg(scope_key);
 
@@ -565,18 +565,18 @@ WHERE team_id = public.memoh_current_team_id()
 SELECT c.*
 FROM bot_session_discuss_cursors c
 JOIN bot_sessions s ON s.id = c.session_id
-WHERE c.team_id = public.memoh_current_team_id()
-  AND s.team_id = public.memoh_current_team_id()
+WHERE c.team_id = public.ami_current_team_id()
+  AND s.team_id = public.ami_current_team_id()
   AND s.bot_id = sqlc.arg(bot_id)
 ORDER BY c.updated_at ASC, c.session_id ASC, c.scope_key ASC;
 
 -- name: DeleteSessionDiscussCursorsByBot :exec
 DELETE FROM bot_session_discuss_cursors
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id IN (
   SELECT id
   FROM bot_sessions
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND bot_id = sqlc.arg(bot_id)
 );
 
@@ -603,14 +603,14 @@ RETURNING *;
 -- name: ListSubagentSessionsByParent :many
 SELECT *
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND parent_session_id = sqlc.arg(parent_session_id)
   AND type = 'subagent'
   AND deleted_at IS NULL
   AND EXISTS (
     SELECT 1
     FROM subagent_configs config
-    WHERE config.team_id = public.memoh_current_team_id()
+    WHERE config.team_id = public.ami_current_team_id()
       AND config.session_id = bot_sessions.id
   )
 ORDER BY created_at DESC;
@@ -622,7 +622,7 @@ ORDER BY created_at DESC;
 WITH target_sessions AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.bot_id = sqlc.arg(bot_id)
     AND session.deleted_at IS NULL
   ORDER BY session.id
@@ -634,7 +634,7 @@ SET deleted_at = now(),
     runtime_config_epoch = session.runtime_config_epoch + 1,
     runtime_fencing_token = nextval('session_runtime_fencing_token_seq')::bigint
 FROM target_sessions target
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = target.id;
 
 -- name: UpdateSessionModelPreference :exec
@@ -648,7 +648,7 @@ SET preferred_chat_model_id = $2,
     preferred_reasoning_effort = $3,
     preferred_external_model_id = $4,
     model_preference_revision = gen_random_uuid()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND deleted_at IS NULL;
 
@@ -660,7 +660,7 @@ WHERE team_id = public.memoh_current_team_id()
 -- sessions never seed.
 SELECT preferred_chat_model_id, preferred_reasoning_effort
 FROM bot_sessions
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND created_by_user_id = $2
   AND runtime_type = 'model'
@@ -680,7 +680,7 @@ SET preferred_chat_model_id = sqlc.narg(preferred_chat_model_id)::uuid,
     preferred_external_model_id = sqlc.narg(preferred_external_model_id)::text,
     preferred_reasoning_effort = sqlc.narg(preferred_reasoning_effort)::text,
     model_preference_revision = gen_random_uuid()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id)
   AND runtime_type = sqlc.arg(runtime_type)
   AND model_preference_revision IS NOT DISTINCT FROM sqlc.narg(expected_revision)::uuid

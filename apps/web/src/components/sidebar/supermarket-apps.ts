@@ -1,4 +1,4 @@
-import type { HandlersAppItem, HandlersSupermarketAppSummary } from '@memohai/sdk'
+import type { HandlersAppItem, HandlersSupermarketAppSummary } from '@ami/sdk'
 import { appDisplayDescription, appDisplayName, appKey } from '@/composables/api/useApps'
 
 export function filterInstalledApps(items: HandlersAppItem[], search: string, locale: string): HandlersAppItem[] {

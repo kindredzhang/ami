@@ -151,7 +151,7 @@ BEGIN
        AND c.relkind IN ('r', 'p')
        AND a.attname = 'team_id'
        AND NOT a.attisdropped
-       AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%';
+       AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%';
 
     -- Fail-closed gate: refuse if any team table holds a non-default team_id.
     FOR rec IN SELECT table_name FROM _team_tables LOOP
@@ -214,7 +214,7 @@ BEGIN
           JOIN pg_namespace n ON n.oid = c.relnamespace
          WHERE con.contype = 'u' AND n.nspname = 'public'
            AND c.relname IN (SELECT table_name FROM _team_tables)
-           AND con.conname LIKE 'memoh_team_key_%'
+           AND con.conname LIKE 'ami_team_key_%'
     LOOP
         EXECUTE format('ALTER TABLE public.%I DROP CONSTRAINT %I', rec.table_name, rec.conname);
     END LOOP;
@@ -229,7 +229,7 @@ BEGIN
           JOIN pg_index i ON i.indexrelid = con.conindid
          WHERE con.contype = 'u' AND n.nspname = 'public'
            AND c.relname IN (SELECT table_name FROM _team_tables)
-           AND con.conname NOT LIKE 'memoh_team_key_%'
+           AND con.conname NOT LIKE 'ami_team_key_%'
     LOOP
         IF (SELECT attname FROM pg_attribute WHERE attrelid=rec.conrelid AND attnum=rec.conkey[1]) <> 'team_id' THEN
             CONTINUE;
@@ -328,7 +328,7 @@ BEGIN
                 WHERE a.attrelid = c.oid
                   AND a.attname = 'team_id'
                   AND NOT a.attisdropped
-                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%'
+                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%'
            )
     LOOP
         EXECUTE format(
@@ -357,7 +357,7 @@ BEGIN
                 WHERE a.attrelid = c.oid
                   AND a.attname = 'team_id'
                   AND NOT a.attisdropped
-                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%'
+                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%'
            )
          ORDER BY c.relname
     LOOP
@@ -371,7 +371,7 @@ $$;
 -- ---------------------------------------------------------------------------
 -- Remove the public team context helper.
 
-DROP FUNCTION IF EXISTS public.memoh_current_team_id();
+DROP FUNCTION IF EXISTS public.ami_current_team_id();
 
 -- ---------------------------------------------------------------------------
 -- Remove team root

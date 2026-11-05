@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/felinics/memoh/internal/acl"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/acl"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 // Inspect an existing route only: command discovery must not create a thread.
@@ -98,7 +98,7 @@ func (p *ChannelInboundProcessor) runtimeSlash(ctx context.Context, cfg channel.
 	if command.Kind == turn.RuntimeCommandTurn {
 		decision.Kind = slash.DecisionNormalChat
 		decision.AgentCommand = selector
-		decision.Invocation = nil // Runtime owns it; bypass the Memoh command handlers.
+		decision.Invocation = nil // Runtime owns it; bypass the Ami command handlers.
 		return decision, false, nil
 	}
 	if hasSlashControlAttachments(msg) {

@@ -10,9 +10,9 @@ import (
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 func TestConnectorHTTPErrorUsesStablePublicContract(t *testing.T) {

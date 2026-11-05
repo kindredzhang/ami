@@ -16,14 +16,14 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/apps"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/connectors"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apps"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/connectors"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 const (
@@ -266,8 +266,8 @@ func TestAppConnectorOAuthKeepsOtherConnectItAnswers(t *testing.T) {
 		{"Connect-It before the stable code", http.StatusUnprocessableEntity, legacyClientMissing, apperror.CodeConnectorRequestRejected, "client", "INFO"},
 		{"request validation", http.StatusUnprocessableEntity, unknownAuthMethod, apperror.CodeConnectorRequestRejected, "client", "INFO"},
 		{"Connect-It failure", http.StatusInternalServerError, `{"error":"internal","message":"PRIVATE internal error"}`, apperror.CodeConnectorUpstreamUnavailable, "dependency", "ERROR"},
-		{"Memoh's API token rejected", http.StatusUnauthorized, `{"error":"unauthorized","message":"PRIVATE invalid API token"}`, apperror.CodeConnectorUpstreamUnavailable, "server", "ERROR"},
-		{"Memoh's API token forbidden", http.StatusForbidden, `{"error":"forbidden","message":"PRIVATE forbidden"}`, apperror.CodeConnectorUpstreamUnavailable, "server", "ERROR"},
+		{"Ami's API token rejected", http.StatusUnauthorized, `{"error":"unauthorized","message":"PRIVATE invalid API token"}`, apperror.CodeConnectorUpstreamUnavailable, "server", "ERROR"},
+		{"Ami's API token forbidden", http.StatusForbidden, `{"error":"forbidden","message":"PRIVATE forbidden"}`, apperror.CodeConnectorUpstreamUnavailable, "server", "ERROR"},
 		{"unrecognized upstream code", http.StatusBadGateway, `{"error":"PRIVATE test-only-client-secret-56","message":"PRIVATE failure"}`, apperror.CodeConnectorUpstreamUnavailable, "dependency", "ERROR"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

@@ -11,9 +11,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/messageconv"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/messageconv"
 )
 
 type persistedHistoryMessageService struct {

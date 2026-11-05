@@ -9,7 +9,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/job"
+	"github.com/kindredzhang/ami/internal/job"
 )
 
 // A fire that finds the session busy is dropped by design. Its result record

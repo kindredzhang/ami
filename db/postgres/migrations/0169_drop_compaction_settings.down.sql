@@ -4,7 +4,7 @@
 --
 -- FK form follows 0162: post-team composite (team_id, col) with the column
 -- list on SET NULL, NOT VALID because post-team migrations run under FORCE RLS
--- without memoh.team_id. The column is born NULL, so nothing is skipped.
+-- without ami.team_id. The column is born NULL, so nothing is skipped.
 
 ALTER TABLE public.bots
   ADD COLUMN IF NOT EXISTS compaction_enabled BOOLEAN NOT NULL DEFAULT true,

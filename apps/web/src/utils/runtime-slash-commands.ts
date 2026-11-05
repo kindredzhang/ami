@@ -1,10 +1,10 @@
-import type { TurnRuntimeCommand } from '@memohai/sdk'
+import type { TurnRuntimeCommand } from '@ami/sdk'
 import { BOT_AGENT_RUNTIME_CLAUDE_CODE, BOT_AGENT_RUNTIME_CODEX } from './bot-agent'
 
 export type RuntimeCommand = TurnRuntimeCommand
 export type VisibleRuntimeCommand = RuntimeCommand & { name: string }
 
-const RESERVED_MEMOH_SLASH_NAMES = new Set([
+const RESERVED_AMI_SLASH_NAMES = new Set([
   'help',
   'new',
   'permission',
@@ -26,7 +26,7 @@ export function visibleRuntimeCommands(
 
   for (const command of commands ?? []) {
     const name = validRuntimeCommandName(command.name)
-    if (!name || RESERVED_MEMOH_SLASH_NAMES.has(name.toLowerCase()) || seen.has(name)) continue
+    if (!name || RESERVED_AMI_SLASH_NAMES.has(name.toLowerCase()) || seen.has(name)) continue
     seen.add(name)
 
     const description = command.description?.trim() ?? ''

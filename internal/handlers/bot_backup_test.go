@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"testing"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/botbackup"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimefence"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/botbackup"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // The history reset an overwrite import takes fails the way a clear does:

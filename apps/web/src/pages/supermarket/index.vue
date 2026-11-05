@@ -143,7 +143,7 @@ import {
   getSupermarketApps,
   type HandlersSupermarketAppCategory,
   type HandlersSupermarketAppSummary,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { categoryDisplayName, useAppCategoriesQuery } from '@/composables/api/useApps'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { browsableCategories, SECTION_PREVIEW_LIMIT } from './category-sections'

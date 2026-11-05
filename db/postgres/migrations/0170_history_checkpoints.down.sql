@@ -26,7 +26,7 @@ CREATE INDEX IF NOT EXISTS idx_bot_history_messages_compact
   ON public.bot_history_messages (team_id, compact_id);
 
 -- Validating a reference scans its tables, which are under FORCE row level
--- security keyed on memoh.team_id, which a migration connection never sets.
+-- security keyed on ami.team_id, which a migration connection never sets.
 -- Lift it around the validation and restore it after.
 DO $compaction_overlay_fkeys$
 BEGIN
@@ -120,8 +120,8 @@ BEGIN
 END
 $retire_summaries$;
 
-DROP FUNCTION IF EXISTS public.memoh_rewind_history_checkpoint(uuid, bigint, bigint);
-DROP FUNCTION IF EXISTS public.memoh_history_checkpoint_kept(uuid, bigint, bigint);
+DROP FUNCTION IF EXISTS public.ami_rewind_history_checkpoint(uuid, bigint, bigint);
+DROP FUNCTION IF EXISTS public.ami_history_checkpoint_kept(uuid, bigint, bigint);
 ALTER TABLE public.bot_sessions
   DROP CONSTRAINT IF EXISTS bot_sessions_history_checkpoint_id_fkey,
   DROP COLUMN IF EXISTS history_checkpoint_id;

@@ -7,13 +7,13 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // Rows written before the typed SDK contract must read back and, when the
 // history trimming path writes them again, keep their bytes. Every shape the
 // codec rewrites is covered: arguments object, invalid-argument text, text and
-// document outputs, a null output, provider namespaces and Memoh's own
+// document outputs, a null output, provider namespaces and Ami's own
 // annotations.
 // A legacy row reads back into SDK types and writes back in the stored shape.
 // Its argument and output documents come back in RFC 8785 canonical form

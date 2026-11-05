@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { normalizeExternalUrl, resolveNavigationGuardAction } from './external-links'
 
-const trusted = 'file:///Applications/Memoh.app/Contents/renderer/index.html'
+const trusted = 'file:///Applications/Ami.app/Contents/renderer/index.html'
 
 describe('normalizeExternalUrl', () => {
   it('accepts web and mail protocols', () => {
@@ -52,7 +52,7 @@ describe('resolveNavigationGuardAction', () => {
   // and the page was handed to the OS browser instead.
   it('leaves subframe navigation alone so the workspace browser stays embedded', () => {
     expect(resolveNavigationGuardAction({
-      url: 'http://abc123.browser.memoh.example.com:8080/login',
+      url: 'http://abc123.browser.ami.example.com:8080/login',
       isMainFrame: false,
       isTrustedRenderer: false,
     })).toEqual({ kind: 'allow' })

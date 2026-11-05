@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { postBotsByBotIdAppsCheckUpdates } from '@memohai/sdk'
+import { postBotsByBotIdAppsCheckUpdates } from '@ami/sdk'
 import { renderI18nMessage, UserFacingError } from '@/utils/api-error'
 import { checkAppUpdates } from './useApps'
 
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   postBotsByBotIdAppsCheckUpdates: vi.fn(),
 }))
 

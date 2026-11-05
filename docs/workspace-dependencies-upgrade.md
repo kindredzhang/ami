@@ -2,7 +2,7 @@
 
 The workspace image now supplies Node.js, Python, uv, the display stack, and
 runtime scripts. Codex and Claude Code are managed per workspace under
-`/data/.memoh/deps`; they are no longer installed in the image. The new Server
+`/data/.ami/deps`; they are no longer installed in the image. The new Server
 discovers an existing supported CLI before requiring a managed installation.
 A chat message or a device-code login attempt does not authorize installation:
 a user with the Bot's Manage permission must confirm installation in workspace
@@ -17,7 +17,7 @@ dependency settings.
 | New Server with dependency management | New baseline image | Install the required managed CLIs before sending Agent work to the recreated workspace. |
 | Previous Server with the v3 workspace contract | New baseline image | Unsupported. Workspace initialization fails before the Agent starts. |
 
-The previous Server requires `/opt/memoh/workspace-contract.json` **and**
+The previous Server requires `/opt/ami/workspace-contract.json` **and**
 executable toolkit launchers for Codex and Claude Code. Restoring only the JSON
 file does not make the baseline image compatible. The new Server no longer
 uses this image-level check; it validates a dependency at its point of use.
@@ -29,11 +29,11 @@ uses this image-level check; it validates a dependency at its point of use.
    configuration, and the image actually used by each workspace. Resolve image
    references to immutable digests, retain those images in the backend's image
    store or a reachable registry, and take a consistent database and workspace
-   data backup. Retain the entire data volume, including `.memoh`, credentials,
+   data backup. Retain the entire data volume, including `.ami`, credentials,
    and managed dependency state.
 2. Pin `[container].default_image` and any per-workspace image choices to the old
    image digest. For example, use
-   `memohai/workspace@sha256:<recorded-old-image-digest>`. Changing the default
+   `amiai/workspace@sha256:<recorded-old-image-digest>`. Changing the default
    does not replace an existing workspace's image. Do not rely on
    `debian`, `debian-dev`, `debian-latest`, `latest`, or a partial version tag:
    these can move independently of the running Server. `if_not_present` is a
@@ -101,7 +101,7 @@ Restore the recorded Server/Channel/Web release and the matching **previous
 workspace image digest** together; do not restart the previous Server against
 the baseline image. Recreate affected workspaces with the retained data volume
 and verify initialization and a fresh Agent session before resuming traffic.
-An old Server does not manage `.memoh/deps`; keep that directory intact so a
+An old Server does not manage `.ami/deps`; keep that directory intact so a
 subsequent upgrade can recover the managed installations.
 
 Follow the release's database rollback procedure, or restore the consistent

@@ -22,8 +22,8 @@ import {
   getBotsByBotIdContainerFsRead,
   postBotsByBotIdContainerFsWrite,
   getBotsByBotIdContainerFsDownload,
-} from '@memohai/sdk'
-import type { HandlersFsFileInfo } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { HandlersFsFileInfo } from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import MonacoEditor from '@/components/monaco-editor/index.vue'
 import MonacoDiff from '@/components/monaco-editor/diff.vue'

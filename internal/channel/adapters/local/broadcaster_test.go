@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestRouteHubBroadcaster_OnStreamEvent(t *testing.T) {

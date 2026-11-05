@@ -3,7 +3,7 @@ package weixin
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestParseConfig(t *testing.T) {

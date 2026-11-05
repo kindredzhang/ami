@@ -9,9 +9,9 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/schedule"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/schedule"
 )
 
 func TestIdleTimeoutPublishesStableResponseTimeoutCause(t *testing.T) {

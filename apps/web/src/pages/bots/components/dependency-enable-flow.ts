@@ -1,5 +1,5 @@
 import { externalAgentDisplayName } from '@/utils/external-agent'
-import type { BotagentsBotAgent } from '@memohai/sdk'
+import type { BotagentsBotAgent } from '@ami/sdk'
 import type {
   DependencyItem,
   PreflightItem,

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/memory/migrate"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/memory/migrate"
 )
 
 const compactMaxCandidateChars = 24000

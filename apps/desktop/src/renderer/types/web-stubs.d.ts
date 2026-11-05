@@ -1,31 +1,31 @@
-// Type stubs for @memohai/web subpath imports consumed by the renderer.
+// Type stubs for @ami/web subpath imports consumed by the renderer.
 // We route typechecking through these stubs (via tsconfig `paths`) so vue-tsc
-// does not recursively typecheck @memohai/web's source tree. @memohai/web
+// does not recursively typecheck @ami/web's source tree. @ami/web
 // owns its own types/CI. Vite ignores `paths` and resolves the real `exports`
 // entries at bundle time, so runtime behavior is unchanged.
 
 // Marker to make this file a module (not an ambient script). Required so
-// that paths-mapped dynamic `import('@memohai/web/...')` calls succeed.
+// that paths-mapped dynamic `import('@ami/web/...')` calls succeed.
 // TS otherwise complains that the resolved file "is not a module".
 export {}
 
-declare module '@memohai/web/router-guards/onboarding' {
+declare module '@ami/web/router-guards/onboarding' {
   export function ensureOnboarding(): Promise<boolean>
   export function hasOnboardingInProgress(): boolean
 }
 
-declare module '@memohai/web/routes' {
+declare module '@ami/web/routes' {
   import type { RouteRecordRaw } from 'vue-router'
   export function createAppRoutes(platform: 'web' | 'desktop'): RouteRecordRaw[]
 }
 
-declare module '@memohai/web/router' {
+declare module '@ami/web/router' {
   import type { Router } from 'vue-router'
   const router: Router
   export default router
 }
 
-declare module '@memohai/web/i18n' {
+declare module '@ami/web/i18n' {
   import type { I18n } from 'vue-i18n'
   import type { ComputedRef } from 'vue'
   const i18n: I18n
@@ -33,7 +33,7 @@ declare module '@memohai/web/i18n' {
   export function i18nRef(key: string): ComputedRef<string>
 }
 
-declare module '@memohai/web/api-client' {
+declare module '@ami/web/api-client' {
   export interface SetupApiClientOptions {
     baseUrl?: string
     fetch?: typeof fetch
@@ -51,11 +51,11 @@ declare module '@memohai/web/api-client' {
   export function setupApiClient(options?: SetupApiClientOptions): void
 }
 
-declare module '@memohai/web/lib/file-drop-guard' {
+declare module '@ami/web/lib/file-drop-guard' {
   export function installFileDropGuard(): void
 }
 
-declare module '@memohai/web/lib/keyboard-commands' {
+declare module '@ami/web/lib/keyboard-commands' {
   export const appKeyboardCommands: {
     readonly closeCurrentWorkspaceTab: 'close-current-workspace-tab'
     readonly saveActiveFile: 'save-active-file'
@@ -93,14 +93,14 @@ declare module '@memohai/web/lib/keyboard-commands' {
   export function createKeyboardCommandRegistry(canDispatch?: (command: AppKeyboardCommand) => boolean): KeyboardCommandRegistry
 }
 
-declare module '@memohai/web/lib/keyboard-context' {
+declare module '@ami/web/lib/keyboard-context' {
   export function selectActiveKeyboardBindings<T extends { scope: string }>(bindings: T[], root?: Document): T[]
-  import type { AppKeyboardCommand } from '@memohai/web/lib/keyboard-commands'
+  import type { AppKeyboardCommand } from '@ami/web/lib/keyboard-commands'
   export function canDispatchKeyboardCommand(command: AppKeyboardCommand, route: { name?: unknown; path: string }, root?: Document, hasWorkspace?: boolean): boolean
 }
 
-declare module '@memohai/web/lib/keyboard-bindings' {
-  import type { AppKeyboardCommand } from '@memohai/web/lib/keyboard-commands'
+declare module '@ami/web/lib/keyboard-bindings' {
+  import type { AppKeyboardCommand } from '@ami/web/lib/keyboard-commands'
   export type DesktopDelivery = 'menu'
   export type BrowserBehavior = 'intercept' | 'passthrough'
   export type KeyboardScope = 'global' | 'workspace' | 'mediaLightbox'
@@ -123,8 +123,8 @@ declare module '@memohai/web/lib/keyboard-bindings' {
   export function selectWebBindings(bindings: KeyboardBinding[]): KeyboardBinding[]
 }
 
-declare module '@memohai/web/lib/browser-keyboard-shortcuts' {
-  import type { AppKeyboardCommand, KeyboardCommandRegistry } from '@memohai/web/lib/keyboard-commands'
+declare module '@ami/web/lib/browser-keyboard-shortcuts' {
+  import type { AppKeyboardCommand, KeyboardCommandRegistry } from '@ami/web/lib/keyboard-commands'
   export interface BrowserKeyboardShortcutBinding {
     command: AppKeyboardCommand
     key: string
@@ -157,9 +157,9 @@ declare module '@memohai/web/lib/browser-keyboard-shortcuts' {
   ): () => void
 }
 
-declare module '@memohai/web/store/keyboard-shortcuts' {
-  import type { KeyboardBinding } from '@memohai/web/lib/keyboard-bindings'
-  import type { AppKeyboardCommand } from '@memohai/web/lib/keyboard-commands'
+declare module '@ami/web/store/keyboard-shortcuts' {
+  import type { KeyboardBinding } from '@ami/web/lib/keyboard-bindings'
+  import type { AppKeyboardCommand } from '@ami/web/lib/keyboard-commands'
   export type ConflictKind = 'none' | 'same-scope' | 'cross-scope' | 'reserved' | 'invalid'
   export interface ConflictResult {
     kind: ConflictKind
@@ -176,19 +176,19 @@ declare module '@memohai/web/store/keyboard-shortcuts' {
   }
 }
 
-declare module '@memohai/web/composables/useKeyboardCommand' {
+declare module '@ami/web/composables/useKeyboardCommand' {
   import type { InjectionKey } from 'vue'
   import type {
     AppKeyboardCommand,
     KeyboardCommandHandler,
     KeyboardCommandRegistry,
-  } from '@memohai/web/lib/keyboard-commands'
+  } from '@ami/web/lib/keyboard-commands'
   export const KEYBOARD_REGISTRY: InjectionKey<KeyboardCommandRegistry>
   export function useKeyboardCommand(command: AppKeyboardCommand, handler: KeyboardCommandHandler): void
 }
 
-declare module '@memohai/web/pages/home/commands/workspace-tab-commands' {
-  import type { AppKeyboardCommand, KeyboardCommandRegistry } from '@memohai/web/lib/keyboard-commands'
+declare module '@ami/web/pages/home/commands/workspace-tab-commands' {
+  import type { AppKeyboardCommand, KeyboardCommandRegistry } from '@ami/web/lib/keyboard-commands'
   export interface WorkspaceTabCommandStore {
     activeId: string | null
     requestCloseTab(id: string): void
@@ -203,21 +203,21 @@ declare module '@memohai/web/pages/home/commands/workspace-tab-commands' {
   ): () => void
 }
 
-declare module '@memohai/web/store/settings' {
+declare module '@ami/web/store/settings' {
   export type ThemePreference = 'light' | 'dark' | 'system'
   export function useSettingsStore(pinia?: unknown): {
     theme: ThemePreference
   }
 }
 
-declare module '@memohai/web/store/workspace-tabs' {
+declare module '@ami/web/store/workspace-tabs' {
   export function useWorkspaceTabsStore(pinia?: unknown): {
     activeId: string | null
     requestCloseTab: (id: string) => void
   }
 }
 
-declare module '@memohai/web/store/user' {
+declare module '@ami/web/store/user' {
   export function useUserStore(): {
     userInfo: {
       role: string
@@ -225,7 +225,7 @@ declare module '@memohai/web/store/user' {
   }
 }
 
-declare module '@memohai/web/store/chat-list' {
+declare module '@ami/web/store/chat-list' {
   // Desktop needs the bot snapshot for two things: re-pulling it when a
   // sibling window invalidates bot config (composer agent menu), and
   // mirroring the list into the native tray's Bots submenu.
@@ -239,13 +239,13 @@ declare module '@memohai/web/store/chat-list' {
   }
 }
 
-declare module '@memohai/web/store/capabilities' {
+declare module '@ami/web/store/capabilities' {
   export function useCapabilitiesStore(): {
     load: () => Promise<void>
   }
 }
 
-declare module '@memohai/web/store/update' {
+declare module '@ami/web/store/update' {
   export function useUpdateStore(): {
     checking: boolean
     checked: boolean
@@ -258,22 +258,22 @@ declare module '@memohai/web/store/update' {
   }
 }
 
-declare module '@memohai/web/composables/useDialogMutation' {
+declare module '@ami/web/composables/useDialogMutation' {
   export function useDialogMutation(): {
     run: <T>(action: () => Promise<T>, options?: { fallbackMessage?: string, onSuccess?: () => void }) => Promise<T | undefined>
   }
 }
 
-declare module '@memohai/web/constants/acl-presets' {
+declare module '@ami/web/constants/acl-presets' {
   export const defaultAclPreset: string
   export const aclPresetOptions: Array<{ value: string, titleKey: string, descriptionKey?: string }>
 }
 
-declare module '@memohai/web/utils/timezones' {
+declare module '@ami/web/utils/timezones' {
   export const emptyTimezoneValue: string
 }
 
-declare module '@memohai/web/lib/desktop-shell' {
+declare module '@ami/web/lib/desktop-shell' {
   import type { InjectionKey } from 'vue'
   export const DesktopShellKey: InjectionKey<boolean>
   export type DesktopRuntimeStatus = 'disabled' | 'connecting' | 'connected' | 'disconnected' | 'stopped' | 'error'
@@ -332,12 +332,12 @@ declare module '@memohai/web/lib/desktop-shell' {
   export const DesktopUpdatesKey: InjectionKey<DesktopUpdateBridge | undefined>
 }
 
-declare module '@memohai/web/lib/auth-session' {
+declare module '@ami/web/lib/auth-session' {
   export type AuthSessionClearReason = 'login' | 'logout' | 'token-cleared' | 'unauthorized'
   export function notifyAuthSessionCleared(reason: AuthSessionClearReason): void
 }
 
-declare module '@memohai/web/lib/query-cache-persistence' {
+declare module '@ami/web/lib/query-cache-persistence' {
   import type { PiniaColadaPlugin, QueryCache, UseQueryEntryFilter } from '@pinia/colada'
   export const QUERY_CACHE_STORAGE_KEY: string
   export const persistableQueryFilter: UseQueryEntryFilter
@@ -352,11 +352,11 @@ declare module '@memohai/web/lib/query-cache-persistence' {
   export function cancelPendingQueryCacheSave(): void
 }
 
-declare module '@memohai/web/pages/login/transition' {
+declare module '@ami/web/pages/login/transition' {
   export const LOGIN_ENTRY_ANIMATION_KEY: string
 }
 
-declare module '@memohai/web/composables/useBackOr' {
+declare module '@ami/web/composables/useBackOr' {
   import type { ComputedRef } from 'vue'
   import type { RouteLocationRaw, Router } from 'vue-router'
   export function installBackHistory(router: Router): void
@@ -367,18 +367,18 @@ declare module '@memohai/web/composables/useBackOr' {
   }
 }
 
-declare module '@memohai/web/style.css'
+declare module '@ami/web/style.css'
 
-// Fallback for every Vue SFC reachable through the @memohai/web/* wildcard
+// Fallback for every Vue SFC reachable through the @ami/web/* wildcard
 // export. The TS ambient-module `*` token matches multi-segment paths
 // (slashes included), so this single declaration covers `pages/.../*.vue`,
 // `components/.../*.vue`, `layout/.../*.vue`, etc.
-declare module '@memohai/web/*.vue' {
+declare module '@ami/web/*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<Record<string, never>, Record<string, never>, unknown>
   export default component
 }
 
-declare module '@memohai/web/components/provider-icon/preload' {
+declare module '@ami/web/components/provider-icon/preload' {
   export function configureProviderIconLoader(loader: (url: string) => Promise<string>): void
 }

@@ -12,9 +12,9 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // Runner starts agent processes in a test workspace for the protocol tests.
@@ -120,7 +120,7 @@ func (r *Runner) StartSession(ctx context.Context, req StartRequest, sink EventS
 		Stderr: proc.StderrTail,
 	}
 	if conn.SupportsHTTPMCP() {
-		if server := MemohToolsHTTPMCPServer(toolURL, toolSession); server.Http != nil {
+		if server := AmiToolsHTTPMCPServer(toolURL, toolSession); server.Http != nil {
 			cfg.McpServers = []acp.McpServer{server}
 		}
 	}

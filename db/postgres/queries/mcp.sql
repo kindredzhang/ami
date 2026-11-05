@@ -2,14 +2,14 @@
 SELECT id, bot_id, name, type, config, is_active, status, tools_cache, last_probed_at, status_message, auth_type,
        created_at, updated_at, team_id
 FROM mcp_connections
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2
 LIMIT 1;
 
 -- name: ListMCPConnectionsByBotID :many
 SELECT id, bot_id, name, type, config, is_active, status, tools_cache, last_probed_at, status_message, auth_type,
        created_at, updated_at, team_id
 FROM mcp_connections
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY created_at DESC;
 
 -- name: CreateMCPConnection :one
@@ -26,7 +26,7 @@ SET name = $3,
     is_active = $6,
     auth_type = $7,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2
 RETURNING id, bot_id, name, type, config, is_active, status, tools_cache, last_probed_at, status_message, auth_type,
           created_at, updated_at, team_id;
 
@@ -34,7 +34,7 @@ RETURNING id, bot_id, name, type, config, is_active, status, tools_cache, last_p
 UPDATE mcp_connections
 SET is_active = $3,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2;
 
 -- name: UpdateMCPConnectionProbeResult :exec
 UPDATE mcp_connections
@@ -43,17 +43,17 @@ SET status = $3,
     last_probed_at = now(),
     status_message = $5,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2;
 
 -- name: UpdateMCPConnectionAuthType :exec
 UPDATE mcp_connections
 SET auth_type = $2,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: DeleteMCPConnection :exec
 DELETE FROM mcp_connections
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1 AND id = $2;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1 AND id = $2;
 
 -- name: UpsertMCPConnectionByName :one
 INSERT INTO mcp_connections (bot_id, name, type, config)

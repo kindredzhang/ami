@@ -25,7 +25,7 @@ export function buildRuntimeConnectCommand(
   if (!key) return ''
 
   const args = [
-    'memoh-runtime',
+    'ami-runtime',
     'enroll',
     '--server',
     serverUrl,
@@ -44,10 +44,10 @@ export function buildRuntimeConnectCommand(
   }
   // Stop on failure so a rejected enrollment cannot start a different saved connection.
   const chain = [
-    'npm install -g @memohai/runtime@latest',
+    'npm install -g @ami/runtime@latest',
     args.join(' '),
-    'memoh-runtime service install',
-    'memoh-runtime service start',
+    'ami-runtime service install',
+    'ami-runtime service start',
   ].join(' && ')
   // Windows PowerShell 5.1 has no `&&`, and its default execution policy blocks
   // the .ps1 shims npm installs. Running the chain in cmd works the same from

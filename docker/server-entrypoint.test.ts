@@ -20,7 +20,7 @@ function runEntrypoint(
   ctrStatus = 1,
   { shutdown = false, env = [] }: { shutdown?: boolean, env?: string[] } = {},
 ) {
-  const tempDir = mkdtempSync(join(tmpdir(), 'memoh-server-entrypoint-'))
+  const tempDir = mkdtempSync(join(tmpdir(), 'ami-server-entrypoint-'))
   const appDir = join(tempDir, 'app')
   const configDir = join(tempDir, 'config')
   const fakeBinDir = join(tempDir, 'bin')
@@ -37,9 +37,9 @@ function runEntrypoint(
       : join(configDir, 'config.toml')
     const backendConfig = backend === undefined ? '' : `backend = "${backend}"\n`
     writeFileSync(hostConfigPath, `[container]\n${backendConfig}`)
-    writeExecutable(join(appDir, 'memoh-server'), `#!/bin/sh
-printf 'memoh-server %s\n' "$*" >> "$ENTRYPOINT_TEST_LOG"
-printf 'memoh-server env OTEL_SDK_DISABLED=%s\n' "$OTEL_SDK_DISABLED" >> "$ENTRYPOINT_TEST_LOG"
+    writeExecutable(join(appDir, 'ami-server'), `#!/bin/sh
+printf 'ami-server %s\n' "$*" >> "$ENTRYPOINT_TEST_LOG"
+printf 'ami-server env OTEL_SDK_DISABLED=%s\n' "$OTEL_SDK_DISABLED" >> "$ENTRYPOINT_TEST_LOG"
 if [ "$ENTRYPOINT_TEST_SHUTDOWN" = 1 ]; then
   entrypoint_pid=$PPID
   trap '/bin/sleep 0.1; printf "interrupt-saved\\n" >> "$ENTRYPOINT_TEST_LOG"; exit 0' TERM INT
@@ -124,7 +124,7 @@ test('docker backend starts the server without embedded containerd setup', () =>
   const { calls, result } = runEntrypoint('docker')
 
   expect(result.status, result.stderr || result.stdout).toBe(0)
-  expect(calls).toMatch(/^memoh-server serve$/m)
+  expect(calls).toMatch(/^ami-server serve$/m)
   expect(calls).not.toMatch(/^(?:containerd|ctr|ip|iptables|mkdir|rm|sleep|sysctl)\b/m)
 })
 
@@ -132,7 +132,7 @@ test('apple backend from CONFIG_PATH starts the server without embedded containe
   const { calls, result } = runEntrypoint('apple', '/test/config/config.toml')
 
   expect(result.status, result.stderr || result.stdout).toBe(0)
-  expect(calls).toMatch(/^memoh-server serve$/m)
+  expect(calls).toMatch(/^ami-server serve$/m)
   expect(calls).not.toMatch(/^(?:containerd|ctr|ip|iptables|mkdir|rm|sleep|sysctl)\b/m)
 })
 
@@ -148,7 +148,7 @@ test('omitted backend preserves embedded containerd setup and cleanup', () => {
   expect(calls).toMatch(/^mkdir -p \/run\/containerd$/m)
   expect(calls).toMatch(/^containerd $/m)
   expect(calls).toMatch(/^ctr version$/m)
-  expect(calls).toMatch(/^memoh-server serve$/m)
+  expect(calls).toMatch(/^ami-server serve$/m)
   expect(calls).toMatch(/^containerd-stopped$/m)
 })
 
@@ -168,5 +168,5 @@ test('embedded containerd does not export the OpenTelemetry settings meant for t
 
   expect(result.status, result.stderr || result.stdout).toBe(0)
   expect(calls).toMatch(/^containerd env OTEL_SDK_DISABLED=true$/m)
-  expect(calls).toMatch(/^memoh-server env OTEL_SDK_DISABLED=$/m)
+  expect(calls).toMatch(/^ami-server env OTEL_SDK_DISABLED=$/m)
 })

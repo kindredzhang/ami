@@ -6,12 +6,12 @@ set -e
 
 ME=$(basename "$0")
 
-cert="${MEMOH_TLS_CERT:-/etc/nginx/certs/server.crt}"
-key="${MEMOH_TLS_KEY:-/etc/nginx/certs/server.key}"
+cert="${AMI_TLS_CERT:-/etc/nginx/certs/server.crt}"
+key="${AMI_TLS_KEY:-/etc/nginx/certs/server.key}"
 template="/etc/nginx/templates-available/https.conf.template"
 
 if [ -f "$cert" ] && [ -f "$key" ]; then
-    echo "$ME: found TLS certificate, enabling HTTPS + HTTP/2 on port ${MEMOH_WEB_HTTPS_PORT:-8443}"
+    echo "$ME: found TLS certificate, enabling HTTPS + HTTP/2 on port ${AMI_WEB_HTTPS_PORT:-8443}"
     cp "$template" /etc/nginx/templates/https.conf.template
 else
     echo "$ME: no TLS certificate at $cert / $key, serving plain HTTP only"

@@ -196,7 +196,7 @@ describe('a terminal run view is not a source of new turns', () => {
 
   it.each(['history first', 'runtime first'])('keeps published media when replaying a completed run (%s)', (order) => {
     const { transcript } = makeTranscript(null)
-    const published = '![chart](/bots/bot-1/media/archived-hash)\n![missing](memoh-media-error:media.reference_unavailable)'
+    const published = '![chart](/bots/bot-1/media/archived-hash)\n![missing](ami-media-error:media.reference_unavailable)'
     const history: UITurn[] = [
       settledTurn('m1', 'turn-1', 1, 'user', '2026-07-20T08:00:00.000Z'),
       {

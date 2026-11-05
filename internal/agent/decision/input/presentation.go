@@ -3,7 +3,7 @@ package input
 import (
 	"slices"
 
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // Localized returns a display copy. Stored payloads and response identities

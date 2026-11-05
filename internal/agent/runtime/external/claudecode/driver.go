@@ -15,18 +15,18 @@ import (
 
 	"golang.org/x/mod/semver"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/agent/runtime/external/claudecode/claudecfg"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/agentcredential"
-	"github.com/felinics/memoh/internal/botagents"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/claudecode/claudecfg"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/agentcredential"
+	"github.com/kindredzhang/ami/internal/botagents"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
@@ -317,7 +317,7 @@ func (d *Driver) Prompt(ctx context.Context, input external.PromptInput) (extern
 	cfg, err := d.resolveAgentConfig(ctx, input.BotID, input.BotAgentID)
 	if err != nil {
 		// A credential failure is already a Failure; reading the Agent's
-		// configuration is Memoh's own and stays private.
+		// configuration is Ami's own and stays private.
 		return external.PromptResult{}, err
 	}
 	storedSessionID := strings.TrimSpace(external.MetadataString(input.RuntimeMetadata, metadataSessionIDKey))
@@ -493,7 +493,7 @@ func (d *Driver) acquireSession(ctx context.Context, cfg claudecfg.Config, input
 }
 
 // startSession starts a CLI process for the conversation, resuming resume
-// when set, with the Memoh tool route it keeps for its whole life.
+// when set, with the Ami tool route it keeps for its whole life.
 func (d *Driver) startSession(ctx context.Context, client *bridge.Client, info bridge.WorkspaceInfo, cfg claudecfg.Config, launcher external.Launcher, input external.PromptInput, resume, workDir string, allowBypass bool) (*cliSession, error) {
 	var sess *cliSession
 	mcpConfig, mount := d.mountSessionTools(ctx, client, info, input, func() *turnRunner { return sess.currentTurn() })
@@ -638,7 +638,7 @@ func cliEnv(cfg claudecfg.Config) []string {
 	return env
 }
 
-// buildUserContent assembles the user message blocks: the Memoh context
+// buildUserContent assembles the user message blocks: the Ami context
 // document, the user's message, and inline images.
 func buildUserContent(input external.PromptInput) []map[string]any {
 	content := make([]map[string]any, 0, 2+len(input.Images))

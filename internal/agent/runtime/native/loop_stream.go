@@ -13,18 +13,18 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentevent "github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
-// runStream runs the streaming agent invocation with a Memoh-owned step loop:
+// runStream runs the streaming agent invocation with a Ami-owned step loop:
 // every step performs exactly one Provider.DoStream call, consumes its part
 // stream into events, and executes its tool batch through toolexec.ExecuteTools. A
 // final step whose commit returns NextInputs continues on the next inner-loop
@@ -675,7 +675,7 @@ func (e *streamEngine) run() {
 // without ending the run; tool execution and the commit barrier stay on the
 // segment context. Provider.DoStream is the single-call seam and hands out
 // exactly the part channel the loop consumes: every live event, loop probe,
-// and durable step record is derived here, so the step stays owned by Memoh.
+// and durable step record is derived here, so the step stays owned by Ami.
 //
 // done reports a terminal step (final answer, deferred approval, silent
 // ask_user poison) that ends the engine; retry is a failed provider call worth

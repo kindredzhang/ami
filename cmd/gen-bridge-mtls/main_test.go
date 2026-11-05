@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 const testInstanceID = "11111111-1111-1111-1111-111111111111"

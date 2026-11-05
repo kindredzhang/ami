@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	session "github.com/felinics/memoh/internal/chat/thread"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type fakeBackgroundSessionService struct {

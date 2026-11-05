@@ -5,7 +5,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 type Store struct {

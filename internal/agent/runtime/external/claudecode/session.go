@@ -12,10 +12,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // sessionDrainTimeout bounds how long a resident CLI may take to flush its
@@ -24,7 +24,7 @@ const sessionDrainTimeout = 10 * time.Second
 
 // cliSession is one Claude Code process serving a conversation's turns, one
 // at a time. It owns what lasts as long as the process: the control channel,
-// the read loop and the Memoh tool route. A turn attaches for its duration
+// the read loop and the Ami tool route. A turn attaches for its duration
 // and receives everything the CLI sends meanwhile.
 type cliSession struct {
 	proc   cliProcess
@@ -47,7 +47,7 @@ type cliSession struct {
 	capabilities initializeResponse
 	// version is the CLI's own, when it said.
 	version string
-	// mount serves Memoh tools to the process; nil when it could not be
+	// mount serves Ami tools to the process; nil when it could not be
 	// mounted, and every turn then says the tools are unavailable.
 	mount *toolmount.Mount
 
@@ -132,7 +132,7 @@ func (s *cliSession) end() { s.proc.Kill() }
 func (s *cliSession) callControl(ctx context.Context, subtype string, extra map[string]any) (json.RawMessage, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
-	id := "memoh-" + strconv.FormatUint(s.nextID.Add(1), 10)
+	id := "ami-" + strconv.FormatUint(s.nextID.Add(1), 10)
 	line, err := controlRequestLine(id, subtype, extra)
 	if err != nil {
 		return nil, err

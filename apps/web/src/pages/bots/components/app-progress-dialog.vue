@@ -5,7 +5,7 @@
 // stream and the verdict lands as a toast.
 import { computed, nextTick, ref, toRef, watch } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getConnectorsCatalog } from '@memohai/sdk'
+import { getConnectorsCatalog } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import {
   Button,

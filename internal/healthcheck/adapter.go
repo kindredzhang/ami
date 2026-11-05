@@ -3,7 +3,7 @@ package healthcheck
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/bots"
+	"github.com/kindredzhang/ami/internal/bots"
 )
 
 // RuntimeCheckerAdapter bridges Checker to bots.RuntimeChecker.

@@ -10,7 +10,7 @@ import (
 	sdk "github.com/felinics/twilight/sdk"
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 // planFoldByEveryRead is planFold pricing every read, longest first: the

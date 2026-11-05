@@ -105,7 +105,7 @@ func TestFormatAskUserRendersQuestionsWithoutMetadata(t *testing.T) {
 			t.Fatalf("rendered output missing %q:\n%s", want, rendered)
 		}
 	}
-	for _, leaked := range []string{"/respond", "Memoh Web"} {
+	for _, leaked := range []string{"/respond", "Ami Web"} {
 		if strings.Contains(rendered, leaked) {
 			t.Fatalf("rendered output leaked command/web fallback %q:\n%s", leaked, rendered)
 		}

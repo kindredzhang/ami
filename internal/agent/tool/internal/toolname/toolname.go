@@ -1,11 +1,11 @@
 package toolname
 
 import (
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
-// Name identifies a built-in Memoh agent tool. Its raw value is intentionally
+// Name identifies a built-in Ami agent tool. Its raw value is intentionally
 // not constructible outside this package, so callers must use the exported
 // accessor functions instead of local string conversions.
 type Name struct {
@@ -95,7 +95,7 @@ var all = []Name{
 	ToolWebSearch(), ToolWebFetch(), ToolGenerateImage(), ToolGenerateVideo(), ToolTranscribeAudio(), ToolAskUser(),
 }
 
-// All returns the complete built-in Memoh tool catalog.
+// All returns the complete built-in Ami tool catalog.
 func All() []Name {
 	return append([]Name(nil), all...)
 }

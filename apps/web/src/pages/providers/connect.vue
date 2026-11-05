@@ -102,7 +102,7 @@ import {
   toast,
 } from '@felinic/ui'
 import { CircleX } from 'lucide-vue-next'
-import { getProviders, postProviders } from '@memohai/sdk'
+import { getProviders, postProviders } from '@ami/sdk'
 import { findModelSource, modelSourceLogo, providerSourceMetadata, TEMPLATE_SOURCES } from '@/constants/model-sources'
 import { useProviderModelCatalog } from '@/composables/useProviderModelCatalog'
 import {

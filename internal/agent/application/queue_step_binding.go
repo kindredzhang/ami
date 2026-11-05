@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
 )
 
 // bindQueueContinuation installs the live queue step boundary used by an

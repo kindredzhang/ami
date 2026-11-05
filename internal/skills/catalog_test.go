@@ -3,8 +3,8 @@ package skills
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 func TestBuildSafeCatalogFiltersUnsafeEntries(t *testing.T) {

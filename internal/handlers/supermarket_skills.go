@@ -10,9 +10,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	skillset "github.com/felinics/memoh/internal/skills"
-	supermarketclient "github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/apperror"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	supermarketclient "github.com/kindredzhang/ami/internal/supermarket"
 )
 
 type SupermarketRegistryListResponse = supermarketclient.RegistryListResponse

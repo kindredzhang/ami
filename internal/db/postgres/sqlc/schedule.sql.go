@@ -102,7 +102,7 @@ func (q *Queries) CreateSchedule(ctx context.Context, arg CreateScheduleParams) 
 
 const deleteSchedule = `-- name: DeleteSchedule :exec
 DELETE FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 func (q *Queries) DeleteSchedule(ctx context.Context, id pgtype.UUID) error {
@@ -114,7 +114,7 @@ const disableSchedule = `-- name: DisableSchedule :one
 UPDATE schedule
 SET enabled = false,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING max_run_seconds, id, name, description, pattern, max_calls, current_calls, created_at, updated_at, enabled, command, bot_id, run_target, target_session_id, runtime_type, bot_agent_id, acp_agent_id, model_id, acp_model_id, reasoning_effort, workdir_id, team_id
 `
 
@@ -151,7 +151,7 @@ func (q *Queries) DisableSchedule(ctx context.Context, id pgtype.UUID) (Schedule
 const getScheduleByID = `-- name: GetScheduleByID :one
 SELECT max_run_seconds, id, name, description, pattern, max_calls, current_calls, created_at, updated_at, enabled, command, bot_id, run_target, target_session_id, runtime_type, bot_agent_id, acp_agent_id, model_id, acp_model_id, reasoning_effort, workdir_id, team_id
 FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 `
 
 func (q *Queries) GetScheduleByID(ctx context.Context, id pgtype.UUID) (Schedule, error) {
@@ -192,7 +192,7 @@ SET current_calls = current_calls + 1,
       ELSE enabled
     END,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING max_run_seconds, id, name, description, pattern, max_calls, current_calls, created_at, updated_at, enabled, command, bot_id, run_target, target_session_id, runtime_type, bot_agent_id, acp_agent_id, model_id, acp_model_id, reasoning_effort, workdir_id, team_id
 `
 
@@ -229,7 +229,7 @@ func (q *Queries) IncrementScheduleCalls(ctx context.Context, id pgtype.UUID) (S
 const listEnabledSchedules = `-- name: ListEnabledSchedules :many
 SELECT max_run_seconds, id, name, description, pattern, max_calls, current_calls, created_at, updated_at, enabled, command, bot_id, run_target, target_session_id, runtime_type, bot_agent_id, acp_agent_id, model_id, acp_model_id, reasoning_effort, workdir_id, team_id
 FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND enabled = true
+WHERE team_id = public.ami_current_team_id() AND enabled = true
 ORDER BY created_at DESC
 `
 
@@ -279,7 +279,7 @@ func (q *Queries) ListEnabledSchedules(ctx context.Context) ([]Schedule, error) 
 const listSchedulesByBot = `-- name: ListSchedulesByBot :many
 SELECT max_run_seconds, id, name, description, pattern, max_calls, current_calls, created_at, updated_at, enabled, command, bot_id, run_target, target_session_id, runtime_type, bot_agent_id, acp_agent_id, model_id, acp_model_id, reasoning_effort, workdir_id, team_id
 FROM schedule
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY created_at DESC
 `
 
@@ -345,7 +345,7 @@ SET name = $2,
     workdir_id = $16::uuid,
     max_run_seconds = COALESCE(NULLIF($17::integer, 0), 3600),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING max_run_seconds, id, name, description, pattern, max_calls, current_calls, created_at, updated_at, enabled, command, bot_id, run_target, target_session_id, runtime_type, bot_agent_id, acp_agent_id, model_id, acp_model_id, reasoning_effort, workdir_id, team_id
 `
 

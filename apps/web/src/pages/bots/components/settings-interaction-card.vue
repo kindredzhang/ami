@@ -19,7 +19,7 @@
           <SelectValue>
             <div class="flex min-w-0 items-center gap-2">
               <img
-                v-if="defaultAgentValue === MEMOH_AGENT_VALUE"
+                v-if="defaultAgentValue === AMI_AGENT_VALUE"
                 src="/logo.svg"
                 alt=""
                 class="size-4 shrink-0"
@@ -34,14 +34,14 @@
           </SelectValue>
         </SelectTrigger>
         <SelectContent align="end">
-          <SelectItem :value="MEMOH_AGENT_VALUE">
+          <SelectItem :value="AMI_AGENT_VALUE">
             <div class="flex min-w-0 items-center gap-2">
               <img
                 src="/logo.svg"
                 alt=""
                 class="size-4 shrink-0"
               >
-              <span class="truncate">{{ $t('chat.agentMemoh') }}</span>
+              <span class="truncate">{{ $t('chat.agentAmi') }}</span>
             </div>
           </SelectItem>
           <SelectItem
@@ -96,7 +96,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Settings
 import { useI18n } from 'vue-i18n'
 import ModelSelect from './model-select.vue'
 import { reconcileStoredEffort } from './reasoning-effort'
-import type { AcpprofilePublicProfile, BotagentsBotAgent, SettingsSettings, ModelsGetResponse, ProvidersGetResponse } from '@memohai/sdk'
+import type { AcpprofilePublicProfile, BotagentsBotAgent, SettingsSettings, ModelsGetResponse, ProvidersGetResponse } from '@ami/sdk'
 import { isACPAgentConfigured } from '@/utils/acp'
 import { botAgentIcon, botAgentName, botAgentProvider, isDirectBotAgentConfigured, isDirectBotAgentRuntime, normalizeBotAgentRuntime } from '@/utils/bot-agent'
 
@@ -118,7 +118,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
-const MEMOH_AGENT_VALUE = 'memoh'
+const AMI_AGENT_VALUE = 'ami'
 const BOT_AGENT_VALUE_PREFIX = 'agent:'
 
 function isAgentConfigured(agent: BotagentsBotAgent): boolean {
@@ -138,7 +138,7 @@ const selectedAgent = computed(() => props.botAgents.find(agent => agent.id === 
 const defaultAgentValue = computed(() =>
   defaultBotAgentID.value
     ? agentOptionValue(defaultBotAgentID.value)
-    : MEMOH_AGENT_VALUE,
+    : AMI_AGENT_VALUE,
 )
 const selectedAgentUnavailable = computed(() =>
   !!defaultBotAgentID.value && (!selectedAgent.value || selectedAgent.value.enabled === false || !isAgentConfigured(selectedAgent.value)),
@@ -149,7 +149,7 @@ const defaultAgentDescription = computed(() =>
     : t('bots.settings.defaultAgentDescription'),
 )
 const selectedAgentLabel = computed(() => {
-  if (!defaultBotAgentID.value) return t('chat.agentMemoh')
+  if (!defaultBotAgentID.value) return t('chat.agentAmi')
   if (selectedAgent.value) return botAgentName(selectedAgent.value)
   return t('bots.settings.defaultAgentUnavailable')
 })
@@ -174,7 +174,7 @@ function setDefaultBotAgent(agent: BotagentsBotAgent) {
 }
 
 function setDefaultAgent(value: string) {
-  if (value === MEMOH_AGENT_VALUE) {
+  if (value === AMI_AGENT_VALUE) {
     // eslint-disable-next-line vue/no-mutating-props
     props.form.default_bot_agent_id = ''
     // eslint-disable-next-line vue/no-mutating-props

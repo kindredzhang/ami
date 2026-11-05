@@ -52,7 +52,7 @@ func TestUnwrapUserMessageEnvelope(t *testing.T) {
 		Channel:          "web",
 		ConversationType: "private",
 		Target:           "115e7013-dc2a-4437-8e21-b49fbb21dfef",
-		AttachmentPaths:  []string{"/data/.memoh/media/b2/b2edf40e.png"},
+		AttachmentPaths:  []string{"/data/.ami/media/b2/b2edf40e.png"},
 		Time:             time.Date(2026, 8, 20, 17, 37, 14, 0, time.UTC),
 	}
 

@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 // statusError is a non-2xx response from the QQ token or API endpoint.

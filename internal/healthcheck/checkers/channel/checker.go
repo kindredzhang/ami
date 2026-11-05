@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/healthcheck"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/healthcheck"
 )
 
 const (

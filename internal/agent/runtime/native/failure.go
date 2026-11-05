@@ -3,7 +3,7 @@ package native
 import (
 	"errors"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 // codeRunFailed is the catalog code of a failure of the runtime's own work.

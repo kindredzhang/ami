@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"log/slog"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
 )
 
 type elicitationRequest struct {

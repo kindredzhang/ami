@@ -9,7 +9,7 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 const maxTrackedACPToolStates = 1024
@@ -260,7 +260,7 @@ type acpToolState struct {
 	nativeIn  map[string]any
 	started   bool
 	done      bool
-	// refusal is why Memoh refused the call's permission. The agent only
+	// refusal is why Ami refused the call's permission. The agent only
 	// learns it was refused, so its own wording cannot say why.
 	refusal string
 }
@@ -497,7 +497,7 @@ func (m *acpToolEventMapper) permissionStateLocked(session, id string, tc acp.To
 	return cloneACPToolState(state)
 }
 
-// refuse records why Memoh refused a call's permission, for its result.
+// refuse records why Ami refused a call's permission, for its result.
 func (m *acpToolEventMapper) refuse(sessionID acp.SessionId, toolCallID acp.ToolCallId, reason string) {
 	if m == nil || strings.TrimSpace(reason) == "" {
 		return
@@ -506,7 +506,7 @@ func (m *acpToolEventMapper) refuse(sessionID acp.SessionId, toolCallID acp.Tool
 	defer m.mu.Unlock()
 	key := acpToolStateKey{sessionID: strings.TrimSpace(string(sessionID)), toolCallID: strings.TrimSpace(string(toolCallID))}
 	if state := m.tools[key]; state != nil {
-		state.refusal = "Memoh refused this call: " + reason
+		state.refusal = "Ami refused this call: " + reason
 	}
 }
 

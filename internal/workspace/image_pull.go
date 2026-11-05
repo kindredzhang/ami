@@ -5,8 +5,8 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
 )
 
 type ImagePrepareMode string

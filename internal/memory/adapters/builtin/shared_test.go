@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	storefs "github.com/felinics/memoh/internal/memory/storefs"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	storefs "github.com/kindredzhang/ami/internal/memory/storefs"
 )
 
 func TestRuntimeHash(t *testing.T) {

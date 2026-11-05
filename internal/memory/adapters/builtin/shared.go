@@ -11,8 +11,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	adapters "github.com/felinics/memoh/internal/memory/adapters"
-	storefs "github.com/felinics/memoh/internal/memory/storefs"
+	adapters "github.com/kindredzhang/ami/internal/memory/adapters"
+	storefs "github.com/kindredzhang/ami/internal/memory/storefs"
 )
 
 // memoryIDSeq is a process-wide monotonic counter appended to memory IDs so

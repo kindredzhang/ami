@@ -16,7 +16,7 @@ let buildRoot: string
 let cli: string
 
 beforeAll(async () => {
-  buildRoot = await mkdtemp(join(tmpdir(), 'memoh-enroll-cli-'))
+  buildRoot = await mkdtemp(join(tmpdir(), 'ami-enroll-cli-'))
   cli = join(buildRoot, 'cli.mjs')
   await build({
     entryPoints: [fileURLToPath(new URL('../src/cli.ts', import.meta.url))],
@@ -80,14 +80,14 @@ describe('enrollment locking across processes', () => {
 })
 
 async function fixture() {
-  const home = await mkdtemp(join(tmpdir(), 'memoh-enroll-home-'))
+  const home = await mkdtemp(join(tmpdir(), 'ami-enroll-home-'))
   roots.push(home)
-  await mkdir(join(home, '.memoh'), { mode: 0o700 })
-  return { home, config: join(home, '.memoh', 'runtime.json') }
+  await mkdir(join(home, '.ami'), { mode: 0o700 })
+  return { home, config: join(home, '.ami', 'runtime.json') }
 }
 
 function enroll(home: string, letter: string, replace = false) {
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('MEMOH_RUNTIME_')))
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('AMI_RUNTIME_')))
   return exec(process.execPath, [cli, 'enroll', '--server', `https://${letter}.example`, '--key', `mrk_${letter.repeat(64)}`, ...(replace ? ['--replace'] : [])], {
     env: { ...env, HOME: home, USERPROFILE: home }, timeout: 90_000,
   })

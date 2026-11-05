@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
-import type { AdaptersMemoryItem } from '@memohai/sdk'
+import type { AdaptersMemoryItem } from '@ami/sdk'
 
 export type MemoryLayer = 'all' | 'identity' | 'preference' | 'context' | 'experience' | 'activity' | 'persona' | 'note'
 

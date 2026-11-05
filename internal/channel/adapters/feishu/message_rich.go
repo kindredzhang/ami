@@ -3,7 +3,7 @@ package feishu
 import (
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func renderFeishuMessagePartsLarkMD(msg channel.Message) string {

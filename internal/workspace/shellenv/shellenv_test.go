@@ -14,10 +14,10 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 const seedPath = "/usr/bin:/bin"
@@ -36,14 +36,14 @@ func TestProbeRunsEveryTerminalShellInteractivelyAndDetached(t *testing.T) {
 		if !strings.Contains(TerminalCommand(), "exec "+shell+";") {
 			t.Fatalf("TerminalCommand() = %q, want it to launch %q", TerminalCommand(), shell)
 		}
-		if !strings.Contains(probe, "$memoh_detach "+shell+" -ic ") {
-			t.Fatalf("pathProbeCommand() = %q, want %q run interactively through $memoh_detach", probe, shell)
+		if !strings.Contains(probe, "$ami_detach "+shell+" -ic ") {
+			t.Fatalf("pathProbeCommand() = %q, want %q run interactively through $ami_detach", probe, shell)
 		}
 	}
 	if got := strings.Count(probe, ">/dev/null 2>&1 </dev/null;"); got != 4 {
 		t.Fatalf("pathProbeCommand() = %q, want every shell cut off from the exec's pipes, got %d", probe, got)
 	}
-	if !strings.Contains(probe, `memoh_detach="setsid -w timeout -k 1 4"`) {
+	if !strings.Contains(probe, `ami_detach="setsid -w timeout -k 1 4"`) {
 		t.Fatalf("pathProbeCommand() = %q, want the detached shell to carry the probe timeout", probe)
 	}
 }

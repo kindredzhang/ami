@@ -9,13 +9,13 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/acl"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/schedule"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/acl"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/schedule"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // --- fake services ---
@@ -158,7 +158,7 @@ func TestIsCommand(t *testing.T) {
 		{"@BotName /help", true},
 		{"@_user_1 /schedule list", true},
 		{"<@123456> /mcp list", true},
-		{"/help@MemohBot", true},
+		{"/help@AmiBot", true},
 		{"hello", false},
 		{"", false},
 		{"/", false},
@@ -195,7 +195,7 @@ func TestExecute_Help(t *testing.T) {
 func TestExecuteResultUsesProvidedInvocation(t *testing.T) {
 	t.Parallel()
 	h := newTestHandler(&fakeRoleResolver{role: "owner"})
-	invocation, err := ParseInvocation(InvocationInput{Text: "/help @memoh1bot", BotAliases: []string{"memoh1bot"}})
+	invocation, err := ParseInvocation(InvocationInput{Text: "/help @ami1bot", BotAliases: []string{"ami1bot"}})
 	if err != nil {
 		t.Fatalf("ParseInvocation() error = %v", err)
 	}
@@ -306,7 +306,7 @@ func TestExecute_WithMentionPrefix(t *testing.T) {
 func TestExecute_TelegramBotSuffix(t *testing.T) {
 	t.Parallel()
 	h := newTestHandler(&fakeRoleResolver{role: "owner"})
-	result, err := h.Execute(context.Background(), "bot-1", "user-1", "/help@MemohBot")
+	result, err := h.Execute(context.Background(), "bot-1", "user-1", "/help@AmiBot")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

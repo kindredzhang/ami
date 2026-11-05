@@ -10,12 +10,12 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/errs"
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/errs"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type SkillItem struct {
@@ -119,7 +119,7 @@ func (h *ContainerdHandler) ListSafeSkills(c echo.Context) error {
 }
 
 // UpsertSkills godoc
-// @Summary Upload skills into Memoh-managed directory
+// @Summary Upload skills into Ami-managed directory
 // @Tags containerd
 // @Param bot_id path string true "Bot ID"
 // @Param payload body SkillsUpsertRequest true "Skills payload"
@@ -276,7 +276,7 @@ func skillSaveHTTPError(err error) error {
 }
 
 // DeleteSkills godoc
-// @Summary Delete Memoh-managed skills
+// @Summary Delete Ami-managed skills
 // @Tags containerd
 // @Param bot_id path string true "Bot ID"
 // @Param payload body SkillsDeleteRequest true "Delete skills payload"

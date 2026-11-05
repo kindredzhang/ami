@@ -4,15 +4,15 @@ import { decidePostConnectNavigation, isCurrentServerProbe } from './connection-
 describe('startup server probe', () => {
   it('ignores a failed probe after the user has switched servers', () => {
     expect(isCurrentServerProbe(
-      'https://old.memoh.example.com',
-      'https://new.memoh.example.com',
+      'https://old.ami.example.com',
+      'https://new.ami.example.com',
     )).toBe(false)
   })
 
   it('handles a failed probe while its server is still configured', () => {
     expect(isCurrentServerProbe(
-      'https://memoh.example.com',
-      'https://memoh.example.com',
+      'https://ami.example.com',
+      'https://ami.example.com',
     )).toBe(true)
   })
 })

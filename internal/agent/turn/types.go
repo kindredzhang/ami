@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/felinics/memoh/internal/attachment"
+	"github.com/kindredzhang/ami/internal/attachment"
 )
 
 // Attachment is a media attachment carried in a turn request.

@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getBotsById, type BotsBot } from '@memohai/sdk'
+import { getBotsById, type BotsBot } from '@ami/sdk'
 
 /**
  * Query key of one bot, addressed by id or name. Every page that reads the

@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "registry_id": "memoh",
+  "registry_id": "ami",
   "dependency_id": "codex",
   "manifest": {
     "schema_version": "1",
@@ -58,7 +58,7 @@
   },
   "manifest_digest": "sha256:fae739876c6e7fb675cd9963d027eb4cd089d4702f73d89d9ee26169b05f2e62",
   "artifact": {
-    "format": "memoh_dependency_v1",
+    "format": "ami_dependency_v1",
     "digest": "cdbc0492cccdd4b4a769e3c742ac4b7c58b18195807b8957f87ce764fa93a24b",
     "size": 4012,
     "uncompressed_size": 12501,

@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/event"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // gatedSink blocks its first delivery until released, so a test can queue a

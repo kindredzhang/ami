@@ -8,9 +8,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	tools "github.com/felinics/memoh/internal/agent/tool"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 func TestSpawnRunConfigClassifiesRawQueryAsCurrentUser(t *testing.T) {

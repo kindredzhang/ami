@@ -36,7 +36,7 @@ func TestResolveTargetRequiresOpenID(t *testing.T) {
 }
 
 func TestParseConfig_HTTPProxy(t *testing.T) {
-	proxyURL := "http://memoh:" + "proxy-secret" + "@sztu.cc:3128"
+	proxyURL := "http://ami:" + "proxy-secret" + "@sztu.cc:3128"
 	cfg, err := parseConfig(map[string]any{
 		"appId":          "wx123",
 		"appSecret":      "secret",
@@ -53,7 +53,7 @@ func TestParseConfig_HTTPProxy(t *testing.T) {
 }
 
 func TestNormalizeConfig_HTTPProxy(t *testing.T) {
-	proxyURL := "http://memoh:" + "proxy-secret" + "@sztu.cc:3128"
+	proxyURL := "http://ami:" + "proxy-secret" + "@sztu.cc:3128"
 	out, err := normalizeConfig(map[string]any{
 		"appId":          "wx123",
 		"appSecret":      "secret",

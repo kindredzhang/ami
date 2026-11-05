@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 const MetadataKey = "markdown_media"

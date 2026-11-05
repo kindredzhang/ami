@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/agent/turn/turnpb"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn/turnpb"
 )
 
 func (s *Server) RuntimeCommands(ctx context.Context, req *turnpb.JsonRequest) (*turnpb.JsonResponse, error) {

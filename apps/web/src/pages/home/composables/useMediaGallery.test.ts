@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { client } from '@memohai/sdk/client'
+import { client } from '@ami/sdk/client'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { resolveUrl, useMediaGallery } from './useMediaGallery'
 import type { ChatMessage } from '@/store/chat-list'

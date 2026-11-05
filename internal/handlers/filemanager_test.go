@@ -21,9 +21,9 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/workspace"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/workspace"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type mkdirTargetTestWorkspace struct {
@@ -138,10 +138,10 @@ func TestIsContainerMediaPath(t *testing.T) {
 		path string
 		want bool
 	}{
-		{path: "/data/.memoh/media", want: true},
-		{path: "/data/.memoh/media/0f/demo.jpg", want: true},
-		{path: "data/.memoh/media/0f/demo.jpg", want: true},
-		{path: "/data/.memoh/mediakit/demo.jpg", want: false},
+		{path: "/data/.ami/media", want: true},
+		{path: "/data/.ami/media/0f/demo.jpg", want: true},
+		{path: "data/.ami/media/0f/demo.jpg", want: true},
+		{path: "/data/.ami/mediakit/demo.jpg", want: false},
 		{path: "/data/media", want: true},
 		{path: "/data/media/0f/demo.jpg", want: true},
 		{path: "data/media/0f/demo.jpg", want: true},

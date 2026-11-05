@@ -20,9 +20,9 @@ import (
 	"testing/fstest"
 	"time"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 const (
@@ -758,7 +758,7 @@ func TestListImageBaselineAndOverlay(t *testing.T) {
 	f.present("agent-x", SourceToolkit, "1.9.0", nil)
 	f.store.seed(Installation{BotID: testBot, DependencyID: "tool-y", Source: InstallationSourceManaged, Status: StatusInstalled, InstalledVersion: "1.0.0", LatestVersion: "1.2.0"})
 	managedTool := Candidate{Source: SourceManaged, Path: filepath.Join(f.home("tool-y"), "current", "bin", "tool-y"), Version: "1.0.0"}
-	imageTool := Candidate{Source: SourceToolkit, Path: "/opt/memoh/toolkit/bin/tool-y", Version: "0.9.0"}
+	imageTool := Candidate{Source: SourceToolkit, Path: "/opt/ami/toolkit/bin/tool-y", Version: "0.9.0"}
 	f.presentCandidates("tool-y", &State{Version: "1.0.0", PreviousVersion: "0.9.5"}, managedTool, imageTool)
 
 	result, err := f.svc.List(f.ctx(), testBot)
@@ -956,7 +956,7 @@ func TestInstallSucceeds(t *testing.T) {
 }
 
 // TestInstallRequestedVersion pins the version contract: the requested
-// version reaches the script as MEMOH_DEP_VERSION (over a manifest pin), and
+// version reaches the script as AMI_DEP_VERSION (over a manifest pin), and
 // the version recorded is the one the script reports, not the request.
 func TestInstallRequestedVersion(t *testing.T) {
 	f := newServiceFixture(t)
@@ -967,7 +967,7 @@ func TestInstallRequestedVersion(t *testing.T) {
 		t.Fatalf("Install: %v", err)
 	}
 	if spec := f.runSpecs()[0]; spec.Version != "1.3" {
-		t.Errorf("MEMOH_DEP_VERSION = %q, want the trimmed request", spec.Version)
+		t.Errorf("AMI_DEP_VERSION = %q, want the trimmed request", spec.Version)
 	}
 	if result.Version != "1.3.1" || result.Installation.InstalledVersion != "1.3.1" || f.readState(t, "tool-y").Version != "1.3.1" {
 		t.Errorf("recorded version = %+v, want the script's 1.3.1", result)
@@ -977,7 +977,7 @@ func TestInstallRequestedVersion(t *testing.T) {
 		t.Fatalf("Update: %v", err)
 	}
 	if spec := f.runSpecs()[1]; spec.Version != "2.5.0" {
-		t.Errorf("update MEMOH_DEP_VERSION = %q, want the request over the pin", spec.Version)
+		t.Errorf("update AMI_DEP_VERSION = %q, want the request over the pin", spec.Version)
 	}
 	if _, err := f.svc.Reinstall(f.ctx(), testBot, "tool-y", "1.4.0", nil); err != nil {
 		t.Fatalf("Reinstall: %v", err)
@@ -1566,7 +1566,7 @@ func TestRemoveDeletesShimsAndRecord(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if spec := f.runSpecs()[0]; preview.Script != WrapScript(spec.Script) || previewEnv(t, preview, "MEMOH_DEP_WORKSPACE_TARGET").Value != "native" {
+	if spec := f.runSpecs()[0]; preview.Script != WrapScript(spec.Script) || previewEnv(t, preview, "AMI_DEP_WORKSPACE_TARGET").Value != "native" {
 		t.Fatal("remove preview differs from execution")
 	}
 	if got := f.store.statuses(f.key("tool-y")); !statusesEqual(got, StatusRemoving) {
@@ -1733,7 +1733,7 @@ func TestScriptPreview(t *testing.T) {
 	if preview != WrapScript(svcToolInstallScript) {
 		t.Errorf("reinstall preview = %q", preview)
 	}
-	if preview, err := f.svc.ScriptPreview(t.Context(), "agent-x", ActionRollback); err != nil || !strings.Contains(preview, `dep_switch "$MEMOH_DEP_HOME/versions/$MEMOH_DEP_VERSION"`) {
+	if preview, err := f.svc.ScriptPreview(t.Context(), "agent-x", ActionRollback); err != nil || !strings.Contains(preview, `dep_switch "$AMI_DEP_HOME/versions/$AMI_DEP_VERSION"`) {
 		t.Errorf("rollback preview = %q, %v", preview, err)
 	}
 	if _, err := f.svc.ScriptPreview(t.Context(), "agent-x", catalog.ActionCheckUpdate); !errors.Is(err, ErrActionUnsupported) {
@@ -1991,19 +1991,19 @@ scripts:
 `
 
 // e2eFooInstall builds a fake CLI that prints its version, switches
-// `current`, and reports the entrypoint. MEMOH_DEP_VERSION carries the approved requested version.
-const e2eFooInstall = `version="${MEMOH_DEP_VERSION:-1.0.0}"
-target="$MEMOH_DEP_HOME/versions/$version"
+// `current`, and reports the entrypoint. AMI_DEP_VERSION carries the approved requested version.
+const e2eFooInstall = `version="${AMI_DEP_VERSION:-1.0.0}"
+target="$AMI_DEP_HOME/versions/$version"
 mkdir -p "$target/bin"
 printf '#!/bin/sh\necho "foo %s"\n' "$version" > "$target/bin/foo"
 chmod 0755 "$target/bin/foo"
 dep_log "installed foo $version"
 dep_switch "$target"
-dep_result "{\"version\":\"$version\",\"entrypoints\":{\"foo\":\"$MEMOH_DEP_HOME/current/bin/foo\"}}"
+dep_result "{\"version\":\"$version\",\"entrypoints\":{\"foo\":\"$AMI_DEP_HOME/current/bin/foo\"}}"
 `
 
-const e2eFooRemove = `case "$MEMOH_DEP_HOME" in "" | / | */ ) exit 1 ;; esac
-rm -rf "$MEMOH_DEP_HOME"
+const e2eFooRemove = `case "$AMI_DEP_HOME" in "" | / | */ ) exit 1 ;; esac
+rm -rf "$AMI_DEP_HOME"
 dep_result '{}'
 `
 

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const claudeTestSession = "6f1f8a44-9a1a-4a7e-9df1-0f6f8f3f1a10"

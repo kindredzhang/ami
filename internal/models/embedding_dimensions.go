@@ -9,7 +9,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/db"
+	"github.com/kindredzhang/ami/internal/db"
 )
 
 // embeddingDimensionsProbeTimeout bounds the extra embedding call a save may
@@ -27,7 +27,7 @@ const embeddingDimensionsProbeTimeout = 20 * time.Second
 // The probe spends the provider's own credentials before the write is
 // accepted, so callers must run every authorization check first. Here in OSS no
 // such check exists between normalization and Validate, which is why the calls
-// sit before Validate. Memoh Cloud carries this package with extra rules that
+// sit before Validate. Ami Cloud carries this package with extra rules that
 // the sync must preserve:
 //   - Create rejects managed providers (ensureProviderModelsMutable) after
 //     Validate. The probe has to move after that check, otherwise adding an

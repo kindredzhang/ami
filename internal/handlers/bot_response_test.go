@@ -3,8 +3,8 @@ package handlers
 import (
 	"testing"
 
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/bots"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/bots"
 )
 
 func TestScrubBotForResponseMasksACPManagedSecrets(t *testing.T) {

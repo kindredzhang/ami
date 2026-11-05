@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/server"
-	supermarketclient "github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/server"
+	supermarketclient "github.com/kindredzhang/ami/internal/supermarket"
 )
 
 func TestAppsHandlerAnswersAnInstallerErrorWithItsRegistryCode(t *testing.T) {

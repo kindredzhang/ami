@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (

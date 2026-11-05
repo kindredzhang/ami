@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { BotsBot } from '@memohai/sdk'
+import type { BotsBot } from '@ami/sdk'
 import { switcherBots } from './bot-switcher-list'
 
 function bot(id: string, status = 'ready'): BotsBot {

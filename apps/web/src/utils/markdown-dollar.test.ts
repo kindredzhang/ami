@@ -35,7 +35,7 @@ describe('withLiteralSingleDollars', () => {
     const md = getMarkdown()
     withLiteralSingleDollars(md)
     const count = () => ((md.core.ruler as unknown as { __rules__?: { name: string }[], rules?: { name: string }[] }).__rules__ ?? (md.core.ruler as unknown as { rules: { name: string }[] }).rules)
-      .filter(r => r.name.startsWith('memoh_dollar_')).length
+      .filter(r => r.name.startsWith('ami_dollar_')).length
     expect(count()).toBe(2)
     withLiteralSingleDollars(md)
     expect(count()).toBe(2)

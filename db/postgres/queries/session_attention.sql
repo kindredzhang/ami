@@ -7,7 +7,7 @@
 UPDATE bot_sessions s
 SET attention_at = sqlc.arg(at)::timestamptz,
     attention_kind = sqlc.arg(kind)::text
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = sqlc.arg(id)
   AND s.deleted_at IS NULL
   AND s.visibility = 'user'
@@ -23,7 +23,7 @@ RETURNING s.id, s.bot_id, s.created_by_user_id, s.title, s.attention_kind, s.att
 INSERT INTO session_reads (user_id, session_id, read_at)
 SELECT sqlc.arg(user_id), s.id, sqlc.arg(through)::timestamptz
 FROM bot_sessions s
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = sqlc.arg(session_id)
   AND s.created_by_user_id = sqlc.arg(user_id)
 ON CONFLICT (team_id, user_id, session_id)
@@ -39,7 +39,7 @@ RETURNING read_at;
 WITH eligible AS (
   SELECT s.id, s.bot_id, s.title, s.attention_kind, s.attention_at
   FROM bot_sessions s
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = ANY(sqlc.arg(session_ids)::uuid[])
     AND s.created_by_user_id = sqlc.arg(user_id)
     AND s.deleted_at IS NULL
@@ -77,7 +77,7 @@ SELECT s.id AS session_id,
 FROM bot_sessions s
 LEFT JOIN session_reads r
   ON r.team_id = s.team_id AND r.session_id = s.id AND r.user_id = sqlc.arg(user_id)
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.created_by_user_id = sqlc.arg(user_id)
   AND s.deleted_at IS NULL
   AND s.visibility = 'user'
@@ -100,7 +100,7 @@ SELECT s.id AS session_id,
 FROM bot_sessions s
 LEFT JOIN session_reads r
   ON r.team_id = s.team_id AND r.session_id = s.id AND r.user_id = sqlc.arg(user_id)
-WHERE s.team_id = public.memoh_current_team_id()
+WHERE s.team_id = public.ami_current_team_id()
   AND s.id = ANY(sqlc.arg(session_ids)::uuid[])
   AND s.created_by_user_id = sqlc.arg(user_id)
   AND (s.attention_at IS NOT NULL OR r.marked_unread_at IS NOT NULL);

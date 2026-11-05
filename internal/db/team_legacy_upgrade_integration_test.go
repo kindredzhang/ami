@@ -100,7 +100,7 @@ func TestMigrateLegacyInstallPreservesRows(t *testing.T) {
 	if err := pool.QueryRow(ctx, `
 		SELECT count(*) FROM pg_constraint con
 		 WHERE con.contype='u' AND con.conrelid='public.bots'::regclass
-		   AND con.conname LIKE 'memoh_team_key_%'
+		   AND con.conname LIKE 'ami_team_key_%'
 		   AND (SELECT a.attname FROM pg_attribute a
 		         WHERE a.attrelid=con.conrelid AND a.attnum=con.conkey[1])='team_id'`).Scan(&teamKeyCount); err != nil {
 		t.Fatalf("bots team key: %v", err)

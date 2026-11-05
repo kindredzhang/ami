@@ -3,7 +3,7 @@ package models
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // An explicit thinking{type:"disabled"} is sent wherever the catalog declares

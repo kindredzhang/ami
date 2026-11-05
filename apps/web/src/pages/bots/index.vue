@@ -108,7 +108,7 @@ import { useRouter } from 'vue-router'
 import { PersonaTile } from '@felinic/ui'
 import BotCard from './components/bot-card.vue'
 import { useQuery } from '@pinia/colada'
-import { getBotsQuery } from '@memohai/sdk/colada'
+import { getBotsQuery } from '@ami/sdk/colada'
 import { usePendingBotsRefresh } from '@/composables/usePendingBotsRefresh'
 
 declare global {

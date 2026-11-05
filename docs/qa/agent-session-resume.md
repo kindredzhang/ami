@@ -9,8 +9,8 @@ WebSocket traffic, and Server container replacement were real. No virtual clock
 was used for the long-task or rolling scenarios.
 
 - UI: `http://localhost:19092`; proxy health endpoint: `http://localhost:19090/ping`.
-- Base development stack: documented `mise run dev`, isolated `memoh-timeout-qa`.
-- Rolling replicas used a separate `memoh_rolling_qa` database cloned from that
+- Base development stack: documented `mise run dev`, isolated `ami-timeout-qa`.
+- Rolling replicas used a separate `ami_rolling_qa` database cloned from that
   task-owned fixture database, a separate Valkey instance, and an Nginx proxy.
 - Workspace/containerd remained on an independent workspace host. Server replicas
   shared its workspace volume and accessed containerd through a Unix socket relay.

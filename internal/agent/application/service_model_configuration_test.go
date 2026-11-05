@@ -9,11 +9,11 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 type missingModelQueries struct{ modelSelectionFakeQueries }

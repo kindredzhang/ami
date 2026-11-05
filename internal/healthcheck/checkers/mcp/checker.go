@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/healthcheck"
-	"github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/healthcheck"
+	"github.com/kindredzhang/ami/internal/mcp"
 )
 
 const (

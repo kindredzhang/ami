@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-prefix='__MEMOH_DISPLAY_PROGRESS__'
+prefix='__AMI_DISPLAY_PROGRESS__'
 progress() {
   percent="$1"
   step="$2"
@@ -16,7 +16,7 @@ has_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 find_xvnc() {
-  for candidate in /opt/memoh/toolkit/display/bin/Xvnc /usr/bin/Xvnc /usr/local/bin/Xvnc Xvnc; do
+  for candidate in /opt/ami/toolkit/display/bin/Xvnc /usr/bin/Xvnc /usr/local/bin/Xvnc Xvnc; do
     if echo "$candidate" | grep -q /; then
       [ -x "$candidate" ] && { printf '%s\n' "$candidate"; return 0; }
     elif has_cmd "$candidate"; then
@@ -36,10 +36,10 @@ find_browser() {
   return 1
 }
 has_desktop() {
-  has_cmd startxfce4 || has_cmd xfce4-session || has_cmd xfwm4 || [ -x /opt/memoh/toolkit/display/bin/twm ]
+  has_cmd startxfce4 || has_cmd xfce4-session || has_cmd xfwm4 || [ -x /opt/ami/toolkit/display/bin/twm ]
 }
 RFB_PORT=5999
-XVNC_GEOMETRY="${MEMOH_DISPLAY_GEOMETRY:-1280x960}"
+XVNC_GEOMETRY="${AMI_DISPLAY_GEOMETRY:-1280x960}"
 X_SOCKET=/tmp/.X11-unix/X99
 X_LOCK=/tmp/.X99-lock
 xvnc_pids() {
@@ -78,7 +78,7 @@ browser_cdp_running() {
 }
 cleanup_browser_profile() {
   [ -n "$(browser_pids)" ] && return 0
-  rm -f /tmp/memoh-display-browser/SingletonLock /tmp/memoh-display-browser/SingletonSocket /tmp/memoh-display-browser/SingletonCookie
+  rm -f /tmp/ami-display-browser/SingletonLock /tmp/ami-display-browser/SingletonSocket /tmp/ami-display-browser/SingletonCookie
 }
 stop_xvnc() {
   pids="$(xvnc_pids)"
@@ -149,7 +149,7 @@ start_xfwm4() {
   has_cmd xfwm4 || return 1
   [ -n "$(xfwm4_pids)" ] && return 0
   stop_fallback_wm
-  nohup xfwm4 --replace >/tmp/memoh-xfwm4.log 2>&1 &
+  nohup xfwm4 --replace >/tmp/ami-xfwm4.log 2>&1 &
   return 0
 }
 start_desktop_session() {
@@ -159,34 +159,34 @@ start_desktop_session() {
       return 0
     fi
     stop_fallback_wm
-    nohup startxfce4 >/tmp/memoh-xfce.log 2>&1 &
+    nohup startxfce4 >/tmp/ami-xfce.log 2>&1 &
   elif has_cmd xfce4-session; then
     if [ -n "$(xfce_session_pids)" ]; then
       start_xfwm4
       return 0
     fi
     stop_fallback_wm
-    nohup xfce4-session >/tmp/memoh-xfce.log 2>&1 &
+    nohup xfce4-session >/tmp/ami-xfce.log 2>&1 &
   elif has_cmd xfwm4; then
     start_xfwm4
   elif [ -n "$(fallback_wm_pids)" ]; then
     return 0
-  elif [ -x /opt/memoh/toolkit/display/bin/twm ]; then
-    nohup /opt/memoh/toolkit/display/bin/twm >/tmp/memoh-twm.log 2>&1 &
+  elif [ -x /opt/ami/toolkit/display/bin/twm ]; then
+    nohup /opt/ami/toolkit/display/bin/twm >/tmp/ami-twm.log 2>&1 &
   fi
 }
 display_socket_ready() {
   xvnc_running && [ -S "$X_SOCKET" ] && awk -v port="$(printf '%04X' "$RFB_PORT")" 'toupper($2) ~ ":" port "$" && $4 == "0A" { found = 1 } END { exit found ? 0 : 1 }' /proc/net/tcp /proc/net/tcp6 2>/dev/null
 }
 desktop_style_current() {
-  /bin/sh /opt/memoh/scripts/display-apply-style.sh --check >/dev/null 2>&1
+  /bin/sh /opt/ami/scripts/display-apply-style.sh --check >/dev/null 2>&1
 }
 display_ready() {
   display_socket_ready && find_browser >/dev/null 2>&1 && has_desktop && desktop_style_current
 }
 
-prepare_lock=/tmp/memoh-display-prepare.lock
-prepare_guard=/tmp/memoh-display-prepare.guard
+prepare_lock=/tmp/ami-display-prepare.lock
+prepare_guard=/tmp/ami-display-prepare.guard
 prepare_owner=0
 # Serialize directory/PID changes, including recovery. Keep this inode: removing
 # a flock file would allow different callers to lock different files.
@@ -271,7 +271,7 @@ export DISPLAY=:99
 # Desktop processes inherit this locale. Default to UTF-8 so applications can
 # decode committed Unicode text; preserve a locale already set by the user.
 export LANG="${LANG:-C.UTF-8}"
-mkdir -p /run/memoh /tmp/.X11-unix
+mkdir -p /run/ami /tmp/.X11-unix
 chmod 1777 /tmp/.X11-unix 2>/dev/null || true
 
 wait_for_socket() {
@@ -299,14 +299,14 @@ if ! display_socket_ready; then
   if ! display_socket_ready; then
     stop_xvnc
     cleanup_stale_display
-    nohup "$XVNC" :99 -geometry "$XVNC_GEOMETRY" -depth 24 -SecurityTypes None -SendPrimary=0 -localhost -rfbport "$RFB_PORT" >/tmp/memoh-xvnc.log 2>&1 &
+    nohup "$XVNC" :99 -geometry "$XVNC_GEOMETRY" -depth 24 -SecurityTypes None -SendPrimary=0 -localhost -rfbport "$RFB_PORT" >/tmp/ami-xvnc.log 2>&1 &
     wait_i=0
     while [ "$wait_i" -lt 25 ]; do
       display_socket_ready && break
       sleep 1
       wait_i=$((wait_i + 1))
     done
-    display_socket_ready || { cat /tmp/memoh-xvnc.log >&2 2>/dev/null || true; exit 1; }
+    display_socket_ready || { cat /tmp/ami-xvnc.log >&2 2>/dev/null || true; exit 1; }
   fi
 fi
 
@@ -324,21 +324,21 @@ if has_cmd vncconfig; then
   run_quick vncconfig -display "$DISPLAY" -set SendPrimary=0
 fi
 if command -v fc-cache >/dev/null 2>&1; then
-  nohup fc-cache -f >/tmp/memoh-fc-cache.log 2>&1 &
+  nohup fc-cache -f >/tmp/ami-fc-cache.log 2>&1 &
 fi
 if [ -S "$X_SOCKET" ]; then
   if command -v xsetroot >/dev/null 2>&1; then
-    run_quick xsetroot -solid "${MEMOH_DISPLAY_DESKTOP_COLOR:-#1f2329}"
+    run_quick xsetroot -solid "${AMI_DISPLAY_DESKTOP_COLOR:-#1f2329}"
     run_quick xsetroot -cursor_name left_ptr
-  elif [ -x /opt/memoh/toolkit/display/bin/xsetroot ]; then
-    run_quick /opt/memoh/toolkit/display/bin/xsetroot -solid "${MEMOH_DISPLAY_DESKTOP_COLOR:-#1f2329}"
-    run_quick /opt/memoh/toolkit/display/bin/xsetroot -cursor_name left_ptr
+  elif [ -x /opt/ami/toolkit/display/bin/xsetroot ]; then
+    run_quick /opt/ami/toolkit/display/bin/xsetroot -solid "${AMI_DISPLAY_DESKTOP_COLOR:-#1f2329}"
+    run_quick /opt/ami/toolkit/display/bin/xsetroot -cursor_name left_ptr
   fi
 fi
 start_desktop_session
 
 progress 90 styling "Applying desktop style"
-/bin/sh /opt/memoh/scripts/display-apply-style.sh --ensure
+/bin/sh /opt/ami/scripts/display-apply-style.sh --ensure
 
 progress 94 browser "Launching browser"
 if ! browser_cdp_running; then
@@ -346,7 +346,7 @@ if ! browser_cdp_running; then
     stop_browsers
   fi
   cleanup_browser_profile
-  GTK_A11Y=1 nohup "$BROWSER" --no-sandbox --disable-dev-shm-usage --disable-gpu --no-first-run --no-default-browser-check --force-renderer-accessibility --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 --remote-allow-origins='*' --user-data-dir=/tmp/memoh-display-browser about:blank >/tmp/memoh-browser.log 2>&1 &
+  GTK_A11Y=1 nohup "$BROWSER" --no-sandbox --disable-dev-shm-usage --disable-gpu --no-first-run --no-default-browser-check --force-renderer-accessibility --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 --remote-allow-origins='*' --user-data-dir=/tmp/ami-display-browser about:blank >/tmp/ami-browser.log 2>&1 &
 fi
 
 emit_complete

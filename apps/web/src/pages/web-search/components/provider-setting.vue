@@ -165,13 +165,13 @@ import { toTypedSchema } from '@vee-validate/zod'
 import z from 'zod'
 import { useForm } from 'vee-validate'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
-import { deleteSearchProvidersById, getSearchProvidersMeta, postSearchProviders, putSearchProvidersById } from '@memohai/sdk'
+import { deleteSearchProvidersById, getSearchProvidersMeta, postSearchProviders, putSearchProvidersById } from '@ami/sdk'
 import type {
   SearchprovidersCreateRequest,
   SearchprovidersGetResponse,
   SearchprovidersProviderMeta,
   SearchprovidersUpdateRequest,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { ConfirmPopover, FieldStack, SettingsRow, SettingsSection, SettingsShell, toast } from '@felinic/ui'
 import { normalizeProviderConfigFields } from '@/utils/provider-template'

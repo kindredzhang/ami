@@ -8,7 +8,7 @@ Keep repository guidance, PR/issue templates, and automated GitHub Actions messa
 
 ## Project Overview
 
-Memoh is a multi-member, structured long-memory AI agent platform with isolated workspace runtimes. Users can create AI bots and chat with them via Telegram, Discord, Lark (Feishu), DingTalk, WeChat, Matrix, and more. Each bot can use an independent container workspace to edit files, execute commands, run tools, and build itself while keeping runtime ownership explicit.
+Ami is a multi-member, structured long-memory AI agent platform with isolated workspace runtimes. Users can create AI bots and chat with them via Telegram, Discord, Lark (Feishu), DingTalk, WeChat, Matrix, and more. Each bot can use an independent container workspace to edit files, execute commands, run tools, and build itself while keeping runtime ownership explicit.
 
 The public documentation site is maintained separately in `felinics/memoh-docs`.
 
@@ -22,7 +22,7 @@ Deploy/server mode consists of three core services:
 | **Channel** (Backend) | Go + Echo | 8081 | External channel adapters, and channel webhook endpoints; delegates agent turns to Server over authenticated internal gRPC. Split mode is opt-in via `internal_rpc.shared_secret` (docker compose sets it); without it the Server embeds the channel runtime and runs all-in-one |
 | **Web** (Frontend) | Vue 3 + Vite | 8082 | Management UI: visual configuration for Bots, Models, Channels, etc. |
 
-The native desktop client is a separate distribution boundary for Memoh Cloud or a hosted Memoh server. `apps/desktop` reuses `@memohai/web` modules, but owns the Electron shell, system tray behavior, menus, preload IPC, cache invalidation, and packaged application resources.
+The native desktop client is a separate distribution boundary for Ami Cloud or a hosted Ami server. `apps/desktop` reuses `@ami/web` modules, but owns the Electron shell, system tray behavior, menus, preload IPC, cache invalidation, and packaged application resources.
 
 Infrastructure dependencies:
 - **PostgreSQL** — Relational data storage
@@ -47,10 +47,10 @@ Infrastructure dependencies:
 - **Build Tool**: Vite 8
 - **State Management**: Pinia 3 + Pinia Colada
 - **UI**: Tailwind CSS 4 + custom component library (`@felinic/ui`) + Reka UI
-- **Icons**: lucide-vue-next + `@memohai/icon` (brand/provider icons)
+- **Icons**: lucide-vue-next + `@ami/icon` (brand/provider icons)
 - **i18n**: vue-i18n
 - **Markdown**: markstream-vue + Shiki + Mermaid + KaTeX
-- **Desktop**: Electron 34 + [electron-vite](https://electron-vite.github.io/) 4 native client, reusing `@memohai/web` modules while managing the desktop renderer, tray behavior, menus, and preload IPC
+- **Desktop**: Electron 34 + [electron-vite](https://electron-vite.github.io/) 4 native client, reusing `@ami/web` modules while managing the desktop renderer, tray behavior, menus, and preload IPC
 - **Package Manager**: pnpm monorepo
 
 ### Tooling
@@ -78,7 +78,7 @@ Top-level layout — see `docs/codebase-map.md` for the full annotated tree, con
 Before making changes to a directory, check whether that directory (or its nearest parent application/package directory) contains an `AGENTS.md`. If it does, read it first. Local files contain domain-specific conventions that override or extend this root guide.
 
 Key local developer guides:
-- `apps/web/AGENTS.md` — web frontend entry point routing to `.agents/skills/memoh-frontend-rules/SKILL.md` (host rules, architecture, review checklist) and `packages/ui` skills.
+- `apps/web/AGENTS.md` — web frontend entry point routing to `.agents/skills/ami-frontend-rules/SKILL.md` (host rules, architecture, review checklist) and `packages/ui` skills.
 - `apps/desktop/AGENTS.md` — Electron shell, hosted-server bootstrap, tray/menu/preload rules.
 - `packages/ui/AGENTS.md` — UI-owned entry point for the `@felinic/ui` design token contract, `skills/ui-owners/` (component & primitive vocabulary), and `skills/ui-patterns/` (cross-component interaction patterns). Read it before Web/UI work; do not duplicate `packages/ui` skills under `.agents/skills/`.
 
@@ -117,7 +117,7 @@ These requirements apply to every task that modifies repository files. They are 
 
 ### OSS vs Cloud: Where to Open a PR
 
-Memoh is a commercial project split across two repositories: this OSS repo and a private Cloud repo. The two codebases are similar but not identical — some PRs belong in OSS, others in Cloud. Before opening a PR, decide which repo it targets. Cloud periodically syncs from OSS, but the sync can silently skip some changes, so verify what actually landed instead of assuming the sync covered it.
+Ami is a commercial project split across two repositories: this OSS repo and a private Cloud repo. The two codebases are similar but not identical — some PRs belong in OSS, others in Cloud. Before opening a PR, decide which repo it targets. Cloud periodically syncs from OSS, but the sync can silently skip some changes, so verify what actually landed instead of assuming the sync covered it.
 
 ### Issue and PR Submission Rules
 
@@ -167,7 +167,7 @@ The `Human QA` section contains only one status checkbox, `- [ ] Human QA passed
 1. Write handlers in `internal/handlers/` with swaggo annotations.
 2. Run `mise run swagger-generate` to update the OpenAPI docs (output in `spec/`).
 3. Run `mise run sdk-generate` to update the frontend TypeScript SDK (`packages/sdk/`).
-4. The frontend calls APIs via the auto-generated `@memohai/sdk`.
+4. The frontend calls APIs via the auto-generated `@ami/sdk`.
 
 ### Agent Development
 
@@ -176,8 +176,8 @@ The `Human QA` section contains only one status checkbox, `- [ ] Human QA passed
 - `internal/agent/application/` owns turn orchestration: message assembly, history, memory, compaction, decisions, persistence, and runtime dispatch.
 - `internal/agent/turn/` is the pure port used by Channel and by the authenticated in-process/gRPC transports. Internal code says Thread; compatibility adapters keep external `session_id` and existing gRPC fields stable.
 - Model/client types are defined in `internal/models/types.go`: `openai-completions`, `openai-responses`, `anthropic-messages`, `google-generative-ai`, `openai-codex`, `github-copilot`, `edge-speech`. Model types: `chat`, `embedding`, `speech`.
-- Tools are implemented as `ToolProvider` instances in `internal/agent/tool/`, loaded via setter injection to avoid FX dependency cycles. A tool is a `toolexec.Tool`; its `Execute` takes `sdk.ToolArguments` and returns `sdk.ToolOutput`. Handlers decode into a struct: `toolexec.Define[T]` (or `toolexec.SchemaFor[T]` + `toolexec.Typed`) infers the parameter schema from the struct's `json` / `jsonschema` tags, and shape functions (`Range`, `Enum`, `Describe`, `Require`, `Default`, `Strict`, ...) add what tags cannot express or what depends on the session. Results go through `toolexec.OutputFromValue` / `toolexec.OutputPair`. The SDK keeps tool arguments and outputs in RFC 8785 canonical JSON, so numbers have binary64 semantics: an identifier or quantity that must stay exact beyond 2^53 belongs in a JSON string, never a number. `toolexec.SchemaFromValue` is only for map schemas Memoh writes itself and another package validates as a map (`ask_user`, `send`/`react` via `internal/messaging`, the capability specs); a schema that arrives as data (federation, memory provider descriptors) goes through `toolexec.ResolveSchema` and the tool is skipped with a warning when it does not parse. `internal/agent/tool/schema_golden_test.go` pins every converted schema against `testdata/schemas/`; a wire change must update the golden deliberately.
-- `sdk.ProviderMetadata` is `namespace → name → string`. Memoh-owned annotations on tool-call parts (pending approval, user-input request, execution location) live in the `memoh` namespace through `internal/agent/partmeta`; `internal/messageconv` folds them back into the nested objects `bot_history_messages` has always stored, so the row format did not change with the SDK types.
+- Tools are implemented as `ToolProvider` instances in `internal/agent/tool/`, loaded via setter injection to avoid FX dependency cycles. A tool is a `toolexec.Tool`; its `Execute` takes `sdk.ToolArguments` and returns `sdk.ToolOutput`. Handlers decode into a struct: `toolexec.Define[T]` (or `toolexec.SchemaFor[T]` + `toolexec.Typed`) infers the parameter schema from the struct's `json` / `jsonschema` tags, and shape functions (`Range`, `Enum`, `Describe`, `Require`, `Default`, `Strict`, ...) add what tags cannot express or what depends on the session. Results go through `toolexec.OutputFromValue` / `toolexec.OutputPair`. The SDK keeps tool arguments and outputs in RFC 8785 canonical JSON, so numbers have binary64 semantics: an identifier or quantity that must stay exact beyond 2^53 belongs in a JSON string, never a number. `toolexec.SchemaFromValue` is only for map schemas Ami writes itself and another package validates as a map (`ask_user`, `send`/`react` via `internal/messaging`, the capability specs); a schema that arrives as data (federation, memory provider descriptors) goes through `toolexec.ResolveSchema` and the tool is skipped with a warning when it does not parse. `internal/agent/tool/schema_golden_test.go` pins every converted schema against `testdata/schemas/`; a wire change must update the golden deliberately.
+- `sdk.ProviderMetadata` is `namespace → name → string`. Ami-owned annotations on tool-call parts (pending approval, user-input request, execution location) live in the `ami` namespace through `internal/agent/partmeta`; `internal/messageconv` folds them back into the nested objects `bot_history_messages` has always stored, so the row format did not change with the SDK types.
 - **Tool usage lives with the tool, never in the static prompt.** Per-tool usage goes in `toolexec.Tool.Description`; cross-tool workflow guidance goes in an optional `tools.ToolUsage` `Usage()` method that `assembleTools` injects only when that provider registers tools for the session. `internal/agent/runtime/native/prompt_test.go` guards this.
 - Prompt templates are embedded from `internal/agent/runtime/native/prompts/`. Partials are prefixed with `_`; system prompting combines `system_common.md` with mode-specific prompts such as `mode_chat.md` and `mode_discuss.md`.
 - `internal/chat/` owns internal chat state (`thread`, `message`, `checkpoint`, `timeline`, `view`) and does not orchestrate Agent execution. Inbound adaptation lives in `internal/channel/inbound/`; discuss-mode driving in `internal/channel/discuss/`.
@@ -187,13 +187,13 @@ The `Human QA` section contains only one status checkbox, `- [ ] Human QA passed
 ### Frontend Development
 
 - Use Vue 3 Composition API with `<script setup>` style.
-- Shared components belong in `packages/ui/`; API calls use `@memohai/sdk`; state uses Pinia + Pinia Colada; i18n via vue-i18n.
+- Shared components belong in `packages/ui/`; API calls use `@ami/sdk`; state uses Pinia + Pinia Colada; i18n via vue-i18n.
 - See `apps/web/AGENTS.md` for detailed frontend conventions.
 
 ### Desktop App
 
-- `apps/desktop/` is an [electron-vite](https://electron-vite.github.io/) Electron shell (`@memohai/desktop`) that reuses `@memohai/web` modules for Memoh Cloud or a hosted server. It must not start a server, package database files, embed Qdrant, or install a companion CLI.
-- When desktop needs to diverge from web, extend the desktop bootstrap or add explicit `@memohai/web` subpath exports. Do **not** fork `apps/web`.
+- `apps/desktop/` is an [electron-vite](https://electron-vite.github.io/) Electron shell (`@ami/desktop`) that reuses `@ami/web` modules for Ami Cloud or a hosted server. It must not start a server, package database files, embed Qdrant, or install a companion CLI.
+- When desktop needs to diverge from web, extend the desktop bootstrap or add explicit `@ami/web` subpath exports. Do **not** fork `apps/web`.
 - Bootstrap details (memory-history router, tray, packaging): `apps/desktop/AGENTS.md` and `docs/codebase-map.md`.
 
 ### Container / Workspace Management

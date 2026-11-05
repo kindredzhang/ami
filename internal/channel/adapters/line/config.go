@@ -4,8 +4,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/redact"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/redact"
 )
 
 const Type channel.ChannelType = "line"

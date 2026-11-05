@@ -5,19 +5,19 @@ FROM bot_history_checkpoints checkpoint
 JOIN bot_sessions session
   ON session.team_id = checkpoint.team_id
  AND session.history_checkpoint_id = checkpoint.id
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = sqlc.arg(session_id);
 
 -- name: GetHistoryCheckpoint :one
 SELECT *
 FROM bot_history_checkpoints
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(id);
 
 -- name: ListHistoryCheckpointSummaries :many
 SELECT compact.id, compact.summary
 FROM bot_history_message_compacts compact
-WHERE compact.team_id = public.memoh_current_team_id()
+WHERE compact.team_id = public.ami_current_team_id()
   AND compact.session_id = sqlc.arg(session_id)
   AND compact.id = ANY(sqlc.arg(ids)::uuid[])
   AND compact.status = 'ok';
@@ -28,7 +28,7 @@ WHERE compact.team_id = public.memoh_current_team_id()
 -- parent keeps by reference and the rows it folds), in turn order.
 SELECT m.id, m.turn_position, m.turn_message_seq
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND (
     (
@@ -52,7 +52,7 @@ SELECT session.id, sqlc.narg(parent_id)::uuid,
   sqlc.arg(turn_position)::bigint, sqlc.arg(turn_message_seq)::bigint,
   sqlc.arg(items)::jsonb
 FROM bot_sessions session
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = sqlc.arg(session_id)
   AND session.history_checkpoint_id IS NOT DISTINCT FROM sqlc.narg(parent_id)::uuid
 FOR UPDATE OF session
@@ -62,7 +62,7 @@ RETURNING *;
 -- Moves the session's active checkpoint, only from the one the caller read.
 UPDATE bot_sessions
 SET history_checkpoint_id = sqlc.narg(checkpoint_id)::uuid
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(session_id)
   AND history_checkpoint_id IS NOT DISTINCT FROM sqlc.narg(expected_checkpoint_id)::uuid;
 
@@ -74,13 +74,13 @@ WITH replaced AS MATERIALIZED (
   SELECT MIN(m.turn_position)::bigint AS turn_position,
     MIN(m.turn_message_seq)::bigint AS turn_message_seq
   FROM bot_visible_history_messages m
-  WHERE m.team_id = public.memoh_current_team_id()
+  WHERE m.team_id = public.ami_current_team_id()
     AND m.session_id = sqlc.arg(session_id)
     AND m.turn_id = sqlc.arg(turn_id)
     AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
 )
 SELECT (replaced.turn_position IS NOT NULL)::boolean AS turn_found,
-  public.memoh_history_checkpoint_kept(sqlc.arg(session_id), replaced.turn_position, replaced.turn_message_seq)::uuid AS checkpoint_id
+  public.ami_history_checkpoint_kept(sqlc.arg(session_id), replaced.turn_position, replaced.turn_message_seq)::uuid AS checkpoint_id
 FROM replaced;
 
 -- name: GetHistoryCheckpointKeptThroughTurn :one
@@ -88,8 +88,8 @@ FROM replaced;
 -- the session's active chain that accounts for no history after that turn.
 SELECT checkpoint.*
 FROM bot_history_checkpoints checkpoint
-WHERE checkpoint.team_id = public.memoh_current_team_id()
-  AND checkpoint.id = public.memoh_history_checkpoint_kept(sqlc.arg(session_id), sqlc.arg(through_turn_position)::bigint + 1, 0);
+WHERE checkpoint.team_id = public.ami_current_team_id()
+  AND checkpoint.id = public.ami_history_checkpoint_kept(sqlc.arg(session_id), sqlc.arg(through_turn_position)::bigint + 1, 0);
 
 -- name: RewindHistoryCheckpointBeforeTurn :one
 -- An edit or retry that compacts before its first step commits rewinds the
@@ -99,7 +99,7 @@ WHERE checkpoint.team_id = public.memoh_current_team_id()
 WITH owner_session AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = sqlc.arg(session_id)
     AND session.bot_id = sqlc.arg(bot_id)
   FOR UPDATE
@@ -108,12 +108,12 @@ WITH owner_session AS MATERIALIZED (
     MIN(m.turn_message_seq)::bigint AS turn_message_seq
   FROM bot_visible_history_messages m
   JOIN owner_session owner ON owner.id = m.session_id
-  WHERE m.team_id = public.memoh_current_team_id()
+  WHERE m.team_id = public.ami_current_team_id()
     AND m.turn_id = sqlc.arg(turn_id)
     AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
 )
 SELECT COALESCE((
-  SELECT public.memoh_rewind_history_checkpoint(owner.id, replaced.turn_position, replaced.turn_message_seq)
+  SELECT public.ami_rewind_history_checkpoint(owner.id, replaced.turn_position, replaced.turn_message_seq)
   FROM replaced
   WHERE replaced.turn_position IS NOT NULL
 ), false)::boolean AS rewound
@@ -142,7 +142,7 @@ WITH candidate_rows AS MATERIALIZED (
     )::BIGINT AS payload_bytes,
     (m.role <> 'tool')::int AS opens_group
   FROM bot_visible_history_messages m
-  WHERE m.team_id = public.memoh_current_team_id()
+  WHERE m.team_id = public.ami_current_team_id()
     AND m.session_id = sqlc.arg(session_id)
     AND (
       (m.turn_position, m.turn_message_seq) > (sqlc.arg(after_turn_position)::bigint, sqlc.arg(after_turn_message_seq)::bigint)
@@ -186,7 +186,7 @@ SELECT
   admitted.candidate_count
 FROM bot_visible_history_messages m
 JOIN admitted_candidates admitted ON admitted.id = m.id
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
 ORDER BY m.turn_position ASC, m.turn_message_seq ASC, m.created_at ASC, m.id ASC;
 
 -- name: CountHistoryCheckpointCandidates :one
@@ -195,7 +195,7 @@ ORDER BY m.turn_position ASC, m.turn_message_seq ASC, m.created_at ASC, m.id ASC
 -- a read that took nothing whether rows are left.
 SELECT COUNT(*)::BIGINT AS candidate_count
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND (
     (m.turn_position, m.turn_message_seq) > (sqlc.arg(after_turn_position)::bigint, sqlc.arg(after_turn_message_seq)::bigint)
@@ -221,7 +221,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS total_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = sqlc.arg(session_id)
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -243,7 +243,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS content_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = sqlc.arg(session_id)
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -267,7 +267,7 @@ WITH RECURSIVE history_window AS (
     SELECT 1
     FROM oldest
     JOIN bot_history_messages m
-      ON m.team_id = public.memoh_current_team_id()
+      ON m.team_id = public.ami_current_team_id()
      AND m.session_id = sqlc.arg(session_id)
      AND (m.turn_position, m.turn_message_seq, m.created_at, m.id)
        < (oldest.turn_position, oldest.turn_message_seq, oldest.created_at, oldest.id)
@@ -302,11 +302,11 @@ SELECT
   budget_cut.truncated
 FROM history_window admitted
 JOIN bot_history_messages m ON m.id = admitted.id
-  AND m.team_id = public.memoh_current_team_id()
+  AND m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
 CROSS JOIN budget_cut
-LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.memoh_current_team_id()
-LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.memoh_current_team_id()
+LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.ami_current_team_id()
+LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.ami_current_team_id()
 ORDER BY admitted.turn_position ASC, admitted.turn_message_seq ASC, admitted.created_at ASC, admitted.id ASC;
 
 -- name: ListHistoryRowsBySources :many
@@ -314,7 +314,7 @@ ORDER BY admitted.turn_position ASC, admitted.turn_message_seq ASC, admitted.cre
 -- they record, at their places in the history.
 SELECT m.id, m.source_message_id, m.turn_position, m.turn_message_seq
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND (m.id = ANY(sqlc.arg(ids)::uuid[]) OR m.source_message_id = ANY(sqlc.arg(external_message_ids)::text[]))
   AND m.turn_position IS NOT NULL
@@ -345,9 +345,9 @@ SELECT
   ci.avatar_url AS sender_avatar_url,
   s.channel_type AS platform
 FROM bot_visible_history_messages m
-LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.memoh_current_team_id()
-LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.memoh_current_team_id()
-WHERE m.team_id = public.memoh_current_team_id()
+LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.ami_current_team_id()
+LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.ami_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND m.id = ANY(sqlc.arg(ids)::uuid[])
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -361,7 +361,7 @@ SELECT
   COUNT(*)::BIGINT AS message_count,
   COALESCE(SUM(octet_length(m.content::text)), 0)::BIGINT AS content_bytes
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND (m.turn_position, m.turn_message_seq) > (sqlc.arg(after_turn_position)::bigint, sqlc.arg(after_turn_message_seq)::bigint)
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync');
@@ -377,7 +377,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS total_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = sqlc.arg(session_id)
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -397,7 +397,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS content_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = sqlc.arg(session_id)
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -421,7 +421,7 @@ WITH RECURSIVE history_window AS (
     SELECT 1
     FROM oldest
     JOIN bot_history_messages m
-      ON m.team_id = public.memoh_current_team_id()
+      ON m.team_id = public.ami_current_team_id()
      AND m.session_id = sqlc.arg(session_id)
      AND (m.turn_position, m.turn_message_seq, m.created_at, m.id)
        < (oldest.turn_position, oldest.turn_message_seq, oldest.created_at, oldest.id)
@@ -439,7 +439,7 @@ SELECT m.id, m.role, m.content, m.created_at,
   budget_cut.truncated
 FROM history_window admitted
 JOIN bot_history_messages m ON m.id = admitted.id
-  AND m.team_id = public.memoh_current_team_id()
+  AND m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
 CROSS JOIN budget_cut
 ORDER BY admitted.turn_position ASC, admitted.turn_message_seq ASC, admitted.created_at ASC, admitted.id ASC;
@@ -457,7 +457,7 @@ SELECT
   COALESCE(m.metadata->'discuss_step' = 'true'::jsonb, false)::boolean AS discuss_step,
   m.source_message_id AS external_message_id
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND m.id = ANY(sqlc.arg(ids)::uuid[])
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -475,7 +475,7 @@ SELECT
     OR m.id = ANY(sqlc.arg(kept_ids)::uuid[])
   )::boolean AS kept
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = sqlc.arg(session_id)
   AND m.source_message_id = ANY(sqlc.arg(external_message_ids)::text[])
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -492,10 +492,10 @@ WITH pair AS (
 SELECT copy.turn_position::bigint AS turn_position, copy.turn_message_seq::bigint AS turn_message_seq
 FROM pair
 JOIN bot_history_messages source
-  ON source.team_id = public.memoh_current_team_id()
+  ON source.team_id = public.ami_current_team_id()
  AND source.id = pair.source_id
 JOIN bot_history_messages copy
-  ON copy.team_id = public.memoh_current_team_id()
+  ON copy.team_id = public.ami_current_team_id()
  AND copy.id = pair.fork_id
 WHERE source.turn_position IS NOT NULL
   AND source.turn_message_seq IS NOT NULL

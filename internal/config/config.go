@@ -12,7 +12,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 const (
@@ -37,18 +37,18 @@ const (
 	DefaultPGHost                = "127.0.0.1"
 	DefaultPGPort                = 5432
 	DefaultPGUser                = "postgres"
-	DefaultPGDatabase            = "memoh"
+	DefaultPGDatabase            = "ami"
 	DefaultPGSSLMode             = "disable"
 	DefaultPGVectorHost          = "127.0.0.1"
 	DefaultPGVectorPort          = 5432
-	DefaultPGVectorUser          = "memoh"
-	DefaultPGVectorDatabase      = "memoh_vector"
+	DefaultPGVectorUser          = "ami"
+	DefaultPGVectorDatabase      = "ami_vector"
 	DefaultPGVectorSSLMode       = "disable"
-	DefaultRuntimeDir            = "/opt/memoh/runtime"
+	DefaultRuntimeDir            = "/opt/ami/runtime"
 	DefaultBridgePath            = DefaultRuntimeDir + "/bridge"
-	DefaultWorkspaceImage        = "memohai/workspace:debian-latest"
+	DefaultWorkspaceImage        = "amiai/workspace:debian-latest"
 	DefaultBaseImage             = DefaultWorkspaceImage
-	DefaultWorkspaceMirrorImage  = "memoh.cn/memohai/workspace:debian-latest"
+	DefaultWorkspaceMirrorImage  = "ami.cn/amiai/workspace:debian-latest"
 	DefaultTimezone              = "UTC"
 	DefaultAgentToolOutputBytes  = 32 * 1024
 	DefaultAgentToolOutputLines  = 2000
@@ -226,7 +226,7 @@ func parseOTLPHeaders(raw string) map[string]string {
 	return out
 }
 
-// ConnectItConfig is the deployment-level credential Memoh uses to call its
+// ConnectItConfig is the deployment-level credential Ami uses to call its
 // trusted Connect-It instance. It is never persisted in bot configuration.
 type ConnectItConfig struct {
 	BaseURL  string `toml:"base_url"`
@@ -251,7 +251,7 @@ const (
 	BridgeTLSModeStrict   = "strict"
 )
 
-// BridgeTLSConfig controls mTLS for Memoh server -> workspace bridge TCP gRPC.
+// BridgeTLSConfig controls mTLS for Ami server -> workspace bridge TCP gRPC.
 // Strict mode never falls back to plaintext. UDS/local targets are unaffected.
 type BridgeTLSConfig struct {
 	Mode       string `toml:"mode"`
@@ -273,15 +273,15 @@ func (c BridgeTLSConfig) Strict() bool {
 }
 
 func BridgeServerName(instanceID string) string {
-	return fmt.Sprintf("memoh-bridge.%s.bridge.memoh.internal", instanceID)
+	return fmt.Sprintf("ami-bridge.%s.bridge.ami.internal", instanceID)
 }
 
 func BridgeServerSPIFFE(instanceID string) string {
-	return fmt.Sprintf("spiffe://memoh/instance/%s/bridge", instanceID)
+	return fmt.Sprintf("spiffe://ami/instance/%s/bridge", instanceID)
 }
 
 func ServerClientSPIFFE(instanceID string) string {
-	return fmt.Sprintf("spiffe://memoh/instance/%s/server", instanceID)
+	return fmt.Sprintf("spiffe://ami/instance/%s/server", instanceID)
 }
 
 type LogConfig struct {
@@ -392,7 +392,7 @@ const (
 	DefaultSessionRuntimeStateTTL       = "24h"
 	DefaultSessionRuntimeOwnerLeaseTTL  = "30s"
 	DefaultSessionRuntimeRedisURL       = "redis://127.0.0.1:6379/0"
-	DefaultSessionRuntimeRedisKeyPrefix = "memoh:session_runtime:"
+	DefaultSessionRuntimeRedisKeyPrefix = "ami:session_runtime:"
 	MinSessionRuntimeOwnerLeaseTTL      = time.Second
 
 	// SessionRuntimeBackendLossGraceFactor derives the default fail-closed
@@ -996,61 +996,61 @@ func (cfg Config) ValidateChannelRuntime() error {
 }
 
 func (cfg *Config) applyBridgeTLSEnvOverrides() {
-	if value := strings.TrimSpace(os.Getenv("MEMOH_INSTANCE_ID")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_INSTANCE_ID")); value != "" {
 		cfg.InstanceID = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_BRIDGE_TLS_MODE")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_BRIDGE_TLS_MODE")); value != "" {
 		cfg.BridgeTLS.Mode = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_BRIDGE_TLS_SERVER_DIR")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_BRIDGE_TLS_SERVER_DIR")); value != "" {
 		cfg.BridgeTLS.ServerDir = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_BRIDGE_TLS_BRIDGE_DIR")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_BRIDGE_TLS_BRIDGE_DIR")); value != "" {
 		cfg.BridgeTLS.BridgeDir = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_BRIDGE_TLS_SERVER_NAME")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_BRIDGE_TLS_SERVER_NAME")); value != "" {
 		cfg.BridgeTLS.ServerName = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_WEBHOOK_TUNNEL_MODE")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_WEBHOOK_TUNNEL_MODE")); value != "" {
 		cfg.WebhookTunnel.Mode = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_WEBHOOK_PUBLIC_BASE_URL")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_WEBHOOK_PUBLIC_BASE_URL")); value != "" {
 		cfg.WebhookTunnel.PublicBaseURL = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_SERVER_PUBLIC_URL")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_SERVER_PUBLIC_URL")); value != "" {
 		cfg.Server.PublicURL = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_WEBHOOK_TUNNEL_LISTEN_ADDR")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_WEBHOOK_TUNNEL_LISTEN_ADDR")); value != "" {
 		cfg.WebhookTunnel.ListenAddr = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_CLOUDFLARED_BIN")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_CLOUDFLARED_BIN")); value != "" {
 		cfg.WebhookTunnel.CloudflaredPath = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_WEBHOOK_TUNNEL_TARGET_URL")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_WEBHOOK_TUNNEL_TARGET_URL")); value != "" {
 		cfg.WebhookTunnel.TargetURL = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_WEBHOOK_TUNNEL_METRICS_ADDR")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_WEBHOOK_TUNNEL_METRICS_ADDR")); value != "" {
 		cfg.WebhookTunnel.MetricsAddr = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_WEBHOOK_TUNNEL_METRICS_URL")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_WEBHOOK_TUNNEL_METRICS_URL")); value != "" {
 		cfg.WebhookTunnel.MetricsURL = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_INTERNAL_RPC_SHARED_SECRET")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_INTERNAL_RPC_SHARED_SECRET")); value != "" {
 		cfg.InternalRPC.SharedSecret = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_AGENT_CREDENTIALS_ENCRYPTION_KEY")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_AGENT_CREDENTIALS_ENCRYPTION_KEY")); value != "" {
 		cfg.Auth.AgentCredentialsEncryptionKey = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_INTERNAL_RPC_SERVER_TARGET")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_INTERNAL_RPC_SERVER_TARGET")); value != "" {
 		cfg.InternalRPC.ServerTarget = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_INTERNAL_RPC_CHANNEL_TARGET")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_INTERNAL_RPC_CHANNEL_TARGET")); value != "" {
 		cfg.InternalRPC.ChannelTarget = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_CONNECT_IT_BASE_URL")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_CONNECT_IT_BASE_URL")); value != "" {
 		cfg.ConnectIt.BaseURL = value
 	}
-	if value := strings.TrimSpace(os.Getenv("MEMOH_CONNECT_IT_API_TOKEN")); value != "" {
+	if value := strings.TrimSpace(os.Getenv("AMI_CONNECT_IT_API_TOKEN")); value != "" {
 		cfg.ConnectIt.APIToken = value
 	}
 }

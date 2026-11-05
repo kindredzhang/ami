@@ -3,9 +3,9 @@ package acp
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // Extension is what one kind of ACP agent adds to the core. The core runs
@@ -47,7 +47,7 @@ type Started struct {
 	// State is the extension's own state of the process, read back with
 	// Process.State.
 	State any
-	// ForceHTTPMCP gives the sessions Memoh's tools over HTTP MCP though the
+	// ForceHTTPMCP gives the sessions Ami's tools over HTTP MCP though the
 	// agent did not declare it takes them.
 	ForceHTTPMCP bool
 	// Fingerprint, when set, names what the process turned out to start

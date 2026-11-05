@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/timezone"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/timezone"
 )
 
 type RuntimeConfig struct {

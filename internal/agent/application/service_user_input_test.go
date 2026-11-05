@@ -11,14 +11,14 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/bots"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	sessiontest "github.com/felinics/memoh/internal/testutil/sessionruntime"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/bots"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	sessiontest "github.com/kindredzhang/ami/internal/testutil/sessionruntime"
 )
 
 const testACPUserInputOwnerID = "owner-user"
@@ -538,7 +538,7 @@ func TestRespondUserInputLimitsChatToolResult(t *testing.T) {
 	if len(text) >= len(large) {
 		t.Fatalf("answer text was not pruned: got %d bytes, original %d", len(text), len(large))
 	}
-	if !strings.Contains(text, "[memoh pruned]") {
+	if !strings.Contains(text, "[ami pruned]") {
 		t.Fatalf("answer text missing prune marker:\n%s", text)
 	}
 }
@@ -547,9 +547,9 @@ func TestRespondUserInputOnlyAcksACPRequests(t *testing.T) {
 	t.Parallel()
 
 	resolved := chatResolvedRequest()
-	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceMemohTool}
+	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceAmiTool}
 	fake := &fakeUserInputService{
-		target:        userinput.Request{ID: "input-1", Status: userinput.StatusPending, ProviderMetadata: map[string]any{"source": userinput.ProviderSourceMemohTool}},
+		target:        userinput.Request{ID: "input-1", Status: userinput.StatusPending, ProviderMetadata: map[string]any{"source": userinput.ProviderSourceAmiTool}},
 		resolved:      resolved,
 		canRespond:    true,
 		canRespondSet: true,
@@ -589,7 +589,7 @@ func TestRespondUserInputAcksAlreadyDecidedACPRequest(t *testing.T) {
 		target: userinput.Request{
 			ID:               "input-1",
 			Status:           userinput.StatusPending,
-			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceMemohTool},
+			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceAmiTool},
 		},
 		submitErr:     userinput.ErrAlreadyDecided,
 		canRespond:    true,
@@ -626,12 +626,12 @@ func TestRespondUserInputACPRequestSubmitsWithLiveWaiter(t *testing.T) {
 	t.Parallel()
 
 	resolved := chatResolvedRequest()
-	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceMemohTool}
+	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceAmiTool}
 	fake := &fakeUserInputService{
 		target: userinput.Request{
 			ID:               "input-1",
 			Status:           userinput.StatusPending,
-			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceMemohTool},
+			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceAmiTool},
 		},
 		resolved:      resolved,
 		canRespond:    true,
@@ -671,7 +671,7 @@ func TestRespondUserInputACPRequestReattachesActivePrompt(t *testing.T) {
 	t.Parallel()
 
 	resolved := chatResolvedRequest()
-	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceMemohTool}
+	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceAmiTool}
 	submitted := make(chan struct{})
 	fake := &fakeUserInputService{
 		target: userinput.Request{
@@ -679,7 +679,7 @@ func TestRespondUserInputACPRequestReattachesActivePrompt(t *testing.T) {
 			SessionID:        "session-1",
 			ToolCallID:       "call-1",
 			Status:           userinput.StatusPending,
-			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceMemohTool},
+			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceAmiTool},
 		},
 		resolved:      resolved,
 		submitHook:    func() { close(submitted) },
@@ -760,13 +760,13 @@ func TestRespondUserInputACPRequestCanSuppressActivePromptReattach(t *testing.T)
 	t.Parallel()
 
 	resolved := chatResolvedRequest()
-	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceMemohTool}
+	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceAmiTool}
 	fake := &fakeUserInputService{
 		target: userinput.Request{
 			ID:               "input-1",
 			SessionID:        "session-1",
 			Status:           userinput.StatusPending,
-			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceMemohTool},
+			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceAmiTool},
 		},
 		resolved:      resolved,
 		canRespond:    true,
@@ -809,12 +809,12 @@ func TestRespondUserInputACPRequestWithoutWaiterCancelsInsteadOfSubmitting(t *te
 	t.Parallel()
 
 	resolved := chatResolvedRequest()
-	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceMemohTool}
+	resolved.ProviderMetadata = map[string]any{"source": userinput.ProviderSourceAmiTool}
 	fake := &fakeUserInputService{
 		target: userinput.Request{
 			ID:               "input-1",
 			Status:           userinput.StatusPending,
-			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceMemohTool},
+			ProviderMetadata: map[string]any{"source": userinput.ProviderSourceAmiTool},
 		},
 		resolved: resolved,
 		// The blocked waiter is gone (process restart, prompt settled).

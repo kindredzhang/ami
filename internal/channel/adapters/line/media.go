@@ -9,10 +9,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/felinics/memoh/internal/attachment"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/attachment"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func (a *Adapter) ResolveAttachment(ctx context.Context, cfg channel.ChannelConfig, att channel.Attachment) (channel.AttachmentPayload, error) {

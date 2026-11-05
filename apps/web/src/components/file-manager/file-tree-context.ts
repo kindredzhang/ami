@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue'
-import type { HandlersFsFileInfo } from '@memohai/sdk'
+import type { HandlersFsFileInfo } from '@ami/sdk'
 
 // Shared state + callbacks for the Explorer tree, provided by files-pane (which
 // owns the API calls, dialogs and selection) and consumed by the recursive

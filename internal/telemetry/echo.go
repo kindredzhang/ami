@@ -15,7 +15,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 	"go.opentelemetry.io/otel/trace"
 
-	"github.com/felinics/memoh/internal/httpx"
+	"github.com/kindredzhang/ami/internal/httpx"
 )
 
 // livenessRoute is the path both processes answer probes on.

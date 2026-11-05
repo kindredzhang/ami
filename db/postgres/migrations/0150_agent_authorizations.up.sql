@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS public.agent_authorizations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    team_id UUID NOT NULL DEFAULT public.memoh_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
+    team_id UUID NOT NULL DEFAULT public.ami_current_team_id() REFERENCES public.teams(id) ON DELETE RESTRICT,
     owner_user_id UUID NOT NULL,
     runtime TEXT NOT NULL CHECK (runtime IN ('codex', 'claude-code')),
     auth_kind TEXT NOT NULL,
@@ -24,5 +24,5 @@ ALTER TABLE public.agent_authorizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.agent_authorizations FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS agent_authorizations_team ON public.agent_authorizations;
 CREATE POLICY agent_authorizations_team ON public.agent_authorizations
-    USING (team_id = public.memoh_current_team_id())
-    WITH CHECK (team_id = public.memoh_current_team_id());
+    USING (team_id = public.ami_current_team_id())
+    WITH CHECK (team_id = public.ami_current_team_id());

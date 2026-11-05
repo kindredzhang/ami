@@ -15,7 +15,7 @@ const blockedNames = new Set([
   'WINDIR',
   'PATHEXT',
   'IFS',
-  'MEMOH_RUNTIME_KEY',
+  'AMI_RUNTIME_KEY',
 ])
 
 const inheritedExactNames = new Set([

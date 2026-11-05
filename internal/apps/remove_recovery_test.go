@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 type removalConnectors struct {
@@ -128,9 +128,9 @@ func TestDiscoveryFailureRecordsPublicCode(t *testing.T) {
 
 func TestRemoveRequiredAppFailureKeepsParentRetryable(t *testing.T) {
 	f := newCleanupFixture(t)
-	child := release("memoh", "node-runtime", "c", "1", nil, []string{"node"}, nil)
+	child := release("ami", "node-runtime", "c", "1", nil, []string{"node"}, nil)
 	f.publish(child)
-	installed, err := f.service.Install(t.Context(), testBotID, InstallRequest{RegistryID: "memoh", AppID: child.AppID, Revision: child.Revision, Reason: ReasonRequired}, nil)
+	installed, err := f.service.Install(t.Context(), testBotID, InstallRequest{RegistryID: "ami", AppID: child.AppID, Revision: child.Revision, Reason: ReasonRequired}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -43,7 +43,7 @@ import {
 } from '../shared/server-connection'
 import type { DesktopRuntimeConfig } from '../shared/remote-runtime'
 
-const DESKTOP_PRODUCT_NAME = 'Memoh'
+const DESKTOP_PRODUCT_NAME = 'Ami'
 const DEFAULT_BASE_URL = is.dev ? 'http://localhost:18080' : 'http://localhost:8080'
 const guardedExternalLinkWebContents = new WeakSet<Electron.WebContents>()
 
@@ -209,8 +209,8 @@ function writeProfileBaseUrl(baseUrl: string): void {
 function getDesktopApiBaseUrl(): string {
   return resolveDesktopBaseUrl({
     session: sessionBaseUrlOverride,
-    desktop: process.env.MEMOH_DESKTOP_BASE_URL,
-    proxy: process.env.MEMOH_WEB_PROXY_TARGET,
+    desktop: process.env.AMI_DESKTOP_BASE_URL,
+    proxy: process.env.AMI_WEB_PROXY_TARGET,
     vite: process.env.VITE_API_URL,
     profile: readProfileBaseUrl(),
     fallback: DEFAULT_BASE_URL,
@@ -222,8 +222,8 @@ function getDesktopServerStatus() {
   return {
     baseUrl,
     managed: Boolean(
-      process.env.MEMOH_DESKTOP_BASE_URL?.trim()
-      || process.env.MEMOH_WEB_PROXY_TARGET?.trim()
+      process.env.AMI_DESKTOP_BASE_URL?.trim()
+      || process.env.AMI_WEB_PROXY_TARGET?.trim()
       || process.env.VITE_API_URL?.trim(),
     ),
   }
@@ -411,7 +411,7 @@ function openSettingsRoute(target?: string): void {
   }
 }
 
-function openMemohSettings(): void {
+function openAmiSettings(): void {
   openSettingsRoute('/settings')
 }
 
@@ -539,7 +539,7 @@ const PRELOAD_FILE = '../preload/index.mjs'
 function createChatWindow(): BrowserWindow {
   const window = new BrowserWindow({
     ...rememberedWindowOptions('chat', CHAT_DEFAULTS),
-    ...macWindowChromeOptions(process.platform, 'memoh-chat'),
+    ...macWindowChromeOptions(process.platform, 'ami-chat'),
     show: false,
     // Electron's auto-hide mode lets a single Alt press reveal the menu.
     autoHideMenuBar: process.platform !== 'win32',
@@ -628,8 +628,8 @@ async function rebuildAppMenu(): Promise<void> {
         { role: 'about' },
         { type: 'separator' },
         {
-          label: 'Memoh Settings...',
-          click: openMemohSettings,
+          label: 'Ami Settings...',
+          click: openAmiSettings,
         },
         { type: 'separator' },
         { role: 'services' },
@@ -699,7 +699,7 @@ app.whenReady().then(async () => {
   if (await maybePromptAppleSiliconBuild()) return
   if (maybeSelfInstallMacOS()) return
 
-  electronApp.setAppUserModelId(process.env.MEMOH_DESKTOP_APP_ID?.trim() || 'ai.memoh.desktop')
+  electronApp.setAppUserModelId(process.env.AMI_DESKTOP_APP_ID?.trim() || 'ai.ami.desktop')
 
   if (process.platform === 'darwin' && app.dock && is.dev) {
     app.dock.setIcon(iconPng)

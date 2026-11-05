@@ -23,13 +23,13 @@ import {
   patchBotsByBotIdSessionsBySessionIdFollowUpQueueByItemId,
   deleteBotsByBotIdSessionsBySessionIdSteerQueueByItemId,
   deleteBotsByBotIdSessionsBySessionIdFollowUpQueueByItemId,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type {
   AcpagentRuntimeStatus,
   HandlersFollowUpQueueItemResponse,
   HandlersSessionQueueResponse,
   HandlersSteerQueueItemResponse,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import type { Bot, SessionSummary } from './useChat.types'
 
 export interface CreateSessionOptions {

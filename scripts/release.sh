@@ -23,8 +23,8 @@ Usage: scripts/release.sh [options]
 Options:
   --os <os>             Target OS (default: current GOOS)
   --arch <arch>         Target ARCH (default: current GOARCH)
-  --version <version>   Version string injected into memoh-server
-  --commit-hash <sha>   Commit hash injected into memoh-server
+  --version <version>   Version string injected into ami-server
+  --commit-hash <sha>   Commit hash injected into ami-server
   --output-dir <dir>    Output directory for release artifacts
   --prepare-assets      Only prepare embedded assets, do not build archive
 EOF
@@ -113,30 +113,30 @@ build_archive() {
     ext=".exe"
   fi
 
-  local server_binary_name="memoh-server${ext}"
-  local channel_binary_name="memoh-channel${ext}"
-  local target_dir="$OUTPUT_DIR/memoh-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}"
+  local server_binary_name="ami-server${ext}"
+  local channel_binary_name="ami-channel${ext}"
+  local target_dir="$OUTPUT_DIR/ami-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}"
   mkdir -p "$target_dir"
 
   log "building server and channel binaries ${TARGET_OS}/${TARGET_ARCH}"
   CGO_ENABLED=0 GOOS="$TARGET_OS" GOARCH="$TARGET_ARCH" \
     go build \
     -trimpath \
-    -ldflags "-s -w -X github.com/felinics/memoh/internal/version.Version=${VERSION} -X github.com/felinics/memoh/internal/version.CommitHash=${COMMIT_HASH} -X github.com/felinics/memoh/internal/version.BuildTime=${BUILD_TIME}" \
+    -ldflags "-s -w -X github.com/kindredzhang/ami/internal/version.Version=${VERSION} -X github.com/kindredzhang/ami/internal/version.CommitHash=${COMMIT_HASH} -X github.com/kindredzhang/ami/internal/version.BuildTime=${BUILD_TIME}" \
     -o "$target_dir/$server_binary_name" \
     "$ROOT_DIR/cmd/agent"
 
   CGO_ENABLED=0 GOOS="$TARGET_OS" GOARCH="$TARGET_ARCH" \
     go build \
     -trimpath \
-    -ldflags "-s -w -X github.com/felinics/memoh/internal/version.Version=${VERSION} -X github.com/felinics/memoh/internal/version.CommitHash=${COMMIT_HASH} -X github.com/felinics/memoh/internal/version.BuildTime=${BUILD_TIME}" \
+    -ldflags "-s -w -X github.com/kindredzhang/ami/internal/version.Version=${VERSION} -X github.com/kindredzhang/ami/internal/version.CommitHash=${COMMIT_HASH} -X github.com/kindredzhang/ami/internal/version.BuildTime=${BUILD_TIME}" \
     -o "$target_dir/$channel_binary_name" \
     "$ROOT_DIR/cmd/channel"
 
   if [[ "$TARGET_OS" == "windows" ]]; then
-    (cd "$OUTPUT_DIR" && zip -q -r "memoh-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}.zip" "memoh-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}")
+    (cd "$OUTPUT_DIR" && zip -q -r "ami-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}.zip" "ami-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}")
   else
-    tar -C "$OUTPUT_DIR" -czf "$OUTPUT_DIR/memoh-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}.tar.gz" "memoh-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}"
+    tar -C "$OUTPUT_DIR" -czf "$OUTPUT_DIR/ami-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}.tar.gz" "ami-server_${VERSION}_${TARGET_OS}_${TARGET_ARCH}"
   fi
 
   log "archive created (${TARGET_OS}-${TARGET_ARCH})"

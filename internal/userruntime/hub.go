@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 var ErrRuntimeHubClosed = errors.New("runtime hub is closed")

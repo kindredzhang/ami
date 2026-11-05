@@ -26,7 +26,7 @@ SET
   next_attempt_at     = now(),
   version             = version + 1,
   updated_at          = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $2
   AND desired_state = 'absent'
   AND observed_state = 'failed'
@@ -77,7 +77,7 @@ SET
   lease_until = now() + make_interval(secs => $2::double precision),
   version     = version + 1,
   updated_at  = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $3
   AND (lease_until IS NULL OR lease_until < now())
 RETURNING bot_id, team_id, desired_state, desired_generation, image, preserve_data, observed_state, observed_generation, ever_ready, last_error, last_error_code, last_error_phase, attempts, next_attempt_at, lease_owner, lease_until, version, created_at, updated_at
@@ -127,7 +127,7 @@ SET
   updated_at  = now()
 WHERE bot_id = ANY(ARRAY(
   SELECT bot_id FROM bot_workspaces
-  WHERE team_id = public.memoh_current_team_id()
+  WHERE team_id = public.ami_current_team_id()
     AND next_attempt_at <= now()
     AND (lease_until IS NULL OR lease_until < now())
     AND (
@@ -212,7 +212,7 @@ func (q *Queries) ClaimBotWorkspaces(ctx context.Context, arg ClaimBotWorkspaces
 const countBotWorkspacesByObservedState = `-- name: CountBotWorkspacesByObservedState :many
 SELECT observed_state, COUNT(*)::bigint AS total
 FROM bot_workspaces
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
 GROUP BY observed_state
 `
 
@@ -243,7 +243,7 @@ func (q *Queries) CountBotWorkspacesByObservedState(ctx context.Context) ([]Coun
 
 const getBotWorkspace = `-- name: GetBotWorkspace :one
 SELECT bot_id, team_id, desired_state, desired_generation, image, preserve_data, observed_state, observed_generation, ever_ready, last_error, last_error_code, last_error_phase, attempts, next_attempt_at, lease_owner, lease_until, version, created_at, updated_at FROM bot_workspaces
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 `
 
 func (q *Queries) GetBotWorkspace(ctx context.Context, botID pgtype.UUID) (BotWorkspace, error) {
@@ -275,7 +275,7 @@ func (q *Queries) GetBotWorkspace(ctx context.Context, botID pgtype.UUID) (BotWo
 
 const listBotWorkspacesByObservedState = `-- name: ListBotWorkspacesByObservedState :many
 SELECT bot_id, team_id, desired_state, desired_generation, image, preserve_data, observed_state, observed_generation, ever_ready, last_error, last_error_code, last_error_phase, attempts, next_attempt_at, lease_owner, lease_until, version, created_at, updated_at FROM bot_workspaces
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND observed_state = $1
 ORDER BY updated_at DESC
 LIMIT $2::int
@@ -332,7 +332,7 @@ SET
   lease_owner = '',
   lease_until = NULL,
   updated_at  = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $1
   AND lease_owner = $2
 `
@@ -355,7 +355,7 @@ UPDATE bot_workspaces
 SET
   lease_until = now() + make_interval(secs => $1::double precision),
   updated_at  = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $2
   AND lease_owner = $3
 `
@@ -389,7 +389,7 @@ SET
   lease_until         = CASE WHEN $9::boolean THEN NULL ELSE lease_until END,
   version             = version + 1,
   updated_at          = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = $10
   AND lease_owner = $11
   AND version = $12

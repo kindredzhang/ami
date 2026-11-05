@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 type ToolOutputLimit = contextlimit.ToolOutputLimit

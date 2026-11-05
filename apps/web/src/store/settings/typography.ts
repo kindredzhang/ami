@@ -14,7 +14,7 @@ export const DEFAULT_CODE_FONT_SIZE_PX = 13
 // outside MiSans' subset ranges. Latin is always claimed earlier by the mono
 // families, and MiSans' unicode-range subsets claim no color-emoji glyphs, so
 // neither Latin nor emoji rendering changes. The CSS fallback lists in
-// style.css (var(--memoh-code-font-family, …)) mirror this ordering — keep
+// style.css (var(--ami-code-font-family, …)) mirror this ordering — keep
 // them in sync.
 export const CODE_FONT_CJK_FALLBACK = 'MiSans, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Noto Sans SC'
 
@@ -247,8 +247,8 @@ export function applyTypographyVariables(options: {
   const codeFamily = normalizeStoredFontFamilyInput(options.codeFontFamily, DEFAULT_CODE_FONT_FAMILY)
   const style = document.documentElement.style
 
-  style.setProperty('--memoh-ui-font-family', cssFontFamilyDeclaration(options.uiFontFamily, DEFAULT_UI_FONT_FAMILY))
-  style.setProperty('--memoh-code-font-family', cssCodeFontFamilyStyleValue(options.codeFontFamily))
+  style.setProperty('--ami-ui-font-family', cssFontFamilyDeclaration(options.uiFontFamily, DEFAULT_UI_FONT_FAMILY))
+  style.setProperty('--ami-code-font-family', cssCodeFontFamilyStyleValue(options.codeFontFamily))
 
   // Tailwind's preflight resolves body/code fonts through --font-sans /
   // --font-mono at runtime. Override them only for explicit customizations so
@@ -272,9 +272,9 @@ export function applyTypographyVariables(options: {
   // Only pin the root font-size when the user explicitly deviates from the
   // default, so browser/OS accessibility font-size settings keep working.
   if (uiSize === DEFAULT_UI_FONT_SIZE_PX) {
-    style.removeProperty('--memoh-ui-font-size')
+    style.removeProperty('--ami-ui-font-size')
   } else {
-    style.setProperty('--memoh-ui-font-size', `${uiSize}px`)
+    style.setProperty('--ami-ui-font-size', `${uiSize}px`)
   }
-  style.setProperty('--memoh-code-font-size', `${codeSize}px`)
+  style.setProperty('--ami-code-font-size', `${codeSize}px`)
 }

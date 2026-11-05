@@ -30,7 +30,7 @@
 | `mise run bridge:build` | Rebuild bridge binary in dev container |
 | `mise run a11y-cli:build` | Build the Rust AT-SPI helper used by Computer Use (Linux output) |
 | `mise run a11y-cli:check` | Run `cargo check` for the a11y-cli crate |
-| `mise run desktop:dev` | Start Electron desktop app in dev mode (renderer reuses @memohai/web) |
+| `mise run desktop:dev` | Start Electron desktop app in dev mode (renderer reuses @ami/web) |
 | `mise run desktop:build` | Build Electron desktop app for release (electron-builder) |
 | `mise run lint` | Run all linters (Go + ESLint) |
 | `mise run lint:fix` | Run all linters with auto-fix |
@@ -47,7 +47,7 @@ docker compose up -d        # Start all services
 ```
 
 Production deploy services are `postgres`, `pgvector`, `migrate`, `server`, `channel`, and `web`.
-Optional profile: `webhook-tunnel` (cloudflared for channels behind NAT). Desktop connects to Memoh Cloud or this hosted server instead of running its own server.
+Optional profile: `webhook-tunnel` (cloudflared for channels behind NAT). Desktop connects to Ami Cloud or this hosted server instead of running its own server.
 
 For split deployment storage ownership and Server-first upgrades, see
 [Channel media storage](storage-rpc.md).

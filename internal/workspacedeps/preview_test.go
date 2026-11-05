@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func previewEnv(t *testing.T, preview ScriptPreview, key string) ScriptEnvEntry {
@@ -45,14 +45,14 @@ func TestScriptPreviewDetailsMirrorsRunnerEnvironment(t *testing.T) {
 	if preview.Script != WrapScript("dep_log install agent\n") {
 		t.Errorf("script = %q", preview.Script)
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_HOME"); got.Value != Home(f.dataRoot, "agent-x") {
-		t.Errorf("MEMOH_DEP_HOME = %q, want %q", got.Value, Home(f.dataRoot, "agent-x"))
+	if got := previewEnv(t, preview, "AMI_DEP_HOME"); got.Value != Home(f.dataRoot, "agent-x") {
+		t.Errorf("AMI_DEP_HOME = %q, want %q", got.Value, Home(f.dataRoot, "agent-x"))
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_BIN"); got.Value != ShimDir(f.dataRoot) {
-		t.Errorf("MEMOH_DEP_BIN = %q", got.Value)
+	if got := previewEnv(t, preview, "AMI_DEP_BIN"); got.Value != ShimDir(f.dataRoot) {
+		t.Errorf("AMI_DEP_BIN = %q", got.Value)
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_VERSION"); got.Value != "2.0.0" {
-		t.Errorf("MEMOH_DEP_VERSION = %q, want the manifest pin", got.Value)
+	if got := previewEnv(t, preview, "AMI_DEP_VERSION"); got.Value != "2.0.0" {
+		t.Errorf("AMI_DEP_VERSION = %q, want the manifest pin", got.Value)
 	}
 	// An unpinned dependency installs the requested version or latest, which
 	// only the request knows.
@@ -60,14 +60,14 @@ func TestScriptPreviewDetailsMirrorsRunnerEnvironment(t *testing.T) {
 	if err != nil {
 		t.Fatalf("tool preview: %v", err)
 	}
-	if got := previewEnv(t, toolPreview, "MEMOH_DEP_VERSION"); got.Value != previewRequestedVersion {
-		t.Errorf("unpinned MEMOH_DEP_VERSION = %q, want %q", got.Value, previewRequestedVersion)
+	if got := previewEnv(t, toolPreview, "AMI_DEP_VERSION"); got.Value != previewRequestedVersion {
+		t.Errorf("unpinned AMI_DEP_VERSION = %q, want %q", got.Value, previewRequestedVersion)
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_OS"); got.Value != previewProbedAtRunTime {
-		t.Errorf("MEMOH_DEP_OS = %q, want placeholder", got.Value)
+	if got := previewEnv(t, preview, "AMI_DEP_OS"); got.Value != previewProbedAtRunTime {
+		t.Errorf("AMI_DEP_OS = %q, want placeholder", got.Value)
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_RESULT"); got.Value != path.Join(operationRoot(Home(f.dataRoot, "agent-x"), "agent-x"), previewResultNonce, "result.json") {
-		t.Errorf("MEMOH_DEP_RESULT = %q", got.Value)
+	if got := previewEnv(t, preview, "AMI_DEP_RESULT"); got.Value != path.Join(operationRoot(Home(f.dataRoot, "agent-x"), "agent-x"), previewResultNonce, "result.json") {
+		t.Errorf("AMI_DEP_RESULT = %q", got.Value)
 	}
 	if got := previewEnv(t, preview, "NPM_MIRROR"); got.Secret || got.Value != "https://registry.example" {
 		t.Errorf("NPM_MIRROR = %+v", got)
@@ -78,7 +78,7 @@ func TestScriptPreviewDetailsMirrorsRunnerEnvironment(t *testing.T) {
 		}
 	}
 
-	if got := previewEnv(t, preview, "MEMOH_DEP_OPERATION_DIR"); got.Value != path.Join(operationRoot(Home(f.dataRoot, "agent-x"), "agent-x"), previewResultNonce) {
+	if got := previewEnv(t, preview, "AMI_DEP_OPERATION_DIR"); got.Value != path.Join(operationRoot(Home(f.dataRoot, "agent-x"), "agent-x"), previewResultNonce) {
 		t.Errorf("operation receipt directory = %q", got.Value)
 	}
 	checkPreview, err := f.svc.ScriptPreviewDetails(f.ctx(), testBot, "tool-y", catalog.ActionCheckUpdate)
@@ -86,11 +86,11 @@ func TestScriptPreviewDetailsMirrorsRunnerEnvironment(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, entry := range checkPreview.Env {
-		if entry.Key == "MEMOH_DEP_OPERATION_DIR" {
+		if entry.Key == "AMI_DEP_OPERATION_DIR" {
 			t.Errorf("read-only check published mutation receipt: %+v", entry)
 		}
 	}
-	if got := previewEnv(t, checkPreview, "MEMOH_DEP_RESULT"); !strings.Contains(got.Value, "memoh-dep-tool-y-") {
+	if got := previewEnv(t, checkPreview, "AMI_DEP_RESULT"); !strings.Contains(got.Value, "ami-dep-tool-y-") {
 		t.Errorf("check result path = %q", got.Value)
 	}
 
@@ -102,11 +102,11 @@ func TestScriptPreviewDetailsMirrorsRunnerEnvironment(t *testing.T) {
 	if err != nil {
 		t.Fatalf("rollback preview: %v", err)
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_OS"); got.Value != "linux" {
-		t.Errorf("MEMOH_DEP_OS after probe = %q", got.Value)
+	if got := previewEnv(t, preview, "AMI_DEP_OS"); got.Value != "linux" {
+		t.Errorf("AMI_DEP_OS after probe = %q", got.Value)
 	}
-	if got := previewEnv(t, preview, "MEMOH_DEP_VERSION"); got.Value != previewPreviousVersion {
-		t.Errorf("rollback MEMOH_DEP_VERSION = %q", got.Value)
+	if got := previewEnv(t, preview, "AMI_DEP_VERSION"); got.Value != previewPreviousVersion {
+		t.Errorf("rollback AMI_DEP_VERSION = %q", got.Value)
 	}
 	if preview.TimeoutSeconds != int(rollbackTimeout.Seconds()) {
 		t.Errorf("rollback timeout = %d", preview.TimeoutSeconds)

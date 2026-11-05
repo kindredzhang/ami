@@ -10,7 +10,7 @@ import (
 
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
 
-	mcpgw "github.com/felinics/memoh/internal/mcp"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
 )
 
 type testToolInput struct {

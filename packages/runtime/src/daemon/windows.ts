@@ -25,7 +25,7 @@ export function renderWindowsTaskXML(spec: RuntimeServiceSpec, userId: string): 
   return `<?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Description>Memoh Runtime</Description>
+    <Description>Ami Runtime</Description>
   </RegistrationInfo>
   <Triggers>
     <LogonTrigger>
@@ -73,12 +73,12 @@ export function createWindowsTaskServiceManager(paths: RuntimePaths, runner: Com
   const schtasks = 'schtasks.exe'
   let identity: Promise<string> | undefined
   const userID = () => identity ??= currentWindowsUserID(runner)
-  const taskName = async () => `\\Memoh\\Runtime-${await userID()}`
+  const taskName = async () => `\\Ami\\Runtime-${await userID()}`
   const inspect = async (): Promise<string> => {
     const sid = await userID()
     const result = await requireCommand(runner, 'powershell.exe', [
       '-NoProfile', '-NonInteractive', '-Command',
-      `$ErrorActionPreference = 'Stop'; $task = Get-ScheduledTask | Where-Object { $_.TaskPath -eq '\\Memoh\\' -and $_.TaskName -eq 'Runtime-${sid}' }; if ($null -eq $task) { 'not-installed' } else { $owner = $task.Principal.UserId; if ($owner -notmatch '^S-1-') { $owner = ([System.Security.Principal.NTAccount]::new($owner)).Translate([System.Security.Principal.SecurityIdentifier]).Value }; if ($owner -ne '${sid}') { throw 'Runtime task belongs to another account' }; $task.State.ToString() }`,
+      `$ErrorActionPreference = 'Stop'; $task = Get-ScheduledTask | Where-Object { $_.TaskPath -eq '\\Ami\\' -and $_.TaskName -eq 'Runtime-${sid}' }; if ($null -eq $task) { 'not-installed' } else { $owner = $task.Principal.UserId; if ($owner -notmatch '^S-1-') { $owner = ([System.Security.Principal.NTAccount]::new($owner)).Translate([System.Security.Principal.SecurityIdentifier]).Value }; if ($owner -ne '${sid}') { throw 'Runtime task belongs to another account' }; $task.State.ToString() }`,
     ], { env: windowsPowerShellEnv() })
     const state = result.stdout.trim().toLowerCase()
     if (!['not-installed', 'running', 'ready', 'disabled', 'queued', 'unknown'].includes(state)) {

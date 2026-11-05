@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	historyfrag "github.com/felinics/memoh/internal/agent/context/history"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	session "github.com/felinics/memoh/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	historyfrag "github.com/kindredzhang/ami/internal/agent/context/history"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 type backgroundNotificationSessions interface {

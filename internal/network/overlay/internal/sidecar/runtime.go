@@ -3,7 +3,7 @@ package sidecar
 import (
 	"context"
 
-	ctr "github.com/felinics/memoh/internal/container"
+	ctr "github.com/kindredzhang/ami/internal/container"
 )
 
 // Runtime is the container runtime surface needed to manage overlay sidecars.

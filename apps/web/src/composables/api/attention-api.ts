@@ -2,7 +2,7 @@ import {
   getUsersMeAttentionEvents,
   getUsersMeUnread,
   putUsersMeReadState,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import { fetchSSEProblem } from './sse-error'
 
 export type AttentionKind = 'reply' | 'failed' | 'needs_input' | 'marked'

@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel/channeltest"
+	"github.com/kindredzhang/ami/internal/channel/channeltest"
 )
 
 type streamValidationAdapter struct {

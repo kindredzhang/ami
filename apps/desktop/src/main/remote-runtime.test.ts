@@ -205,7 +205,7 @@ describe('DesktopRemoteRuntimeManager', () => {
 })
 
 async function createFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'memoh-desktop-runtime-'))
+  const root = await mkdtemp(join(tmpdir(), 'ami-desktop-runtime-'))
   temporaryDirectories.push(root)
   const configPath = join(root, 'remote-runtime.json')
   const workspaceBase = join(root, 'home')

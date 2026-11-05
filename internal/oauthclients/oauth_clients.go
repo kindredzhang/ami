@@ -7,7 +7,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 type Client struct {

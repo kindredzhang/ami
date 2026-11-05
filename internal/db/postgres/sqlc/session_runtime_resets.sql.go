@@ -16,7 +16,7 @@ UPDATE bots bot
 SET runtime_reset_token = $1,
     runtime_reset_expires_at = clock_timestamp()
       + $2::bigint * interval '1 millisecond'
-WHERE bot.team_id = public.memoh_current_team_id()
+WHERE bot.team_id = public.ami_current_team_id()
   AND bot.id = $3
   AND (
     bot.runtime_reset_token = $1
@@ -26,7 +26,7 @@ WHERE bot.team_id = public.memoh_current_team_id()
   AND NOT EXISTS (
     SELECT 1
     FROM bot_sessions session
-    WHERE session.team_id = public.memoh_current_team_id()
+    WHERE session.team_id = public.ami_current_team_id()
       AND session.bot_id = bot.id
       AND session.runtime_reset_expires_at > clock_timestamp()
   )
@@ -51,14 +51,14 @@ UPDATE bot_sessions session
 SET runtime_reset_token = $1,
     runtime_reset_expires_at = clock_timestamp()
       + $2::bigint * interval '1 millisecond'
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = $3
   AND session.bot_id = $4
   AND session.deleted_at IS NULL
   AND NOT EXISTS (
     SELECT 1
     FROM bots bot
-    WHERE bot.team_id = public.memoh_current_team_id()
+    WHERE bot.team_id = public.ami_current_team_id()
       AND bot.id = $4
       AND bot.runtime_reset_expires_at > clock_timestamp()
   )
@@ -92,7 +92,7 @@ func (q *Queries) AcquireLockedBotSessionRuntimeReset(ctx context.Context, arg A
 const getBotRuntimeReset = `-- name: GetBotRuntimeReset :one
 SELECT runtime_reset_token, runtime_reset_expires_at
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND runtime_reset_token IS NOT NULL
   AND runtime_reset_expires_at > clock_timestamp()
@@ -119,7 +119,7 @@ FROM (
     bot.runtime_reset_token AS reset_token,
     bot.runtime_reset_expires_at
   FROM bots bot
-  WHERE bot.team_id = public.memoh_current_team_id()
+  WHERE bot.team_id = public.ami_current_team_id()
     AND bot.id = $1
     AND bot.runtime_reset_token IS NOT NULL
     AND bot.runtime_reset_expires_at > clock_timestamp()
@@ -130,7 +130,7 @@ FROM (
     session.runtime_reset_token AS reset_token,
     session.runtime_reset_expires_at
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.bot_id = $1
     AND session.runtime_reset_token IS NOT NULL
     AND session.runtime_reset_expires_at > clock_timestamp()
@@ -170,7 +170,7 @@ FROM (
     bot.runtime_reset_token AS reset_token,
     bot.runtime_reset_expires_at
   FROM bots bot
-  WHERE bot.team_id = public.memoh_current_team_id()
+  WHERE bot.team_id = public.ami_current_team_id()
     AND bot.id = $1
     AND bot.runtime_reset_token IS NOT NULL
     AND bot.runtime_reset_expires_at > clock_timestamp()
@@ -180,7 +180,7 @@ FROM (
     session.runtime_reset_token AS reset_token,
     session.runtime_reset_expires_at
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.bot_id = $1
     AND session.id = $2
     AND session.runtime_reset_token IS NOT NULL
@@ -211,7 +211,7 @@ func (q *Queries) GetEffectiveSessionRuntimeReset(ctx context.Context, arg GetEf
 const lockBotForRuntimeReset = `-- name: LockBotForRuntimeReset :one
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
 FOR UPDATE
 `
@@ -230,7 +230,7 @@ const refreshLockedBotRuntimeReset = `-- name: RefreshLockedBotRuntimeReset :one
 UPDATE bots
 SET runtime_reset_expires_at = clock_timestamp()
       + $1::bigint * interval '1 millisecond'
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND runtime_reset_token = $3
 RETURNING runtime_reset_expires_at
@@ -256,7 +256,7 @@ const refreshLockedBotSessionRuntimeReset = `-- name: RefreshLockedBotSessionRun
 UPDATE bot_sessions
 SET runtime_reset_expires_at = clock_timestamp()
       + $1::bigint * interval '1 millisecond'
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND bot_id = $3
   AND runtime_reset_token = $4
@@ -286,7 +286,7 @@ const releaseBotRuntimeReset = `-- name: ReleaseBotRuntimeReset :one
 UPDATE bots
 SET runtime_reset_token = NULL,
     runtime_reset_expires_at = NULL
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND runtime_reset_token = $2
 RETURNING id
@@ -308,7 +308,7 @@ const releaseBotSessionRuntimeReset = `-- name: ReleaseBotSessionRuntimeReset :o
 UPDATE bot_sessions
 SET runtime_reset_token = NULL,
     runtime_reset_expires_at = NULL
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND bot_id = $2
   AND runtime_reset_token = $3
@@ -332,14 +332,14 @@ const renewBotRuntimeReset = `-- name: RenewBotRuntimeReset :one
 UPDATE bots target
 SET runtime_reset_expires_at = clock_timestamp()
       + $1::bigint * interval '1 millisecond'
-WHERE target.team_id = public.memoh_current_team_id()
+WHERE target.team_id = public.ami_current_team_id()
   AND target.id = $2
   AND target.runtime_reset_token = $3
   AND target.runtime_reset_expires_at > clock_timestamp()
   AND NOT EXISTS (
     SELECT 1
     FROM bot_sessions session
-    WHERE session.team_id = public.memoh_current_team_id()
+    WHERE session.team_id = public.ami_current_team_id()
       AND session.bot_id = $2
       AND session.runtime_reset_expires_at > clock_timestamp()
   )
@@ -363,7 +363,7 @@ const renewBotSessionRuntimeReset = `-- name: RenewBotSessionRuntimeReset :one
 UPDATE bot_sessions target
 SET runtime_reset_expires_at = clock_timestamp()
       + $1::bigint * interval '1 millisecond'
-WHERE target.team_id = public.memoh_current_team_id()
+WHERE target.team_id = public.ami_current_team_id()
   AND target.id = $2
   AND target.bot_id = $3
   AND target.runtime_reset_token = $4
@@ -371,7 +371,7 @@ WHERE target.team_id = public.memoh_current_team_id()
   AND NOT EXISTS (
     SELECT 1
     FROM bots bot
-    WHERE bot.team_id = public.memoh_current_team_id()
+    WHERE bot.team_id = public.ami_current_team_id()
       AND bot.id = $3
       AND bot.runtime_reset_expires_at > clock_timestamp()
   )
@@ -401,7 +401,7 @@ const sessionLiveForRuntimeReset = `-- name: SessionLiveForRuntimeReset :one
 SELECT EXISTS (
   SELECT 1
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = $1
     AND session.bot_id = $2
     AND session.deleted_at IS NULL
@@ -425,7 +425,7 @@ func (q *Queries) SessionLiveForRuntimeReset(ctx context.Context, arg SessionLiv
 const validateLockedBotRuntimeReset = `-- name: ValidateLockedBotRuntimeReset :one
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
   AND runtime_reset_token = $2
   AND runtime_reset_expires_at > clock_timestamp()
@@ -446,7 +446,7 @@ func (q *Queries) ValidateLockedBotRuntimeReset(ctx context.Context, arg Validat
 const validateLockedBotSessionRuntimeReset = `-- name: ValidateLockedBotSessionRuntimeReset :one
 SELECT session.id
 FROM bot_sessions session
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.bot_id = $1
   AND session.id = $2
   AND session.runtime_reset_token = $3

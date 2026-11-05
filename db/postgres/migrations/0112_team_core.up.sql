@@ -48,7 +48,7 @@ $seed_default_team$;
 -- Add the fail-closed team context helper used by team-scoped queries and
 -- row-level security policies.
 
-CREATE OR REPLACE FUNCTION public.memoh_current_team_id()
+CREATE OR REPLACE FUNCTION public.ami_current_team_id()
 RETURNS uuid
 LANGUAGE plpgsql
 STABLE
@@ -58,16 +58,16 @@ AS $$
 DECLARE
   raw text;
 BEGIN
-  raw := pg_catalog.current_setting('memoh.team_id', true);
+  raw := pg_catalog.current_setting('ami.team_id', true);
   IF raw IS NULL OR pg_catalog.btrim(raw) = '' THEN
-    RAISE EXCEPTION 'memoh.team_id is not set'
+    RAISE EXCEPTION 'ami.team_id is not set'
       USING ERRCODE = '42501';
   END IF;
   BEGIN
     RETURN raw::uuid;
   EXCEPTION
     WHEN invalid_text_representation THEN
-      RAISE EXCEPTION 'memoh.team_id is invalid'
+      RAISE EXCEPTION 'ami.team_id is invalid'
         USING ERRCODE = '22P02';
   END;
 END;
@@ -81,7 +81,7 @@ $$;
 -- before team-scoped constraints are installed.
 --
 -- New incremental (existing migrations untouched). team_id is added NULLABLE,
--- given a DEFAULT of public.memoh_current_team_id() (so INSERTs auto-fill the current
+-- given a DEFAULT of public.ami_current_team_id() (so INSERTs auto-fill the current
 -- team), and backfilled to the default singleton; a later migration tightens
 -- it to NOT NULL after composite keys/FKs land. Existing installs upgrade in
 -- place (no wipe).
@@ -160,59 +160,59 @@ $users_legacy_team_column$;
 
 -- Give team_id a DEFAULT so any INSERT (sqlc-generated or raw) auto-fills the
 -- current team from the session/transaction GUC. Fail-closed: if the GUC is
--- unset, public.memoh_current_team_id() raises rather than inserting a NULL/guessed team.
-ALTER TABLE IF EXISTS public.bot_acl_rules ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_channel_admins ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_channel_configs ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_channel_routes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_email_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_heartbeat_logs ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_history_message_assets ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_history_message_compacts ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_history_messages ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_plugin_installations ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_plugin_resources ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_remote_runtime_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_session_discuss_cursors ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_session_events ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_sessions ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_storage_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_user_grants ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bot_workspace_resource_limits ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.bots ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.channel_identities ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.channel_link_codes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.container_versions ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.containers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.email_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.email_outbox ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.email_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.fetch_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.lifecycle_events ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.mcp_connections ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.mcp_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.media_assets ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.memory_edges ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.memory_nodes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.memory_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.model_variants ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.models ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.schedule ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.schedule_logs ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.search_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.snapshots ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.storage_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tasks ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tool_approval_requests ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tts_models ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.tts_providers ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_channel_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_channel_identity_bindings ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_input_requests ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
-ALTER TABLE IF EXISTS public.user_runtimes ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
+-- unset, public.ami_current_team_id() raises rather than inserting a NULL/guessed team.
+ALTER TABLE IF EXISTS public.bot_acl_rules ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_channel_admins ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_channel_configs ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_channel_routes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_email_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_heartbeat_logs ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_history_message_assets ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_history_message_compacts ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_history_messages ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_plugin_installations ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_plugin_resources ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_remote_runtime_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_session_discuss_cursors ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_session_events ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_sessions ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_storage_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_user_grants ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bot_workspace_resource_limits ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.bots ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.channel_identities ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.channel_link_codes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.container_versions ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.containers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.email_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.email_outbox ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.email_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.fetch_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.lifecycle_events ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.mcp_connections ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.mcp_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.media_assets ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.memory_edges ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.memory_nodes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.memory_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.model_variants ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.models ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.schedule ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.schedule_logs ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.search_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.snapshots ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.storage_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tasks ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tool_approval_requests ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tts_models ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.tts_providers ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_channel_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_channel_identity_bindings ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_input_requests ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_provider_oauth_tokens ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
+ALTER TABLE IF EXISTS public.user_runtimes ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
 DO $users_legacy_team_default$
 BEGIN
     IF EXISTS (
@@ -223,7 +223,7 @@ BEGIN
            AND NOT attisdropped
     ) THEN
         ALTER TABLE public.users
-            ALTER COLUMN team_id SET DEFAULT public.memoh_current_team_id();
+            ALTER COLUMN team_id SET DEFAULT public.ami_current_team_id();
     END IF;
 END
 $users_legacy_team_default$;
@@ -249,7 +249,7 @@ BEGIN
                 WHERE a.attrelid = c.oid
                   AND a.attname = 'team_id'
                   AND NOT a.attisdropped
-                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%'
+                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%'
            )
          ORDER BY c.relname
     LOOP
@@ -297,7 +297,7 @@ BEGIN
        AND c.relname <> 'team_members'
        AND a.attname = 'team_id'
        AND NOT a.attisdropped
-       AND pg_get_expr(d.adbin, d.adrelid) LIKE '%memoh_current_team_id()%';
+       AND pg_get_expr(d.adbin, d.adrelid) LIKE '%ami_current_team_id()%';
 
     CREATE TEMP TABLE _fk_saved ON COMMIT DROP AS
     SELECT con.oid,
@@ -365,11 +365,11 @@ BEGIN
         IF NOT EXISTS (
             SELECT 1 FROM pg_constraint
              WHERE conrelid = rec.conrelid
-               AND conname = 'memoh_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12)
+               AND conname = 'ami_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12)
         ) THEN
             EXECUTE format('ALTER TABLE public.%I ADD CONSTRAINT %I UNIQUE (%s)',
                 rec.table_name,
-                'memoh_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12),
+                'ami_team_key_' || substr(md5(rec.table_name || ':' || rec.conname), 1, 12),
                 cols);
         END IF;
     END LOOP;
@@ -384,7 +384,7 @@ BEGIN
           JOIN pg_index i ON i.indexrelid = con.conindid
          WHERE con.contype = 'u' AND n.nspname = 'public'
            AND c.relname IN (SELECT table_name FROM _team_tables)
-           AND con.conname NOT LIKE 'memoh_team_key_%'
+           AND con.conname NOT LIKE 'ami_team_key_%'
     LOOP
         IF (SELECT attname FROM pg_attribute
               WHERE attrelid = rec.conrelid AND attnum = rec.conkey[1]) = 'team_id' THEN
@@ -488,7 +488,7 @@ CREATE UNIQUE INDEX idx_snapshots_container_runtime_name
 -- ---------------------------------------------------------------------------
 -- Team row-level security
 -- ---------------------------------------------------------------------------
--- Enable and force row-level security on Memoh team tables. Policies apply
+-- Enable and force row-level security on Ami team tables. Policies apply
 -- to the connecting role, so installations do not need cluster-wide roles or
 -- elevated CREATEROLE/BYPASSRLS privileges.
 
@@ -518,24 +518,24 @@ BEGIN
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_select', tbl);
         EXECUTE format(
-            'CREATE POLICY %I ON public.%I FOR SELECT USING (team_id = public.memoh_current_team_id())',
+            'CREATE POLICY %I ON public.%I FOR SELECT USING (team_id = public.ami_current_team_id())',
             tbl || '_team_select', tbl);
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_insert', tbl);
         EXECUTE format(
-            'CREATE POLICY %I ON public.%I FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id())',
+            'CREATE POLICY %I ON public.%I FOR INSERT WITH CHECK (team_id = public.ami_current_team_id())',
             tbl || '_team_insert', tbl);
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_update', tbl);
         EXECUTE format(
             'CREATE POLICY %I ON public.%I FOR UPDATE '
-            || 'USING (team_id = public.memoh_current_team_id()) '
-            || 'WITH CHECK (team_id = public.memoh_current_team_id())',
+            || 'USING (team_id = public.ami_current_team_id()) '
+            || 'WITH CHECK (team_id = public.ami_current_team_id())',
             tbl || '_team_update', tbl);
 
         EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', tbl || '_team_delete', tbl);
         EXECUTE format(
-            'CREATE POLICY %I ON public.%I FOR DELETE USING (team_id = public.memoh_current_team_id())',
+            'CREATE POLICY %I ON public.%I FOR DELETE USING (team_id = public.ami_current_team_id())',
             tbl || '_team_delete', tbl);
     END LOOP;
 END
@@ -545,7 +545,7 @@ ALTER TABLE public.teams ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.teams FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS teams_self_select ON public.teams;
 CREATE POLICY teams_self_select ON public.teams
-    FOR SELECT USING (id = public.memoh_current_team_id());
+    FOR SELECT USING (id = public.ami_current_team_id());
 
 -- ---------------------------------------------------------------------------
 -- Team-safe history view
@@ -600,7 +600,7 @@ WHERE m.turn_visible = true
 -- ---------------------------------------------------------------------------
 -- Prepend team_id to every non-unique btree secondary index on a team table
 -- that does not already lead with it. Team queries filter by team_id (RLS +
--- explicit public.memoh_current_team_id()), so a team_id-leading index lets the
+-- explicit public.ami_current_team_id()), so a team_id-leading index lets the
 -- planner scan only the current team's slice. Purely a performance change.
 --
 -- New incremental (existing migrations untouched). Each index is dropped and

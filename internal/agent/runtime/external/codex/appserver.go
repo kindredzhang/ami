@@ -9,12 +9,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/version"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/version"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // appServer is one long-lived `codex app-server` process for one Bot Agent.
@@ -48,10 +48,10 @@ type appServer struct {
 	// so the session can be resumed by path when codex's own index is gone.
 	threadPaths    map[string]string
 	threadSettings map[string]protocol.Settings
-	// toollessThreads marks threads whose start-time config carried no Memoh
+	// toollessThreads marks threads whose start-time config carried no Ami
 	// tool gateway; the driver re-emits a notice for them every turn.
 	toollessThreads map[string]bool
-	// toolLookup reports whether a tool name is served by the Memoh gateway
+	// toolLookup reports whether a tool name is served by the Ami gateway
 	// for this bot; the MCP consent path uses it turn-independently.
 	toolLookup   func(context.Context, string) bool
 	authReady    bool
@@ -109,7 +109,7 @@ func startAppServerSession(ctx context.Context, botID, botAgentID string, client
 	err = srv.conn.Call(handshakeCtx, "initialize", protocol.InitializeParams{
 		Capabilities: &protocol.InitializeCapabilities{ExperimentalAPI: &experimental},
 		ClientInfo: protocol.ClientInfo{
-			Name:    "memoh",
+			Name:    "ami",
 			Version: version.ShortCommitHash(),
 		},
 	}, &initResp)
@@ -143,7 +143,7 @@ func startAppServerSession(ctx context.Context, botID, botAgentID string, client
 }
 
 // codexVersionFromUserAgent extracts the CLI version from the initialize
-// userAgent, e.g. "memoh/0.151.0 (Mac OS 27.0; arm64) …" → "0.151.0".
+// userAgent, e.g. "ami/0.151.0 (Mac OS 27.0; arm64) …" → "0.151.0".
 func codexVersionFromUserAgent(userAgent string) string {
 	head, _, _ := strings.Cut(userAgent, " ")
 	_, ver, ok := strings.Cut(head, "/")
@@ -289,18 +289,18 @@ func (s *appServer) threadToolless(threadID string) bool {
 	return s.toollessThreads[threadID]
 }
 
-// HandleServerRequest routes app-server → Memoh requests to the owning turn.
+// HandleServerRequest routes app-server → Ami requests to the owning turn.
 // It runs on the read loop, so decisions are dispatched to goroutines.
 func (s *appServer) HandleServerRequest(ctx context.Context, req *protocol.Inbound) {
 	decoded, known, err := protocol.DecodeServerRequestParams(req.Method, req.Params)
 	if err != nil {
 		s.logger.ErrorContext(ctx, "codex: undecodable server request", slog.String("method", req.Method), slog.Any("error", err))
-		_ = s.conn.RespondError(req.ID, -32602, "memoh could not decode this request")
+		_ = s.conn.RespondError(req.ID, -32602, "ami could not decode this request")
 		return
 	}
 	if !known {
 		s.logger.WarnContext(ctx, "codex: unhandled server request method", slog.String("method", req.Method))
-		_ = s.conn.RespondError(req.ID, -32601, "memoh does not handle this request")
+		_ = s.conn.RespondError(req.ID, -32601, "ami does not handle this request")
 		return
 	}
 	switch params := decoded.(type) {
@@ -309,7 +309,7 @@ func (s *appServer) HandleServerRequest(ctx context.Context, req *protocol.Inbou
 		return
 	case *protocol.ChatgptAuthTokensRefreshParams:
 		// Token injection mode is not used: codex owns auth.json refresh.
-		_ = s.conn.RespondError(req.ID, -32000, "memoh does not inject ChatGPT auth tokens")
+		_ = s.conn.RespondError(req.ID, -32000, "ami does not inject ChatGPT auth tokens")
 		return
 	}
 	threadID := serverRequestThreadID(decoded)

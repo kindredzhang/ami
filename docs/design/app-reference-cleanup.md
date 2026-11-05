@@ -28,7 +28,7 @@ App A 和 B 共用依赖或连接器时，A 更新可能不再需要该资源。
 - Nix [临时 roots 与删除同步](https://github.com/NixOS/nix/blob/d262d70a49e3e303151831cf268a7241abe85ae0/src/libstore/gc.cc#L84-L158)：安装过程也要保护资源。后续需要让新增引用和删除经过同一个协调入口。
 - Kubernetes ownerReferences 与 finalizer、apt 与 Homebrew 的 auto/manual 标记：引用图的变更是即时且便宜的，物理回收是另一个幂等、可延迟的过程。Zapier 与 Nango 把连接当作独立于消费者的一等资源，删除永远是用户显式动作。这是连接器只解引用的依据，也是后续把"释放引用"与"物理回收"拆开的方向。
 
-Nix 使用本地 store、SQLite、文件锁和 socket。Memoh 包含远端工作区和第三方连接器，应借鉴保护条件与恢复机制，不能把本地锁直接当成跨 Server 的删除协议。
+Nix 使用本地 store、SQLite、文件锁和 socket。Ami 包含远端工作区和第三方连接器，应借鉴保护条件与恢复机制，不能把本地锁直接当成跨 Server 的删除协议。
 
 ## 本次未解决的边界
 

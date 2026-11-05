@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
 func TestACPSelectorProfileKeepsCurrentUserButNotDocumentSections(t *testing.T) {
@@ -67,7 +67,7 @@ func TestRuntimeSectionsCollectorMapsSectionMetadata(t *testing.T) {
 		Intent: contextfrag.IntentExternalAgentPrompt,
 		Config: RuntimeSectionsConfig{Sections: []RuntimeSection{
 			{
-				ID: "runtime.preamble", Text: "# Memoh Runtime Context", Kind: contextfrag.KindSystemPolicy,
+				ID: "runtime.preamble", Text: "# Ami Runtime Context", Kind: contextfrag.KindSystemPolicy,
 				Priority: 10, CacheClass: contextfrag.CacheStable,
 				Budget: contextfrag.BudgetPolicy{Overflow: contextfrag.OverflowKeep},
 			},

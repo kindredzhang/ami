@@ -12,9 +12,9 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/accounts"
-	"github.com/felinics/memoh/internal/bots"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/accounts"
+	"github.com/kindredzhang/ami/internal/bots"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 // recordingMemoryProvider records write calls so tests can assert the handler

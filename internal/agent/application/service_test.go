@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/server"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/server"
 )
 
 type fakeGatewayAssetLoader struct {
@@ -169,7 +169,7 @@ func TestRouteAndMergeAttachments_ImagePathOnlyFallsBackToFile(t *testing.T) {
 		Attachments: []ChatAttachment{
 			{
 				Type: "image",
-				Path: "/data/.memoh/media/image/demo.png",
+				Path: "/data/.ami/media/image/demo.png",
 			},
 		},
 	}
@@ -188,7 +188,7 @@ func TestRouteAndMergeAttachments_ImagePathOnlyFallsBackToFile(t *testing.T) {
 	if item.Transport != gatewayTransportToolFileRef {
 		t.Fatalf("expected tool_file_ref transport, got %q", item.Transport)
 	}
-	if item.Payload != "/data/.memoh/media/image/demo.png" {
+	if item.Payload != "/data/.ami/media/image/demo.png" {
 		t.Fatalf("unexpected fallback payload: %q", item.Payload)
 	}
 }
@@ -223,7 +223,7 @@ func TestPrepareGatewayAttachments_ResolvesStoredFileAccessPath(t *testing.T) {
 				if botID != "bot-1" || contentHash != "asset-pdf" {
 					t.Fatalf("unexpected asset lookup: bot=%q hash=%q", botID, contentHash)
 				}
-				return "/data/.memoh/media/aa/asset.pdf", nil
+				return "/data/.ami/media/aa/asset.pdf", nil
 			},
 		},
 	}
@@ -237,7 +237,7 @@ func TestPrepareGatewayAttachments_ResolvesStoredFileAccessPath(t *testing.T) {
 	}
 
 	prepared := resolver.prepareGatewayAttachments(context.Background(), req, true)
-	if len(prepared) != 1 || prepared[0].FallbackPath != "/data/.memoh/media/aa/asset.pdf" {
+	if len(prepared) != 1 || prepared[0].FallbackPath != "/data/.ami/media/aa/asset.pdf" {
 		t.Fatalf("prepared attachments = %#v, want reachable PDF path", prepared)
 	}
 	merged := resolver.routeAndMergeAttachments(context.Background(), models.GetResponse{}, req)
@@ -245,7 +245,7 @@ func TestPrepareGatewayAttachments_ResolvesStoredFileAccessPath(t *testing.T) {
 		t.Fatalf("routeAndMergeAttachments() length = %d, want 1", len(merged))
 	}
 	item, ok := merged[0].(gatewayAttachment)
-	if !ok || item.Transport != gatewayTransportToolFileRef || item.Payload != "/data/.memoh/media/aa/asset.pdf" {
+	if !ok || item.Transport != gatewayTransportToolFileRef || item.Payload != "/data/.ami/media/aa/asset.pdf" {
 		t.Fatalf("merged attachment = %#v, want tool file reference", merged[0])
 	}
 }
@@ -260,7 +260,7 @@ func TestPrepareACPAttachments_UsesFileAndReplyReferences(t *testing.T) {
 				if contentHash != "asset-pdf" {
 					t.Fatalf("unexpected content hash: %s", contentHash)
 				}
-				return "/data/.memoh/media/aa/asset.pdf", nil
+				return "/data/.ami/media/aa/asset.pdf", nil
 			},
 		},
 	}
@@ -284,7 +284,7 @@ func TestPrepareACPAttachments_UsesFileAndReplyReferences(t *testing.T) {
 	if len(prepared.Images) != 0 || len(prepared.Context) != 2 || len(prepared.References) != 2 {
 		t.Fatalf("prepared attachments = %#v, want two file references", prepared)
 	}
-	if prepared.Context[0].Path != "/data/.memoh/media/aa/asset.pdf" || prepared.Context[1].URL != "https://example.com/old.png" {
+	if prepared.Context[0].Path != "/data/.ami/media/aa/asset.pdf" || prepared.Context[1].URL != "https://example.com/old.png" {
 		t.Fatalf("context attachments = %#v, want PDF path and reply URL", prepared.Context)
 	}
 }
@@ -299,7 +299,7 @@ func TestPrepareACPAttachments_PreservesLongPasteFile(t *testing.T) {
 				if contentHash != "pasted-text-hash" {
 					t.Fatalf("unexpected content hash: %s", contentHash)
 				}
-				return "/data/.memoh/media/aa/pasted-text.txt", nil
+				return "/data/.ami/media/aa/pasted-text.txt", nil
 			},
 		},
 	}
@@ -315,7 +315,7 @@ func TestPrepareACPAttachments_PreservesLongPasteFile(t *testing.T) {
 	if err != nil {
 		t.Fatalf("prepareRuntimeAttachments() error = %v", err)
 	}
-	if len(prepared.References) != 1 || prepared.Context[0].Path != "/data/.memoh/media/aa/pasted-text.txt" {
+	if len(prepared.References) != 1 || prepared.Context[0].Path != "/data/.ami/media/aa/pasted-text.txt" {
 		t.Fatalf("prepared attachments = %#v, want pasted text path", prepared)
 	}
 }
@@ -330,7 +330,7 @@ func TestPrepareACPAttachments_FallsBackWhenStoredImageCannotInline(t *testing.T
 				return nil, "", errors.New("asset too large")
 			},
 			accessPathFn: func(context.Context, string, string) (string, error) {
-				return "/data/.memoh/media/aa/large.png", nil
+				return "/data/.ami/media/aa/large.png", nil
 			},
 		},
 	}
@@ -345,7 +345,7 @@ func TestPrepareACPAttachments_FallsBackWhenStoredImageCannotInline(t *testing.T
 	if err != nil {
 		t.Fatalf("prepareRuntimeAttachments() error = %v", err)
 	}
-	if len(prepared.Images) != 0 || len(prepared.References) != 1 || prepared.Context[0].Path != "/data/.memoh/media/aa/large.png" {
+	if len(prepared.Images) != 0 || len(prepared.References) != 1 || prepared.Context[0].Path != "/data/.ami/media/aa/large.png" {
 		t.Fatalf("prepared attachments = %#v, want image file fallback", prepared)
 	}
 }

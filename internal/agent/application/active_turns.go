@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 // activeTurnTracker keeps the database open until canceled turns have finished

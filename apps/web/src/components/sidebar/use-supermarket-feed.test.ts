@@ -3,7 +3,7 @@ import { effectScope, nextTick, ref } from 'vue'
 import { useSupermarketFeed } from './use-supermarket-feed'
 
 const fetchPage = vi.hoisted(() => vi.fn())
-vi.mock('@memohai/sdk', () => ({ getSupermarketApps: fetchPage }))
+vi.mock('@ami/sdk', () => ({ getSupermarketApps: fetchPage }))
 const scopes: ReturnType<typeof effectScope>[] = []
 afterEach(() => { scopes.splice(0).forEach(scope => scope.stop()); vi.resetAllMocks() })
 
@@ -15,7 +15,7 @@ function start() {
   return { query, ...feed }
 }
 function page(ids: string[], total = 90) {
-  return { data: { data: ids.map(app_id => ({ app_id, registry_id: 'memoh' })), total, limit: 30 } }
+  return { data: { data: ids.map(app_id => ({ app_id, registry_id: 'ami' })), total, limit: 30 } }
 }
 async function settle() { await nextTick(); await nextTick() }
 

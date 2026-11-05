@@ -16,12 +16,12 @@ RETURNING id;
 
 -- name: ListSessionEventsBySession :many
 SELECT * FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND session_id = $1
+WHERE team_id = public.ami_current_team_id() AND session_id = $1
 ORDER BY received_at_ms ASC, created_at ASC, id ASC;
 
 -- name: ListSessionEventsBySessionAfter :many
 SELECT * FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND session_id = $1 AND received_at_ms >= $2
+WHERE team_id = public.ami_current_team_id() AND session_id = $1 AND received_at_ms >= $2
 ORDER BY received_at_ms ASC, created_at ASC, id ASC;
 
 -- name: ListSessionEventsBySessionPageBeforeWithinBytes :many
@@ -47,7 +47,7 @@ WITH page AS (
     event.created_at,
     octet_length(event.event_data::text)::BIGINT AS payload_bytes
   FROM bot_session_events event
-  WHERE event.team_id = public.memoh_current_team_id()
+  WHERE event.team_id = public.ami_current_team_id()
     AND event.session_id = sqlc.arg(session_id)
     AND (
       NOT sqlc.arg(has_cursor)::boolean
@@ -63,7 +63,7 @@ WITH page AS (
         OR m.id = ANY(sqlc.arg(kept_ids)::uuid[])
       )
       FROM bot_visible_history_messages m
-      WHERE m.team_id = public.memoh_current_team_id()
+      WHERE m.team_id = public.ami_current_team_id()
         AND m.session_id = sqlc.arg(session_id)
         AND m.source_message_id = event.external_message_id
         AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -97,13 +97,13 @@ ORDER BY admitted.received_at_ms DESC, admitted.created_at DESC, admitted.id DES
 
 -- name: ListSessionEventsByBot :many
 SELECT * FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1
 ORDER BY received_at_ms ASC, id ASC;
 
 -- name: CountSessionEvents :one
 SELECT COUNT(*) FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND session_id = $1;
+WHERE team_id = public.ami_current_team_id() AND session_id = $1;
 
 -- name: DeleteSessionEventsByBot :exec
 DELETE FROM bot_session_events
-WHERE team_id = public.memoh_current_team_id() AND bot_id = $1;
+WHERE team_id = public.ami_current_team_id() AND bot_id = $1;

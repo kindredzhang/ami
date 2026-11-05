@@ -39,7 +39,7 @@ test('does not accept an incomplete OIDC environment', () => {
 })
 
 test('publish script skips token preflight when setup-node placeholder and OIDC coexist', () => {
-  const tempDir = mkdtempSync(join(tmpdir(), 'memoh-publish-auth-'))
+  const tempDir = mkdtempSync(join(tmpdir(), 'ami-publish-auth-'))
   const fakeBin = join(tempDir, 'bin')
   const npmLog = join(tempDir, 'npm.log')
   const pnpmLog = join(tempDir, 'pnpm.log')
@@ -70,7 +70,7 @@ exit 0
         ACTIONS_ID_TOKEN_REQUEST_URL: 'https://github.example.test/oidc',
         ACTIONS_ID_TOKEN_REQUEST_TOKEN: 'github-oidc-request-token',
         NODE_AUTH_TOKEN: 'XXXXX-XXXXX-XXXXX-XXXXX',
-        NPM_PUBLISH_SCOPE: '@memohai',
+        NPM_PUBLISH_SCOPE: '@ami',
         PATH: `${fakeBin}:${process.env.PATH}`,
         PUBLISH_TEST_NPM_LOG: npmLog,
         PUBLISH_TEST_PNPM_LOG: pnpmLog,

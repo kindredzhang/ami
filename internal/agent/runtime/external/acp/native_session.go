@@ -1,6 +1,6 @@
 package acp
 
-import "github.com/felinics/memoh/internal/agent/runtime/external"
+import "github.com/kindredzhang/ami/internal/agent/runtime/external"
 
 // NativeSessionKey keeps the agent's own session ID in thread runtime
 // metadata, with the thread it belongs to: forking a thread or restoring a

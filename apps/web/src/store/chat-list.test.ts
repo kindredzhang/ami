@@ -65,7 +65,7 @@ vi.hoisted(() => {
 })
 
 vi.mock('@/composables/api/useChat', () => api)
-vi.mock('@memohai/sdk', () => ({ getBotsByBotIdSettings: sdk.getBotsByBotIdSettings }))
+vi.mock('@ami/sdk', () => ({ getBotsByBotIdSettings: sdk.getBotsByBotIdSettings }))
 vi.mock('vue-sonner', () => ({ toast }))
 vi.mock('@felinic/ui', async (importOriginal) => {
   const original = await importOriginal<typeof import('@felinic/ui')>()
@@ -1103,7 +1103,7 @@ describe('chat-list store', () => {
       expect(store.pendingExternalAgentMatchesInput({ ...input, botAgentId: 'agent-2' }, target)).toBe(false)
     })
 
-  it('keeps an explicit draft as Memoh even when the bot default runtime is ACP', async () => {
+  it('keeps an explicit draft as Ami even when the bot default runtime is ACP', async () => {
       sdk.getBotsByBotIdSettings.mockResolvedValue({
         data: {
           chat_runtime: 'codex',
@@ -1255,7 +1255,7 @@ describe('chat-list store', () => {
       expect(store.hasExplicitSessionSelection).toBe(explicit)
     })
 
-  it('keeps an explicit empty Memoh composer across session list initialization refreshes', async () => {
+  it('keeps an explicit empty Ami composer across session list initialization refreshes', async () => {
       const store = useChatStore()
 
       await store.selectBot('bot-1')
@@ -4411,7 +4411,7 @@ describe('chat-list store', () => {
       // The server pages by raw `bot_history_messages` rows but returns merged
       // UI turns, so a 30-row page collapses to ~28 turns even when thousands
       // of rows remain — the old `turns.length >= PAGE_SIZE` check truncated
-      // long sessions to one page on first paint (Project Memoh: 1144 raw rows
+      // long sessions to one page on first paint (Project Ami: 1144 raw rows
       // collapsed to 28 turns => hasMoreOlder=false => scroll-up blocked).
       // Initial loads now stay optimistic; `loadOlderMessages` flips the flag
       // off the first time the server returns an authoritatively empty page.

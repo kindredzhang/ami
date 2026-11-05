@@ -16,8 +16,8 @@ const mocks = vi.hoisted(() => ({
   user: { role: 'member' },
 }))
 
-vi.mock('@memohai/sdk', async importOriginal => ({
-  ...await importOriginal<typeof import('@memohai/sdk')>(),
+vi.mock('@ami/sdk', async importOriginal => ({
+  ...await importOriginal<typeof import('@ami/sdk')>(),
   postBotsByBotIdConnectorsByConnectionIdReauth: mocks.reauth,
   getBotsByBotIdConnectorsByConnectionId: mocks.getConnector,
 }))

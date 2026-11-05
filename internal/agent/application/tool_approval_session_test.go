@@ -9,12 +9,12 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/workspace"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/workspace"
 )
 
 type denyToolApprovalPolicyProvider struct{}
@@ -79,7 +79,7 @@ func TestToolApprovalHandlerLimitsForcedApprovalRejectionReason(t *testing.T) {
 	if len(result.Reason) >= len(large) {
 		t.Fatalf("approval reason was not pruned: got %d bytes, original %d", len(result.Reason), len(large))
 	}
-	if !strings.Contains(result.Reason, "[memoh pruned]") {
+	if !strings.Contains(result.Reason, "[ami pruned]") {
 		t.Fatalf("approval reason missing prune marker:\n%s", result.Reason)
 	}
 }
@@ -280,7 +280,7 @@ func TestServiceLimitToolResultTextUsesAgentLimits(t *testing.T) {
 	if len(got) >= len(large) {
 		t.Fatalf("tool result text was not pruned: got %d bytes, original %d", len(got), len(large))
 	}
-	if !strings.Contains(got, "[memoh pruned]") {
+	if !strings.Contains(got, "[ami pruned]") {
 		t.Fatalf("tool result text missing prune marker:\n%s", got)
 	}
 }

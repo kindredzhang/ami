@@ -3,7 +3,7 @@ package ledger
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // The ledger writes this code to session_runs.error_code itself; it must

@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 type AskUserProvider struct{}
@@ -88,7 +88,7 @@ func (*AskUserProvider) Tools(_ context.Context, session SessionContext) ([]tool
 							},
 							"allow_custom": map[string]any{
 								"type":        "boolean",
-								"description": "Select kinds only: retained for compatibility; Memoh always offers and accepts custom answers.",
+								"description": "Select kinds only: retained for compatibility; Ami always offers and accepts custom answers.",
 							},
 							"placeholder": map[string]any{
 								"type":        "string",

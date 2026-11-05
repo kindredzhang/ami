@@ -7,8 +7,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/botbackup/secure"
-	"github.com/felinics/memoh/internal/bots"
+	"github.com/kindredzhang/ami/internal/botbackup/secure"
+	"github.com/kindredzhang/ami/internal/bots"
 )
 
 func zipWithManifest(t *testing.T, manifest string) []byte {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 // Acceptance is a control receipt, not model output. Keep the configuration at

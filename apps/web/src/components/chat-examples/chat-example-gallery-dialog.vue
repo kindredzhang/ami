@@ -10,7 +10,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@felinic/ui'
-import { X as XLogo } from '@memohai/icon'
+import { X as XLogo } from '@ami/icon'
 import ChatExampleCard from './chat-example-card.vue'
 import { useChatExampleAction, useChatExampleEntries, type ChatExampleEntry } from './use-chat-example-action'
 
@@ -18,7 +18,7 @@ import { useChatExampleAction, useChatExampleEntries, type ChatExampleEntry } fr
  * Every usage example in one list. Picking one closes the dialog
  * and hands off to the shared example action (settings link or prefill), so
  * it works from any page, including without a selected bot. The footer
- * invites people to post their own use case on X under #Memoh; it stays in
+ * invites people to post their own use case on X under #Ami; it stays in
  * view while the list scrolls.
  */
 const props = defineProps<{ botId: string }>()
@@ -27,7 +27,7 @@ const open = defineModel<boolean>('open', { default: false })
 const { t } = useI18n()
 
 /** X's compose intent, prefilled with the community hashtag. */
-const SHARE_ON_X_URL = 'https://x.com/intent/post?text=%23Memoh'
+const SHARE_ON_X_URL = 'https://x.com/intent/post?text=%23Ami'
 
 // Probed even while closed (the result is shared with the welcome strip),
 // so the list is already settled when the dialog opens.

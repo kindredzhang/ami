@@ -16,9 +16,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/errlog"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/errlog"
 )
 
 const (
@@ -189,7 +189,7 @@ func (m *Manager) startManaged(ctx context.Context) error {
 	if bin == "" {
 		found, err := exec.LookPath("cloudflared")
 		if err != nil {
-			return errors.New("cloudflared binary not found; set MEMOH_CLOUDFLARED_BIN or [webhook_tunnel].cloudflared_path")
+			return errors.New("cloudflared binary not found; set AMI_CLOUDFLARED_BIN or [webhook_tunnel].cloudflared_path")
 		}
 		bin = found
 	}
@@ -201,7 +201,7 @@ func (m *Manager) startManaged(ctx context.Context) error {
 	if metricsAddr == "" {
 		metricsAddr = defaultMetricsAddr
 	}
-	homeDir, err := os.MkdirTemp("", "memoh-cloudflared-*")
+	homeDir, err := os.MkdirTemp("", "ami-cloudflared-*")
 	if err != nil {
 		return fmt.Errorf("prepare isolated cloudflared home: %w", err)
 	}

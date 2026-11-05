@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/media"
-	intrpc "github.com/felinics/memoh/internal/rpc"
-	"github.com/felinics/memoh/internal/storage"
+	"github.com/kindredzhang/ami/internal/media"
+	intrpc "github.com/kindredzhang/ami/internal/rpc"
+	"github.com/kindredzhang/ami/internal/storage"
 )
 
 // A storage failure crosses the RPC as its sentinel, with the server's fault,

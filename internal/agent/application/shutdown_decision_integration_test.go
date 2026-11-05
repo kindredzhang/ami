@@ -11,16 +11,16 @@ import (
 
 	"github.com/google/uuid"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // Exercise real PostgreSQL decisions, a fresh Manager's reaper, and the
@@ -34,12 +34,12 @@ func TestPostgresDecisionSurvivesGracefulShutdown(t *testing.T) {
 		})
 	})
 	t.Run("redis", func(t *testing.T) {
-		redisURL := os.Getenv("MEMOH_TEST_REDIS_URL")
+		redisURL := os.Getenv("AMI_TEST_REDIS_URL")
 		if redisURL == "" {
-			if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-				t.Fatal("MEMOH_TEST_REDIS_URL required")
+			if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+				t.Fatal("AMI_TEST_REDIS_URL required")
 			}
-			t.Skip("set MEMOH_TEST_REDIS_URL")
+			t.Skip("set AMI_TEST_REDIS_URL")
 		}
 		prefix := "shutdown-test:" + uuid.NewString()
 		testPostgresDecisionSurvivesGracefulShutdown(t, func(ctx context.Context) sessionruntime.Backend {

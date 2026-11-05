@@ -1,4 +1,4 @@
-import type { WorkspaceWorkspaceTarget } from '@memohai/sdk'
+import type { WorkspaceWorkspaceTarget } from '@ami/sdk'
 
 // Display + availability rules for workspace targets, shared by the composer
 // Continue-on selector and chat-pane's selection guard. All label helpers take

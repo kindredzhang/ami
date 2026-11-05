@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // The real *apperror.Error, not a stand-in, exposes its private cause to

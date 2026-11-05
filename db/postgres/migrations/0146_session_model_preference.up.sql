@@ -6,7 +6,7 @@
 --
 -- FK form follows 0141/0142: post-team composite (team_id, col) with the
 -- column list on SET NULL, and NOT VALID because post-team migrations run
--- under FORCE RLS without memoh.team_id (see 0141 for the full rationale).
+-- under FORCE RLS without ami.team_id (see 0141 for the full rationale).
 -- The column is born NULL, so nothing is skipped by NOT VALID.
 ALTER TABLE public.bot_sessions
   ADD COLUMN IF NOT EXISTS preferred_chat_model_id UUID,

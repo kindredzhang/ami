@@ -6,7 +6,7 @@ import (
 	"maps"
 	"strings"
 
-	"github.com/felinics/memoh/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
 )
 
 func (s *DBService) SetMarkdownMediaResolver(resolve markdownmedia.Resolver) {

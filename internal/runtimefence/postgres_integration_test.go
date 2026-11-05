@@ -15,14 +15,14 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/dbtest"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/runtimefence"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/dbtest"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 var (
@@ -277,7 +277,7 @@ func openRuntimeFencePostgres(t *testing.T, ctx context.Context) *pgxpool.Pool {
 	t.Helper()
 	dsn := strings.TrimSpace(os.Getenv("TEST_POSTGRES_DSN"))
 	if dsn == "" {
-		if os.Getenv("MEMOH_TEST_POSTGRES_REQUIRED") == "1" {
+		if os.Getenv("AMI_TEST_POSTGRES_REQUIRED") == "1" {
 			t.Fatal("PostgreSQL runtime fencing contracts are required, but TEST_POSTGRES_DSN is not set")
 		}
 		t.Skip("set TEST_POSTGRES_DSN to run PostgreSQL runtime fencing contracts")

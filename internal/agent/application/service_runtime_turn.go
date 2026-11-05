@@ -11,19 +11,19 @@ import (
 	"sync/atomic"
 	"time"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/apperror"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	session "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimekind"
-	"github.com/felinics/memoh/internal/schedule"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/apperror"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/schedule"
 )
 
 // SetRuntimeRegistry installs the external runtimes. A session whose runtime
@@ -159,7 +159,7 @@ func runtimeSessionMeta(sess session.Thread) map[string]any {
 
 // streamRuntimeWS runs one turn on a runtime driver (ACP, codex,
 // claude-code) and streams events to the WS surface. The runtime owns its
-// durable session state (keyed through runtime metadata), Memoh's history is
+// durable session state (keyed through runtime metadata), Ami's history is
 // a projection persisted per round. webSend is set by the Web chat caller
 // for a new send, whose every admitted failure is recorded in history.
 func (s *Service) streamRuntimeWS(ctx context.Context, driver external.Driver, req ChatRequest, eventCh chan<- WSStreamEvent, abortCh <-chan struct{}, webSend bool) (RunOutcome, error) {

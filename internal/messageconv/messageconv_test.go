@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 func TestModelMessageToSDKMessageText(t *testing.T) {
@@ -28,7 +28,7 @@ func TestModelMessageToSDKMessageStructuredParts(t *testing.T) {
 		Role: "assistant",
 		Content: mustJSON(t, []map[string]any{
 			{"type": "text", "text": "checking"},
-			{"type": "tool-call", "toolCallId": "call-1", "toolName": "lookup", "input": map[string]any{"q": "memoh"}},
+			{"type": "tool-call", "toolCallId": "call-1", "toolName": "lookup", "input": map[string]any{"q": "ami"}},
 		}),
 	})
 
@@ -36,7 +36,7 @@ func TestModelMessageToSDKMessageStructuredParts(t *testing.T) {
 		Role: sdk.MessageRoleAssistant,
 		Content: []sdk.MessagePart{
 			sdk.TextPart{Text: "checking"},
-			sdk.ToolCallPart{ToolCallID: "call-1", ToolName: "lookup", Input: toolexec.ArgumentsFromValue(map[string]any{"q": "memoh"})},
+			sdk.ToolCallPart{ToolCallID: "call-1", ToolName: "lookup", Input: toolexec.ArgumentsFromValue(map[string]any{"q": "ami"})},
 		},
 	})
 }
@@ -73,7 +73,7 @@ func TestModelMessageToSDKMessageDoesNotInterpretLegacyEnvelopeFields(t *testing
 		Role:    "assistant",
 		Content: json.RawMessage(`""`),
 		ToolCalls: []turn.ToolCall{{
-			ID: "legacy-call", Function: turn.ToolCallFunction{Name: "lookup", Arguments: `{"q":"memoh"}`},
+			ID: "legacy-call", Function: turn.ToolCallFunction{Name: "lookup", Arguments: `{"q":"ami"}`},
 		}},
 	})
 	if len(got.Content) != 1 {

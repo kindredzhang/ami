@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 // encryptAESECB encrypts plaintext with AES-128-ECB and PKCS7 padding.

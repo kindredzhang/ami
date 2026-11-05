@@ -6,8 +6,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/application"
-	"github.com/felinics/memoh/internal/channel/inbound"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	"github.com/kindredzhang/ami/internal/channel/inbound"
 )
 
 type Adapter struct{ service *application.Service }

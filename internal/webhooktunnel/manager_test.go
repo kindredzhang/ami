@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/config"
+	"github.com/kindredzhang/ami/internal/config"
 )
 
 func TestNormalizePublicBase(t *testing.T) {
@@ -68,11 +68,11 @@ func TestNormalizePublicBaseRejectsUnsafeHosts(t *testing.T) {
 func TestNormalizeConfiguredPublicBase(t *testing.T) {
 	t.Parallel()
 
-	got, err := NormalizeConfiguredPublicBase("https://Memoh.EXAMPLE.org/")
+	got, err := NormalizeConfiguredPublicBase("https://Ami.EXAMPLE.org/")
 	if err != nil {
 		t.Fatalf("NormalizeConfiguredPublicBase returned error: %v", err)
 	}
-	if got != "https://memoh.example.org" {
+	if got != "https://ami.example.org" {
 		t.Fatalf("NormalizeConfiguredPublicBase = %q", got)
 	}
 }
@@ -81,7 +81,7 @@ func TestNormalizeConfiguredPublicBaseRejectsUnsafeValues(t *testing.T) {
 	t.Parallel()
 
 	tests := []string{
-		"http://memoh.example.org",
+		"http://ami.example.org",
 		"https://localhost",
 		"https://127.0.0.1",
 		"https://[2001:4860:4860::8888]",
@@ -90,14 +90,14 @@ func TestNormalizeConfiguredPublicBaseRejectsUnsafeValues(t *testing.T) {
 		"https://192.0.2.1",
 		"https://198.51.100.1",
 		"https://203.0.113.1",
-		"https://memoh.local",
-		"https://memoh.internal",
-		"https://user:pass@memoh.example.org",
-		"https://memoh.example.org/app",
-		"https://memoh.example.org:443",
-		"https://memoh.example.org:8443",
-		"https://memoh.example.org?x=1",
-		"https://memoh.example.org#frag",
+		"https://ami.local",
+		"https://ami.internal",
+		"https://user:pass@ami.example.org",
+		"https://ami.example.org/app",
+		"https://ami.example.org:443",
+		"https://ami.example.org:8443",
+		"https://ami.example.org?x=1",
+		"https://ami.example.org#frag",
 	}
 	for _, raw := range tests {
 		raw := raw
@@ -164,19 +164,19 @@ func TestConfiguredPublicBaseURLTakesPrecedence(t *testing.T) {
 	m := NewManager(nil, config.Config{
 		WebhookTunnel: config.WebhookTunnelConfig{
 			Mode:          config.WebhookTunnelModeDisabled,
-			PublicBaseURL: "https://memoh.example.org/",
+			PublicBaseURL: "https://ami.example.org/",
 		},
 	})
-	if got := m.PublicBaseURL(); got != "https://memoh.example.org" {
+	if got := m.PublicBaseURL(); got != "https://ami.example.org" {
 		t.Fatalf("PublicBaseURL = %q", got)
 	}
 	status := m.Status()
-	if !status.Enabled || status.Status != StatusReady || status.PublicBaseURL != "https://memoh.example.org" {
+	if !status.Enabled || status.Status != StatusReady || status.PublicBaseURL != "https://ami.example.org" {
 		t.Fatalf("Status = %+v, want configured public base ready", status)
 	}
 
 	m.setReady("https://abc.trycloudflare.com")
-	if got := m.PublicBaseURL(); got != "https://memoh.example.org" {
+	if got := m.PublicBaseURL(); got != "https://ami.example.org" {
 		t.Fatalf("PublicBaseURL with tunnel ready = %q, want configured base", got)
 	}
 }
@@ -187,12 +187,12 @@ func TestConfiguredPublicBaseURLStatusOverridesTunnelError(t *testing.T) {
 	m := NewManager(nil, config.Config{
 		WebhookTunnel: config.WebhookTunnelConfig{
 			Mode:          config.WebhookTunnelModeExternal,
-			PublicBaseURL: "https://memoh.example.org",
+			PublicBaseURL: "https://ami.example.org",
 		},
 	})
 	m.setError(assertErr("metrics unavailable"))
 	status := m.Status()
-	if status.Status != StatusReady || status.Error != "" || status.PublicBaseURL != "https://memoh.example.org" {
+	if status.Status != StatusReady || status.Error != "" || status.PublicBaseURL != "https://ami.example.org" {
 		t.Fatalf("Status = %+v, want configured public base ready", status)
 	}
 }

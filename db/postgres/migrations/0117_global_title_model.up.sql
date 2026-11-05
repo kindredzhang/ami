@@ -87,7 +87,7 @@ SELECT
     tm.title_model_id
 FROM public.team_members tm
 JOIN public.users u ON u.id = tm.user_id
-WHERE tm.team_id = public.memoh_current_team_id();
+WHERE tm.team_id = public.ami_current_team_id();
 
 ALTER TABLE public.bots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bots FORCE ROW LEVEL SECURITY;

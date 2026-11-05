@@ -1,4 +1,4 @@
-import type { ModelsModality, ModelsModelConfig } from '@memohai/sdk'
+import type { ModelsModality, ModelsModelConfig } from '@ami/sdk'
 
 type ModelConfigLike = Pick<ModelsModelConfig, 'modalities' | 'tool_call'> | null | undefined
 

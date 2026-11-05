@@ -13,12 +13,12 @@ import (
 
 	"go.opentelemetry.io/otel/codes"
 
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/testutil/sessionledger"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/testutil/sessionledger"
 )
 
 // capturedLogs records every record written through a logger built on it.

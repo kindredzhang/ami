@@ -12,7 +12,7 @@ type Locale = 'en' | 'zh' | 'ja'
 /** Who the server attributes a failure to, as the Problem's `fault` member. */
 export type ApiErrorFault = 'client' | 'server' | 'dependency' | 'canceled'
 
-export interface MemohError {
+export interface AmiError {
   code: string
   args: Record<string, unknown>
   message?: string
@@ -197,7 +197,7 @@ function pickNetworkErrorMessage(error: unknown): string {
   return renderI18nMessage('common.networkError')
 }
 
-export function parseMemohError(error: unknown): MemohError | null {
+export function parseAmiError(error: unknown): AmiError | null {
   for (const record of collectErrorRecords(error)) {
     const code = (typeof record.code === 'string' && record.code.trim())
       || (typeof record.error_code === 'string' && record.error_code.trim())
@@ -220,11 +220,11 @@ export function parseMemohError(error: unknown): MemohError | null {
 }
 
 export function isApiErrorCode(error: unknown, code: string): boolean {
-  return parseMemohError(error)?.code === code
+  return parseAmiError(error)?.code === code
 }
 
 export function apiErrorStatus(error: unknown): number | undefined {
-  const parsed = parseMemohError(error)
+  const parsed = parseAmiError(error)
   if (parsed?.status !== undefined) return parsed.status
 
   for (const record of collectErrorRecords(error)) {
@@ -239,7 +239,7 @@ export function apiErrorStatus(error: unknown): number | undefined {
  * server abandoned because the request was canceled, has an unknown outcome.
  */
 export function isApiErrorAnswered(error: unknown): boolean {
-  return apiErrorStatus(error) !== undefined && parseMemohError(error)?.fault !== 'canceled'
+  return apiErrorStatus(error) !== undefined && parseAmiError(error)?.fault !== 'canceled'
 }
 
 /**

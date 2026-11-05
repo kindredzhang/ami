@@ -12,11 +12,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	memohdb "github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/team"
+	amidb "github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestUserRuntimeCredentialLifecyclePostgresPath(t *testing.T) {
@@ -27,7 +27,7 @@ func TestUserRuntimeCredentialLifecyclePostgresPath(t *testing.T) {
 		t.Fatalf("acquire connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("set team context: %v", err)
 	}
 
@@ -56,7 +56,7 @@ func TestUserRuntimeCredentialLifecyclePostgresPath(t *testing.T) {
 	if _, err := conn.Exec(ctx, "UPDATE user_runtimes SET pending_expires_at = now() - INTERVAL '1 second' WHERE id = $1", expired.ID); err != nil {
 		t.Fatalf("expire pending Runtime: %v", err)
 	}
-	if _, err := store.GetUserRuntimeByAPIToken(ctx, expiredKey); !errors.Is(err, memohdb.ErrNotFound) {
+	if _, err := store.GetUserRuntimeByAPIToken(ctx, expiredKey); !errors.Is(err, amidb.ErrNotFound) {
 		t.Fatalf("authenticate expired pending Runtime error = %v, want not found", err)
 	}
 	if err := store.ExpirePendingUserRuntimes(ctx, userID); err != nil {
@@ -107,7 +107,7 @@ func TestUserRuntimeActivationMigrationPreservesExistingCredentials(t *testing.T
 		t.Fatalf("acquire connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("set team context: %v", err)
 	}
 
@@ -150,7 +150,7 @@ func TestRemoteMountDefaultMigrationPreservesExistingChoices(t *testing.T) {
 		t.Fatalf("acquire connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("set team context: %v", err)
 	}
 

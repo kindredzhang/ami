@@ -2,16 +2,16 @@
 
 ## Overview
 
-`@memohai/desktop` is the Memoh Electron Desktop client for Memoh Cloud or a
-hosted Memoh server. It reuses Vue pages, stores, i18n, API setup, and design
-tokens from `@memohai/web`, but owns the native Electron shell: windows, tray,
+`@ami/desktop` is the Ami Electron Desktop client for Ami Cloud or a
+hosted Ami server. It reuses Vue pages, stores, i18n, API setup, and design
+tokens from `@ami/web`, but owns the native Electron shell: windows, tray,
 menus, keyboard integration, cache invalidation, preload IPC, and the renderer
 bootstrap.
 
 Desktop does not start a local server, package database files, embed Qdrant, or
-install a companion CLI. It may embed the `@memohai/runtime` SDK so the Electron
+install a companion CLI. It may embed the `@ami/runtime` SDK so the Electron
 main process can connect this computer to the hosted server as a trusted Remote
-Runtime. Use `MEMOH_DESKTOP_BASE_URL` to point the app at the target server. The
+Runtime. Use `AMI_DESKTOP_BASE_URL` to point the app at the target server. The
 default dev target is `http://localhost:18080`.
 
 ## Tech Stack
@@ -22,7 +22,7 @@ default dev target is `http://localhost:18080`.
 | Bundler | electron-vite 4 |
 | Renderer | Vue 3 + Vite 8 + Tailwind CSS 4 |
 | Packager | electron-builder 26 |
-| Reused packages | `@memohai/web`, `@felinic/ui`, `@memohai/sdk`, `@memohai/icon`, `@memohai/config`, `@memohai/runtime` |
+| Reused packages | `@ami/web`, `@felinic/ui`, `@ami/sdk`, `@ami/icon`, `@ami/config`, `@ami/runtime` |
 | Type checking | TypeScript + `vue-tsc` |
 
 ## Directory Structure
@@ -51,21 +51,21 @@ apps/desktop/
 └── build/                         # packager input icons
 ```
 
-## Reuse from @memohai/web
+## Reuse from @ami/web
 
 The renderer imports web modules through public subpath exports in
 `apps/web/package.json`, including:
 
-- `@memohai/web/style.css`
-- `@memohai/web/routes` — shared business routes via `createAppRoutes('desktop')`
-- `@memohai/web/i18n`
-- `@memohai/web/api-client`
-- `@memohai/web/store/settings`
-- `@memohai/web/lib/desktop-shell`
-- `@memohai/web/layout/main-layout/index.vue`
-- `@memohai/web/components/sidebar/index.vue`
-- `@memohai/web/components/settings-sidebar/index.vue`
-- `@memohai/web/pages/**/*.vue`
+- `@ami/web/style.css`
+- `@ami/web/routes` — shared business routes via `createAppRoutes('desktop')`
+- `@ami/web/i18n`
+- `@ami/web/api-client`
+- `@ami/web/store/settings`
+- `@ami/web/lib/desktop-shell`
+- `@ami/web/layout/main-layout/index.vue`
+- `@ami/web/components/sidebar/index.vue`
+- `@ami/web/components/settings-sidebar/index.vue`
+- `@ami/web/pages/**/*.vue`
 
 Do not import the full web `main.ts`. Desktop has its own bootstrap so it can use
 memory-history routing, provide `DesktopShellKey`, wire native menus into the
@@ -82,7 +82,7 @@ settings landing redirect without creating a standalone Web router.
 `vue-tsc` follows symlinks. Desktop's renderer typecheck is intentionally scoped
 with `tsconfig.web.json` path stubs:
 
-- `src/renderer/types/web-stubs.d.ts` for `@memohai/web/*`
+- `src/renderer/types/web-stubs.d.ts` for `@ami/web/*`
 - `src/renderer/types/ui-stubs.d.ts` for `@felinic/ui`
 
 When adding a new reused web or UI import, update the matching stub. Keep the
@@ -99,7 +99,7 @@ source aliases just to silence type errors.
 - native menu accelerators
 - external URL handling
 - cache invalidation broadcast
-- renderer `/api` proxy target via `MEMOH_DESKTOP_BASE_URL`
+- renderer `/api` proxy target via `AMI_DESKTOP_BASE_URL`
 - encrypted Remote Runtime configuration and `RuntimeSession` lifecycle
 
 The preload bridge is the only renderer API surface for Electron/main-process
@@ -145,7 +145,7 @@ and `DesktopUpdatesKey` bridges so reused web components can adapt to Electron
 without importing Electron or receiving Node privileges.
 
 The reused chat follows the Composer-First Entry rule (`U4` / `U7` in
-`.agents/skills/memoh-frontend-rules/references/rules.md` and
+`.agents/skills/ami-frontend-rules/references/rules.md` and
 `references/architecture.md`). The desktop chat router
 (`src/renderer/src/chat/router.ts`) keeps its own guard, so it is bound by the
 same rule: no network wait before the first chat render.
@@ -153,10 +153,10 @@ same rule: no network wait before the first chat render.
 ## Commands
 
 ```bash
-pnpm --filter @memohai/desktop dev
-pnpm --filter @memohai/desktop typecheck
-pnpm --filter @memohai/desktop build:dir
-pnpm --filter @memohai/desktop build
+pnpm --filter @ami/desktop dev
+pnpm --filter @ami/desktop typecheck
+pnpm --filter @ami/desktop build:dir
+pnpm --filter @ami/desktop build
 ```
 
 `build:dir` is the CI smoke path for an unpacked app. Packaged output goes to
@@ -165,8 +165,8 @@ pnpm --filter @memohai/desktop build
 ## Packaging Rules
 
 `electron-builder.yml` is the only Desktop packaging config. The product name is
-`Memoh`, and packaged resources should only include the Electron application,
-icons, compiled app bundles, and the `@memohai/runtime` JavaScript SDK/proto used
+`Ami`, and packaged resources should only include the Electron application,
+icons, compiled app bundles, and the `@ami/runtime` JavaScript SDK/proto used
 by Main. Build the Runtime package before Desktop and keep `bridge.proto`
 unpacked for the gRPC loader. Do not add server binaries, installed CLI
 binaries, database files, provider templates, container runtimes, Qdrant, or
@@ -176,7 +176,7 @@ media runtimes to Desktop packaging.
 Process/CI values override `apps/desktop/.env`; it always passes
 `--publish never`, so release workflows upload completed artifacts rather than
 delegating network publication to electron-builder. A configured
-`MEMOH_DESKTOP_UPDATE_BASE_URL` enables generic update metadata and the native
+`AMI_DESKTOP_UPDATE_BASE_URL` enables generic update metadata and the native
 updater. Without it, updater checks stay disabled.
 
 ## Icons
@@ -185,5 +185,5 @@ Checked-in icons live in `build/` and `resources/`. Regenerate them only when th
 brand mark changes:
 
 ```bash
-pnpm --filter @memohai/desktop icons
+pnpm --filter @ami/desktop icons
 ```

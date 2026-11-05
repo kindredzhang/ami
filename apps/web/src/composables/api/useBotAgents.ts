@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { useQuery } from '@pinia/colada'
-import { getBotsByBotIdAgents } from '@memohai/sdk'
+import { getBotsByBotIdAgents } from '@ami/sdk'
 
 /**
  * Query key of a bot's Agent instances. Every page that reads them shares

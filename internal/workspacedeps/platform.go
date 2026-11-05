@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // Platform is the probed identity of a workspace target. It
-// is exported to scripts as MEMOH_DEP_OS, MEMOH_DEP_ARCH, and MEMOH_DEP_LIBC
+// is exported to scripts as AMI_DEP_OS, AMI_DEP_ARCH, and AMI_DEP_LIBC
 // and matched against catalog platform entries.
 type Platform struct {
 	// OS is the lower-cased kernel name: "linux" or "darwin".
@@ -91,11 +91,11 @@ func normalizeArch(machine string) string {
 	}
 }
 
-// env returns the MEMOH_DEP_OS/ARCH/LIBC entries for the script environment.
+// env returns the AMI_DEP_OS/ARCH/LIBC entries for the script environment.
 func (p Platform) env() []string {
 	return []string{
-		"MEMOH_DEP_OS=" + p.OS,
-		"MEMOH_DEP_ARCH=" + p.Arch,
-		"MEMOH_DEP_LIBC=" + p.Libc,
+		"AMI_DEP_OS=" + p.OS,
+		"AMI_DEP_ARCH=" + p.Arch,
+		"AMI_DEP_LIBC=" + p.Libc,
 	}
 }

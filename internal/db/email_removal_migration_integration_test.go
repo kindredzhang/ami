@@ -9,7 +9,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func assertEmailTablesAbsent(t *testing.T, pool *pgxpool.Pool) {

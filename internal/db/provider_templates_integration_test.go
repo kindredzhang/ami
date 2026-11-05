@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestProviderTemplateMigrationUpgradesWithoutBackfill(t *testing.T) {
@@ -26,7 +26,7 @@ func TestProviderTemplateMigrationUpgradesWithoutBackfill(t *testing.T) {
 	if err != nil {
 		t.Fatalf("acquire connection: %v", err)
 	}
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		conn.Release()
 		t.Fatalf("set team context: %v", err)
 	}

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { getAgentAuthorizationsById, getBotsById, getBotsByIdChecks, getBotsByBotIdAgents, getBotsByBotIdAgentsById, patchBotsByBotIdAgentsById, postBotsByBotIdAgents, postBotsByBotIdAgentsByIdCredentialClaim, postBotsByBotIdUserAccess, putBotsByBotIdSettings } from '@memohai/sdk'
-import type { BotagentsBotAgent, BotsBot, BotsCreateBotRequest } from '@memohai/sdk'
+import { getAgentAuthorizationsById, getBotsById, getBotsByIdChecks, getBotsByBotIdAgents, getBotsByBotIdAgentsById, patchBotsByBotIdAgentsById, postBotsByBotIdAgents, postBotsByBotIdAgentsByIdCredentialClaim, postBotsByBotIdUserAccess, putBotsByBotIdSettings } from '@ami/sdk'
+import type { BotagentsBotAgent, BotsBot, BotsCreateBotRequest } from '@ami/sdk'
 import {
   botCreateProgressPercent,
   collectBotCreateProgressStream,
@@ -17,7 +17,7 @@ import {
   type BotCreateTerminalLine,
 } from '@/composables/api/botCreateTerminal'
 import { markOnboardingCompleted } from '@/composables/useOnboarding'
-import { apiErrorStatus, parseMemohError, renderI18nMessage, resolveApiErrorMessage } from '@/utils/api-error'
+import { apiErrorStatus, parseAmiError, renderI18nMessage, resolveApiErrorMessage } from '@/utils/api-error'
 import { botCheckDetail } from '@/utils/bot-check'
 import { agentAuthForCredentialKind, botAgentRuntimeForProvider, directBotAgentMetadata, isDirectBotAgentRuntime, type DirectBotAgentRuntime } from '@/utils/bot-agent'
 import { externalAgentDisplayName } from '@/utils/external-agent'
@@ -260,7 +260,7 @@ export const useBotCreateProgressStore = defineStore('bot-create-progress', () =
   function failWithoutBot(error: unknown) {
     const message = resolveApiErrorMessage(error, localFailureMessage())
     setupError.value = message
-    errorCode.value = parseMemohError(error)?.code ?? (apiErrorStatus(error) === 409 ? 'bot.name_taken' : null)
+    errorCode.value = parseAmiError(error)?.code ?? (apiErrorStatus(error) === 409 ? 'bot.name_taken' : null)
     progress.value = { phase: 'error', error: message }
     ensureErrorLine(message)
     status.value = 'error'
@@ -346,7 +346,7 @@ export const useBotCreateProgressStore = defineStore('bot-create-progress', () =
       status.value = 'ready'
     } catch (error) {
       setupError.value = resolveApiErrorMessage(error, localFailureMessage())
-      errorCode.value = parseMemohError(error)?.code ?? null
+      errorCode.value = parseAmiError(error)?.code ?? null
       lines.value = finalizeBotCreateTerminalLines(lines.value, 'error')
       ensureErrorLine(setupError.value)
       status.value = directAgent ? 'setup-error' : 'ready'
@@ -428,7 +428,7 @@ export const useBotCreateProgressStore = defineStore('bot-create-progress', () =
         failWithoutBot(error)
         return NOTHING_APPLIED
       }
-      failWorkspace(resolveApiErrorMessage(error, localFailureMessage()), parseMemohError(error)?.code ?? null)
+      failWorkspace(resolveApiErrorMessage(error, localFailureMessage()), parseAmiError(error)?.code ?? null)
       return NOTHING_APPLIED
     }
   }
@@ -451,7 +451,7 @@ export const useBotCreateProgressStore = defineStore('bot-create-progress', () =
       lines.value = finalizeBotCreateTerminalLines(lines.value)
       return await finishSetup()
     } catch (error) {
-      failWorkspace(resolveApiErrorMessage(error, localFailureMessage()), parseMemohError(error)?.code ?? null)
+      failWorkspace(resolveApiErrorMessage(error, localFailureMessage()), parseAmiError(error)?.code ?? null)
       return NOTHING_APPLIED
     }
   }
@@ -497,7 +497,7 @@ export const useBotCreateProgressStore = defineStore('bot-create-progress', () =
       return await finishSetup()
     } catch (error) {
       if (bot.value) {
-        failWorkspace(resolveApiErrorMessage(error, localFailureMessage()), parseMemohError(error)?.code ?? null)
+        failWorkspace(resolveApiErrorMessage(error, localFailureMessage()), parseAmiError(error)?.code ?? null)
         return NOTHING_APPLIED
       }
       failWithoutBot(error)

@@ -34,10 +34,10 @@ ON CONFLICT (team_id, provider_id) DO UPDATE SET
 RETURNING *;
 
 -- name: GetProviderOAuthTokenByProvider :one
-SELECT * FROM provider_oauth_tokens WHERE team_id = public.memoh_current_team_id() AND provider_id = sqlc.arg(provider_id);
+SELECT * FROM provider_oauth_tokens WHERE team_id = public.ami_current_team_id() AND provider_id = sqlc.arg(provider_id);
 
 -- name: GetProviderOAuthTokenByState :one
-SELECT * FROM provider_oauth_tokens WHERE team_id = public.memoh_current_team_id() AND state = sqlc.arg(state) AND state != '';
+SELECT * FROM provider_oauth_tokens WHERE team_id = public.ami_current_team_id() AND state = sqlc.arg(state) AND state != '';
 
 -- name: UpdateProviderOAuthState :exec
 INSERT INTO provider_oauth_tokens (provider_id, state, pkce_code_verifier, metadata)
@@ -54,4 +54,4 @@ ON CONFLICT (team_id, provider_id) DO UPDATE SET
   updated_at = now();
 
 -- name: DeleteProviderOAuthToken :exec
-DELETE FROM provider_oauth_tokens WHERE team_id = public.memoh_current_team_id() AND provider_id = sqlc.arg(provider_id);
+DELETE FROM provider_oauth_tokens WHERE team_id = public.ami_current_team_id() AND provider_id = sqlc.arg(provider_id);

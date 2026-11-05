@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/connectors"
-	"github.com/felinics/memoh/internal/workspacedeps"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/connectors"
+	"github.com/kindredzhang/ami/internal/workspacedeps"
 )
 
 // failure is a failed App step. Its text keeps the step and the full cause

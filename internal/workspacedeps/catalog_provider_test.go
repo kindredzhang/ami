@@ -20,7 +20,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 type memoryCatalogStore struct {
@@ -122,7 +122,7 @@ func newCatalogHTTPFixture(t *testing.T) *catalogHTTPFixture {
 		if err != nil {
 			t.Fatal(err)
 		}
-		f.objects["/api/registries/memoh/dependencies/"+descriptor.DependencyID+"/releases/"+descriptor.Revision] = metadata
+		f.objects["/api/registries/ami/dependencies/"+descriptor.DependencyID+"/releases/"+descriptor.Revision] = metadata
 		f.objects["/api/artifacts/dependency/"+descriptor.Artifact.Digest] = archive
 	}
 	f.server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -172,7 +172,7 @@ func TestRemoteCatalogPersistsVerifiedDefinitionsAndWorksOffline(t *testing.T) {
 		t.Fatalf("catalog=%+v", result)
 	}
 	dep := result.Catalog.MustGet("codex")
-	if dep.RegistryID != "memoh" || dep.Revision == "" || !catalog.ValidRevision(dep.IconDigest) {
+	if dep.RegistryID != "ami" || dep.Revision == "" || !catalog.ValidRevision(dep.IconDigest) {
 		t.Fatalf("publication missing: %+v", dep)
 	}
 	hits := server.hits.Load()
@@ -575,7 +575,7 @@ func (f *catalogHTTPFixture) updateScript(t *testing.T, id, prefix string) {
 		}
 		revision := hash(metadata)
 		f.objects["/api/artifacts/dependency/"+release.Artifact.Digest] = compressed.Bytes()
-		f.objects["/api/registries/memoh/dependencies/"+id+"/releases/"+revision] = metadata
+		f.objects["/api/registries/ami/dependencies/"+id+"/releases/"+revision] = metadata
 		f.index.Data[i] = catalog.Descriptor{Release: release, Revision: revision}
 		return
 	}

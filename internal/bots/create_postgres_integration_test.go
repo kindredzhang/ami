@@ -9,19 +9,19 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/felinics/memoh/internal/botworkspace"
-	dbpkg "github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/dbtest"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	postgresstore "github.com/felinics/memoh/internal/db/postgres/store"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/botworkspace"
+	dbpkg "github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/dbtest"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestPostgresBotCreate(t *testing.T) {
 	dsn := os.Getenv("TEST_POSTGRES_DSN")
 	if dsn == "" {
-		if os.Getenv("MEMOH_TEST_POSTGRES_REQUIRED") == "1" {
+		if os.Getenv("AMI_TEST_POSTGRES_REQUIRED") == "1" {
 			t.Fatal("TEST_POSTGRES_DSN is not set")
 		}
 		t.Skip("set TEST_POSTGRES_DSN to run")

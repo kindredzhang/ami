@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // DefaultUpdateCheckInterval is how often the update worker runs a round.

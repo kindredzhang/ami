@@ -1,4 +1,4 @@
-import { getSiteIcon, type HandlersSiteIconResponse } from '@memohai/sdk'
+import { getSiteIcon, type HandlersSiteIconResponse } from '@ami/sdk'
 
 // Icons belong to a site, so every link to one origin shares a single lookup
 // for the lifetime of the page. The response already carries both color

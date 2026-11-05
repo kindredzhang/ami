@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-const InternalTokenMetadataKey = "x-memoh-internal-token"
+const InternalTokenMetadataKey = "x-ami-internal-token"
 
 func UnaryClientAuth(secret string) grpc.UnaryClientInterceptor {
 	return func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {

@@ -3,7 +3,7 @@
 // state (incl. the odd "restart happened, version unchanged" one) is testable
 // without a real update feed. Arm the mock, flip states, then hover the chip.
 // In the desktop dev shell the armed mock overrides the real bridge; disarming
-// hands control back. Also reachable from any console: window.__memohMockUpdate.
+// hands control back. Also reachable from any console: window.__amiMockUpdate.
 import { Button } from '@felinic/ui'
 import SectionShell from '../components/SectionShell.vue'
 import Specimen from '../components/Specimen.vue'

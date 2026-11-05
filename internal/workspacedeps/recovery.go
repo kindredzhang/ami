@@ -7,8 +7,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/workspacedeps/catalog"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/workspacedeps/catalog"
 )
 
 func receiptMatches(rec Installation, receipt *OperationReceipt) bool {

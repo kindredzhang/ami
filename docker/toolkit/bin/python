@@ -1,2 +1,2 @@
 #!/bin/sh
-exec "${MEMOH_TOOLKIT_DIR:-/opt/memoh/toolkit}/bin/python3" "$@"
+exec "${AMI_TOOLKIT_DIR:-/opt/ami/toolkit}/bin/python3" "$@"

@@ -12,10 +12,10 @@ import (
 
 	tele "gopkg.in/telebot.v4"
 
-	"github.com/felinics/memoh/internal/agent/adapter/channelmessaging"
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/messaging"
+	"github.com/kindredzhang/ami/internal/agent/adapter/channelmessaging"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/messaging"
 )
 
 type telegramCall struct {
@@ -74,7 +74,7 @@ func assertTelegramCallsTarget(t *testing.T, calls []telegramCall, wantChat, wan
 func TestTelegramInboundTopicThread(t *testing.T) {
 	adapter := NewTelegramAdapter(nil)
 	bot := newStubTelegramBot(t)
-	bot.Me = &tele.User{ID: 999, Username: "memoh_bot"}
+	bot.Me = &tele.User{ID: 999, Username: "ami_bot"}
 	forum := &tele.Chat{ID: -100123, Type: tele.ChatSuperGroup, Title: "Forum", IsForum: true}
 	group := &tele.Chat{ID: -100456, Type: tele.ChatSuperGroup, Title: "Group"}
 	private := &tele.Chat{ID: 555, Type: tele.ChatPrivate}
@@ -345,7 +345,7 @@ func TestTelegramTopicSendToolLandsInInboundTopic(t *testing.T) {
 			bot, _ := getOrCreateBotForTest(adapter, "", "")
 			tc.raw.ID = 100
 			tc.raw.Sender = &tele.User{ID: 7, FirstName: "Alice"}
-			inbound, ok := adapter.toInboundTelegramMessage(bot, channel.ChannelConfig{}, tc.raw, "@memoh_bot hi", nil, nil)
+			inbound, ok := adapter.toInboundTelegramMessage(bot, channel.ChannelConfig{}, tc.raw, "@ami_bot hi", nil, nil)
 			if !ok {
 				t.Fatal("expected inbound message")
 			}

@@ -9,7 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/botworkspace"
+	"github.com/kindredzhang/ami/internal/botworkspace"
 )
 
 type removalWorkspace struct {

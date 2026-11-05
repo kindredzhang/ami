@@ -50,11 +50,11 @@ type Source string
 // Dependency sources.
 const (
 	// SourceManaged dependencies are installed by the catalog scripts into
-	// MEMOH_DEP_HOME and can be updated, rolled back, and removed.
+	// AMI_DEP_HOME and can be updated, rolled back, and removed.
 	SourceManaged Source = "managed"
 	// SourceImage dependencies ship with the workspace image, which provides
 	// the baseline copy under the toolkit. When the manifest declares scripts
-	// the catalog installs overlay versions into MEMOH_DEP_HOME on top of that
+	// the catalog installs overlay versions into AMI_DEP_HOME on top of that
 	// baseline; removing the overlay returns to the image copy. Without
 	// scripts the entry is informational and cannot be installed.
 	SourceImage Source = "image"
@@ -104,7 +104,7 @@ type VersionSpec struct {
 
 // Default per-action timeouts in seconds, applied when the manifest omits one.
 const (
-	DefaultInstallTimeout     = 1200 // aligned with the image's MEMOH_APT_COMMAND_TIMEOUT
+	DefaultInstallTimeout     = 1200 // aligned with the image's AMI_APT_COMMAND_TIMEOUT
 	DefaultRemoveTimeout      = 300
 	DefaultCheckUpdateTimeout = 60
 	DefaultVersionTimeout     = 30

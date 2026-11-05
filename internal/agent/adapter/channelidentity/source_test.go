@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 type fakeConfigSource struct {
@@ -22,7 +22,7 @@ func TestSourceProjectsChannelConfig(t *testing.T) {
 		ID:               "config-1",
 		ChannelType:      channel.ChannelTypeTelegram,
 		ExternalIdentity: "bot-1",
-		SelfIdentity:     map[string]any{"username": "memoh"},
+		SelfIdentity:     map[string]any{"username": "ami"},
 	}}})
 	got, err := source.ListPlatformIdentities(context.Background(), "bot-1")
 	if err != nil {

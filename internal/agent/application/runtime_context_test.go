@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/contextview"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/contextview"
 )
 
 func TestRenderRuntimeContextMarkdownIncludesDynamicRuntimeAndRecall(t *testing.T) {
@@ -42,7 +42,7 @@ func TestRenderRuntimeContextMarkdownIncludesDynamicRuntimeAndRecall(t *testing.
 	})
 
 	for _, want := range []string{
-		"# Memoh Runtime Context",
+		"# Ami Runtime Context",
 		"Timezone: America/Los_Angeles",
 		"Bot ID: bot-1",
 		"Agent: codex",
@@ -90,7 +90,7 @@ func TestRenderRuntimeContextMarkdownRespectsSystemFilesBudget(t *testing.T) {
 		},
 	})
 
-	if !strings.Contains(got, "[memoh pruned]") {
+	if !strings.Contains(got, "[ami pruned]") {
 		t.Fatalf("context missing prune marker:\n%s", got)
 	}
 	if strings.Contains(got, "SECOND_FILE_SHOULD_NOT_FIT") {
@@ -111,7 +111,7 @@ func TestRuntimeContextViaContextViewKeepsQueryOutsideMarkdown(t *testing.T) {
 	t.Parallel()
 
 	sections := []contextview.RuntimeSection{
-		{ID: "runtime.preamble", Text: "# Memoh Runtime Context\n\npreamble body"},
+		{ID: "runtime.preamble", Text: "# Ami Runtime Context\n\npreamble body"},
 		{ID: "runtime.section.current-runtime", Text: "## Current Runtime\n\n- Bot ID: bot-1"},
 	}
 	baseMarkdown, _, _ := runtimeContextViaContextView(context.Background(), nil, sections, "")

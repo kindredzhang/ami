@@ -7,8 +7,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextlimit "github.com/felinics/memoh/internal/agent/context/limit"
-	"github.com/felinics/memoh/internal/agent/event"
+	contextlimit "github.com/kindredzhang/ami/internal/agent/context/limit"
+	"github.com/kindredzhang/ami/internal/agent/event"
 )
 
 // TurnStream is a turn's one event stream: it records the turn and forwards
@@ -16,7 +16,7 @@ import (
 // loop that reads its agent, so emitting never waits on the consumer: a slow
 // stream would hold up every response, permission request and stop
 // confirmation behind it. The agent's events, the decisions that settle after
-// a stop, and the events of Memoh tools served through the gateway arrive on
+// a stop, and the events of Ami tools served through the gateway arrive on
 // different paths; they queue here in arrival order, so the live stream and
 // the persisted transcript agree.
 //

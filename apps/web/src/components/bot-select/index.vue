@@ -54,8 +54,8 @@ import {
   Select, SelectTrigger, SelectValue, SelectContent, SelectItem,
   Avatar, AvatarImage, AvatarFallback,
 } from '@felinic/ui'
-import { getBotsQuery } from '@memohai/sdk/colada'
-import type { BotsBot } from '@memohai/sdk'
+import { getBotsQuery } from '@ami/sdk/colada'
+import type { BotsBot } from '@ami/sdk'
 
 const props = defineProps<{
   modelValue: string

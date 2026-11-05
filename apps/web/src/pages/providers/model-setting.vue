@@ -97,8 +97,8 @@ import {
   getProvidersByIdModels,
   postProviders,
   putProvidersById,
-} from '@memohai/sdk'
-import type { ModelsGetResponse, ProvidersGetResponse, ProvidersUpdateRequest } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { ModelsGetResponse, ProvidersGetResponse, ProvidersUpdateRequest } from '@ami/sdk'
 import { useI18n } from 'vue-i18n'
 import { toast } from '@felinic/ui'
 import { isManagedModelCatalogClientType } from '@/constants/client-types'

@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	agentpkg "github.com/felinics/memoh/internal/agent/runtime/native"
-	tools "github.com/felinics/memoh/internal/agent/tool"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	agentpkg "github.com/kindredzhang/ami/internal/agent/runtime/native"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 func TestApplyProviderRunConfigGatesUnavailableSkillGuidance(t *testing.T) {

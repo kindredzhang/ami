@@ -9,13 +9,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/context/compaction"
-	"github.com/felinics/memoh/internal/agent/turn"
-	messagepkg "github.com/felinics/memoh/internal/chat/message"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/oauthctx"
-	"github.com/felinics/memoh/internal/providers"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/kindredzhang/ami/internal/agent/context/compaction"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	messagepkg "github.com/kindredzhang/ami/internal/chat/message"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/oauthctx"
+	"github.com/kindredzhang/ami/internal/providers"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 // compactForBudget folds the session history into one summary, in as many

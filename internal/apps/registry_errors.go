@@ -3,8 +3,8 @@ package apps
 import (
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/supermarket"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/supermarket"
 )
 
 // RegistryError translates an error the Supermarket installer reported into

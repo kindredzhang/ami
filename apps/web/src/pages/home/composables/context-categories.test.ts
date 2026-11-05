@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { computeContextComposition, contextPressureToneClass, formatTokenCount } from './context-categories'
-import type { ContextfragKind, ContextfragKindBreakdown, HandlersContextUsage, HandlersToolDefBucket } from '@memohai/sdk'
+import type { ContextfragKind, ContextfragKindBreakdown, HandlersContextUsage, HandlersToolDefBucket } from '@ami/sdk'
 
 function frag(kind: ContextfragKind, tokenEstimate?: number): ContextfragKindBreakdown {
   return tokenEstimate === undefined ? { kind } : { kind, token_estimate: tokenEstimate }

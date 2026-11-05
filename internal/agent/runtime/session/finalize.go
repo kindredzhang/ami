@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 var errInvalidOwnerTerminalState = errors.New("session runtime: invalid owner terminal state")

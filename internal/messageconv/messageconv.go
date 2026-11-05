@@ -8,7 +8,7 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/agent/turn"
 )
 
 func SDKMessagesToModelMessages(msgs []sdk.Message) []turn.ModelMessage {
@@ -50,7 +50,7 @@ func SDKMessagesToModelMessagesWithLogger(log *slog.Logger, msgs []sdk.Message) 
 // SDKMessagesJSONToModelMessages types a serialized []sdk.Message — the
 // Messages payload of step and terminal stream events — as stored-shape model
 // messages. Readers written for the persisted row shape (tool input as the
-// plain object, Memoh annotations as nested objects under providerMetadata)
+// plain object, Ami annotations as nested objects under providerMetadata)
 // consume the result unchanged.
 func SDKMessagesJSONToModelMessages(raw json.RawMessage) ([]turn.ModelMessage, error) {
 	var envelopes []struct {

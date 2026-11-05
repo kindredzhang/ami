@@ -7,28 +7,28 @@ RETURNING id, owner_user_id, name, display_name, avatar_url, timezone, is_active
 -- The bot an earlier POST /bots with this Idempotency-Key created for the owner.
 SELECT id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at
 FROM bots
-WHERE team_id = public.memoh_current_team_id() AND owner_user_id = $1 AND create_request_key = $2;
+WHERE team_id = public.ami_current_team_id() AND owner_user_id = $1 AND create_request_key = $2;
 
 -- name: GetBotByID :one
 SELECT id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at
 FROM bots
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: GetBotByName :one
 SELECT id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at
 FROM bots
-WHERE team_id = public.memoh_current_team_id() AND name = $1;
+WHERE team_id = public.ami_current_team_id() AND name = $1;
 
 -- name: ListBotsByOwner :many
 SELECT id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at
 FROM bots
-WHERE team_id = public.memoh_current_team_id() AND owner_user_id = $1
+WHERE team_id = public.ami_current_team_id() AND owner_user_id = $1
 ORDER BY created_at DESC;
 
 -- name: ListAccessibleBots :many
 SELECT id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at
 FROM bots b
-WHERE b.team_id = public.memoh_current_team_id()
+WHERE b.team_id = public.ami_current_team_id()
   AND (
     b.owner_user_id = $1
     OR EXISTS (
@@ -63,14 +63,14 @@ SET name = $2,
             ELSE 0
           END,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at;
 
 -- name: BumpBotRuntimeConfigEpoch :one
 UPDATE bots
 SET runtime_config_epoch = runtime_config_epoch + 1,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(bot_id)
 RETURNING runtime_config_epoch;
 
@@ -78,25 +78,25 @@ RETURNING runtime_config_epoch;
 UPDATE bots
 SET owner_user_id = $2,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 RETURNING id, owner_user_id, name, display_name, avatar_url, timezone, is_active, status, reasoning_effort, chat_model_id, search_provider_id, memory_provider_id, metadata, created_at, updated_at;
 
 -- name: UpdateBotStatus :exec
 UPDATE bots
 SET status = $2,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: TouchBotActivity :exec
 UPDATE bots
 SET updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(bot_id);
+WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(bot_id);
 
 -- name: ClearBotRuntimeData :exec
 WITH target_sessions AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.bot_id = sqlc.arg(bot_id)
   ORDER BY session.id
   FOR UPDATE
@@ -104,7 +104,7 @@ WITH target_sessions AS MATERIALIZED (
 target_compaction_artifacts AS MATERIALIZED (
   SELECT compact.id
   FROM bot_history_message_compacts compact
-  WHERE compact.team_id = public.memoh_current_team_id()
+  WHERE compact.team_id = public.ami_current_team_id()
     AND compact.bot_id = sqlc.arg(bot_id)
     AND (SELECT count(*) FROM target_sessions) >= 0
   ORDER BY compact.id
@@ -113,14 +113,14 @@ target_compaction_artifacts AS MATERIALIZED (
 deleted_compaction_artifacts AS (
   DELETE FROM bot_history_message_compacts compact
   USING target_compaction_artifacts target
-  WHERE compact.team_id = public.memoh_current_team_id()
+  WHERE compact.team_id = public.ami_current_team_id()
     AND compact.id = target.id
   RETURNING compact.id
 ),
 target_messages AS MATERIALIZED (
   SELECT message.id
   FROM bot_history_messages message
-  WHERE message.team_id = public.memoh_current_team_id()
+  WHERE message.team_id = public.ami_current_team_id()
     AND message.bot_id = sqlc.arg(bot_id)
     AND (SELECT count(*) FROM target_sessions) >= 0
     AND (SELECT count(*) FROM deleted_compaction_artifacts) >= 0
@@ -130,20 +130,20 @@ target_messages AS MATERIALIZED (
 deleted_messages AS (
   DELETE FROM bot_history_messages message
   USING target_messages target
-  WHERE message.team_id = public.memoh_current_team_id()
+  WHERE message.team_id = public.ami_current_team_id()
     AND message.id = target.id
   RETURNING message.id
 ),
 deleted_sessions AS (
   DELETE FROM bot_sessions session
   USING target_sessions target
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = target.id
     AND (SELECT count(*) FROM deleted_messages) >= 0
   RETURNING session.id
 )
 DELETE FROM bot_channel_routes route
-WHERE route.team_id = public.memoh_current_team_id()
+WHERE route.team_id = public.ami_current_team_id()
   AND route.bot_id = sqlc.arg(bot_id)
   AND (SELECT count(*) FROM deleted_sessions) >= 0;
 
@@ -153,14 +153,14 @@ WHERE route.team_id = public.memoh_current_team_id()
 WITH target_bot AS MATERIALIZED (
   SELECT bot.id
   FROM bots bot
-  WHERE bot.team_id = public.memoh_current_team_id()
+  WHERE bot.team_id = public.ami_current_team_id()
     AND bot.id = sqlc.arg(id)
   FOR UPDATE
 ),
 target_sessions AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.bot_id = sqlc.arg(id)
     AND EXISTS (SELECT 1 FROM target_bot)
   ORDER BY session.id
@@ -169,7 +169,7 @@ target_sessions AS MATERIALIZED (
 target_compaction_artifacts AS MATERIALIZED (
   SELECT compact.id
   FROM bot_history_message_compacts compact
-  WHERE compact.team_id = public.memoh_current_team_id()
+  WHERE compact.team_id = public.ami_current_team_id()
     AND compact.bot_id = sqlc.arg(id)
     AND (SELECT count(*) FROM target_sessions) >= 0
   ORDER BY compact.id
@@ -178,14 +178,14 @@ target_compaction_artifacts AS MATERIALIZED (
 deleted_compaction_artifacts AS (
   DELETE FROM bot_history_message_compacts compact
   USING target_compaction_artifacts target
-  WHERE compact.team_id = public.memoh_current_team_id()
+  WHERE compact.team_id = public.ami_current_team_id()
     AND compact.id = target.id
   RETURNING compact.id
 ),
 target_messages AS MATERIALIZED (
   SELECT message.id
   FROM bot_history_messages message
-  WHERE message.team_id = public.memoh_current_team_id()
+  WHERE message.team_id = public.ami_current_team_id()
     AND message.bot_id = sqlc.arg(id)
     AND (SELECT count(*) FROM target_sessions) >= 0
     AND (SELECT count(*) FROM deleted_compaction_artifacts) >= 0
@@ -195,21 +195,21 @@ target_messages AS MATERIALIZED (
 deleted_messages AS (
   DELETE FROM bot_history_messages message
   USING target_messages target
-  WHERE message.team_id = public.memoh_current_team_id()
+  WHERE message.team_id = public.ami_current_team_id()
     AND message.id = target.id
   RETURNING message.id
 ),
 deleted_sessions AS (
   DELETE FROM bot_sessions session
   USING target_sessions target
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = target.id
     AND (SELECT count(*) FROM deleted_messages) >= 0
   RETURNING session.id
 )
 DELETE FROM bots bot
 USING target_bot target
-WHERE bot.team_id = public.memoh_current_team_id()
+WHERE bot.team_id = public.ami_current_team_id()
   AND bot.id = target.id
   AND (SELECT count(*) FROM target_sessions) >= 0
   AND (SELECT count(*) FROM deleted_sessions) >= 0;
@@ -217,6 +217,6 @@ WHERE bot.team_id = public.memoh_current_team_id()
 -- name: LockBotForSessionWrite :one
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
 FOR KEY SHARE;

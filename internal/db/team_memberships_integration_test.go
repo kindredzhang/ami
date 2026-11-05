@@ -9,8 +9,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/team"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 func TestTeamMembershipMigrationBackfillsAndReverses(t *testing.T) {
@@ -134,7 +134,7 @@ func TestGlobalUserCanBelongToMultipleTeams(t *testing.T) {
 			t.Fatalf("begin account read: %v", err)
 		}
 		defer func() { _ = tx.Rollback(ctx) }()
-		if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamID); err != nil {
+		if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamID); err != nil {
 			t.Fatalf("bind account team: %v", err)
 		}
 		account, err := dbsqlc.New(tx).GetAccountByUserID(ctx, uuidValue(t, userID))
@@ -164,7 +164,7 @@ func TestGlobalUserCanBelongToMultipleTeams(t *testing.T) {
 	if err != nil {
 		t.Fatalf("begin remove member: %v", err)
 	}
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamTwo); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamTwo); err != nil {
 		t.Fatalf("bind remove-member team: %v", err)
 	}
 	if _, err := dbsqlc.New(tx).RemoveMember(ctx, uuidValue(t, userID)); err != nil {
@@ -209,7 +209,7 @@ func TestAccountQueriesAttachExistingUserToAnotherTeam(t *testing.T) {
 	if err != nil {
 		t.Fatalf("begin default-team account: %v", err)
 	}
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", team.DefaultTeamID); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", team.DefaultTeamID); err != nil {
 		t.Fatalf("bind default team: %v", err)
 	}
 	queries := dbsqlc.New(tx)
@@ -246,7 +246,7 @@ func TestAccountQueriesAttachExistingUserToAnotherTeam(t *testing.T) {
 		t.Fatalf("begin second-team account: %v", err)
 	}
 	defer func() { _ = tx.Rollback(ctx) }()
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamTwo); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamTwo); err != nil {
 		t.Fatalf("bind second team: %v", err)
 	}
 	attached, err := dbsqlc.New(tx).UpsertAccountByUsername(ctx, dbsqlc.UpsertAccountByUsernameParams{
@@ -319,7 +319,7 @@ func TestAdminAccountUpdateOnlyChangesCurrentMembership(t *testing.T) {
 		t.Fatalf("begin admin update: %v", err)
 	}
 	defer func() { _ = tx.Rollback(ctx) }()
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", teamTwo); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", teamTwo); err != nil {
 		t.Fatalf("bind admin-update team: %v", err)
 	}
 	updated, err := dbsqlc.New(tx).UpdateAccountAdmin(ctx, dbsqlc.UpdateAccountAdminParams{
@@ -386,7 +386,7 @@ func TestRoleOnlyAdminUpdatePreservesMembershipState(t *testing.T) {
 		t.Fatalf("begin role-only update: %v", err)
 	}
 	defer func() { _ = tx.Rollback(ctx) }()
-	if _, err := tx.Exec(ctx, "SELECT set_config('memoh.team_id', $1, true)", team.DefaultTeamID); err != nil {
+	if _, err := tx.Exec(ctx, "SELECT set_config('ami.team_id', $1, true)", team.DefaultTeamID); err != nil {
 		t.Fatalf("bind role-only update team: %v", err)
 	}
 	updated, err := dbsqlc.New(tx).UpdateAccountAdmin(ctx, dbsqlc.UpdateAccountAdminParams{

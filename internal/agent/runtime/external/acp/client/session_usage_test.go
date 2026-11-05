@@ -9,8 +9,8 @@ import (
 	acp "github.com/coder/acp-go-sdk"
 	sdk "github.com/felinics/twilight/sdk"
 
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/messageconv"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/messageconv"
 )
 
 func TestPromptUsageFromACPMapsTokenDetails(t *testing.T) {
@@ -49,7 +49,7 @@ func TestPromptStoresACPCacheInsideInput(t *testing.T) {
 		t.Fatal(err)
 	}
 	runner, agentPath := newStartSessionTestRunner(t)
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_USAGE", string(reported))
+	t.Setenv("AMI_ACP_FAKE_AGENT_USAGE", string(reported))
 	sess, err := runner.StartSession(context.Background(), StartRequest{
 		AgentID:     acpprofile.AgentACPID,
 		BotID:       "bot-1",

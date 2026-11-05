@@ -1,4 +1,4 @@
-import type { HandlersGraphResponse } from '@memohai/sdk'
+import type { HandlersGraphResponse } from '@ami/sdk'
 import { MAX_VISIBLE_EDGES_PER_NODE } from './constants'
 import type { GraphData, GraphEdge, GraphEdgeCandidate } from './types'
 

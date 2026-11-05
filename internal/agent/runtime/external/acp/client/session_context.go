@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 type SessionContextInput struct {

@@ -19,13 +19,13 @@ import (
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/status"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/logger"
-	"github.com/felinics/memoh/internal/rpc"
-	rpcruntime "github.com/felinics/memoh/internal/rpc/runtime"
-	"github.com/felinics/memoh/internal/rpc/runtimepb"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/logger"
+	"github.com/kindredzhang/ami/internal/rpc"
+	rpcruntime "github.com/kindredzhang/ami/internal/rpc/runtime"
+	"github.com/kindredzhang/ami/internal/rpc/runtimepb"
 )
 
 const resultTestSecret = "result-test-shared-value" //nolint:gosec // test fixture, not a credential

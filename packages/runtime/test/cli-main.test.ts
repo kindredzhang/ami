@@ -31,7 +31,7 @@ describe('configuration and service commands', () => {
     await runCLI([], f.context)
     expect(f.context.createSession).toHaveBeenLastCalledWith(expect.objectContaining({ key: keyA }), expect.any(Object))
     await runCLI(['run', '--config', f.paths.configPath], {
-      ...f.context, env: { MEMOH_RUNTIME_SERVER: 'https://two.example', MEMOH_RUNTIME_KEY: flagsB[3] },
+      ...f.context, env: { AMI_RUNTIME_SERVER: 'https://two.example', AMI_RUNTIME_KEY: flagsB[3] },
     })
     expect(f.context.createSession).toHaveBeenLastCalledWith(expect.objectContaining({ key: keyA }), expect.any(Object))
     expect((await readRuntimeEnrollment(f.paths.configPath)).key).toBe(keyA)
@@ -100,7 +100,7 @@ describe('configuration and service commands', () => {
 })
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'memoh-cli-'))
+  const root = await mkdtemp(join(tmpdir(), 'ami-cli-'))
   roots.push(root)
   await writeFile(join(root, 'cli.mjs'), '')
   await writeFile(join(root, 'bridge.proto'), '')

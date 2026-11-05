@@ -19,14 +19,14 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	toolapproval "github.com/felinics/memoh/internal/agent/decision/approval"
-	"github.com/felinics/memoh/internal/agent/event"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/runtimefence"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	toolapproval "github.com/kindredzhang/ami/internal/agent/decision/approval"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 type testWorkspace struct {
@@ -128,8 +128,8 @@ func TestSessionCloseUsesAdvertisedCapability(t *testing.T) {
 
 	runner, agentPath := newStartSessionTestRunner(t)
 	capturePath := filepath.Join(t.TempDir(), "close")
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_CLOSE", "1")
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_CLOSE_FILE", capturePath)
+	t.Setenv("AMI_ACP_FAKE_AGENT_CLOSE", "1")
+	t.Setenv("AMI_ACP_FAKE_AGENT_CAPTURE_CLOSE_FILE", capturePath)
 
 	startCtx := context.WithValue(context.Background(), contextKey{}, "session-scope")
 	sess, err := runner.StartSession(startCtx, StartRequest{
@@ -173,10 +173,10 @@ func newStartSessionTestRunner(t *testing.T) (*Runner, string) {
 func TestSessionPromptBuildsEmbeddedContextResource(t *testing.T) {
 	t.Parallel()
 
-	markdown := "# Memoh Context\n\nRemember the project preference."
+	markdown := "# Ami Context\n\nRemember the project preference."
 	sess := &Session{embeddedContext: true}
 	blocks := sess.promptBlocks("inspect the app", []PromptResource{{
-		URI:      "memoh://context/current-turn",
+		URI:      "ami://context/current-turn",
 		MimeType: "text/markdown",
 		Text:     markdown,
 	}}, nil)
@@ -187,8 +187,8 @@ func TestSessionPromptBuildsEmbeddedContextResource(t *testing.T) {
 		t.Fatalf("first block = %#v, want embedded text resource", blocks[0])
 	}
 	resource := blocks[0].Resource.Resource.TextResourceContents
-	if resource.Uri != "memoh://context/current-turn" || resource.MimeType == nil || *resource.MimeType != "text/markdown" || resource.Text != markdown {
-		t.Fatalf("resource = %#v, want Memoh markdown context", resource)
+	if resource.Uri != "ami://context/current-turn" || resource.MimeType == nil || *resource.MimeType != "text/markdown" || resource.Text != markdown {
+		t.Fatalf("resource = %#v, want Ami markdown context", resource)
 	}
 	if blocks[1].Text == nil || blocks[1].Text.Text != "inspect the app" {
 		t.Fatalf("second block = %#v, want user text", blocks[1])
@@ -214,7 +214,7 @@ func TestRunnerStartSessionReadsProtocolModelsAndSetsModel(t *testing.T) {
 	if err := os.MkdirAll(project, 0o750); err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_MODELS", "1")
+	t.Setenv("AMI_ACP_FAKE_AGENT_MODELS", "1")
 
 	client := newTestBridgeClient(t, root)
 	agentPath := writeFakeAgentScript(t, root)
@@ -271,7 +271,7 @@ func TestRunnerStartSessionAppliesAndUpdatesReasoningConfig(t *testing.T) {
 	if err := os.MkdirAll(project, 0o750); err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_REASONING", "category")
+	t.Setenv("AMI_ACP_FAKE_AGENT_REASONING", "category")
 
 	client := newTestBridgeClient(t, root)
 	agentPath := writeFakeAgentScript(t, root)
@@ -319,8 +319,8 @@ func TestRunnerStartGenericACPSessionInjectsHTTPToolServer(t *testing.T) {
 		t.Fatal(err)
 	}
 	capturePath := filepath.Join(root, "mcp-servers.json")
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_MCP_HTTP", "1")
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_MCP_FILE", capturePath)
+	t.Setenv("AMI_ACP_FAKE_AGENT_MCP_HTTP", "1")
+	t.Setenv("AMI_ACP_FAKE_AGENT_CAPTURE_MCP_FILE", capturePath)
 
 	client := newTestBridgeClient(t, root)
 	agentPath := writeFakeAgentScript(t, root)
@@ -329,7 +329,7 @@ func TestRunnerStartGenericACPSessionInjectsHTTPToolServer(t *testing.T) {
 		info: bridge.WorkspaceInfo{
 			Backend:        bridge.WorkspaceBackendContainer,
 			DefaultWorkDir: root,
-			ToolsHTTPURL:   "http://memoh.test/bots/bot-1/tools",
+			ToolsHTTPURL:   "http://ami.test/bots/bot-1/tools",
 		},
 	})
 
@@ -339,7 +339,7 @@ func TestRunnerStartGenericACPSessionInjectsHTTPToolServer(t *testing.T) {
 		ProjectPath: "/data/project",
 		Command:     agentPath,
 		Timeout:     10 * time.Second,
-		ToolHTTPURL: "http://memoh.test/bots/bot-1/tools",
+		ToolHTTPURL: "http://ami.test/bots/bot-1/tools",
 		ToolHTTPHandler: http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(`{"jsonrpc":"2.0","id":"1","result":{}}`))
@@ -369,26 +369,26 @@ func TestRunnerStartGenericACPSessionInjectsHTTPToolServer(t *testing.T) {
 		t.Fatalf("decode captured MCP servers: %v", err)
 	}
 	if len(servers) != 1 {
-		t.Fatalf("captured MCP servers = %#v, want one Memoh tools server", servers)
+		t.Fatalf("captured MCP servers = %#v, want one Ami tools server", servers)
 	}
 	rawURL, _ := servers[0]["url"].(string)
-	if servers[0]["type"] != "http" || !strings.HasPrefix(rawURL, "http://memoh.test/bots/bot-1/tools/") || servers[0]["name"] != memohToolsMCPServerSlug {
+	if servers[0]["type"] != "http" || !strings.HasPrefix(rawURL, "http://ami.test/bots/bot-1/tools/") || servers[0]["name"] != amiToolsMCPServerSlug {
 		t.Fatalf("captured MCP server = %#v", servers[0])
 	}
 	headers, _ := servers[0]["headers"].([]any)
-	if hasCapturedHeaderName(headers, "Authorization") || hasCapturedHeaderName(headers, "X-Memoh-Session-Token") {
+	if hasCapturedHeaderName(headers, "Authorization") || hasCapturedHeaderName(headers, "X-Ami-Session-Token") {
 		t.Fatalf("captured credentials in MCP headers: %#v", headers)
 	}
-	if !hasCapturedHeader(headers, "X-Memoh-Session-Id", "session-1") {
+	if !hasCapturedHeader(headers, "X-Ami-Session-Id", "session-1") {
 		t.Fatalf("missing session id header in %#v", headers)
 	}
-	if !hasCapturedHeader(headers, "X-Memoh-Run-Id", "run-1") {
+	if !hasCapturedHeader(headers, "X-Ami-Run-Id", "run-1") {
 		t.Fatalf("missing run id header in %#v", headers)
 	}
-	if !hasCapturedHeader(headers, "X-Memoh-Channel-Identity-Id", "user-1") {
+	if !hasCapturedHeader(headers, "X-Ami-Channel-Identity-Id", "user-1") {
 		t.Fatalf("missing channel identity header in %#v", headers)
 	}
-	if !hasCapturedHeader(headers, "X-Memoh-Conversation-Type", "private") {
+	if !hasCapturedHeader(headers, "X-Ami-Conversation-Type", "private") {
 		t.Fatalf("missing conversation type header in %#v", headers)
 	}
 }
@@ -427,9 +427,9 @@ func TestSessionCloseCancelsActivePrompt(t *testing.T) {
 	}
 	startedFile := filepath.Join(root, "prompt-started")
 	cancelledFile := filepath.Join(root, "prompt-cancelled")
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_HANG_PROMPT", "1")
-	t.Setenv("MEMOH_ACP_PROMPT_STARTED_FILE", startedFile)
-	t.Setenv("MEMOH_ACP_PROMPT_CANCELLED_FILE", cancelledFile)
+	t.Setenv("AMI_ACP_FAKE_AGENT_HANG_PROMPT", "1")
+	t.Setenv("AMI_ACP_PROMPT_STARTED_FILE", startedFile)
+	t.Setenv("AMI_ACP_PROMPT_CANCELLED_FILE", cancelledFile)
 
 	client := newTestBridgeClient(t, root)
 	agentPath := writeFakeAgentScript(t, root)
@@ -495,12 +495,12 @@ func TestRunnerMissingCommandIncludesStderr(t *testing.T) {
 	_, err := runner.StartSession(context.Background(), StartRequest{
 		BotID:   "bot-1",
 		AgentID: acpprofile.AgentACPID,
-		Command: "memoh-definitely-missing-acp-command",
+		Command: "ami-definitely-missing-acp-command",
 	}, nil)
 	if err == nil {
 		t.Fatal("expected missing command error")
 	}
-	if !strings.Contains(err.Error(), "memoh-definitely-missing-acp-command") {
+	if !strings.Contains(err.Error(), "ami-definitely-missing-acp-command") {
 		t.Fatalf("missing command error did not include stderr command detail: %v", err)
 	}
 	if !strings.Contains(err.Error(), "not available") && !strings.Contains(err.Error(), "pinned adapter") {
@@ -508,7 +508,7 @@ func TestRunnerMissingCommandIncludesStderr(t *testing.T) {
 	}
 }
 
-func TestRequestPermissionUsesMemohToolApproval(t *testing.T) {
+func TestRequestPermissionUsesAmiToolApproval(t *testing.T) {
 	t.Parallel()
 
 	wantFence := runtimefence.Fence{BotID: "bot-1", SessionID: "session-1", Token: 23}
@@ -619,7 +619,7 @@ func TestRuntimeOwnedPermissionReachesTheUserPastAPermissivePolicy(t *testing.T)
 	}
 }
 
-func TestRequestPermissionRejectedByMemohToolApprovalSelectsRejectOption(t *testing.T) {
+func TestRequestPermissionRejectedByAmiToolApprovalSelectsRejectOption(t *testing.T) {
 	t.Parallel()
 
 	approval := &fakeACPToolApproval{
@@ -678,7 +678,7 @@ func TestRequestPermissionRejectedByMemohToolApprovalSelectsRejectOption(t *test
 	}
 }
 
-func TestCreateTerminalUsesMemohToolApproval(t *testing.T) {
+func TestCreateTerminalUsesAmiToolApproval(t *testing.T) {
 	t.Parallel()
 
 	root := t.TempDir()
@@ -947,7 +947,7 @@ func newTestBridgeClient(t *testing.T, root string) *bridge.Client {
 func writeFakeAgentScript(t *testing.T, dir string) string {
 	t.Helper()
 	path := filepath.Join(dir, "fake-acp-agent.sh")
-	script := fmt.Sprintf("#!/bin/sh\nMEMOH_ACP_FAKE_AGENT=1 exec %s -test.run '^TestFakeACPAgentHelper$' --\n", escapeShellArg(os.Args[0]))
+	script := fmt.Sprintf("#!/bin/sh\nAMI_ACP_FAKE_AGENT=1 exec %s -test.run '^TestFakeACPAgentHelper$' --\n", escapeShellArg(os.Args[0]))
 	if err := os.WriteFile(path, []byte(script), 0o700); err != nil { //nolint:gosec // test helper must be executable.
 		t.Fatal(err)
 	}
@@ -955,7 +955,7 @@ func writeFakeAgentScript(t *testing.T, dir string) string {
 }
 
 func TestFakeACPAgentHelper(_ *testing.T) {
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT") != "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT") != "1" {
 		return
 	}
 	agent := &fakeACPAgent{}
@@ -982,20 +982,20 @@ func (*fakeACPAgent) Logout(context.Context, acp.LogoutRequest) (acp.LogoutRespo
 
 func (*fakeACPAgent) Initialize(context.Context, acp.InitializeRequest) (acp.InitializeResponse, error) {
 	capabilities := acp.AgentCapabilities{LoadSession: false}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_RESUME") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_RESUME") == "1" {
 		capabilities.SessionCapabilities.Resume = &acp.SessionResumeCapabilities{}
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_LOAD") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_LOAD") == "1" {
 		capabilities.LoadSession = true
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_MCP_HTTP") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_MCP_HTTP") == "1" {
 		capabilities.McpCapabilities.Http = true
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_CLOSE") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_CLOSE") == "1" {
 		capabilities.SessionCapabilities.Close = &acp.SessionCloseCapabilities{}
 	}
 	protocolVersion := acp.ProtocolVersion(acp.ProtocolVersionNumber)
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_PROTOCOL_VERSION") == "2" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_PROTOCOL_VERSION") == "2" {
 		protocolVersion = acp.ProtocolVersion(2)
 	}
 	return acp.InitializeResponse{
@@ -1005,14 +1005,14 @@ func (*fakeACPAgent) Initialize(context.Context, acp.InitializeRequest) (acp.Ini
 }
 
 func (*fakeACPAgent) Cancel(context.Context, acp.CancelNotification) error {
-	if path := os.Getenv("MEMOH_ACP_PROMPT_CANCELLED_FILE"); path != "" {
+	if path := os.Getenv("AMI_ACP_PROMPT_CANCELLED_FILE"); path != "" {
 		_ = os.WriteFile(path, []byte("cancelled"), 0o600) //nolint:gosec // test helper writes to env-provided temp path.
 	}
 	return nil
 }
 
 func (*fakeACPAgent) CloseSession(_ context.Context, req acp.CloseSessionRequest) (acp.CloseSessionResponse, error) {
-	if path := os.Getenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_CLOSE_FILE"); path != "" {
+	if path := os.Getenv("AMI_ACP_FAKE_AGENT_CAPTURE_CLOSE_FILE"); path != "" {
 		if err := os.WriteFile(path, []byte(req.SessionId), 0o600); err != nil { //nolint:gosec // test helper writes to env-provided temp path.
 			return acp.CloseSessionResponse{}, err
 		}
@@ -1029,7 +1029,7 @@ func (a *fakeACPAgent) NewSession(_ context.Context, p acp.NewSessionRequest) (a
 	if err := captureFakeSessionLifecycle("new", "fake-session", p.Meta); err != nil {
 		return acp.NewSessionResponse{}, err
 	}
-	if capturePath := os.Getenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_MCP_FILE"); capturePath != "" {
+	if capturePath := os.Getenv("AMI_ACP_FAKE_AGENT_CAPTURE_MCP_FILE"); capturePath != "" {
 		raw, err := json.Marshal(p.McpServers)
 		if err != nil {
 			return acp.NewSessionResponse{}, err
@@ -1044,20 +1044,20 @@ func (a *fakeACPAgent) NewSession(_ context.Context, p acp.NewSessionRequest) (a
 }
 
 func (a *fakeACPAgent) Prompt(ctx context.Context, p acp.PromptRequest) (acp.PromptResponse, error) {
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_HANG_PROMPT") == "1" {
-		if path := os.Getenv("MEMOH_ACP_PROMPT_STARTED_FILE"); path != "" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_HANG_PROMPT") == "1" {
+		if path := os.Getenv("AMI_ACP_PROMPT_STARTED_FILE"); path != "" {
 			_ = os.WriteFile(path, []byte("started"), 0o600) //nolint:gosec // test helper writes to env-provided temp path.
 		}
 		<-ctx.Done()
-		if path := os.Getenv("MEMOH_ACP_PROMPT_CANCELLED_FILE"); path != "" {
+		if path := os.Getenv("AMI_ACP_PROMPT_CANCELLED_FILE"); path != "" {
 			_ = os.WriteFile(path, []byte("cancelled"), 0o600) //nolint:gosec // test helper writes to env-provided temp path.
 		}
 		return acp.PromptResponse{}, ctx.Err()
 	}
-	if raw := os.Getenv("MEMOH_ACP_FAKE_AGENT_BURST_CHUNKS"); raw != "" {
+	if raw := os.Getenv("AMI_ACP_FAKE_AGENT_BURST_CHUNKS"); raw != "" {
 		return a.promptBurst(p, raw)
 	}
-	if raw := os.Getenv("MEMOH_ACP_FAKE_AGENT_USAGE"); raw != "" {
+	if raw := os.Getenv("AMI_ACP_FAKE_AGENT_USAGE"); raw != "" {
 		var usage acp.Usage
 		if err := json.Unmarshal([]byte(raw), &usage); err != nil {
 			return acp.PromptResponse{}, err
@@ -1147,7 +1147,7 @@ func (a *fakeACPAgent) ResumeSession(_ context.Context, p acp.ResumeSessionReque
 	if err := captureFakeSessionLifecycle("resume", string(p.SessionId), p.Meta); err != nil {
 		return acp.ResumeSessionResponse{}, err
 	}
-	if err := fakeSessionRestoreError("MEMOH_ACP_FAKE_AGENT_RESUME_ERROR"); err != nil {
+	if err := fakeSessionRestoreError("AMI_ACP_FAKE_AGENT_RESUME_ERROR"); err != nil {
 		return acp.ResumeSessionResponse{}, err
 	}
 	return acp.ResumeSessionResponse{ConfigOptions: a.configOptions()}, nil
@@ -1158,10 +1158,10 @@ func (a *fakeACPAgent) LoadSession(ctx context.Context, p acp.LoadSessionRequest
 	if err := captureFakeSessionLifecycle("load", string(p.SessionId), p.Meta); err != nil {
 		return acp.LoadSessionResponse{}, err
 	}
-	if err := fakeSessionRestoreError("MEMOH_ACP_FAKE_AGENT_LOAD_ERROR"); err != nil {
+	if err := fakeSessionRestoreError("AMI_ACP_FAKE_AGENT_LOAD_ERROR"); err != nil {
 		return acp.LoadSessionResponse{}, err
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_REPLAY_HISTORY") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_REPLAY_HISTORY") == "1" {
 		for _, update := range []acp.SessionUpdate{
 			acp.UpdateUserMessageText("historical question"),
 			acp.UpdateAgentMessageText("historical replay"),
@@ -1172,7 +1172,7 @@ func (a *fakeACPAgent) LoadSession(ctx context.Context, p acp.LoadSessionRequest
 			}
 		}
 	}
-	if raw := os.Getenv("MEMOH_ACP_FAKE_AGENT_REPLAY_BURST"); raw != "" {
+	if raw := os.Getenv("AMI_ACP_FAKE_AGENT_REPLAY_BURST"); raw != "" {
 		if err := replayBurst(p.SessionId, raw); err != nil {
 			return acp.LoadSessionResponse{}, err
 		}
@@ -1195,16 +1195,16 @@ func fakeSessionRestoreError(env string) error {
 
 func (a *fakeACPAgent) prepareFakeSession(cwd string) {
 	a.cwd = cwd
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_MODELS") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_MODELS") == "1" {
 		a.modelID = "gpt-5.1-codex"
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_REASONING") != "" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_REASONING") != "" {
 		a.reasoningEffort = "medium"
 	}
 }
 
 func captureFakeSessionLifecycle(method, sessionID string, meta map[string]any) error {
-	path := os.Getenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_SESSION_LIFECYCLE_FILE")
+	path := os.Getenv("AMI_ACP_FAKE_AGENT_CAPTURE_SESSION_LIFECYCLE_FILE")
 	if path == "" {
 		return nil
 	}
@@ -1219,7 +1219,7 @@ func (a *fakeACPAgent) SetSessionConfigOption(_ context.Context, p acp.SetSessio
 	if p.ValueId == nil || p.ValueId.SessionId != acp.SessionId("fake-session") {
 		return acp.SetSessionConfigOptionResponse{}, errors.New("unexpected config request")
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_CONFIG_NOOP") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_CONFIG_NOOP") == "1" {
 		return acp.SetSessionConfigOptionResponse{ConfigOptions: a.configOptions()}, nil
 	}
 	value := string(p.ValueId.Value)
@@ -1251,7 +1251,7 @@ func (a *fakeACPAgent) reasoningConfigOptions() []acp.SessionConfigOption {
 
 func (a *fakeACPAgent) configOptions() []acp.SessionConfigOption {
 	var options []acp.SessionConfigOption
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_MODELS") == "1" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_MODELS") == "1" {
 		category := acp.SessionConfigOptionCategoryModel
 		description := "Highest reasoning"
 		values := acp.SessionConfigSelectOptionsUngrouped{
@@ -1267,7 +1267,7 @@ func (a *fakeACPAgent) configOptions() []acp.SessionConfigOption {
 			Options:      acp.SessionConfigSelectOptions{Ungrouped: &values},
 		}})
 	}
-	if os.Getenv("MEMOH_ACP_FAKE_AGENT_REASONING") != "" {
+	if os.Getenv("AMI_ACP_FAKE_AGENT_REASONING") != "" {
 		options = append(options, a.reasoningConfigOptions()...)
 	}
 	return options
@@ -1386,7 +1386,7 @@ func copyInputMap(input any) map[string]any {
 func TestSessionCloseRequiresAdvertisedCapability(t *testing.T) {
 	runner, agentPath := newStartSessionTestRunner(t)
 	capturePath := filepath.Join(t.TempDir(), "close")
-	t.Setenv("MEMOH_ACP_FAKE_AGENT_CAPTURE_CLOSE_FILE", capturePath)
+	t.Setenv("AMI_ACP_FAKE_AGENT_CAPTURE_CLOSE_FILE", capturePath)
 
 	sess, err := runner.StartSession(context.Background(), StartRequest{
 		AgentID:     acpprofile.AgentACPID,

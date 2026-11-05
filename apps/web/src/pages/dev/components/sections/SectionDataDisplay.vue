@@ -16,7 +16,7 @@ import Specimen from '../components/Specimen.vue'
 import VariantMatrix from '../components/VariantMatrix.vue'
 import { variantSpecs } from '../lib/variant-specs'
 
-const connectCommand = 'npm install -g @memohai/runtime@latest && memoh-runtime enroll --server https://memoh.example.com/api --key mrk_0123456789abcdef0123456789abcdef0123456789abcdef && memoh-runtime service start'
+const connectCommand = 'npm install -g @ami/runtime@latest && ami-runtime enroll --server https://ami.example.com/api --key mrk_0123456789abcdef0123456789abcdef0123456789abcdef && ami-runtime service start'
 
 const invoices = [
   { id: 'INV-001', status: 'Paid', total: '$250.00' },
@@ -61,7 +61,7 @@ const invoices = [
       >
         <div class="w-full max-w-sm space-y-3">
           <CodePanel
-            code="pnpm --filter @memohai/web dev"
+            code="pnpm --filter @ami/web dev"
             width="fit"
             copy-label="Copy"
             copied-label="Copied"

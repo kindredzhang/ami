@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { HandlersFsFileInfo } from '@memohai/sdk'
+import type { HandlersFsFileInfo } from '@ami/sdk'
 import { InlineLoadingRow } from '@felinic/ui'
 import { sortDirsFirst } from './utils'
 import { FileTreeKey } from './file-tree-context'

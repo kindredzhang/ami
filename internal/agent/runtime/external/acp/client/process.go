@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	"github.com/felinics/memoh/internal/workspace/shellenv"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/workspace/shellenv"
 )
 
 const (
@@ -20,9 +20,9 @@ const (
 	// configuration extends it (see resolveContainerPath). The managed
 	// dependency shim directory comes first so a managed overlay
 	// of an image runtime (node, python, uv) wins over the toolkit copy.
-	defaultContainerPath = dataMountPath + "/.memoh/deps/bin:" + containerToolkitBin + ":/usr/local/bin:/usr/bin:/bin"
-	containerToolkitBin  = "/opt/memoh/toolkit/bin"
-	noProjectWorkDirPart = "/.memoh/acp-work/no-project/"
+	defaultContainerPath = dataMountPath + "/.ami/deps/bin:" + containerToolkitBin + ":/usr/local/bin:/usr/bin:/bin"
+	containerToolkitBin  = "/opt/ami/toolkit/bin"
+	noProjectWorkDirPart = "/.ami/acp-work/no-project/"
 )
 
 var (
@@ -45,7 +45,7 @@ type ProcessOptions struct {
 	UnsetEnv []string
 	Logger   *slog.Logger
 	// CleanEnv starts the agent on Env alone: an agent whose whole
-	// environment Memoh composes and that keeps its state where Env points
+	// environment Ami composes and that keeps its state where Env points
 	// it. Without it the agent inherits the workspace environment minus
 	// UnsetEnv, with HOME at the bot's data and the user's shell PATH.
 	CleanEnv bool
@@ -61,7 +61,7 @@ type Process struct {
 
 // npmCacheDir keeps the npm cache of agents run through npx out of the bot's
 // data, where HOME would put it.
-const npmCacheDir = "/tmp/memoh-acp-cache/npm"
+const npmCacheDir = "/tmp/ami-acp-cache/npm"
 
 // processEnv is the environment an agent and its terminals run with, and the
 // inherited names it replaces. The PATH probe runs the user's shell
@@ -240,7 +240,7 @@ type CommandNotFoundError struct {
 }
 
 func (e *CommandNotFoundError) Error() string {
-	return fmt.Sprintf("ACP command %q is not available in the workspace PATH or %s%s. Install it in the workspace or rebuild the Memoh workspace runtime with %s available", e.Command, containerToolkitBin, e.detail, containerToolkitBin)
+	return fmt.Sprintf("ACP command %q is not available in the workspace PATH or %s%s. Install it in the workspace or rebuild the Ami workspace runtime with %s available", e.Command, containerToolkitBin, e.detail, containerToolkitBin)
 }
 
 func commandNotAvailableError(command string, result *bridge.ExecResult) error {

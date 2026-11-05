@@ -13,9 +13,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 type legacyTestClientProvider struct{ client *bridge.Client }
@@ -75,7 +75,7 @@ func TestProvider_LegacyMediaTransition(t *testing.T) {
 	ctx := context.Background()
 	const key = "bot-1/aa/asset.png"
 	legacyPath := filepath.Join(root, "media", "aa", "asset.png")
-	currentPath := filepath.Join(root, ".memoh", "media", "aa", "asset.png")
+	currentPath := filepath.Join(root, ".ami", "media", "aa", "asset.png")
 	writeLegacyTestFile(t, legacyPath, "legacy")
 
 	reader, err := provider.Open(ctx, key)
@@ -111,8 +111,8 @@ func TestProvider_LegacyMediaTransition(t *testing.T) {
 	if got := string(data); got != "current" {
 		t.Fatalf("current media content = %q, want current", got)
 	}
-	if got := provider.AccessPath(ctx, key); got != "/data/.memoh/media/aa/asset.png" {
-		t.Fatalf("current AccessPath = %q, want /data/.memoh/media/aa/asset.png", got)
+	if got := provider.AccessPath(ctx, key); got != "/data/.ami/media/aa/asset.png" {
+		t.Fatalf("current AccessPath = %q, want /data/.ami/media/aa/asset.png", got)
 	}
 	keys, err = provider.ListPrefix(ctx, "bot-1/aa/asset")
 	if err != nil || len(keys) != 1 || keys[0] != key {
@@ -132,7 +132,7 @@ func TestProvider_LegacyMediaTransition(t *testing.T) {
 	if err := provider.Put(ctx, newKey, bytes.NewBufferString("new")); err != nil {
 		t.Fatalf("Put new media: %v", err)
 	}
-	currentNewPath := filepath.Join(root, ".memoh", "media", "bb", "new.png")
+	currentNewPath := filepath.Join(root, ".ami", "media", "bb", "new.png")
 	if data, err := os.ReadFile(currentNewPath); err != nil || string(data) != "new" { //nolint:gosec // G304: path is under t.TempDir.
 		t.Fatalf("current media write = %q, %v; want new", data, err)
 	}

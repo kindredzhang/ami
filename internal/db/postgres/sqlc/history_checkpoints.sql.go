@@ -19,7 +19,7 @@ SELECT
     OR m.id = ANY($3::uuid[])
   )::boolean AS kept
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $4
   AND m.source_message_id = ANY($5::text[])
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -72,7 +72,7 @@ func (q *Queries) ClassifyHistoryCheckpointMessages(ctx context.Context, arg Cla
 const countHistoryCheckpointCandidates = `-- name: CountHistoryCheckpointCandidates :one
 SELECT COUNT(*)::BIGINT AS candidate_count
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
   AND (
     (m.turn_position, m.turn_message_seq) > ($2::bigint, $3::bigint)
@@ -117,7 +117,7 @@ SELECT session.id, $1::uuid,
   $2::bigint, $3::bigint,
   $4::jsonb
 FROM bot_sessions session
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = $5
   AND session.history_checkpoint_id IS NOT DISTINCT FROM $1::uuid
 FOR UPDATE OF session
@@ -164,7 +164,7 @@ FROM bot_history_checkpoints checkpoint
 JOIN bot_sessions session
   ON session.team_id = checkpoint.team_id
  AND session.history_checkpoint_id = checkpoint.id
-WHERE session.team_id = public.memoh_current_team_id()
+WHERE session.team_id = public.ami_current_team_id()
   AND session.id = $1
 `
 
@@ -194,10 +194,10 @@ WITH pair AS (
 SELECT copy.turn_position::bigint AS turn_position, copy.turn_message_seq::bigint AS turn_message_seq
 FROM pair
 JOIN bot_history_messages source
-  ON source.team_id = public.memoh_current_team_id()
+  ON source.team_id = public.ami_current_team_id()
  AND source.id = pair.source_id
 JOIN bot_history_messages copy
-  ON copy.team_id = public.memoh_current_team_id()
+  ON copy.team_id = public.ami_current_team_id()
  AND copy.id = pair.fork_id
 WHERE source.turn_position IS NOT NULL
   AND source.turn_message_seq IS NOT NULL
@@ -237,7 +237,7 @@ func (q *Queries) GetForkHistoryPosition(ctx context.Context, arg GetForkHistory
 const getHistoryCheckpoint = `-- name: GetHistoryCheckpoint :one
 SELECT id, team_id, session_id, parent_id, turn_position, turn_message_seq, items, created_at
 FROM bot_history_checkpoints
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $1
 `
 
@@ -262,13 +262,13 @@ WITH replaced AS MATERIALIZED (
   SELECT MIN(m.turn_position)::bigint AS turn_position,
     MIN(m.turn_message_seq)::bigint AS turn_message_seq
   FROM bot_visible_history_messages m
-  WHERE m.team_id = public.memoh_current_team_id()
+  WHERE m.team_id = public.ami_current_team_id()
     AND m.session_id = $1
     AND m.turn_id = $2
     AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
 )
 SELECT (replaced.turn_position IS NOT NULL)::boolean AS turn_found,
-  public.memoh_history_checkpoint_kept($1, replaced.turn_position, replaced.turn_message_seq)::uuid AS checkpoint_id
+  public.ami_history_checkpoint_kept($1, replaced.turn_position, replaced.turn_message_seq)::uuid AS checkpoint_id
 FROM replaced
 `
 
@@ -295,8 +295,8 @@ func (q *Queries) GetHistoryCheckpointKeptBeforeTurn(ctx context.Context, arg Ge
 const getHistoryCheckpointKeptThroughTurn = `-- name: GetHistoryCheckpointKeptThroughTurn :one
 SELECT checkpoint.id, checkpoint.team_id, checkpoint.session_id, checkpoint.parent_id, checkpoint.turn_position, checkpoint.turn_message_seq, checkpoint.items, checkpoint.created_at
 FROM bot_history_checkpoints checkpoint
-WHERE checkpoint.team_id = public.memoh_current_team_id()
-  AND checkpoint.id = public.memoh_history_checkpoint_kept($1, $2::bigint + 1, 0)
+WHERE checkpoint.team_id = public.ami_current_team_id()
+  AND checkpoint.id = public.ami_history_checkpoint_kept($1, $2::bigint + 1, 0)
 `
 
 type GetHistoryCheckpointKeptThroughTurnParams struct {
@@ -334,7 +334,7 @@ WITH candidate_rows AS MATERIALIZED (
     )::BIGINT AS payload_bytes,
     (m.role <> 'tool')::int AS opens_group
   FROM bot_visible_history_messages m
-  WHERE m.team_id = public.memoh_current_team_id()
+  WHERE m.team_id = public.ami_current_team_id()
     AND m.session_id = $1
     AND (
       (m.turn_position, m.turn_message_seq) > ($2::bigint, $3::bigint)
@@ -378,7 +378,7 @@ SELECT
   admitted.candidate_count
 FROM bot_visible_history_messages m
 JOIN admitted_candidates admitted ON admitted.id = m.id
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
 ORDER BY m.turn_position ASC, m.turn_message_seq ASC, m.created_at ASC, m.id ASC
 `
 
@@ -454,7 +454,7 @@ func (q *Queries) ListHistoryCheckpointCandidatesWithinBytes(ctx context.Context
 const listHistoryCheckpointSpanRows = `-- name: ListHistoryCheckpointSpanRows :many
 SELECT m.id, m.turn_position, m.turn_message_seq
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
   AND (
     (
@@ -515,7 +515,7 @@ func (q *Queries) ListHistoryCheckpointSpanRows(ctx context.Context, arg ListHis
 const listHistoryCheckpointSummaries = `-- name: ListHistoryCheckpointSummaries :many
 SELECT compact.id, compact.summary
 FROM bot_history_message_compacts compact
-WHERE compact.team_id = public.memoh_current_team_id()
+WHERE compact.team_id = public.ami_current_team_id()
   AND compact.session_id = $1
   AND compact.id = ANY($2::uuid[])
   AND compact.status = 'ok'
@@ -557,7 +557,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS total_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = $1
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -579,7 +579,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS content_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = $1
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -603,7 +603,7 @@ WITH RECURSIVE history_window AS (
     SELECT 1
     FROM oldest
     JOIN bot_history_messages m
-      ON m.team_id = public.memoh_current_team_id()
+      ON m.team_id = public.ami_current_team_id()
      AND m.session_id = $1
      AND (m.turn_position, m.turn_message_seq, m.created_at, m.id)
        < (oldest.turn_position, oldest.turn_message_seq, oldest.created_at, oldest.id)
@@ -638,11 +638,11 @@ SELECT
   budget_cut.truncated
 FROM history_window admitted
 JOIN bot_history_messages m ON m.id = admitted.id
-  AND m.team_id = public.memoh_current_team_id()
+  AND m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
 CROSS JOIN budget_cut
-LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.memoh_current_team_id()
-LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.memoh_current_team_id()
+LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.ami_current_team_id()
+LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.ami_current_team_id()
 ORDER BY admitted.turn_position ASC, admitted.turn_message_seq ASC, admitted.created_at ASC, admitted.id ASC
 `
 
@@ -758,9 +758,9 @@ SELECT
   ci.avatar_url AS sender_avatar_url,
   s.channel_type AS platform
 FROM bot_visible_history_messages m
-LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.memoh_current_team_id()
-LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.memoh_current_team_id()
-WHERE m.team_id = public.memoh_current_team_id()
+LEFT JOIN channel_identities ci ON ci.id = m.sender_channel_identity_id AND ci.team_id = public.ami_current_team_id()
+LEFT JOIN bot_sessions s ON s.id = m.session_id AND s.team_id = public.ami_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
   AND m.id = ANY($2::uuid[])
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -838,7 +838,7 @@ func (q *Queries) ListHistoryMessagesByIDs(ctx context.Context, arg ListHistoryM
 const listHistoryRowsBySources = `-- name: ListHistoryRowsBySources :many
 SELECT m.id, m.source_message_id, m.turn_position, m.turn_message_seq
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
   AND (m.id = ANY($2::uuid[]) OR m.source_message_id = ANY($3::text[]))
   AND m.turn_position IS NOT NULL
@@ -893,7 +893,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS total_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = $1
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -913,7 +913,7 @@ WITH RECURSIVE history_window AS (
     SELECT m.id, m.turn_position, m.turn_message_seq, m.created_at,
       octet_length(m.content::text)::bigint AS content_bytes
     FROM bot_history_messages m
-    WHERE m.team_id = public.memoh_current_team_id()
+    WHERE m.team_id = public.ami_current_team_id()
       AND m.session_id = $1
       AND m.turn_visible = true
       AND m.turn_id IS NOT NULL
@@ -937,7 +937,7 @@ WITH RECURSIVE history_window AS (
     SELECT 1
     FROM oldest
     JOIN bot_history_messages m
-      ON m.team_id = public.memoh_current_team_id()
+      ON m.team_id = public.ami_current_team_id()
      AND m.session_id = $1
      AND (m.turn_position, m.turn_message_seq, m.created_at, m.id)
        < (oldest.turn_position, oldest.turn_message_seq, oldest.created_at, oldest.id)
@@ -955,7 +955,7 @@ SELECT m.id, m.role, m.content, m.created_at,
   budget_cut.truncated
 FROM history_window admitted
 JOIN bot_history_messages m ON m.id = admitted.id
-  AND m.team_id = public.memoh_current_team_id()
+  AND m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
 CROSS JOIN budget_cut
 ORDER BY admitted.turn_position ASC, admitted.turn_message_seq ASC, admitted.created_at ASC, admitted.id ASC
@@ -1026,7 +1026,7 @@ SELECT
   COALESCE(m.metadata->'discuss_step' = 'true'::jsonb, false)::boolean AS discuss_step,
   m.source_message_id AS external_message_id
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
   AND m.id = ANY($2::uuid[])
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -1084,7 +1084,7 @@ SELECT
   COUNT(*)::BIGINT AS message_count,
   COALESCE(SUM(octet_length(m.content::text)), 0)::BIGINT AS content_bytes
 FROM bot_visible_history_messages m
-WHERE m.team_id = public.memoh_current_team_id()
+WHERE m.team_id = public.ami_current_team_id()
   AND m.session_id = $1
   AND (m.turn_position, m.turn_message_seq) > ($2::bigint, $3::bigint)
   AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
@@ -1115,7 +1115,7 @@ const rewindHistoryCheckpointBeforeTurn = `-- name: RewindHistoryCheckpointBefor
 WITH owner_session AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = $1
     AND session.bot_id = $2
   FOR UPDATE
@@ -1124,12 +1124,12 @@ WITH owner_session AS MATERIALIZED (
     MIN(m.turn_message_seq)::bigint AS turn_message_seq
   FROM bot_visible_history_messages m
   JOIN owner_session owner ON owner.id = m.session_id
-  WHERE m.team_id = public.memoh_current_team_id()
+  WHERE m.team_id = public.ami_current_team_id()
     AND m.turn_id = $3
     AND (m.metadata->>'trigger_mode' IS NULL OR m.metadata->>'trigger_mode' != 'passive_sync')
 )
 SELECT COALESCE((
-  SELECT public.memoh_rewind_history_checkpoint(owner.id, replaced.turn_position, replaced.turn_message_seq)
+  SELECT public.ami_rewind_history_checkpoint(owner.id, replaced.turn_position, replaced.turn_message_seq)
   FROM replaced
   WHERE replaced.turn_position IS NOT NULL
 ), false)::boolean AS rewound
@@ -1156,7 +1156,7 @@ func (q *Queries) RewindHistoryCheckpointBeforeTurn(ctx context.Context, arg Rew
 const setHistoryCheckpoint = `-- name: SetHistoryCheckpoint :execrows
 UPDATE bot_sessions
 SET history_checkpoint_id = $1::uuid
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = $2
   AND history_checkpoint_id IS NOT DISTINCT FROM $3::uuid
 `

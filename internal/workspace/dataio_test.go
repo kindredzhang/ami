@@ -17,11 +17,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/config"
-	ctr "github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
-	"github.com/felinics/memoh/internal/workspace/bridgesvc"
+	"github.com/kindredzhang/ami/internal/config"
+	ctr "github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridgesvc"
 )
 
 func TestTarGzDirPreservesWorkspaceData(t *testing.T) {
@@ -135,7 +135,7 @@ func TestUntarGzDirPreservesWorkspaceData(t *testing.T) {
 }
 
 func TestWorkspaceArchiveRoundTripSkipsSockets(t *testing.T) {
-	root, err := os.MkdirTemp("/tmp", "memoh-archive-")
+	root, err := os.MkdirTemp("/tmp", "ami-archive-")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -180,7 +180,7 @@ func workspaceArchiveFixture() map[string]string {
 		".claude/.credentials.json":                               `{"claudeAiOauth":"secret"}`,
 		".claude/projects/workspace/session.jsonl":                `{"message":"private runtime transcript"}`,
 		".claude/mcp-tokens/server.json":                          `{"token":"mcp-secret"}`,
-		".memoh-hermes/.env":                                      "OPENAI_API_KEY=legacy-secret\n",
+		".ami-hermes/.env":                                      "OPENAI_API_KEY=legacy-secret\n",
 		".hermes/auth.json":                                       `{"token":"legacy-secret"}`,
 		".codex/config.toml":                                      "model = \"gpt-5.4-codex\"\n",
 		".claude/settings.json":                                   `{"permissions":{"defaultMode":"default"}}`,

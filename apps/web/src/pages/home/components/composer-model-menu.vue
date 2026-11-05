@@ -11,7 +11,7 @@ import {
   DropdownMenuSubTrigger,
   Spinner,
 } from '@felinic/ui'
-import type { ModelsGetResponse, ProvidersGetResponse } from '@memohai/sdk'
+import type { ModelsGetResponse, ProvidersGetResponse } from '@ami/sdk'
 import ModelOptions from '@/pages/bots/components/model-options.vue'
 import ModelDescriptionTooltip from '@/components/model-description-tooltip/index.vue'
 import { useIsMobile } from '@/composables/useIsMobile'

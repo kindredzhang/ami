@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 // memoryOverviewNow is the clock refreshMemoryOverview measures idle
@@ -190,7 +190,7 @@ func (s *Service) otherSessionWarm(ctx context.Context, botID, sessionID string,
 
 // promptCacheTTLDuration is how long a provider is assumed to keep a prompt
 // cache entry. A provider with prompt caching off still gets the default:
-// providers with automatic prefix caching keep caching without Memoh's hints.
+// providers with automatic prefix caching keep caching without Ami's hints.
 func promptCacheTTLDuration(ttl string) time.Duration {
 	if models.NormalizePromptCacheTTL(strings.TrimSpace(ttl)) == models.PromptCacheTTL1h {
 		return time.Hour

@@ -1,6 +1,6 @@
 package server
 
-import "github.com/felinics/memoh/internal/apperror"
+import "github.com/kindredzhang/ami/internal/apperror"
 
 // Problem is the RFC 9457 body of an HTTP error response. Fault and TraceID
 // are filled by the HTTP boundary: fault is its attribution of the error

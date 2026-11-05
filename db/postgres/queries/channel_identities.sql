@@ -6,18 +6,18 @@ RETURNING id, channel_type, channel_subject_id, display_name, avatar_url, metada
 -- name: GetChannelIdentityByID :one
 SELECT id, channel_type, channel_subject_id, display_name, avatar_url, metadata, created_at, updated_at, team_id
 FROM channel_identities
-WHERE team_id = public.memoh_current_team_id() AND id = $1;
+WHERE team_id = public.ami_current_team_id() AND id = $1;
 
 -- name: GetChannelIdentityByIDForUpdate :one
 SELECT id, channel_type, channel_subject_id, display_name, avatar_url, metadata, created_at, updated_at, team_id
 FROM channel_identities
-WHERE team_id = public.memoh_current_team_id() AND id = $1
+WHERE team_id = public.ami_current_team_id() AND id = $1
 FOR UPDATE;
 
 -- name: GetChannelIdentityByChannelSubject :one
 SELECT id, channel_type, channel_subject_id, display_name, avatar_url, metadata, created_at, updated_at, team_id
 FROM channel_identities
-WHERE team_id = public.memoh_current_team_id() AND channel_type = $1 AND channel_subject_id = $2;
+WHERE team_id = public.ami_current_team_id() AND channel_type = $1 AND channel_subject_id = $2;
 
 -- name: UpsertChannelIdentityByChannelSubject :one
 INSERT INTO channel_identities (channel_type, channel_subject_id, display_name, avatar_url, metadata)
@@ -43,7 +43,7 @@ SELECT
   ci.team_id
 FROM channel_identities ci
 WHERE
-  ci.team_id = public.memoh_current_team_id()
+  ci.team_id = public.ami_current_team_id()
   AND (
     sqlc.arg(query)::text = ''
     OR ci.channel_type ILIKE '%' || sqlc.arg(query)::text || '%'

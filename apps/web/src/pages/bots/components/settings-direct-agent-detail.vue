@@ -160,7 +160,7 @@ import {
   postBotsByBotIdAgentsByIdLoginDevicePoll,
   putBotsByBotIdAgentsByIdCredential,
   type BotagentsBotAgent,
-} from '@memohai/sdk'
+} from '@ami/sdk'
 import AgentCredentialDisconnect from './agent-credential-disconnect.vue'
 import AgentCredentialInput from './agent-credential-input.vue'
 import CodexUsageRows from './codex-usage-rows.vue'

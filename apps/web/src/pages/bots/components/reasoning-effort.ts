@@ -1,4 +1,4 @@
-import type { ReasoningOptions } from '@memohai/sdk'
+import type { ReasoningOptions } from '@ami/sdk'
 
 export const REASONING_EFFORT_DISABLE = 'disable'
 // How off was spelled before the two tokens were unified, and still OpenAI's wire

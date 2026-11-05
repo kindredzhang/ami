@@ -2,7 +2,7 @@
 
 > This file is the only spacing research document kept in `docs/design/spacing/`. The
 > other 18 process artifacts (cartography, raw audit batches, historical contract
-> drafts) and the `memoh-spacing` skill were removed from HEAD in 2026-07 — their value
+> drafts) and the `ami-spacing` skill were removed from HEAD in 2026-07 — their value
 > was already captured in the vocabulary and decisions recorded below; git history has
 > the rest if it's ever needed.
 
@@ -46,7 +46,7 @@ The terminal state as of 2026-07-06:
   `ui-spin-baseline.json` — new hand-spun loaders hard-fail. These catch the SettingsRow
   and loader slices (the rare literals); they are backstops, not debt finders. WARN count
   is held at **zero**.
-- **The building contract lives in the UI submodule's layout-owner guidance.** The older `memoh-spacing`
+- **The building contract lives in the UI submodule's layout-owner guidance.** The older `ami-spacing`
   skill (the cartography/role-taxonomy method that derived this vocabulary) has been
   deleted from the repo (2026-07); its history is recoverable from git if the research
   trail is ever needed again.

@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/runtimefence"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/runtimefence"
 )
 
 // A reset that cannot stop a run because the ledger or the runtime backend
@@ -210,15 +210,15 @@ func (failingRunRefBackend) LoadRunRef(context.Context, Key, string) (RunRef, bo
 }
 
 func TestRedisBeginHistoryResetRunRouteFailure(t *testing.T) {
-	url := os.Getenv("MEMOH_TEST_REDIS_URL")
+	url := os.Getenv("AMI_TEST_REDIS_URL")
 	if url == "" {
-		url = os.Getenv("MEMOH_TEST_VALKEY_URL")
+		url = os.Getenv("AMI_TEST_VALKEY_URL")
 	}
 	if url == "" {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL required")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL required")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL")
+		t.Skip("set AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL")
 	}
 	backend, err := NewRedisBackend(context.Background(), RedisOptions{URL: url, KeyPrefix: uniqueRuntimeBackendPrefix("reset-route"), StateTTL: time.Minute})
 	if err != nil {
@@ -249,15 +249,15 @@ func (failingCommandResultBackend) LoadCommandResult(context.Context, string) (C
 // A command whose result cannot be read was not left unanswered by a busy
 // owner: the wait reports the runtime backend's failure.
 func TestRedisCommandResultWaitReportsUnreadableResults(t *testing.T) {
-	url := os.Getenv("MEMOH_TEST_REDIS_URL")
+	url := os.Getenv("AMI_TEST_REDIS_URL")
 	if url == "" {
-		url = os.Getenv("MEMOH_TEST_VALKEY_URL")
+		url = os.Getenv("AMI_TEST_VALKEY_URL")
 	}
 	if url == "" {
-		if os.Getenv("MEMOH_TEST_DISTRIBUTED_REQUIRED") == "1" {
-			t.Fatal("MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL required")
+		if os.Getenv("AMI_TEST_DISTRIBUTED_REQUIRED") == "1" {
+			t.Fatal("AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL required")
 		}
-		t.Skip("set MEMOH_TEST_REDIS_URL or MEMOH_TEST_VALKEY_URL")
+		t.Skip("set AMI_TEST_REDIS_URL or AMI_TEST_VALKEY_URL")
 	}
 	backend, err := NewRedisBackend(context.Background(), RedisOptions{URL: url, KeyPrefix: uniqueRuntimeBackendPrefix("reset-result"), StateTTL: time.Minute})
 	if err != nil {

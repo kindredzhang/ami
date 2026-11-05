@@ -3,7 +3,7 @@ package native
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
 )
 
 func TestMarkApprovalToolsCoversWorkspaceTools(t *testing.T) {

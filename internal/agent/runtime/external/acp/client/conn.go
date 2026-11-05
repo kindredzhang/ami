@@ -12,10 +12,10 @@ import (
 
 	acp "github.com/coder/acp-go-sdk"
 
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/version"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/version"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 // sessionOpenTimeout bounds session/new and the session/resume or
@@ -65,11 +65,11 @@ type SessionConfig struct {
 	ToolPreflightGateway *mcp.ToolGatewayService
 	// MCPToolCall decodes the MCP server and tool a permission request is
 	// for, when the agent encodes them its own way. A call it attributes to
-	// the Memoh tool gateway is allowed without a second prompt: the gateway
-	// applies Memoh's own policy to it.
+	// the Ami tool gateway is allowed without a second prompt: the gateway
+	// applies Ami's own policy to it.
 	MCPToolCall func(rawInput any) (serverName, toolName string, ok bool)
 	// RuntimeOwnsApproval marks an agent whose own permission mode decides
-	// what to ask. Its requests go to the user; Memoh policy never answers
+	// what to ask. Its requests go to the user; Ami policy never answers
 	// them on the user's behalf.
 	RuntimeOwnsApproval bool
 	// UserInput delivers the agent's questions to the user, both ACP
@@ -124,7 +124,7 @@ func ConnectWith(ctx context.Context, transport io.ReadWriter, logger *slog.Logg
 	}
 	resp, err := rpc.Initialize(ctx, acp.InitializeRequest{
 		ProtocolVersion:    acp.ProtocolVersionNumber,
-		ClientInfo:         &acp.Implementation{Name: "memoh", Version: version.Version},
+		ClientInfo:         &acp.Implementation{Name: "ami", Version: version.Version},
 		ClientCapabilities: clientCaps,
 	})
 	if err != nil {
@@ -292,7 +292,7 @@ func (c *Conn) open(ctx context.Context, method string, resumeID acp.SessionId, 
 		action = "restore"
 		c.rpc.register(resumeID, callbacks)
 		// Load replays the earlier conversation as session/update, and some
-		// agents replay on resume too; Memoh already holds that history.
+		// agents replay on resume too; Ami already holds that history.
 		callbacks.setRestoring(true)
 		openCtx, cancelOpen := context.WithTimeout(ctx, sessionOpenTimeout)
 		if method == acp.AgentMethodSessionLoad {

@@ -11,17 +11,17 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/hooks"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/hooks"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
-// runGenerate runs the non-streaming agent invocation with a Memoh-owned step
+// runGenerate runs the non-streaming agent invocation with a Ami-owned step
 // loop: every step performs exactly one provider model call and executes its
 // tool batch through toolexec.ExecuteTools. A final step whose commit returns
 // NextInputs continues on the next inner-loop iteration of the same engine.
@@ -369,7 +369,7 @@ type generateDispatch struct {
 	systemPrepended bool
 }
 
-// buildGenerateDispatch assembles the single-call input for the Memoh-owned
+// buildGenerateDispatch assembles the single-call input for the Ami-owned
 // step loops: prompt-cache planning, provider-attempt staging, and
 // prepare-step composition, yielding the concrete sdk.Request and the composed
 // step-prepare function. The executable tool set stays local to the loop; the

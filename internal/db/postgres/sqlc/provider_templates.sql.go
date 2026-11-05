@@ -212,7 +212,7 @@ SELECT
   t.id, t.key, t.domain, t.name, t.description, t.icon, t.driver, t.config_schema, t.default_config, t.metadata, t.source, t.content_hash, t.sort_order, t.active, t.created_at, t.updated_at,
   EXISTS (
     SELECT 1 FROM public.providers p
-     WHERE p.team_id = public.memoh_current_team_id()
+     WHERE p.team_id = public.ami_current_team_id()
        AND (
          p.provider_template_id = t.id
          OR p.metadata->'template'->>'id' = t.id::text

@@ -37,7 +37,7 @@ WITH updated_user AS (
   WHERE users.id = $6
     AND EXISTS (
       SELECT 1 FROM team_members membership
-      WHERE membership.team_id = public.memoh_current_team_id()
+      WHERE membership.team_id = public.ami_current_team_id()
         AND membership.user_id = users.id
     )
   RETURNING users.id, users.username, users.email, users.password_hash, users.display_name, users.avatar_url, users.timezone, users.last_login_at, users.is_active, users.metadata, users.created_at, users.updated_at
@@ -48,7 +48,7 @@ WITH updated_user AS (
       data_root = $9,
       updated_at = now()
   FROM updated_user
-  WHERE membership.team_id = public.memoh_current_team_id()
+  WHERE membership.team_id = public.ami_current_team_id()
     AND membership.user_id = updated_user.id
   RETURNING membership.team_id, membership.user_id, membership.role, membership.is_active, membership.data_root, membership.title_model_id, membership.metadata, membership.created_at, membership.updated_at
 )
@@ -150,7 +150,7 @@ WITH created_user AS (
   RETURNING users.id, users.username, users.email, users.password_hash, users.display_name, users.avatar_url, users.timezone, users.last_login_at, users.is_active, users.metadata, users.created_at, users.updated_at
 ), created_membership AS (
   INSERT INTO team_members (team_id, user_id, is_active)
-  SELECT public.memoh_current_team_id(), id, $1
+  SELECT public.ami_current_team_id(), id, $1
   FROM created_user
   RETURNING team_members.team_id, team_members.user_id, team_members.role, team_members.is_active, team_members.data_root, team_members.title_model_id, team_members.metadata, team_members.created_at, team_members.updated_at
 )
@@ -299,7 +299,7 @@ SELECT users.id, users.username, users.email, users.password_hash, users.display
 FROM users
 JOIN team_members membership
   ON membership.user_id = users.id
- AND membership.team_id = public.memoh_current_team_id()
+ AND membership.team_id = public.ami_current_team_id()
 WHERE users.id = $1
 `
 
@@ -374,7 +374,7 @@ const removeMember = `-- name: RemoveMember :one
 UPDATE team_members
 SET is_active = FALSE,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND user_id = $1
 RETURNING user_id
 `
@@ -452,7 +452,7 @@ WITH updated_membership AS (
   SET role = $1::user_role,
       is_active = COALESCE($2::boolean, membership.is_active),
       updated_at = now()
-  WHERE membership.team_id = public.memoh_current_team_id()
+  WHERE membership.team_id = public.ami_current_team_id()
     AND membership.user_id = $3
   RETURNING membership.team_id, membership.user_id, membership.role, membership.is_active, membership.data_root, membership.title_model_id, membership.metadata, membership.created_at, membership.updated_at
 )
@@ -537,7 +537,7 @@ SET last_login_at = now(),
 WHERE id = $1
   AND EXISTS (
     SELECT 1 FROM team_members membership
-    WHERE membership.team_id = public.memoh_current_team_id()
+    WHERE membership.team_id = public.ami_current_team_id()
       AND membership.user_id = users.id
   )
 RETURNING id
@@ -557,7 +557,7 @@ SET password_hash = $1,
 WHERE id = $2
   AND EXISTS (
     SELECT 1 FROM team_members membership
-    WHERE membership.team_id = public.memoh_current_team_id()
+    WHERE membership.team_id = public.ami_current_team_id()
       AND membership.user_id = users.id
   )
 RETURNING id
@@ -586,7 +586,7 @@ WITH updated_user AS (
   WHERE users.id = $5
     AND EXISTS (
       SELECT 1 FROM team_members membership
-      WHERE membership.team_id = public.memoh_current_team_id()
+      WHERE membership.team_id = public.ami_current_team_id()
         AND membership.user_id = users.id
     )
   RETURNING users.id, users.username, users.email, users.password_hash, users.display_name, users.avatar_url, users.timezone, users.last_login_at, users.is_active, users.metadata, users.created_at, users.updated_at
@@ -598,7 +598,7 @@ WITH updated_user AS (
         ELSE membership.updated_at
       END
   FROM updated_user
-  WHERE membership.team_id = public.memoh_current_team_id()
+  WHERE membership.team_id = public.ami_current_team_id()
     AND membership.user_id = updated_user.id
   RETURNING membership.team_id, membership.user_id, membership.role, membership.is_active, membership.data_root, membership.title_model_id, membership.metadata, membership.created_at, membership.updated_at
 )
@@ -717,7 +717,7 @@ WITH upserted_user AS (
     team_id, user_id, role, is_active, data_root
   )
   SELECT
-    public.memoh_current_team_id(),
+    public.ami_current_team_id(),
     id,
     $8::user_role,
     $7,

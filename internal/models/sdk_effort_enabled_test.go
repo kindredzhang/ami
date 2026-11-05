@@ -3,7 +3,7 @@ package models
 import (
 	"testing"
 
-	"github.com/felinics/memoh/internal/reasoning"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // A switch without tiers resolves to the enabled token, which no OpenAI-shaped

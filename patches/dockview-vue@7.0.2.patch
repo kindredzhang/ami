@@ -7,7 +7,7 @@ index d6d2f69ede84ec6f2a0a6e24bd4b9e9e726349dd..3e9962f333ec006b2143524de4f70c50
    }
    updateLocation(location) {
 -    this._renderDisposable?.update({ params: { location } });
-+    // Memoh patch: keep the complete header-action params when only the group
++    // Ami patch: keep the complete header-action params when only the group
 +    // location changes; replacing them with { location } drops api/group/panels.
 +    this._renderDisposable?.update({ params: { ...this.buildEnrichedProps(), location } });
    }

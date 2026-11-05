@@ -9,15 +9,15 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/felinics/memoh/internal/container"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/container"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 const (
-	WorkspaceResourceCPUMillicoresLabelKey = "memoh.workspace.resource.cpu_millicores"
-	WorkspaceResourceMemoryBytesLabelKey   = "memoh.workspace.resource.memory_bytes"
+	WorkspaceResourceCPUMillicoresLabelKey = "ami.workspace.resource.cpu_millicores"
+	WorkspaceResourceMemoryBytesLabelKey   = "ami.workspace.resource.memory_bytes"
 
 	ResourceLimitStatusApplied         = "applied"
 	ResourceLimitStatusNotCreated      = "not_created"

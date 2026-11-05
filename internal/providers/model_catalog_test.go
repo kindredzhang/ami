@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/felinics/memoh/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/db/postgres/sqlc"
 )
 
 func TestPublicCatalogSourceUsesExplicitSourceOrShippedTemplate(t *testing.T) {

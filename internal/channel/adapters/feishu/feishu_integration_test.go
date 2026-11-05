@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // TestFeishuGateway_Integration runs Feishu channel integration test.
@@ -59,7 +59,7 @@ func TestFeishuGateway_Integration(t *testing.T) {
 		reply := channel.OutboundMessage{
 			Target: msg.ReplyTarget,
 			Message: channel.Message{
-				Text: fmt.Sprintf("【Memoh 集成测试】已收到消息: %s\n测试时间: %s", plainText, time.Now().Format("15:04:05")),
+				Text: fmt.Sprintf("【Ami 集成测试】已收到消息: %s\n测试时间: %s", plainText, time.Now().Format("15:04:05")),
 			},
 		}
 
@@ -77,7 +77,7 @@ func TestFeishuGateway_Integration(t *testing.T) {
 			pushMsg := channel.OutboundMessage{
 				Target: msg.ReplyTarget,
 				Message: channel.Message{
-					Text: "【Memoh 集成测试】主动推送验证成功。",
+					Text: "【Ami 集成测试】主动推送验证成功。",
 				},
 			}
 			pushCtx, pushCancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)

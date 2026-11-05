@@ -5,8 +5,8 @@ package channelidentity
 import (
 	"context"
 
-	"github.com/felinics/memoh/internal/agent/application"
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/agent/application"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 type configSource interface {

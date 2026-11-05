@@ -18,24 +18,24 @@ import (
 )
 
 const (
-	displayEnabledEnv     = "MEMOH_DISPLAY_ENABLED"
-	displayRFBTCPAddrEnv  = "MEMOH_DISPLAY_RFB_TCP_ADDR"
-	displayGeometryEnv    = "MEMOH_DISPLAY_GEOMETRY"
-	displayBrowserURLEnv  = "MEMOH_DISPLAY_BROWSER_URL"
+	displayEnabledEnv     = "AMI_DISPLAY_ENABLED"
+	displayRFBTCPAddrEnv  = "AMI_DISPLAY_RFB_TCP_ADDR"
+	displayGeometryEnv    = "AMI_DISPLAY_GEOMETRY"
+	displayBrowserURLEnv  = "AMI_DISPLAY_BROWSER_URL"
 	displayBrowserCDPPort = "9222"
-	displayBrowserProfile = "/tmp/memoh-display-browser"
-	toolkitXvncPath       = "/opt/memoh/toolkit/display/bin/Xvnc"
-	toolkitXkbcompPath    = "/opt/memoh/toolkit/display/bin/xkbcomp"
-	toolkitXsetrootPath   = "/opt/memoh/toolkit/display/bin/xsetroot"
-	toolkitTwmPath        = "/opt/memoh/toolkit/display/bin/twm"
-	toolkitXtermPath      = "/opt/memoh/toolkit/display/bin/xterm"
+	displayBrowserProfile = "/tmp/ami-display-browser"
+	toolkitXvncPath       = "/opt/ami/toolkit/display/bin/Xvnc"
+	toolkitXkbcompPath    = "/opt/ami/toolkit/display/bin/xkbcomp"
+	toolkitXsetrootPath   = "/opt/ami/toolkit/display/bin/xsetroot"
+	toolkitTwmPath        = "/opt/ami/toolkit/display/bin/twm"
+	toolkitXtermPath      = "/opt/ami/toolkit/display/bin/xterm"
 	systemXkbcompPath     = "/usr/bin/xkbcomp"
 	x11SocketDir          = "/tmp/.X11-unix"
 	xvncDisplay           = ":99"
 	defaultXvncGeometry   = "1280x960"
 	xvncSocketPath        = x11SocketDir + "/X99"
 	xvncLockPath          = "/tmp/.X99-lock"
-	desktopStylePath      = "/opt/memoh/scripts/desktop-style.sh"
+	desktopStylePath      = "/opt/ami/scripts/desktop-style.sh"
 	defaultRFBTCPAddr     = "127.0.0.1:5999"
 	displayReadyTimeout   = 30 * time.Second
 )
@@ -491,7 +491,7 @@ func stopFallbackWindowManagers(ctx context.Context) {
 }
 
 func startDisplayTerminal(ctx context.Context, log *slog.Logger) {
-	const title = "Memoh Workspace"
+	const title = "Ami Workspace"
 	workdir := "/data"
 	if info, err := os.Stat(workdir); err != nil || !info.IsDir() {
 		workdir = "/"
@@ -573,7 +573,7 @@ func startDesktopStyle(ctx context.Context, log *slog.Logger) {
 }
 
 func desktopBackgroundColor() string {
-	color := strings.TrimSpace(os.Getenv("MEMOH_DISPLAY_DESKTOP_COLOR"))
+	color := strings.TrimSpace(os.Getenv("AMI_DISPLAY_DESKTOP_COLOR"))
 	if color == "" {
 		return "#1f2329"
 	}

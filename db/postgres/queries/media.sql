@@ -4,13 +4,13 @@ VALUES (sqlc.arg(name), sqlc.arg(provider), sqlc.arg(config))
 RETURNING *;
 
 -- name: GetStorageProviderByID :one
-SELECT * FROM storage_providers WHERE team_id = public.memoh_current_team_id() AND id = sqlc.arg(id);
+SELECT * FROM storage_providers WHERE team_id = public.ami_current_team_id() AND id = sqlc.arg(id);
 
 -- name: GetStorageProviderByName :one
-SELECT * FROM storage_providers WHERE team_id = public.memoh_current_team_id() AND name = sqlc.arg(name);
+SELECT * FROM storage_providers WHERE team_id = public.ami_current_team_id() AND name = sqlc.arg(name);
 
 -- name: ListStorageProviders :many
-SELECT * FROM storage_providers WHERE team_id = public.memoh_current_team_id() ORDER BY created_at DESC;
+SELECT * FROM storage_providers WHERE team_id = public.ami_current_team_id() ORDER BY created_at DESC;
 
 -- name: UpsertBotStorageBinding :one
 INSERT INTO bot_storage_bindings (bot_id, storage_provider_id, base_path)
@@ -22,7 +22,7 @@ ON CONFLICT (team_id, bot_id) DO UPDATE SET
 RETURNING *;
 
 -- name: GetBotStorageBinding :one
-SELECT * FROM bot_storage_bindings WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+SELECT * FROM bot_storage_bindings WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: CreateMessageAsset :one
 INSERT INTO bot_history_message_assets (
@@ -52,20 +52,20 @@ RETURNING id, message_id, role, ordinal, content_hash, mime, size_bytes, storage
 -- name: ListMessageAssets :many
 SELECT id AS rel_id, message_id, role, ordinal, content_hash, mime, size_bytes, storage_key, name, metadata
 FROM bot_history_message_assets
-WHERE team_id = public.memoh_current_team_id() AND message_id = sqlc.arg(message_id)
+WHERE team_id = public.ami_current_team_id() AND message_id = sqlc.arg(message_id)
 ORDER BY ordinal ASC;
 
 -- name: ListMessageAssetsBatch :many
 SELECT id AS rel_id, message_id, role, ordinal, content_hash, mime, size_bytes, storage_key, name, metadata
 FROM bot_history_message_assets
-WHERE team_id = public.memoh_current_team_id() AND message_id = ANY(sqlc.arg(message_ids)::uuid[])
+WHERE team_id = public.ami_current_team_id() AND message_id = ANY(sqlc.arg(message_ids)::uuid[])
 ORDER BY message_id, ordinal ASC;
 
 -- name: CountMessageAssetsByBot :one
 SELECT COUNT(*)
 FROM bot_history_message_assets a
 JOIN bot_history_messages m ON m.id = a.message_id
-WHERE a.team_id = public.memoh_current_team_id() AND m.team_id = public.memoh_current_team_id() AND m.bot_id = sqlc.arg(bot_id);
+WHERE a.team_id = public.ami_current_team_id() AND m.team_id = public.ami_current_team_id() AND m.bot_id = sqlc.arg(bot_id);
 
 -- name: DeleteMessageAssets :exec
-DELETE FROM bot_history_message_assets WHERE team_id = public.memoh_current_team_id() AND message_id = sqlc.arg(message_id);
+DELETE FROM bot_history_message_assets WHERE team_id = public.ami_current_team_id() AND message_id = sqlc.arg(message_id);

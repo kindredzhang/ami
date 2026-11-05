@@ -213,7 +213,7 @@ func compatUserSkillName(skillMDPath string) (string, bool) {
 }
 
 // BuiltinSkillName reports the directory name for
-// /data/.memoh/skills/<name>/SKILL.md.
+// /data/.ami/skills/<name>/SKILL.md.
 func BuiltinSkillName(skillMDPath string) (string, bool) {
 	skillMDPath = path.Clean(strings.TrimSpace(skillMDPath))
 	if path.Base(skillMDPath) != "SKILL.md" {

@@ -5,7 +5,7 @@
 -- destructive for Grok Build conversations, schedules and authorizations.
 -- Their bot_agents rows stay; that table never enumerated runtimes.
 
--- These tables use FORCE RLS keyed on memoh.team_id, which a migration
+-- These tables use FORCE RLS keyed on ami.team_id, which a migration
 -- connection never sets. Lift the policies for the cleanup and restore them
 -- before leaving the migration.
 ALTER TABLE bot_sessions NO FORCE ROW LEVEL SECURITY;

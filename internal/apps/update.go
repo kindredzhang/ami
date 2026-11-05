@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	skillset "github.com/felinics/memoh/internal/skills"
-	"github.com/felinics/memoh/internal/supermarket"
+	skillset "github.com/kindredzhang/ami/internal/skills"
+	"github.com/kindredzhang/ami/internal/supermarket"
 )
 
 // UpdateRequest selects what to update for one App in a bot's isolated workspace.

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel/channeltest"
-	"github.com/felinics/memoh/internal/markdownmedia"
-	"github.com/felinics/memoh/internal/media"
+	"github.com/kindredzhang/ami/internal/channel/channeltest"
+	"github.com/kindredzhang/ami/internal/markdownmedia"
+	"github.com/kindredzhang/ami/internal/media"
 )
 
 func TestMarkdownMediaAcrossChannelPreparation(t *testing.T) {

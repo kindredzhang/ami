@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 type computerDisplayExecServer struct {
@@ -34,11 +34,11 @@ func (s *computerDisplayExecServer) Exec(stream pb.ContainerService_ExecServer) 
 	command := req.GetCommand()
 	s.commands = append(s.commands, command)
 	exitCode := int32(0)
-	if strings.Contains(command, "memoh-computer-display-ready-probe") {
+	if strings.Contains(command, "ami-computer-display-ready-probe") {
 		if !s.ready {
 			exitCode = 1
 		}
-	} else if strings.Contains(command, "/opt/memoh/scripts/display-prepare.sh") {
+	} else if strings.Contains(command, "/opt/ami/scripts/display-prepare.sh") {
 		s.ready = true
 	}
 	s.mu.Unlock()
@@ -93,7 +93,7 @@ func TestEnsureComputerDisplayHotStartsRuntime(t *testing.T) {
 	if len(server.commands) != 3 {
 		t.Fatalf("expected readiness probe, preparation, and verification; got %d commands", len(server.commands))
 	}
-	if !strings.Contains(server.commands[1], "/opt/memoh/scripts/display-prepare.sh") {
+	if !strings.Contains(server.commands[1], "/opt/ami/scripts/display-prepare.sh") {
 		t.Fatalf("expected the shared display preparation command, got: %s", server.commands[1])
 	}
 }
@@ -175,17 +175,17 @@ func TestBrowserRefHelpers(t *testing.T) {
 }
 
 func TestWrapRuntimeExpressionScopesHelper(t *testing.T) {
-	wrapped := wrapRuntimeExpression("memohInteractiveElements().length")
+	wrapped := wrapRuntimeExpression("amiInteractiveElements().length")
 	if !strings.HasPrefix(wrapped, "(async () => {") {
 		t.Fatalf("expected async wrapper, got: %s", wrapped)
 	}
-	if !strings.Contains(wrapped, "const memohInteractiveSelector") {
+	if !strings.Contains(wrapped, "const amiInteractiveSelector") {
 		t.Fatalf("expected helper in wrapper: %s", wrapped)
 	}
 	if strings.Contains(wrapped, "eval(") {
 		t.Fatalf("wrapper should not rely on eval: %s", wrapped)
 	}
-	if !strings.Contains(wrapped, "return await (\nmemohInteractiveElements().length\n);") {
+	if !strings.Contains(wrapped, "return await (\namiInteractiveElements().length\n);") {
 		t.Fatalf("expected expression to be evaluated inside wrapper: %s", wrapped)
 	}
 }
@@ -204,7 +204,7 @@ func TestBrowserSchemasAreStrict(t *testing.T) {
 
 func TestBuildScreenshotResultDropsShareMetadata(t *testing.T) {
 	p := &BrowserProvider{dataRoot: "/data"}
-	result := p.buildScreenshotBytesResult(t.Context(), "", []byte("png-bytes"), "image/png", "/data/.memoh/screenshots", nil)
+	result := p.buildScreenshotBytesResult(t.Context(), "", []byte("png-bytes"), "image/png", "/data/.ami/screenshots", nil)
 	asMap, ok := result.(map[string]any)
 	if !ok {
 		t.Fatalf("expected map result, got %T", result)
@@ -222,7 +222,7 @@ func TestBuildScreenshotResultDropsShareMetadata(t *testing.T) {
 	}
 }
 
-func TestScreenshotDirUsesSharedMemohDirectory(t *testing.T) {
+func TestScreenshotDirUsesSharedAmiDirectory(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -230,8 +230,8 @@ func TestScreenshotDirUsesSharedMemohDirectory(t *testing.T) {
 		dataRoot string
 		want     string
 	}{
-		{name: "default", want: "/data/.memoh/screenshots"},
-		{name: "configured", dataRoot: "/workspace/data/", want: "/workspace/data/.memoh/screenshots"},
+		{name: "default", want: "/data/.ami/screenshots"},
+		{name: "configured", dataRoot: "/workspace/data/", want: "/workspace/data/.ami/screenshots"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

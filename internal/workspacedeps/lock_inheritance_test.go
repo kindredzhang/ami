@@ -85,7 +85,7 @@ func TestKernelLockSurvivesSupervisorDeathWhileChildRuns(t *testing.T) {
 	if err := syscall.Kill(childPID, 0); err != nil {
 		t.Fatalf("child must remain alive after only the supervisor was killed: %v", err)
 	}
-	contender := exec.CommandContext(testContext(t), "/bin/sh", "-c", lockProbeHelpers+"\nif memoh_lock_active "+shellQuote(lock)+"; then exit 75; fi") //nolint:gosec // G204: fixed lock probe with a shell-quoted synthetic path.
+	contender := exec.CommandContext(testContext(t), "/bin/sh", "-c", lockProbeHelpers+"\nif ami_lock_active "+shellQuote(lock)+"; then exit 75; fi") //nolint:gosec // G204: fixed lock probe with a shell-quoted synthetic path.
 	err = contender.Run()
 	var exitErr *exec.ExitError
 	if !errors.As(err, &exitErr) || exitErr.ExitCode() != 75 {

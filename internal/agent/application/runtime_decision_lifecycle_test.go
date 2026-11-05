@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	sessionruntime "github.com/felinics/memoh/internal/agent/runtime/session"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	sessionruntime "github.com/kindredzhang/ami/internal/agent/runtime/session"
 )
 
 func TestRuntimeDecisionTerminalWithoutRecoverableSnapshotPersistsMinimalLifecycle(t *testing.T) {

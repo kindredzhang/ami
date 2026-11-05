@@ -17,7 +17,7 @@ SET agent_credential_id = NULL,
     updated_at = now()
 WHERE bot_agents.bot_id = $1
   AND bot_agents.id = $2
-  AND bot_agents.team_id = public.memoh_current_team_id()
+  AND bot_agents.team_id = public.ami_current_team_id()
   AND bot_agents.deleted_at IS NULL
   AND bot_agents.agent_credential_id IS NOT NULL
 RETURNING (
@@ -42,7 +42,7 @@ func (q *Queries) ClearBotAgentCredential(ctx context.Context, arg ClearBotAgent
 const countBotAgentCredentialRefs = `-- name: CountBotAgentCredentialRefs :one
 SELECT count(*) FROM bot_agents
 WHERE agent_credential_id = $1
-  AND team_id = public.memoh_current_team_id()
+  AND team_id = public.ami_current_team_id()
   AND deleted_at IS NULL
 `
 
@@ -113,7 +113,7 @@ func (q *Queries) CreateAgentCredential(ctx context.Context, arg CreateAgentCred
 
 const getAgentCredential = `-- name: GetAgentCredential :one
 SELECT id, team_id, owner_user_id, provider, auth_kind, label, encrypted_payload, encryption_nonce, key_version, account_metadata, expires_at, credential_version, revoked_at, created_at, updated_at FROM agent_credentials
-WHERE id = $1 AND team_id = public.memoh_current_team_id()
+WHERE id = $1 AND team_id = public.ami_current_team_id()
 `
 
 func (q *Queries) GetAgentCredential(ctx context.Context, id pgtype.UUID) (AgentCredential, error) {
@@ -146,7 +146,7 @@ JOIN agent_credentials c
   ON c.team_id = a.team_id AND c.id = a.agent_credential_id
 WHERE a.bot_id = $1
   AND a.id = $2
-  AND a.team_id = public.memoh_current_team_id()
+  AND a.team_id = public.ami_current_team_id()
   AND a.deleted_at IS NULL
 `
 
@@ -203,7 +203,7 @@ SELECT runtime
 FROM bot_agents
 WHERE bot_id = $1
   AND id = $2
-  AND team_id = public.memoh_current_team_id()
+  AND team_id = public.ami_current_team_id()
   AND deleted_at IS NULL
 `
 
@@ -225,7 +225,7 @@ SET revoked_at = now(),
     credential_version = credential_version + 1,
     updated_at = now()
 WHERE id = $1
-  AND team_id = public.memoh_current_team_id()
+  AND team_id = public.ami_current_team_id()
   AND revoked_at IS NULL
 RETURNING id, team_id, owner_user_id, provider, auth_kind, label, encrypted_payload, encryption_nonce, key_version, account_metadata, expires_at, credential_version, revoked_at, created_at, updated_at
 `
@@ -258,7 +258,7 @@ UPDATE agent_credentials c
 SET revoked_at = now(),
     credential_version = credential_version + 1,
     updated_at = now()
-WHERE c.team_id = public.memoh_current_team_id()
+WHERE c.team_id = public.ami_current_team_id()
   AND c.revoked_at IS NULL
   AND EXISTS (
     SELECT 1 FROM bot_agents a
@@ -282,7 +282,7 @@ SET agent_credential_id = $2,
     updated_at = now()
 WHERE bot_agents.bot_id = $1
   AND bot_agents.id = $3
-  AND bot_agents.team_id = public.memoh_current_team_id()
+  AND bot_agents.team_id = public.ami_current_team_id()
   AND bot_agents.deleted_at IS NULL
 RETURNING (
     SELECT prev.agent_credential_id

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	modelpkg "github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/reasoning"
+	modelpkg "github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/reasoning"
 )
 
 // A version 1 switch exported without the disable token upgrades by its

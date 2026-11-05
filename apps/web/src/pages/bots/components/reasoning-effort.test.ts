@@ -1,4 +1,4 @@
-import type { ReasoningOptions } from '@memohai/sdk'
+import type { ReasoningOptions } from '@ami/sdk'
 import { describe, expect, it } from 'vitest'
 import {
   REASONING_EFFORT_DISABLE,

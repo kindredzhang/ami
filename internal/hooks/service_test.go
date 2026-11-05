@@ -18,8 +18,8 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 const hookTestBufSize = 1 << 20
@@ -673,7 +673,7 @@ func TestRunLimitsCommandAppendContext(t *testing.T) {
 			"event": "BeforeModelCall",
 			"actions": [{
 				"type": "command",
-				"command": "node /data/.memoh/hook.js"
+				"command": "node /data/.ami/hook.js"
 			}]
 		}]
 	}`
@@ -728,7 +728,7 @@ func TestRunLimitsCommandMetadataAppendContext(t *testing.T) {
 			"event": "BeforeModelCall",
 			"actions": [{
 				"type": "command",
-				"command": "node /data/.memoh/hook.js"
+				"command": "node /data/.ami/hook.js"
 			}]
 		}]
 	}`
@@ -786,7 +786,7 @@ func TestRunLimitsCommandRawStdoutMetadata(t *testing.T) {
 			"event": "BeforeModelCall",
 			"actions": [{
 				"type": "command",
-				"command": "node /data/.memoh/hook.js"
+				"command": "node /data/.ami/hook.js"
 			}]
 		}]
 	}`
@@ -834,7 +834,7 @@ func TestRunLimitsCommandRawStdoutMetadata(t *testing.T) {
 
 func assertHookTextPreservesHeadTail(t *testing.T, text string) {
 	t.Helper()
-	for _, want := range []string{"[memoh pruned]", "HEAD", "TAIL"} {
+	for _, want := range []string{"[ami pruned]", "HEAD", "TAIL"} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("hook text missing %q:\n%s", want, text)
 		}
@@ -892,7 +892,7 @@ func TestRunLoadsConfigAndExecutesCommandHook(t *testing.T) {
 			"matcher": "^exec$",
 			"actions": [{
 				"type": "command",
-				"command": "node /data/.memoh/hook.js",
+				"command": "node /data/.ami/hook.js",
 				"work_dir": "/data/project"
 			}]
 		}]
@@ -931,7 +931,7 @@ func TestRunLoadsConfigAndExecutesCommandHook(t *testing.T) {
 		t.Fatalf("exec count = %d, want 1", len(server.execs))
 	}
 	exec := server.execs[0]
-	if exec.command != "node /data/.memoh/hook.js" {
+	if exec.command != "node /data/.ami/hook.js" {
 		t.Fatalf("command = %q", exec.command)
 	}
 	if exec.workDir != "/data/project" {
@@ -940,7 +940,7 @@ func TestRunLoadsConfigAndExecutesCommandHook(t *testing.T) {
 	if exec.timeout != 3 {
 		t.Fatalf("timeout = %d, want 3", exec.timeout)
 	}
-	if !slices.Contains(exec.env, "HOOK_ENV=enabled") || !slices.Contains(exec.env, "MEMOH_HOOK_EVENT=PostToolUse") {
+	if !slices.Contains(exec.env, "HOOK_ENV=enabled") || !slices.Contains(exec.env, "AMI_HOOK_EVENT=PostToolUse") {
 		t.Fatalf("env = %v, missing hook env values", exec.env)
 	}
 	var req Request
@@ -963,7 +963,7 @@ func TestRunCommandHookDoesNotUseTargetWorkspaceAsExecutionDirectory(t *testing.
 			"event": "BeforeWorkspaceCommand",
 			"actions": [{
 				"type": "command",
-				"command": "node /data/.memoh/guard.js"
+				"command": "node /data/.ami/guard.js"
 			}]
 		}]
 	}`

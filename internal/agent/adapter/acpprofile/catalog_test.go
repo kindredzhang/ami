@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	runtimeprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/botagents"
+	runtimeprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/botagents"
 )
 
 func TestCatalogExposesOnlyChannelSafeProfileData(t *testing.T) {

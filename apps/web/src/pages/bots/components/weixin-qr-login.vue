@@ -154,7 +154,7 @@ import { useI18n } from 'vue-i18n'
 import { toast } from '@felinic/ui'
 import { Input } from '@felinic/ui'
 import QRCode from 'qrcode'
-import { client } from '@memohai/sdk/client'
+import { client } from '@ami/sdk/client'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 
 const props = defineProps<{

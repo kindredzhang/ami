@@ -170,8 +170,8 @@ import { useI18n } from 'vue-i18n'
 import { useLocalStorage } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { useQuery } from '@pinia/colada'
-import { getBotsQuery } from '@memohai/sdk/colada'
-import type { BotsBot } from '@memohai/sdk'
+import { getBotsQuery } from '@ami/sdk/colada'
+import type { BotsBot } from '@ami/sdk'
 import {
   Avatar,
   AvatarImage,

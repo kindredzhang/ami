@@ -128,8 +128,8 @@ import {
   postBotsByBotIdMemoryRebuild,
   putBotsByBotIdSettings,
   putMemoryConfig,
-} from '@memohai/sdk'
-import type { AdaptersMemoryStatusResponse } from '@memohai/sdk'
+} from '@ami/sdk'
+import type { AdaptersMemoryStatusResponse } from '@ami/sdk'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { useServerSyncedScalar } from '@/composables/use-server-synced-form'
 import ModelSelect from './model-select.vue'

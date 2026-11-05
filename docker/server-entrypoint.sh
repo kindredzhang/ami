@@ -35,10 +35,10 @@ if [ "$CONTAINER_BACKEND" != "docker" ] && [ "$CONTAINER_BACKEND" != "apple" ]; 
 
   # ---- Start containerd in background ----
   mkdir -p /run/containerd
-  # OTEL_* in this environment configures Memoh, and containerd reads the same
+  # OTEL_* in this environment configures Ami, and containerd reads the same
   # variables: with an endpoint set it starts exporting its own spans, by
-  # default over http/protobuf and under Memoh's OTEL_SERVICE_NAME. Against
-  # Memoh's default gRPC collector port that fails on every export.
+  # default over http/protobuf and under Ami's OTEL_SERVICE_NAME. Against
+  # Ami's default gRPC collector port that fails on every export.
   OTEL_SDK_DISABLED=true containerd &
   CONTAINERD_PID=$!
 
@@ -57,7 +57,7 @@ if [ "$CONTAINER_BACKEND" != "docker" ] && [ "$CONTAINER_BACKEND" != "apple" ]; 
   echo "containerd is running (pid $CONTAINERD_PID)"
 fi
 
-echo "Starting memoh-server..."
+echo "Starting ami-server..."
 
 # ---- Start server (foreground, trap signals for graceful shutdown) ----
 shutdown() {
@@ -72,7 +72,7 @@ shutdown() {
 }
 trap shutdown TERM INT
 
-/app/memoh-server serve &
+/app/ami-server serve &
 SERVER_PID=$!
 
 wait $SERVER_PID

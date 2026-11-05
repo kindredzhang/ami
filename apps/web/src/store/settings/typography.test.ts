@@ -137,15 +137,15 @@ describe('typography settings', () => {
       codeFontSizePx: 13,
     })
 
-    expect(properties.get('--memoh-ui-font-family')).toBe(`"A \\"Quoted\\" Font", ${UI_FALLBACK_SERIALIZED}`)
+    expect(properties.get('--ami-ui-font-family')).toBe(`"A \\"Quoted\\" Font", ${UI_FALLBACK_SERIALIZED}`)
     expect(properties.get('--font-sans')).toBe(`"A \\"Quoted\\" Font", ${UI_FALLBACK_SERIALIZED}`)
-    expect(properties.get('--memoh-ui-font-size')).toBe('14px')
-    expect(properties.get('--memoh-code-font-family')).toBe(cssCodeFontFamilyStyleValue('Mono\\Font'))
+    expect(properties.get('--ami-ui-font-size')).toBe('14px')
+    expect(properties.get('--ami-code-font-family')).toBe(cssCodeFontFamilyStyleValue('Mono\\Font'))
     expect(properties.get('--font-mono')).toBe(cssCodeFontFamilyStyleValue('Mono\\Font'))
-    expect(properties.get('--memoh-code-font-size')).toBe('13px')
-    expect(properties.has('--memoh-text-xs')).toBe(false)
+    expect(properties.get('--ami-code-font-size')).toBe('13px')
+    expect(properties.has('--ami-text-xs')).toBe(false)
     expect(properties.has('--chat-markdown-h1-font-size')).toBe(false)
-    expect(properties.has('--memoh-markdown-h1-font-size')).toBe(false)
+    expect(properties.has('--ami-markdown-h1-font-size')).toBe(false)
   })
 
   it('keeps Tailwind defaults untouched when nothing is customized', () => {
@@ -167,7 +167,7 @@ describe('typography settings', () => {
     })
     expect(properties.has('--font-sans')).toBe(true)
     expect(properties.has('--font-mono')).toBe(true)
-    expect(properties.get('--memoh-ui-font-size')).toBe('18px')
+    expect(properties.get('--ami-ui-font-size')).toBe('18px')
 
     applyTypographyVariables({
       uiFontFamily: '',
@@ -177,8 +177,8 @@ describe('typography settings', () => {
     })
     expect(properties.has('--font-sans')).toBe(false)
     expect(properties.has('--font-mono')).toBe(false)
-    expect(properties.has('--memoh-ui-font-size')).toBe(false)
-    expect(properties.get('--memoh-ui-font-family')).toBe(UI_FALLBACK_SERIALIZED)
-    expect(properties.get('--memoh-code-font-family')).toBe(CODE_STACK_WITH_CJK)
+    expect(properties.has('--ami-ui-font-size')).toBe(false)
+    expect(properties.get('--ami-ui-font-family')).toBe(UI_FALLBACK_SERIALIZED)
+    expect(properties.get('--ami-code-font-family')).toBe(CODE_STACK_WITH_CJK)
   })
 })

@@ -3,7 +3,7 @@ package agentcredential
 import (
 	"time"
 
-	"github.com/felinics/memoh/internal/runtimekind"
+	"github.com/kindredzhang/ami/internal/runtimekind"
 )
 
 const ( //nolint:gosec // Stable authentication-kind identifiers, not credential values.

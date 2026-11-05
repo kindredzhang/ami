@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 // 0165 rewrites the two retired spellings of reasoning off onto the token that
@@ -32,7 +32,7 @@ func TestReasoningEffortNormalizationMigration(t *testing.T) {
 		t.Fatalf("acquire connection: %v", err)
 	}
 	defer conn.Release()
-	if _, err := conn.Exec(ctx, "SELECT set_config('memoh.team_id', $1, false)", team.DefaultTeamID); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT set_config('ami.team_id', $1, false)", team.DefaultTeamID); err != nil {
 		t.Fatalf("set team context: %v", err)
 	}
 

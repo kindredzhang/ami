@@ -10,7 +10,7 @@ const block = source.slice(source.indexOf('prepare_lock=/tmp/'), source.indexOf(
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 async function fixture(t) {
-  const dir = await mkdtemp(path.join(os.tmpdir(), 'memoh-lock-test-'))
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'ami-lock-test-'))
   const children = []
   t.after(async () => {
     for (const child of children) {
@@ -22,8 +22,8 @@ async function fixture(t) {
   const guard = path.join(dir, 'guard')
   const script = path.join(dir, 'display-prepare.sh')
   await writeFile(script, '#!/bin/sh\nset -eu\nprogress() { :; }\ndisplay_ready() { return 1; }\nemit_complete() { :; }\n'
-    + block.replace('prepare_lock=/tmp/memoh-display-prepare.lock', `prepare_lock='${lock}'`)
-      .replace('prepare_guard=/tmp/memoh-display-prepare.guard', `prepare_guard='${guard}'`)
+    + block.replace('prepare_lock=/tmp/ami-display-prepare.lock', `prepare_lock='${lock}'`)
+      .replace('prepare_guard=/tmp/ami-display-prepare.guard', `prepare_guard='${guard}'`)
     + '\nprintf "start:%s\\n" "$$" >>"$EVENTS"\nsleep "${HOLD_SECONDS:-0}"\nprintf "end:%s\\n" "$$" >>"$EVENTS"\n')
   const events = path.join(dir, 'events')
   await writeFile(events, '')

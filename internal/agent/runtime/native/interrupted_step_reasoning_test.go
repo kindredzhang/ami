@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/step"
-	"github.com/felinics/memoh/internal/messageconv"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	"github.com/kindredzhang/ami/internal/messageconv"
 )
 
 // An interrupted step is persisted as a checkpoint and replayed on the next

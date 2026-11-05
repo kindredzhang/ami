@@ -3,7 +3,7 @@
 services:
   valkey:
     image: valkey/valkey:8-alpine
-    container_name: memoh-runtime-valkey
+    container_name: ami-runtime-valkey
     command: ["valkey-server", "--save", "", "--appendonly", "no"]
     ports:
       - "16379:6379"

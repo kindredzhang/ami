@@ -12,12 +12,12 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"golang.org/x/crypto/bcrypt"
 
-	dbembed "github.com/felinics/memoh/db"
-	"github.com/felinics/memoh/internal/config"
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	"github.com/felinics/memoh/internal/logger"
-	"github.com/felinics/memoh/internal/version"
+	dbembed "github.com/kindredzhang/ami/db"
+	"github.com/kindredzhang/ami/internal/config"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	"github.com/kindredzhang/ami/internal/logger"
+	"github.com/kindredzhang/ami/internal/version"
 )
 
 func provideConfig() (config.Config, error) {
@@ -60,7 +60,7 @@ func runMigrateCommand(args []string) error {
 
 func runAccountCommand(args []string, passwordInput io.Reader) error {
 	if len(args) != 2 || args[0] != "recover-admin" {
-		return errors.New("usage: memoh-server account recover-admin <username-or-email> < new-password-file")
+		return errors.New("usage: ami-server account recover-admin <username-or-email> < new-password-file")
 	}
 	identity := strings.TrimSpace(args[1])
 	if identity == "" {
@@ -123,6 +123,6 @@ func runAccountCommand(args []string, passwordInput io.Reader) error {
 }
 
 func runVersion() error {
-	fmt.Printf("memoh-server %s\n", version.GetInfo())
+	fmt.Printf("ami-server %s\n", version.GetInfo())
 	return nil
 }

@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/audio"
+	"github.com/kindredzhang/ami/internal/audio"
 )
 
 const TtsTypeEdge audio.TtsType = "edge"

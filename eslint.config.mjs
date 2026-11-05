@@ -65,7 +65,7 @@ export default [
         'error',
         {
           name: 'fetch',
-          message: '违反 M3（服务端数据只有一条访问路径）：禁止在业务代码直接调用裸 fetch()，请统一使用 @memohai/sdk 配合 Pinia Colada useQuery / useMutation。',
+          message: '违反 M3（服务端数据只有一条访问路径）：禁止在业务代码直接调用裸 fetch()，请统一使用 @ami/sdk 配合 Pinia Colada useQuery / useMutation。',
         },
       ],
       'no-restricted-imports': [
@@ -80,7 +80,7 @@ export default [
           patterns: [
             {
               group: ['@fortawesome/*'],
-              message: '违反 M1 / U9：严禁使用 FontAwesome 图标，通用图标请用 lucide-vue-next，品牌图标请用 @memohai/icon。',
+              message: '违反 M1 / U9：严禁使用 FontAwesome 图标，通用图标请用 lucide-vue-next，品牌图标请用 @ami/icon。',
             },
           ],
         },

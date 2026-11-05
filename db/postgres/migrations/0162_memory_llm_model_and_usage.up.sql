@@ -10,7 +10,7 @@
 --
 -- FK form follows 0146: post-team composite (team_id, col) with the column
 -- list on SET NULL, NOT VALID because post-team migrations run under FORCE RLS
--- without memoh.team_id. The column is born NULL, so nothing is skipped.
+-- without ami.team_id. The column is born NULL, so nothing is skipped.
 
 ALTER TABLE public.bots
   ADD COLUMN IF NOT EXISTS memory_llm_model_id UUID;
@@ -25,14 +25,14 @@ ALTER TABLE public.bots
 
 CREATE TABLE IF NOT EXISTS public.bot_memory_usage (
   id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  team_id    UUID        NOT NULL DEFAULT public.memoh_current_team_id()
+  team_id    UUID        NOT NULL DEFAULT public.ami_current_team_id()
                          REFERENCES public.teams(id) ON DELETE RESTRICT,
   bot_id     UUID        NOT NULL,
   model_id   UUID,
   operation  TEXT        NOT NULL,
   usage      JSONB       NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  CONSTRAINT memoh_team_key_cdc0b6740345 UNIQUE (team_id, id),
+  CONSTRAINT ami_team_key_cdc0b6740345 UNIQUE (team_id, id),
   CONSTRAINT bot_memory_usage_operation_check
     CHECK (operation IN ('extract', 'decide', 'compact'))
 );
@@ -64,12 +64,12 @@ DROP POLICY IF EXISTS bot_memory_usage_team_update ON public.bot_memory_usage;
 DROP POLICY IF EXISTS bot_memory_usage_team_delete ON public.bot_memory_usage;
 
 CREATE POLICY bot_memory_usage_team_select ON public.bot_memory_usage
-  FOR SELECT USING (team_id = public.memoh_current_team_id());
+  FOR SELECT USING (team_id = public.ami_current_team_id());
 CREATE POLICY bot_memory_usage_team_insert ON public.bot_memory_usage
-  FOR INSERT WITH CHECK (team_id = public.memoh_current_team_id());
+  FOR INSERT WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_memory_usage_team_update ON public.bot_memory_usage
   FOR UPDATE
-  USING (team_id = public.memoh_current_team_id())
-  WITH CHECK (team_id = public.memoh_current_team_id());
+  USING (team_id = public.ami_current_team_id())
+  WITH CHECK (team_id = public.ami_current_team_id());
 CREATE POLICY bot_memory_usage_team_delete ON public.bot_memory_usage
-  FOR DELETE USING (team_id = public.memoh_current_team_id());
+  FOR DELETE USING (team_id = public.ami_current_team_id());

@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => {
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 vi.mock('vue-router', () => ({ useRouter: () => ({ currentRoute: { value: { name: 'Home' } }, replace: vi.fn() }) }))
-vi.mock('@memohai/sdk', () => ({ getUsersMe: vi.fn(), putUsersMe: mocks.putUsersMe }))
+vi.mock('@ami/sdk', () => ({ getUsersMe: vi.fn(), putUsersMe: mocks.putUsersMe }))
 vi.mock('@/i18n', () => ({ default: { global: { t: (key: string) => key } } }))
 vi.mock('@felinic/ui', async (importOriginal) => ({
   ...await importOriginal<typeof import('@felinic/ui')>(),

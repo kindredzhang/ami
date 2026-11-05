@@ -3,8 +3,8 @@ package discuss
 import (
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 type discussTriggerBuilder struct{}

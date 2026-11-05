@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 func TestResolveBotOpenIDRecordsDiscoveryFailureAsOneEvent(t *testing.T) {

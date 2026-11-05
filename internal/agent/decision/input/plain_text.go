@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/felinics/memoh/internal/i18n"
+	"github.com/kindredzhang/ami/internal/i18n"
 )
 
 const maxTextInteractionRetries = 3

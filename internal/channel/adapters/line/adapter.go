@@ -17,9 +17,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/errlog"
-	"github.com/felinics/memoh/internal/errs"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/errlog"
+	"github.com/kindredzhang/ami/internal/errs"
 )
 
 const (

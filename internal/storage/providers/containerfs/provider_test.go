@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/felinics/memoh/internal/workspace/bridge"
-	pb "github.com/felinics/memoh/internal/workspace/bridgepb"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
+	pb "github.com/kindredzhang/ami/internal/workspace/bridgepb"
 )
 
 func TestParseRoutingKey(t *testing.T) {
@@ -46,8 +46,8 @@ func TestProvider_AccessPath(t *testing.T) {
 		key  string
 		want string
 	}{
-		{key: "bot-1/image/ab12/ab12cd.png", want: "/data/.memoh/media/image/ab12/ab12cd.png"},
-		{key: "bot-1/file/xx/doc.pdf", want: "/data/.memoh/media/file/xx/doc.pdf"},
+		{key: "bot-1/image/ab12/ab12cd.png", want: "/data/.ami/media/image/ab12/ab12cd.png"},
+		{key: "bot-1/file/xx/doc.pdf", want: "/data/.ami/media/file/xx/doc.pdf"},
 	}
 	for _, tt := range tests {
 		got := p.AccessPath(context.Background(), tt.key)

@@ -24,7 +24,7 @@ WITH target_session AS MATERIALIZED (
   SELECT s.id AS session_id
   FROM bot_sessions AS s
   JOIN bots bot ON bot.team_id = s.team_id AND bot.id = s.bot_id
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = sqlc.arg(session_id)
     AND s.bot_id = sqlc.arg(bot_id)
     AND s.deleted_at IS NULL
@@ -41,7 +41,7 @@ WITH target_session AS MATERIALIZED (
 existing AS (
   SELECT 1 AS present
   FROM session_runs AS prior
-  WHERE prior.team_id = public.memoh_current_team_id()
+  WHERE prior.team_id = public.ami_current_team_id()
     AND prior.session_id = sqlc.arg(session_id)
     AND prior.invocation_id = sqlc.arg(invocation_id)
 ),
@@ -49,7 +49,7 @@ allocated_position AS (
   UPDATE bot_sessions AS s
   SET next_turn_position = s.next_turn_position + 1
   FROM target_session
-  WHERE s.team_id = public.memoh_current_team_id()
+  WHERE s.team_id = public.ami_current_team_id()
     AND s.id = target_session.session_id
     AND NOT EXISTS (SELECT 1 FROM existing)
   RETURNING (s.next_turn_position - 1)::bigint AS turn_position
@@ -83,27 +83,27 @@ RETURNING *;
 -- name: GetSessionRun :one
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id);
 
 -- name: GetSessionRunByInvocation :one
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = sqlc.arg(session_id)
   AND invocation_id = sqlc.arg(invocation_id);
 
 -- name: GetActiveSessionRun :one
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND session_id = sqlc.arg(session_id)
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing');
 
 -- name: ListActiveSessionRunsByBot :many
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id)
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
 ORDER BY session_id, run_id;
@@ -118,12 +118,12 @@ ORDER BY session_id, run_id;
 -- session.
 SELECT *
 FROM session_runs run
-WHERE run.team_id = public.memoh_current_team_id()
+WHERE run.team_id = public.ami_current_team_id()
   AND run.session_id = sqlc.arg(session_id)
   AND run.run_id = (
     SELECT latest.run_id
     FROM session_runs latest
-    WHERE latest.team_id = public.memoh_current_team_id()
+    WHERE latest.team_id = public.ami_current_team_id()
       AND latest.session_id = sqlc.arg(session_id)
     ORDER BY latest.created_at DESC, latest.run_id DESC
     LIMIT 1
@@ -146,7 +146,7 @@ WHERE run.team_id = public.memoh_current_team_id()
 -- committed gate using a statement snapshot captured while waiting.
 SELECT id
 FROM bots
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND id = sqlc.arg(bot_id)
 FOR UPDATE;
 
@@ -160,7 +160,7 @@ WITH target_session AS MATERIALIZED (
   SELECT session.id
   FROM bot_sessions session
   JOIN bots bot ON bot.team_id = session.team_id AND bot.id = session.bot_id
-  WHERE session.team_id = public.memoh_current_team_id()
+  WHERE session.team_id = public.ami_current_team_id()
     AND session.id = sqlc.arg(session_id)
     AND session.bot_id = sqlc.arg(bot_id)
     AND session.deleted_at IS NULL
@@ -177,7 +177,7 @@ SET owner_id = sqlc.arg(owner_id),
     state = 'running',
     updated_at = now()
 FROM target_session target
-WHERE run.team_id = public.memoh_current_team_id()
+WHERE run.team_id = public.ami_current_team_id()
   AND run.run_id = sqlc.arg(run_id)
   AND run.bot_id = sqlc.arg(bot_id)
   AND run.session_id = target.id
@@ -189,7 +189,7 @@ RETURNING run.*;
 UPDATE session_runs
 SET state = 'waiting_decision',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND fencing_token = sqlc.arg(fencing_token)
   AND state IN ('running', 'waiting_decision')
@@ -206,7 +206,7 @@ SET owner_id = sqlc.arg(owner_id),
     fencing_token = sqlc.arg(new_fencing_token),
     live_generation = sqlc.arg(live_generation),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND state = 'waiting_decision'
   AND abort_requested_at IS NULL
@@ -218,7 +218,7 @@ RETURNING *;
 UPDATE session_runs
 SET state = 'running',
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND fencing_token = sqlc.arg(fencing_token)
   AND state IN ('running', 'waiting_decision')
@@ -245,7 +245,7 @@ SET state = CASE
         ELSE sqlc.narg(error_message)::text
     END,
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND fencing_token = sqlc.arg(fencing_token)
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
@@ -262,7 +262,7 @@ SET state = 'running',
       jsonb_build_object(sqlc.arg(decision_id)::text,
         jsonb_build_object('kind', sqlc.arg(decision_kind)::text, 'phase', 'accepted')), true),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id) AND session_id = sqlc.arg(session_id)
   AND run_id = sqlc.arg(run_id) AND fencing_token = sqlc.arg(fencing_token)
   AND state IN ('running', 'waiting_decision') AND abort_requested_at IS NULL
@@ -276,7 +276,7 @@ SET input_json = jsonb_set(input_json,
       ARRAY['decision_continuations', sqlc.arg(decision_id)::text, 'phase'],
       '"executing"'::jsonb, false),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND bot_id = sqlc.arg(bot_id) AND session_id = sqlc.arg(session_id)
   AND run_id = sqlc.arg(run_id) AND fencing_token = sqlc.arg(fencing_token)
   AND state = 'running' AND abort_requested_at IS NULL
@@ -307,7 +307,7 @@ SET state = 'finishing',
     END,
     finish_proposed_at = COALESCE(finish_proposed_at, now()),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND fencing_token = sqlc.arg(fencing_token)
   AND (
@@ -322,7 +322,7 @@ RETURNING *;
 -- predicate for advancing the session persistence fence and terminalizing it.
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
@@ -336,7 +336,7 @@ FOR UPDATE;
 UPDATE session_runs
 SET abort_requested_at = COALESCE(abort_requested_at, now()),
     updated_at = now()
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND state IN ('accepted', 'running', 'waiting_decision')
 RETURNING *;
@@ -346,7 +346,7 @@ RETURNING *;
 -- the same active owner because some cancellation paths do not record intent.
 SELECT run_id
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND run_id = sqlc.arg(run_id)
   AND bot_id = sqlc.arg(bot_id)
   AND session_id = sqlc.arg(session_id)
@@ -367,7 +367,7 @@ FOR UPDATE;
 -- sweep that never returns a full batch never advances past it either.
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND state IN ('accepted', 'running', 'waiting_decision', 'finishing')
   AND live_generation IS NOT NULL
   AND live_generation <> sqlc.arg(current_generation)
@@ -386,7 +386,7 @@ LIMIT sqlc.arg(batch_size);
 -- row locking is needed.
 SELECT *
 FROM session_runs
-WHERE team_id = public.memoh_current_team_id()
+WHERE team_id = public.ami_current_team_id()
   AND state = 'accepted'
   AND owner_id IS NULL
   AND created_at < now() - make_interval(secs => sqlc.arg(grace_seconds)::double precision)
@@ -399,7 +399,7 @@ SELECT nextval('session_runtime_fencing_token_seq')::bigint AS token;
 -- name: SaveSessionRunResumeContext :execrows
 -- Credentials are represented by verified claim scopes, never bearer tokens.
 UPDATE session_runs SET input_json = jsonb_set(input_json, '{resume}', sqlc.arg(resume_context)::jsonb), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND run_id = sqlc.arg(run_id)
+WHERE team_id = public.ami_current_team_id() AND run_id = sqlc.arg(run_id)
   AND fencing_token = sqlc.arg(fencing_token) AND state = 'running';
 
 -- name: ListInterruptedSessionRuns :many
@@ -408,7 +408,7 @@ WHERE team_id = public.memoh_current_team_id() AND run_id = sqlc.arg(run_id)
 SELECT r.* FROM session_runs r
 JOIN bot_sessions s ON s.team_id = r.team_id AND s.id = r.session_id
 JOIN bots b ON b.team_id = r.team_id AND b.id = r.bot_id
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND r.state = 'lost' AND r.error_code = 'session_runtime.interrupted'
   AND r.input_json ? 'resume' AND s.deleted_at IS NULL AND b.status <> 'deleting'
   AND r.run_id > sqlc.arg(after_run_id)::uuid
@@ -421,7 +421,7 @@ ORDER BY r.run_id LIMIT 100;
 -- supersede recovery even if it has already completed since discovery.
 SELECT EXISTS (
  SELECT 1 FROM session_runs source
- WHERE source.team_id = public.memoh_current_team_id() AND source.run_id = sqlc.arg(run_id)
+ WHERE source.team_id = public.ami_current_team_id() AND source.run_id = sqlc.arg(run_id)
   AND source.state = 'lost' AND source.error_code = 'session_runtime.interrupted'
   AND source.abort_requested_at IS NULL AND source.input_json ? 'resume'
   AND NOT EXISTS (SELECT 1 FROM session_runs later WHERE later.team_id = source.team_id
@@ -433,7 +433,7 @@ SELECT EXISTS (
 -- session was deleted. Interrupted runs stay lost forever; retiring the intent
 -- keeps idx_session_runs_resume_pending limited to work that can still continue.
 UPDATE session_runs r SET input_json = r.input_json - 'resume'
-WHERE r.team_id = public.memoh_current_team_id()
+WHERE r.team_id = public.ami_current_team_id()
   AND r.state = 'lost' AND r.error_code = 'session_runtime.interrupted' AND r.input_json ? 'resume'
   AND (EXISTS (SELECT 1 FROM session_runs later WHERE later.team_id = r.team_id
       AND later.session_id = r.session_id AND later.turn_position > r.turn_position)
@@ -444,5 +444,5 @@ WHERE r.team_id = public.memoh_current_team_id()
 -- Drops a resume intent that can never continue: its budget expired, its saved
 -- context is unsupported, or its credential scope was revoked.
 UPDATE session_runs SET input_json = input_json - 'resume'
-WHERE team_id = public.memoh_current_team_id() AND run_id = sqlc.arg(run_id)
+WHERE team_id = public.ami_current_team_id() AND run_id = sqlc.arg(run_id)
   AND state = 'lost' AND error_code = 'session_runtime.interrupted' AND input_json ? 'resume';

@@ -13,7 +13,7 @@ import (
 
 // Persisted rows (bot_history_messages, discuss rows, fork snapshots) hold the
 // stored content shape, which differs from the SDK's JSON: arguments are
-// objects, outputs are values, and Memoh annotations are nested objects under
+// objects, outputs are values, and Ami annotations are nested objects under
 // providerMetadata. Decoding a row with encoding/json into sdk.Message drops
 // or fails on all of that, so every reader goes through this package or the
 // history codec. The files listed here decode stream envelopes or in-memory

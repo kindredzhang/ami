@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import type { BotsBot } from '@memohai/sdk'
+import type { BotsBot } from '@ami/sdk'
 import { usePendingBotsRefresh } from './usePendingBotsRefresh'
 
 const invalidateQueries = vi.fn()
@@ -9,7 +9,7 @@ vi.mock('@pinia/colada', () => ({
   useQueryCache: () => ({ invalidateQueries }),
 }))
 
-vi.mock('@memohai/sdk/colada', () => ({
+vi.mock('@ami/sdk/colada', () => ({
   getBotsQueryKey: () => ['bots'],
 }))
 

@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/command"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/command"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 func listResult(total, page, pageSize int) *command.Result {

@@ -15,7 +15,7 @@ func TestBuildPlatformIdentitiesXML(t *testing.T) {
 			ExternalIdentity: "12345",
 			SelfIdentity: map[string]any{
 				"user_id":  "12345",
-				"username": "memoh_bot",
+				"username": "ami_bot",
 			},
 		},
 		{
@@ -23,16 +23,16 @@ func TestBuildPlatformIdentitiesXML(t *testing.T) {
 			Platform:         "discord",
 			ExternalIdentity: "98765",
 			SelfIdentity: map[string]any{
-				"name":     "Memoh & Co",
-				"username": "@memoh",
+				"name":     "Ami & Co",
+				"username": "@ami",
 			},
 		},
 	}
 
 	got := buildPlatformIdentitiesXML(configs)
 	want := strings.Join([]string{
-		`<identity channel="discord" name="Memoh &amp; Co" username="@memoh" external_identity="98765"/>`,
-		`<identity channel="telegram" user_id="12345" username="@memoh_bot" external_identity="12345"/>`,
+		`<identity channel="discord" name="Ami &amp; Co" username="@ami" external_identity="98765"/>`,
+		`<identity channel="telegram" user_id="12345" username="@ami_bot" external_identity="12345"/>`,
 	}, "\n")
 	if got != want {
 		t.Fatalf("unexpected XML:\nwant:\n%s\n\ngot:\n%s", want, got)
@@ -79,13 +79,13 @@ func TestBuildPlatformIdentityLineNormalizesAttrs(t *testing.T) {
 		Platform: "telegram",
 		SelfIdentity: map[string]any{
 			"123id":        7,
-			"display name": `Memoh <Bot>`,
-			"username":     "memoh",
+			"display name": `Ami <Bot>`,
+			"username":     "ami",
 			"xml_name":     "reserved",
 		},
 	})
 
-	want := `<identity channel="telegram" attr_123id="7" display_name="Memoh &lt;Bot&gt;" username="@memoh" attr_xml_name="reserved"/>`
+	want := `<identity channel="telegram" attr_123id="7" display_name="Ami &lt;Bot&gt;" username="@ami" attr_xml_name="reserved"/>`
 	if got != want {
 		t.Fatalf("unexpected identity line:\nwant: %s\ngot:  %s", want, got)
 	}

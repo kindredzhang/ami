@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-// bridge TCP 通道的 strict mTLS（设计 memoh-saas-bridge-mtls-design.md §8.1）。
-// 材料由 memoh-bridge-mtls Secret 挂载，env 只传路径与模式，私钥不进 env。
+// bridge TCP 通道的 strict mTLS（设计 ami-saas-bridge-mtls-design.md §8.1）。
+// 材料由 ami-bridge-mtls Secret 挂载，env 只传路径与模式，私钥不进 env。
 const (
 	bridgeTLSModeEnv              = "BRIDGE_TLS_MODE"
 	bridgeTLSCertFileEnv          = "BRIDGE_TLS_CERT_FILE"
@@ -65,16 +65,16 @@ func bridgeServerCredentials() (credentials.TransportCredentials, error) {
 		ClientCAs:    pool,
 		ClientAuth:   tls.RequireAndVerifyClientCert,
 		// RequireAndVerifyClientCert 已验链（含 ClientAuth EKU）；这里把调用方
-		// 钉死到本 instance 的 Memoh Server SPIFFE 身份。被攻破的 bot 只持有
+		// 钉死到本 instance 的 Ami Server SPIFFE 身份。被攻破的 bot 只持有
 		// shared bridge server cert（ServerAuth、bridge URI），过不了这一关。
 		VerifyConnection: func(cs tls.ConnectionState) error {
-			return verifyMemohServerClientIdentity(cs, expectedURI)
+			return verifyAmiServerClientIdentity(cs, expectedURI)
 		},
 	}
 	return credentials.NewTLS(cfg), nil
 }
 
-func verifyMemohServerClientIdentity(cs tls.ConnectionState, expectedURI string) error {
+func verifyAmiServerClientIdentity(cs tls.ConnectionState, expectedURI string) error {
 	if len(cs.PeerCertificates) == 0 {
 		return errors.New("client certificate required")
 	}

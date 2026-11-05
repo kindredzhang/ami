@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	session "github.com/felinics/memoh/internal/chat/thread"
+	session "github.com/kindredzhang/ami/internal/chat/thread"
 )
 
 // visibleHistorySessions resolves the history scope of one tool invocation.

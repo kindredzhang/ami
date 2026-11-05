@@ -33,7 +33,7 @@ export const UpdateIcon = withUiStroke(createLucideIcon('Update', [
 ]))
 // Monitor and cloud silhouette, composed in the shared 24-unit icon frame.
 // Semantics: this marks the bot's NATIVE workspace ("Cloud Computer" in the
-// composer target selector — hosted by Memoh, as opposed to a user's remote
+// composer target selector — hosted by Ami, as opposed to a user's remote
 // computer, which uses the plain monitor ComputerIcon below). The name is
 // about the hosting side, not about "cloud storage".
 export const CloudIcon = withUiStroke(createLucideIcon('CloudComputer', [

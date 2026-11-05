@@ -54,7 +54,7 @@ reverse.
   process exited and every session on it is gone (below).
 - **`Child`**: its exec stream ended (`Exited`). The stream is cancelled
   locally, so its end never waits on the command. That the command is gone
-  rests on the bridge's contract, not on an ordering Memoh observes: the
+  rests on the bridge's contract, not on an ordering Ami observes: the
   bridge kills the command's process group when its stream ends
   (`bridgesvc` `configureCommandCancellation`), on its own side and
   moments later.
@@ -65,7 +65,7 @@ reverse.
   close's result is settled once: closing again, or concurrently, returns
   the same result, and a forced close is never a confirmed one.
 - **ACP session outside a conversation** (a discuss turn's throwaway, the
-  options and probe sessions) is gone once Memoh's own cleanup is done. The
+  options and probe sessions) is gone once Ami's own cleanup is done. The
   agent may still hold it; nothing ever restores such a session, so nothing
   waits for the agent to let it go.
 
@@ -77,7 +77,7 @@ between two tables. The process is gone only after every session it owns is
 gone, one still opening included, and takes no new session once it is
 closing. A session gone through its process's end is gone only after that
 end. Tearing the process down still never waits on the agent: it waits on
-the process's exit and on Memoh's own cleanup.
+the process's exit and on Ami's own cleanup.
 
 ## Where each lives
 
@@ -96,7 +96,7 @@ the process's exit and on Memoh's own cleanup.
   out again.
 - **Writes never wait on the agent** (`Child.Write`): an agent that stops
   reading is killed, so no caller is held by it.
-- **A forced teardown first releases what Memoh itself holds up**: killing a
+- **A forced teardown first releases what Ami itself holds up**: killing a
   process closes its local input and output, so no pump waits on a reader or
   writer that will never come back.
 - **A wrapper is out of service no later than what it wraps, and no later
@@ -114,7 +114,7 @@ the process's exit and on Memoh's own cleanup.
   session that ends only with its process retires that process so it exits;
   when that is the process the restore would use, the restore moves to a new
   process. A new native session (after a reset, say) waits for nothing.
-- **One server owns every process and session.** Memoh runs one server
+- **One server owns every process and session.** Ami runs one server
   replica, so these tables are the whole truth: a warm session is never
   behind turns another server ran. More replicas need a single-owner route
   per Bot before any of this holds.

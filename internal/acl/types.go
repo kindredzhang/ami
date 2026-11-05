@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 const (

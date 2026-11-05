@@ -30,25 +30,25 @@ ON CONFLICT (team_id, container_id) DO UPDATE SET
   updated_at = now();
 
 -- name: GetContainerByBotID :one
-SELECT * FROM containers WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id) ORDER BY updated_at DESC LIMIT 1;
+SELECT * FROM containers WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id) ORDER BY updated_at DESC LIMIT 1;
 
 -- name: DeleteContainerByBotID :exec
-DELETE FROM containers WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+DELETE FROM containers WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: UpdateContainerStatus :exec
 UPDATE containers
 SET status = sqlc.arg(status), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: UpdateContainerStarted :exec
 UPDATE containers
 SET status = 'running', last_started_at = now(), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: UpdateContainerStopped :exec
 UPDATE containers
 SET status = 'stopped', last_stopped_at = now(), updated_at = now()
-WHERE team_id = public.memoh_current_team_id() AND bot_id = sqlc.arg(bot_id);
+WHERE team_id = public.ami_current_team_id() AND bot_id = sqlc.arg(bot_id);
 
 -- name: ListAutoStartContainers :many
-SELECT * FROM containers WHERE team_id = public.memoh_current_team_id() AND auto_start = true ORDER BY updated_at DESC;
+SELECT * FROM containers WHERE team_id = public.ami_current_team_id() AND auto_start = true ORDER BY updated_at DESC;

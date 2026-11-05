@@ -31,7 +31,7 @@ func TestTeamCompositeKeys(t *testing.T) {
 		  JOIN pg_namespace n ON n.oid = c.relnamespace
 		  LEFT JOIN pg_constraint helper
 		    ON helper.conrelid=con.conrelid AND helper.contype='u'
-		   AND helper.conname LIKE 'memoh_team_key_%'
+		   AND helper.conname LIKE 'ami_team_key_%'
 		 WHERE con.contype = 'p' AND n.nspname = 'public'
 		   AND EXISTS (SELECT 1 FROM pg_attribute a
 		                WHERE a.attrelid=c.oid AND a.attname='team_id' AND NOT a.attisdropped)

@@ -6,7 +6,7 @@ import { PiniaColada } from '@pinia/colada'
 import AppDetail from './app-detail.vue'
 
 const api = vi.hoisted(() => ({ app: vi.fn(), dependencies: vi.fn() }))
-vi.mock('@memohai/sdk', () => ({
+vi.mock('@ami/sdk', () => ({
   getSupermarketRegistriesByRegistryIdAppsByAppId: api.app,
   getSupermarketRegistriesByRegistryIdAppsByAppIdReleasesByRevision: api.app,
   getWorkspaceDependencies: api.dependencies,
@@ -14,7 +14,7 @@ vi.mock('@memohai/sdk', () => ({
   getConnectorsCatalog: async () => ({ data: [] }),
 }))
 vi.mock('vue-router', () => ({
-  useRoute: () => ({ params: { registryId: 'memoh', appId: 'github' }, query: {} }),
+  useRoute: () => ({ params: { registryId: 'ami', appId: 'github' }, query: {} }),
   useRouter: () => ({ push: vi.fn() }),
 }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key, locale: ref('zh') }) }))

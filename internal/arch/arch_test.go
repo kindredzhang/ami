@@ -16,7 +16,7 @@ import (
 	"testing"
 )
 
-const modulePrefix = "github.com/felinics/memoh/"
+const modulePrefix = "github.com/kindredzhang/ami/"
 
 func repoRoot(t *testing.T) string {
 	t.Helper()

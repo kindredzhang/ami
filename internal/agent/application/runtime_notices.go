@@ -3,9 +3,9 @@ package application
 import (
 	"sync"
 
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/apperror"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/apperror"
 )
 
 // runtimeNoticeCodes are the public codes of the notices runtimes report.

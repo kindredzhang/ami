@@ -4,7 +4,7 @@ import (
 	"maps"
 	"strings"
 
-	"github.com/felinics/memoh/internal/models"
+	"github.com/kindredzhang/ami/internal/models"
 )
 
 const openCodeGoBaseURL = "https://opencode.ai/zen/go/v1"

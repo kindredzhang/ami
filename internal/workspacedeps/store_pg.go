@@ -9,15 +9,15 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
-	"github.com/felinics/memoh/internal/db"
-	dbsqlc "github.com/felinics/memoh/internal/db/postgres/sqlc"
-	dbstore "github.com/felinics/memoh/internal/db/store"
+	"github.com/kindredzhang/ami/internal/db"
+	dbsqlc "github.com/kindredzhang/ami/internal/db/postgres/sqlc"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
 )
 
 // Team context for the PostgreSQL store.
 //
 // Row level security on bot_dependency_installations resolves the team with
-// public.memoh_current_team_id(), which reads the memoh.team_id GUC. Memoh
+// public.ami_current_team_id(), which reads the ami.team_id GUC. Ami
 // binds that GUC per connection, not per request: db.OpenPostgres (and
 // db.OpenPostgresDSN for tests) installs db.SetDefaultTeamOnConnect as the
 // pgxpool AfterConnect hook, so every pooled connection carries the
@@ -29,7 +29,7 @@ import (
 // deadline — behaves exactly like a request handler, provided the
 // dbstore.Queries it holds is the FX-injected one backed by the shared pool
 // (postgresstore.Queries over db.Open). Never build a private pool without
-// the AfterConnect hook: memoh_current_team_id() then raises and every query
+// the AfterConnect hook: ami_current_team_id() then raises and every query
 // fails closed.
 
 type postgresStore struct {

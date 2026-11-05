@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/felinics/memoh/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel"
 )
 
 // WebAdapter implements channel.Sender for the local Web channel.

@@ -66,7 +66,7 @@ let transport: GrpcWebSocketTestHarness
 let client: TestClient
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'memoh-runtime-service-'))
+  root = await mkdtemp(join(tmpdir(), 'ami-runtime-service-'))
   running = await startRuntimeGrpcServer({
     workspaceBase: root,
     warn: () => undefined,
@@ -194,7 +194,7 @@ setInterval(() => {}, 1_000)
     const defaultExec = await exec({ command: nodeScriptCommand(cwdScript) })
     expect(normalizePath(stdout(defaultExec))).toBe(normalizePath(await realpath(root)))
 
-    const outside = await mkdtemp(join(tmpdir(), 'memoh-runtime-service-outside-'))
+    const outside = await mkdtemp(join(tmpdir(), 'ami-runtime-service-outside-'))
     try {
       const outsideFile = join(outside, 'outside.txt')
       await unary(client.WriteFile.bind(client), {

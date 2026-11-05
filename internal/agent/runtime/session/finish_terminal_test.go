@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/session/ledger"
+	"github.com/kindredzhang/ami/internal/agent/runtime/session/ledger"
 )
 
 // FinishRun hands back the same terminal row the terminal observer receives.

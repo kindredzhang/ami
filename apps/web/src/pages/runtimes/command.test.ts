@@ -7,17 +7,17 @@ const teamId = '11111111-1111-4111-8111-111111111111'
 
 describe('buildRuntimeConnectCommand', () => {
   it('includes the credential team ID required by hosted gateways', () => {
-    expect(buildRuntimeConnectCommand('https://memoh.example/api', {
+    expect(buildRuntimeConnectCommand('https://ami.example/api', {
       key,
       team_id: teamId,
     })).toBe(
-      `npm install -g @memohai/runtime@latest && memoh-runtime enroll --server https://memoh.example/api --key ${key} --team-id ${teamId} && memoh-runtime service install && memoh-runtime service start`,
+      `npm install -g @ami/runtime@latest && ami-runtime enroll --server https://ami.example/api --key ${key} --team-id ${teamId} && ami-runtime service install && ami-runtime service start`,
     )
   })
 
   it('keeps credentials from older self-hosted servers usable', () => {
-    expect(buildRuntimeConnectCommand('https://memoh.example/api', { key }))
-      .toBe(`npm install -g @memohai/runtime@latest && memoh-runtime enroll --server https://memoh.example/api --key ${key} && memoh-runtime service install && memoh-runtime service start`)
+    expect(buildRuntimeConnectCommand('https://ami.example/api', { key }))
+      .toBe(`npm install -g @ami/runtime@latest && ami-runtime enroll --server https://ami.example/api --key ${key} && ami-runtime service install && ami-runtime service start`)
   })
 
   it('enables plaintext WebSockets only for loopback development servers', () => {
@@ -25,7 +25,7 @@ describe('buildRuntimeConnectCommand', () => {
       key,
       team_id: teamId,
     })).toBe(
-      `npm install -g @memohai/runtime@latest && memoh-runtime enroll --server http://127.0.0.1:18080 --key ${key} --team-id ${teamId} --insecure-localhost && memoh-runtime service install && memoh-runtime service start`,
+      `npm install -g @ami/runtime@latest && ami-runtime enroll --server http://127.0.0.1:18080 --key ${key} --team-id ${teamId} --insecure-localhost && ami-runtime service install && ami-runtime service start`,
     )
   })
 
@@ -41,9 +41,9 @@ describe('buildRuntimeConnectCommand', () => {
 
   it('runs the same chain through cmd on Windows', () => {
     const credential = { key, team_id: teamId }
-    const unix = buildRuntimeConnectCommand('https://memoh.example/api', credential)
-    expect(buildRuntimeConnectCommand('https://memoh.example/api', credential, 'connect', 'linux')).toBe(unix)
-    expect(buildRuntimeConnectCommand('https://memoh.example/api', credential, 'connect', 'windows')).toBe(`cmd /c "${unix}"`)
+    const unix = buildRuntimeConnectCommand('https://ami.example/api', credential)
+    expect(buildRuntimeConnectCommand('https://ami.example/api', credential, 'connect', 'linux')).toBe(unix)
+    expect(buildRuntimeConnectCommand('https://ami.example/api', credential, 'connect', 'windows')).toBe(`cmd /c "${unix}"`)
   })
 })
 

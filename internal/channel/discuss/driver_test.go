@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	agentevent "github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/turn"
-	"github.com/felinics/memoh/internal/channel"
-	sessionpkg "github.com/felinics/memoh/internal/chat/thread"
-	"github.com/felinics/memoh/internal/chat/timeline"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	agentevent "github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/turn"
+	"github.com/kindredzhang/ami/internal/channel"
+	sessionpkg "github.com/kindredzhang/ami/internal/chat/thread"
+	"github.com/kindredzhang/ami/internal/chat/timeline"
 )
 
 func TestExtractNewImageRefs(t *testing.T) {

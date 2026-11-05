@@ -1,5 +1,5 @@
-appId: ai.memoh.desktop
-productName: Memoh
+appId: ai.ami.desktop
+productName: Ami
 copyright: Copyright © 2026 Memoh
 directories:
   buildResources: build
@@ -33,7 +33,7 @@ dmg:
   sign: true
   # 双击自安装样式:卷宗名即 Finder 窗口标题;背景图(build/background.png +
   # background@2x.png,660x440 逻辑)烤入装饰文案与品牌光晕。
-  title: Install Memoh
+  title: Install Ami
   background: build/background.png
   window:
     width: 660
@@ -56,7 +56,7 @@ linux:
       arch: [x64]
     - target: rpm
       arch: [x64]
-  maintainer: Memoh
+  maintainer: Ami
   icon: build/icon.png
   artifactName: ${productName}-${version}-linux-${arch}.${ext}
 win:
@@ -71,4 +71,4 @@ nsis:
   allowToChangeInstallationDirectory: true
 npmRebuild: false
 asarUnpack:
-  - node_modules/@memohai/runtime/dist/bridge.proto
+  - node_modules/@ami/runtime/dist/bridge.proto

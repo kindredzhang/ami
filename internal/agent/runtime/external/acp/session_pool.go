@@ -1,4 +1,4 @@
-// Package acp is Memoh's ACP core and its custom agents.
+// Package acp is Ami's ACP core and its custom agents.
 //
 // The core (Host) runs ACP agent processes and the conversations' sessions
 // on them. ACP lets one connection host several concurrent sessions, so an
@@ -22,16 +22,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/agentstate"
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
-	acpprofile "github.com/felinics/memoh/internal/agent/runtime/external/acp/profile"
-	"github.com/felinics/memoh/internal/agent/runtime/external/agentproc"
-	"github.com/felinics/memoh/internal/agent/runtime/external/toolmount"
-	"github.com/felinics/memoh/internal/bots"
-	"github.com/felinics/memoh/internal/errs"
-	"github.com/felinics/memoh/internal/mcp"
-	"github.com/felinics/memoh/internal/workspace/bridge"
+	"github.com/kindredzhang/ami/internal/agent/runtime/agentstate"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
+	acpprofile "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/profile"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/agentproc"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/toolmount"
+	"github.com/kindredzhang/ami/internal/bots"
+	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/mcp"
+	"github.com/kindredzhang/ami/internal/workspace/bridge"
 )
 
 var (
@@ -310,7 +310,7 @@ func (p *SessionPool) Launch(ctx context.Context, input PromptInput) (Launch, er
 				Conn:   conn,
 				Bridge: bridgeClient,
 				// Custom adapters rarely advertise mcpCapabilities.http but
-				// take an HTTP MCP server; offer Memoh's tools either way.
+				// take an HTTP MCP server; offer Ami's tools either way.
 				ForceHTTPMCP: true,
 			}, nil
 		},
@@ -576,7 +576,7 @@ func (p *SessionPool) updateConfig(
 		// Refused before anything reached the agent: keep the session.
 		return err
 	}
-	// The agent may have taken the value while Memoh never received its new
+	// The agent may have taken the value while Ami never received its new
 	// configuration, a cancelled request included, so the cached state is no
 	// longer trustworthy.
 	b.discard()

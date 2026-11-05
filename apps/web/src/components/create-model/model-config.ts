@@ -1,4 +1,4 @@
-import type { ModelsModality, ModelsModelConfig, ModelsModelReasoning } from '@memohai/sdk'
+import type { ModelsModality, ModelsModelConfig, ModelsModelReasoning } from '@ami/sdk'
 
 // The model config schema this form writes. The server reads older versions
 // and stores this one on the next save.

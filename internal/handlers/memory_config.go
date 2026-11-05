@@ -6,8 +6,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/felinics/memoh/internal/errs"
-	memprovider "github.com/felinics/memoh/internal/memory/adapters"
+	"github.com/kindredzhang/ami/internal/errs"
+	memprovider "github.com/kindredzhang/ami/internal/memory/adapters"
 )
 
 // MemoryConfigHandler serves the team-level Built-in Memory configuration.

@@ -40,7 +40,7 @@ func TestNativeWorkspaceAppsMigration(t *testing.T) {
 		for _, target := range []string{"native", "remote-computer", ""} {
 			var installationID string
 			if err := pool.QueryRow(ctx, `INSERT INTO bot_app_installations(team_id,bot_id,workspace_target_id,registry_id,app_id,revision,status,version)
-    VALUES ($1,$2,$3,'memoh','documents',$4,'installed','1.2.3') RETURNING id`, teamID, botID, target, appRevision).Scan(&installationID); err != nil {
+    VALUES ($1,$2,$3,'ami','documents',$4,'installed','1.2.3') RETURNING id`, teamID, botID, target, appRevision).Scan(&installationID); err != nil {
 				t.Fatal(err)
 			}
 			if target == "native" {
@@ -108,7 +108,7 @@ func TestNativeWorkspaceAppsMigration(t *testing.T) {
 		t.Fatal(err)
 	}
 	check()
-	if _, err := pool.Exec(ctx, `INSERT INTO bot_app_installations(bot_id,registry_id,app_id,revision) VALUES ($1,'memoh','documents',$2)`, appBotOneID, appRevision); sqlState(err) != "23505" {
+	if _, err := pool.Exec(ctx, `INSERT INTO bot_app_installations(bot_id,registry_id,app_id,revision) VALUES ($1,'ami','documents',$2)`, appBotOneID, appRevision); sqlState(err) != "23505" {
 		t.Fatalf("App uniqueness: %v", err)
 	}
 	if _, err := pool.Exec(ctx, `INSERT INTO bot_dependency_installations(bot_id,dependency_id,source,status) VALUES ($1,'python','managed','installed')`, appBotOneID); sqlState(err) != "23505" {

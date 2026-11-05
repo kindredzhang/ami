@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { getBotsByBotIdWorkdirsDirectories } from '@memohai/sdk'
+import { getBotsByBotIdWorkdirsDirectories } from '@ami/sdk'
 import DirectoryPickerNode from './directory-picker-node.vue'
 import type { DirectoryListing } from './directory-picker-types'
 import { UserFacingError } from '@/utils/api-error'

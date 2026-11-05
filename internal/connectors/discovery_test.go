@@ -12,8 +12,8 @@ import (
 
 	connectsdk "github.com/felinics/connect-it/sdk/go"
 
-	"github.com/felinics/memoh/internal/config"
-	mcpgw "github.com/felinics/memoh/internal/mcp"
+	"github.com/kindredzhang/ami/internal/config"
+	mcpgw "github.com/kindredzhang/ami/internal/mcp"
 )
 
 func TestToolDiscoveryStatusAnnotatesSessionWideFailure(t *testing.T) {

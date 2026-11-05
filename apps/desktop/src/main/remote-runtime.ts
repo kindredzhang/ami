@@ -9,7 +9,7 @@ import {
   type RuntimeClientConfig,
   type RuntimeSessionOptions,
   type RuntimeSessionStatus,
-} from '@memohai/runtime'
+} from '@ami/runtime'
 
 import type {
   DesktopRuntimeConfig,
@@ -429,7 +429,7 @@ function isInsecureLocalhost(serverUrl: string): boolean {
 }
 
 function normalizedDeviceName(value: string): string {
-  return value.trim() || 'Memoh Desktop'
+  return value.trim() || 'Ami Desktop'
 }
 
 function normalizedRuntimeName(value: unknown, fallback = ''): string {

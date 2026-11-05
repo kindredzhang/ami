@@ -9,7 +9,7 @@ import {
   Input,
   Textarea,
 } from '@felinic/ui'
-import type { AcpprofileManagedField, AcpprofilePublicProfile } from '@memohai/sdk'
+import type { AcpprofileManagedField, AcpprofilePublicProfile } from '@ami/sdk'
 import {
   acpInputType,
   acpManagedFieldAutocomplete,

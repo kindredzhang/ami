@@ -3,9 +3,9 @@ package handlers
 import (
 	"errors"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/providers"
-	"github.com/felinics/memoh/internal/providertemplates"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/providers"
+	"github.com/kindredzhang/ami/internal/providertemplates"
 )
 
 // providerError translates a provider failure the client can act on into its

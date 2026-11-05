@@ -9,12 +9,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/felinics/memoh/internal/apperror"
-	"github.com/felinics/memoh/internal/channel"
-	"github.com/felinics/memoh/internal/channel/identities"
-	"github.com/felinics/memoh/internal/channel/route"
-	"github.com/felinics/memoh/internal/i18n"
-	"github.com/felinics/memoh/internal/slash"
+	"github.com/kindredzhang/ami/internal/apperror"
+	"github.com/kindredzhang/ami/internal/channel"
+	"github.com/kindredzhang/ami/internal/channel/identities"
+	"github.com/kindredzhang/ami/internal/channel/route"
+	"github.com/kindredzhang/ami/internal/i18n"
+	"github.com/kindredzhang/ami/internal/slash"
 )
 
 // A slash refusal is answered with the copy for its catalog code, whether it

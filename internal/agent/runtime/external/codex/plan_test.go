@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/felinics/memoh/internal/agent/runtime/external"
-	"github.com/felinics/memoh/internal/agent/runtime/external/codex/protocol"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external"
+	"github.com/kindredzhang/ami/internal/agent/runtime/external/codex/protocol"
 )
 
 func TestPlanModeCarriesEffectiveSettingsIndependentlyOfPermissions(t *testing.T) {

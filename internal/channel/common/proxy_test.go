@@ -24,7 +24,7 @@ func TestNewHTTPClientExplicitProxyOverridesEnvironment(t *testing.T) {
 	t.Setenv("HTTPS_PROXY", "http://env-proxy:18080")
 
 	client, err := NewHTTPClient(0, HTTPProxyConfig{
-		URL: "http://memoh:" + "secret" + "@config-proxy:3128",
+		URL: "http://ami:" + "secret" + "@config-proxy:3128",
 	})
 	if err != nil {
 		t.Fatalf("NewHTTPClient() error = %v", err)
@@ -48,7 +48,7 @@ func TestNewHTTPClientExplicitProxyOverridesEnvironment(t *testing.T) {
 	if proxyURL.Host != "config-proxy:3128" {
 		t.Fatalf("unexpected proxy host: %q", proxyURL.Host)
 	}
-	if proxyURL.User == nil || proxyURL.User.Username() != "memoh" {
+	if proxyURL.User == nil || proxyURL.User.Username() != "ami" {
 		t.Fatalf("unexpected proxy user: %#v", proxyURL.User)
 	}
 	password, ok := proxyURL.User.Password()

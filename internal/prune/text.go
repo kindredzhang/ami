@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	DefaultMarker   = "[memoh pruned]"
+	DefaultMarker   = "[ami pruned]"
 	DefaultMaxBytes = 64 * 1024
 	DefaultMaxLines = 2000
 )

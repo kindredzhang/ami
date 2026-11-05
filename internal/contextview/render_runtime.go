@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"strings"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
 )
 
-const defaultRuntimeContextURI = "memoh://context/current-turn"
+const defaultRuntimeContextURI = "ami://context/current-turn"
 
 type RuntimeRenderedPayload struct {
 	ContextMarkdown string

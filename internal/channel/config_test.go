@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/felinics/memoh/internal/channel"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	"github.com/felinics/memoh/internal/team"
+	"github.com/kindredzhang/ami/internal/channel"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	"github.com/kindredzhang/ami/internal/team"
 )
 
 const testChannelType = channel.ChannelType("test-config")

@@ -20,7 +20,7 @@ vi.mock('./use-sidebar-infinite-scroll', async importOriginal => {
 })
 vi.mock('@/pages/supermarket/components/skill-icon.vue', () => ({ default: { template: '<span />' } }))
 vi.mock('vue-router', () => ({ useRouter: () => ({ push: mocks.push }) }))
-vi.mock('@memohai/sdk', async importOriginal => ({
+vi.mock('@ami/sdk', async importOriginal => ({
   ...await importOriginal<object>(),
   getSupermarketApps: mocks.catalog,
   getSupermarketRegistriesByRegistryIdAppsByAppId: mocks.preview,
@@ -35,16 +35,16 @@ vi.mock('@pinia/colada', async importOriginal => {
     useQuery: (options: { key: () => string[] }) => ({
       data: ref(options.key()[0] === 'bot-apps'
         ? { workspace_state: 'running', items: [
-          { registry_id: 'memoh', app_id: 'bun', name: 'Bun', author: { name: 'Memoh Team' }, status: 'partial' },
-          { registry_id: 'memoh', app_id: 'node', name: 'Node.js', status: 'discovered', dependencies: [
+          { registry_id: 'ami', app_id: 'bun', name: 'Bun', author: { name: 'Ami Team' }, status: 'partial' },
+          { registry_id: 'ami', app_id: 'node', name: 'Node.js', status: 'discovered', dependencies: [
             { id: 'other', dependency: { icon_url: '/workspace-dependencies/icons/' + 'b'.repeat(64) } },
             { id: 'node', dependency: { icon_url: '/workspace-dependencies/icons/' + 'a'.repeat(64) } },
           ] },
-          { registry_id: 'memoh', app_id: 'uv', name: 'uv', status: 'discovered', dependencies: [
+          { registry_id: 'ami', app_id: 'uv', name: 'uv', status: 'discovered', dependencies: [
             { id: 'python-tools', dependency: { icon_url: '/workspace-dependencies/icons/' + 'c'.repeat(64) } },
           ] },
         ] }
-        : { data: [{ registry_id: 'memoh', app_id: 'go', name: 'Go' }], total: 1 }),
+        : { data: [{ registry_id: 'ami', app_id: 'go', name: 'Go' }], total: 1 }),
       error: ref(null), isLoading: ref(false), refetch: vi.fn(),
     }),
   }
@@ -55,8 +55,8 @@ let panelProps: { botId: string, canManage: boolean }
 beforeEach(async () => {
   vi.clearAllMocks()
   vi.stubGlobal('ResizeObserver', class { observe() {} unobserve() {} disconnect() {} })
-  mocks.catalog.mockResolvedValue({ data: { data: [{ registry_id: 'memoh', app_id: 'go', name: 'Go' }], total: 90, limit: 30 } })
-  mocks.preview.mockResolvedValue({ data: { registry_id: 'memoh', app_id: 'go' } })
+  mocks.catalog.mockResolvedValue({ data: { data: [{ registry_id: 'ami', app_id: 'go', name: 'Go' }], total: 90, limit: 30 } })
+  mocks.preview.mockResolvedValue({ data: { registry_id: 'ami', app_id: 'go' } })
   root = document.createElement('div')
   document.body.append(root)
   panelProps = reactive({ botId: 'qa-bot', canManage: true })
@@ -76,11 +76,11 @@ function card(name: string) {
 it('opens the installed app management page from the whole card without a separate action', () => {
   expect(root.textContent).not.toContain('View details')
   card('Bun').click()
-  expect(mocks.push).toHaveBeenCalledWith({ name: 'bot-detail', params: { botName: 'qa-bot' }, query: { tab: 'apps', app: 'memoh/bun' } })
+  expect(mocks.push).toHaveBeenCalledWith({ name: 'bot-detail', params: { botName: 'qa-bot' }, query: { tab: 'apps', app: 'ami/bun' } })
 })
 it('opens the market detail from the catalog card and preserves the selected bot', () => {
   card('Go').click()
-  expect(mocks.push).toHaveBeenCalledWith({ name: 'supermarket-app-detail', params: { registryId: 'memoh', appId: 'go' }, query: { botId: 'qa-bot' } })
+  expect(mocks.push).toHaveBeenCalledWith({ name: 'supermarket-app-detail', params: { registryId: 'ami', appId: 'go' }, query: { botId: 'qa-bot' } })
   expect(mocks.preview).not.toHaveBeenCalled()
 })
 it('keeps installation separate from card navigation, including keyboard events', async () => {
@@ -101,9 +101,9 @@ it.each(['Enter', ' '])('supports %s on the card itself', key => {
 
 it('keeps publishers visible and places an installed warning in the action row', () => {
   const warning = Array.from(card('Bun').querySelectorAll('p')).find(el => el.textContent?.includes(en.apps.diagnostics.partial))
-  expect(warning?.parentElement?.textContent).toContain('Memoh Team')
-  expect(card('Node.js').textContent).toContain('memoh')
-  expect(card('Go').querySelector('button')?.parentElement?.textContent).toContain('memoh')
+  expect(warning?.parentElement?.textContent).toContain('Ami Team')
+  expect(card('Node.js').textContent).toContain('ami')
+  expect(card('Go').querySelector('button')?.parentElement?.textContent).toContain('ami')
 })
 
 it('uses dependency icons for discovered apps without showing a redundant source label', () => {
@@ -156,7 +156,7 @@ it.each(['bot', 'permission'])('discards a pending installation preview after a 
   if (change === 'bot') panelProps.botId = 'another-bot'
   else panelProps.canManage = false
   await nextTick()
-  resolvePreview({ data: { registry_id: 'memoh', app_id: 'go' } })
+  resolvePreview({ data: { registry_id: 'ami', app_id: 'go' } })
   await nextTick()
   await nextTick()
   expect(root.querySelector('[data-install-dialog]')).toBeNull()

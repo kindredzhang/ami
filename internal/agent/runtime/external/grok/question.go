@@ -3,8 +3,8 @@ package grok
 import (
 	"encoding/json"
 
-	userinput "github.com/felinics/memoh/internal/agent/decision/input"
-	acpclient "github.com/felinics/memoh/internal/agent/runtime/external/acp/client"
+	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
+	acpclient "github.com/kindredzhang/ami/internal/agent/runtime/external/acp/client"
 )
 
 // userQuestions answers Grok's ask_user_question tool, which asks the client
