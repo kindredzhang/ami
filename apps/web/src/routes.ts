@@ -21,7 +21,6 @@ const pageProfile = () => import('@/pages/profile/index.vue')
 const pageSupermarket = () => import('@/pages/supermarket/index.vue')
 const pageSupermarketCategory = () => import('@/pages/supermarket/category.vue')
 const pageSupermarketAppDetail = () => import('@/pages/supermarket/app-detail.vue')
-const pageAbout = () => import('@/pages/about/index.vue')
 
 /**
  * Settings page loaders warmed by prefetchSettingsPages, ordered sidebar
@@ -34,7 +33,7 @@ export const settingsPageLoaders = [
   pageSettings,
   pageBots, pageProviders, pageRuntimes,
   pageUsage, pagePeople, pageAppearance, pageKeyboard,
-  pageProfile, pageSupermarket, pageAbout,
+  pageProfile, pageSupermarket,
   pageBotNew, pageBotCreateProgress, pageBotDetail,
   pageSupermarketCategory, pageSupermarketAppDetail,
 ]
@@ -288,14 +287,6 @@ export function createAppRoutes(platform: 'web' | 'desktop'): RouteRecordRaw[] {
               },
             },
           ],
-        },
-        {
-          name: 'about',
-          path: 'about',
-          component: pageAbout,
-          meta: {
-            breadcrumb: i18nRef('sidebar.about'),
-          },
         },
       ],
     },

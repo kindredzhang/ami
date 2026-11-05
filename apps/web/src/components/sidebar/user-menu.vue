@@ -59,13 +59,6 @@
       </DropdownMenuItem>
       <DropdownMenuItem
         class="gap-2"
-        @select="router.push({ name: 'about' })"
-      >
-        <InfoIcon />
-        <span>{{ t('sidebar.about') }}</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem
-        class="gap-2"
         @select="router.push('/settings')"
       >
         <SettingsIcon />
@@ -107,7 +100,6 @@ import {
   DropdownMenuSeparator,
 } from '@felinic/ui'
 import {
-  InfoIcon,
   LogoutIcon,
   SettingsIcon,
   UsageIcon,

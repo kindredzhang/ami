@@ -119,7 +119,6 @@ import {
   ChevronLeft,
   CircleUserRound,
   Gauge,
-  Info,
   MousePointer2,
   UsersRound,
 } from 'lucide-vue-next'
@@ -288,7 +287,6 @@ const navGroups = computed<NavGroup[]>(() => [
       { title: t('sidebar.profile'), name: 'profile', icon: CircleUserRound },
       { title: t('sidebar.appearance'), name: 'appearance', icon: AppearanceIcon },
       { title: t('sidebar.keyboard'), name: 'keyboard', icon: ShortcutIcon },
-      { title: t('sidebar.about'), name: 'about', icon: Info },
     ],
   },
 ].map(group => ({ ...group, items: filterItems(group.items) }))
