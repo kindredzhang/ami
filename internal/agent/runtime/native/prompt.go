@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	textprune "github.com/felinics/memoh/internal/prune"
-	skillset "github.com/felinics/memoh/internal/skills"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	textprune "github.com/kindredzhang/ami/internal/prune"
+	skillset "github.com/kindredzhang/ami/internal/skills"
 )
 
 //go:embed prompts/*.md
@@ -112,6 +112,9 @@ type SystemPromptParams struct {
 	Timezone                  string
 	PlatformIdentitiesSection string
 	PlatformIdentities        []SystemPromptItem
+	// UserMemory is the owner's account-level memory, prepended to every
+	// conversation as standing background rather than expert conversation memory.
+	UserMemory string
 }
 
 type SystemPromptItem struct {
@@ -182,7 +185,7 @@ func buildSkillPromptItems(skills []SkillEntry) []SystemPromptItem {
 func buildSkillsHeader(count int) string {
 	var sb strings.Builder
 	sb.WriteString("## Skills\n\n")
-	sb.WriteString("Memoh-managed skills are stored in `" + skillset.ManagedDir() + "/`. ")
+	sb.WriteString("Ami-managed skills are stored in `" + skillset.ManagedDir() + "/`. ")
 	sb.WriteString("**Create user skills directly as `" + skillset.ManagedDir() + "/<skill-name>/SKILL.md`.** ")
 	sb.WriteString("Compatible external skill directories inside the bot workspace may also be discovered automatically. ")
 	sb.WriteString("Each skill is represented by a `SKILL.md` file in one of the discovered source directories. ")

@@ -84,6 +84,13 @@ definitions:
         type: boolean
       onboarding_completed:
         type: boolean
+      user_memory:
+        description: |-
+          UserMemory is the account-level memory prepended to every conversation
+          as standing background. It is not expert memory: experts keep their own
+          conversational memory, while this describes the person across all of
+          their experts.
+        type: string
     type: object
   accounts.UpdateProfileRequest:
     properties:
@@ -3003,7 +3010,7 @@ definitions:
       provider:
         $ref: '#/definitions/fetchproviders.ProviderName'
     type: object
-  github_com_felinics_memoh_internal_mcp.Connection:
+  github_com_kindredzhang_ami_internal_mcp.Connection:
     properties:
       auth_type:
         type: string
@@ -5930,7 +5937,7 @@ definitions:
     properties:
       items:
         items:
-          $ref: '#/definitions/github_com_felinics_memoh_internal_mcp.Connection'
+          $ref: '#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection'
         type: array
     type: object
   mcp.MCPServerEntry:
@@ -7723,7 +7730,7 @@ definitions:
     type: object
 info:
   contact: {}
-  title: Memoh API
+  title: Ami API
   version: 1.0.0
 paths:
   /acp/profiles:
@@ -9717,8 +9724,8 @@ paths:
       tags:
       - connectors
     patch:
-      description: Disabled connectors are omitted when Memoh signs the bot's next
-        aggregate MCP session.
+      description: Disabled connectors are omitted when Ami signs the bot's next aggregate
+        MCP session.
       parameters:
       - description: Bot ID
         in: path
@@ -10713,7 +10720,7 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/server.Problem'
-      summary: Delete Memoh-managed skills
+      summary: Delete Ami-managed skills
       tags:
       - containerd
     get:
@@ -10789,7 +10796,7 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/server.Problem'
-      summary: Upload skills into Memoh-managed directory
+      summary: Upload skills into Ami-managed directory
       tags:
       - containerd
   /bots/{bot_id}/container/skills/actions:
@@ -11549,7 +11556,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/github_com_felinics_memoh_internal_mcp.Connection'
+            $ref: '#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection'
         "400":
           description: Bad Request
           schema:
@@ -11797,7 +11804,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_felinics_memoh_internal_mcp.Connection'
+            $ref: '#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection'
         "400":
           description: Bad Request
           schema:
@@ -11840,7 +11847,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_felinics_memoh_internal_mcp.Connection'
+            $ref: '#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection'
         "400":
           description: Bad Request
           schema:
@@ -17322,7 +17329,7 @@ paths:
         name: source
         required: true
         type: string
-      - description: Memoh client protocol
+      - description: Ami client protocol
         in: query
         name: client_type
         required: true

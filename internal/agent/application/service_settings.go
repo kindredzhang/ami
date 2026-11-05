@@ -7,9 +7,12 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/felinics/memoh/internal/agent/runtime/native"
-	"github.com/felinics/memoh/internal/db"
-	"github.com/felinics/memoh/internal/settings"
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
+
+	"github.com/kindredzhang/ami/internal/agent/runtime/native"
+	"github.com/kindredzhang/ami/internal/db"
+	"github.com/kindredzhang/ami/internal/settings"
 )
 
 func (s *Service) loadBotSettings(ctx context.Context, botID string) (settings.Settings, error) {
@@ -43,6 +46,7 @@ func (s *Service) loadBotRuntimeInfo(ctx context.Context, botID string) (native.
 	if row.Timezone.Valid {
 		info.Timezone = strings.TrimSpace(row.Timezone.String)
 	}
+	info.OwnerUserID = uuidToString(row.OwnerUserID)
 	return info, parseLoopDetectionEnabledFromMetadata(row.Metadata)
 }
 
@@ -67,4 +71,35 @@ func parseLoopDetectionEnabledFromMetadata(payload []byte) bool {
 		return false
 	}
 	return enabled
+}
+
+// loadUserMemory reads the expert owner's account-level memory from user
+// metadata. It is intentionally best-effort: a failure here must never block a
+// turn, so errors are logged and an empty string returned.
+func (s *Service) loadUserMemory(ctx context.Context, ownerUserID string) string {
+	owner := strings.TrimSpace(ownerUserID)
+	if owner == "" || s.accountService == nil {
+		return ""
+	}
+	account, err := s.accountService.Get(ctx, owner)
+	if err != nil {
+		s.logger.DebugContext(ctx, "failed to load account memory",
+			slog.String("owner_user_id", owner),
+			slog.Any("error", err))
+		return ""
+	}
+	raw, ok := account.Metadata["user_memory"]
+	if !ok {
+		return ""
+	}
+	text, _ := raw.(string)
+	return strings.TrimSpace(text)
+}
+
+// uuidToString renders a pgtype UUID as its canonical string, or "" when unset.
+func uuidToString(value pgtype.UUID) string {
+	if !value.Valid {
+		return ""
+	}
+	return uuid.UUID(value.Bytes).String()
 }

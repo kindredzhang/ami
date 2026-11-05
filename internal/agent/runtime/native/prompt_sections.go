@@ -9,9 +9,9 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/sessionmode"
-	tools "github.com/felinics/memoh/internal/agent/tool"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/sessionmode"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
 )
 
 // SystemSection is one typed, priority-ordered piece of the system prompt.
@@ -29,6 +29,7 @@ type SystemSection struct {
 const (
 	sectionIDIntro            = "system.prompt.intro"
 	sectionIDBotIdentity      = "system.bot_identity"
+	sectionIDUserMemory       = "system.user_memory"
 	sectionIDBody             = "system.prompt.body"
 	sectionIDTail             = "system.prompt.tail"
 	sectionIDPlatformIdentity = "system.platform_identity"
@@ -44,6 +45,7 @@ var skillRequiredCapability = tools.ToolUseSkill().String()
 const (
 	priorityIntro                 = 10
 	priorityBotIdentity           = 20
+	priorityUserMemory            = 25
 	priorityBody                  = 30
 	priorityTail                  = 50
 	priorityOutputFormatting      = 55
@@ -91,9 +93,22 @@ func GenerateSystemSections(params SystemPromptParams) []SystemSection {
 			ID: sectionIDBotIdentity, Kind: contextfrag.KindBotIdentity, Priority: priorityBotIdentity, RetentionTier: contextfrag.RetentionPreferred,
 			Text: buildBotInfoSection(params.Bot),
 		},
-		{ID: sectionIDBody, Kind: contextfrag.KindSystemPrompt, Priority: priorityBody, RetentionTier: contextfrag.RetentionRequired, Text: body},
-		{ID: sectionIDTail, Kind: contextfrag.KindSystemPrompt, Priority: priorityTail, RetentionTier: contextfrag.RetentionRequired, Text: tail},
 	}
+
+	// 账号级记忆：这是"这个人是谁"，跨越该用户的所有专家，作为每轮对话
+	// 常驻的背景，而不是某个专家的对话记忆。没写记忆时不占 section，
+	// 保持无记忆用户的提示词与既有输出逐字节一致。
+	if memorySection := buildUserMemorySection(params.UserMemory); memorySection != "" {
+		sections = append(sections, SystemSection{
+			ID: sectionIDUserMemory, Kind: contextfrag.KindSystemPrompt, Priority: priorityUserMemory, RetentionTier: contextfrag.RetentionPreferred,
+			Text: memorySection,
+		})
+	}
+
+	sections = append(sections,
+		SystemSection{ID: sectionIDBody, Kind: contextfrag.KindSystemPrompt, Priority: priorityBody, RetentionTier: contextfrag.RetentionRequired, Text: body},
+		SystemSection{ID: sectionIDTail, Kind: contextfrag.KindSystemPrompt, Priority: priorityTail, RetentionTier: contextfrag.RetentionRequired, Text: tail},
+	)
 
 	sections = append(sections, buildPlatformIdentitySections(params)...)
 
@@ -314,4 +329,19 @@ func cutModeContractTmpl(tmpl, placeholder string) (string, error) {
 		return "", fmt.Errorf("agent: mode template is missing expected placeholder %s", placeholder)
 	}
 	return strings.TrimSpace(tmpl[:idx]), nil
+}
+
+// buildUserMemorySection renders the account-level memory as standing
+// background. Empty memory yields no section at all, so a user who never wrote
+// any pays nothing for it.
+func buildUserMemorySection(memory string) string {
+	trimmed := strings.TrimSpace(memory)
+	if trimmed == "" {
+		return ""
+	}
+	return "## About the user\n\n" +
+		"Standing background about the person you are talking to, written by them. " +
+		"It applies to every conversation regardless of which expert is running. " +
+		"Prefer it over guessing, but let this conversation correct it when they conflict.\n\n" +
+		trimmed
 }

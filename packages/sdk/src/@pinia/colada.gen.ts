@@ -959,7 +959,7 @@ export const getBotsByBotIdConnectorsByConnectionIdQuery = defineQueryOptions<Op
 /**
  * Enable or disable a connector
  *
- * Disabled connectors are omitted when Memoh signs the bot's next aggregate MCP session.
+ * Disabled connectors are omitted when Ami signs the bot's next aggregate MCP session.
  */
 export const patchBotsByBotIdConnectorsByConnectionIdMutation = (options?: Partial<Options<PatchBotsByBotIdConnectorsByConnectionIdData>>): UseMutationOptions<unknown, Options<PatchBotsByBotIdConnectorsByConnectionIdData>, PatchBotsByBotIdConnectorsByConnectionIdError> => ({
     mutation: async (vars) => {
@@ -1391,7 +1391,7 @@ export const postBotsByBotIdContainerRemovalCancelMutation = (options?: Partial<
 });
 
 /**
- * Delete Memoh-managed skills
+ * Delete Ami-managed skills
  */
 export const deleteBotsByBotIdContainerSkillsMutation = (options?: Partial<Options<DeleteBotsByBotIdContainerSkillsData>>): UseMutationOptions<DeleteBotsByBotIdContainerSkillsResponse, Options<DeleteBotsByBotIdContainerSkillsData>, DeleteBotsByBotIdContainerSkillsError> => ({
     mutation: async (vars) => {
@@ -1422,7 +1422,7 @@ export const getBotsByBotIdContainerSkillsQuery = defineQueryOptions<Options<Get
 }));
 
 /**
- * Upload skills into Memoh-managed directory
+ * Upload skills into Ami-managed directory
  */
 export const postBotsByBotIdContainerSkillsMutation = (options?: Partial<Options<PostBotsByBotIdContainerSkillsData>>): UseMutationOptions<PostBotsByBotIdContainerSkillsResponse, Options<PostBotsByBotIdContainerSkillsData>, PostBotsByBotIdContainerSkillsError> => ({
     mutation: async (vars) => {

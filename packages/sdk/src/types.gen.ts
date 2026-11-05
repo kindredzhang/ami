@@ -57,6 +57,13 @@ export type AccountsUpdateProfileMetadata = {
      */
     chat_examples_sidebar_entry_hidden?: boolean;
     onboarding_completed?: boolean;
+    /**
+     * UserMemory is the account-level memory prepended to every conversation
+     * as standing background. It is not expert memory: experts keep their own
+     * conversational memory, while this describes the person across all of
+     * their experts.
+     */
+    user_memory?: string;
 };
 
 export type AccountsUpdateProfileRequest = {
@@ -1688,7 +1695,7 @@ export type FetchprovidersUpdateRequest = {
     provider?: FetchprovidersProviderName;
 };
 
-export type GithubComFelinicsMemohInternalMcpConnection = {
+export type GithubComKindredzhangAmiInternalMcpConnection = {
     auth_type?: string;
     bot_id?: string;
     config?: {
@@ -3409,7 +3416,7 @@ export type McpImportRequest = {
 };
 
 export type McpListResponse = {
-    items?: Array<GithubComFelinicsMemohInternalMcpConnection>;
+    items?: Array<GithubComKindredzhangAmiInternalMcpConnection>;
 };
 
 export type McpMcpServerEntry = {
@@ -9270,7 +9277,7 @@ export type PostBotsByBotIdMcpResponses = {
     /**
      * Created
      */
-    201: GithubComFelinicsMemohInternalMcpConnection;
+    201: GithubComKindredzhangAmiInternalMcpConnection;
 };
 
 export type PostBotsByBotIdMcpResponse = PostBotsByBotIdMcpResponses[keyof PostBotsByBotIdMcpResponses];
@@ -9568,7 +9575,7 @@ export type GetBotsByBotIdMcpByIdResponses = {
     /**
      * OK
      */
-    200: GithubComFelinicsMemohInternalMcpConnection;
+    200: GithubComKindredzhangAmiInternalMcpConnection;
 };
 
 export type GetBotsByBotIdMcpByIdResponse = GetBotsByBotIdMcpByIdResponses[keyof GetBotsByBotIdMcpByIdResponses];
@@ -9617,7 +9624,7 @@ export type PutBotsByBotIdMcpByIdResponses = {
     /**
      * OK
      */
-    200: GithubComFelinicsMemohInternalMcpConnection;
+    200: GithubComKindredzhangAmiInternalMcpConnection;
 };
 
 export type PutBotsByBotIdMcpByIdResponse = PutBotsByBotIdMcpByIdResponses[keyof PutBotsByBotIdMcpByIdResponses];
@@ -15440,7 +15447,7 @@ export type GetProvidersCatalogModelsData = {
          */
         source: string;
         /**
-         * Memoh client protocol
+         * Ami client protocol
          */
         client_type: string;
     };

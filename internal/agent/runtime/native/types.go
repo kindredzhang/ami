@@ -8,14 +8,14 @@ import (
 
 	sdk "github.com/felinics/twilight/sdk"
 
-	"github.com/felinics/memoh/internal/agent/background"
-	contextfrag "github.com/felinics/memoh/internal/agent/context/fragment"
-	"github.com/felinics/memoh/internal/agent/event"
-	"github.com/felinics/memoh/internal/agent/step"
-	tools "github.com/felinics/memoh/internal/agent/tool"
-	"github.com/felinics/memoh/internal/agent/toolexec"
-	"github.com/felinics/memoh/internal/models"
-	"github.com/felinics/memoh/internal/models/modelretry"
+	"github.com/kindredzhang/ami/internal/agent/background"
+	contextfrag "github.com/kindredzhang/ami/internal/agent/context/fragment"
+	"github.com/kindredzhang/ami/internal/agent/event"
+	"github.com/kindredzhang/ami/internal/agent/step"
+	tools "github.com/kindredzhang/ami/internal/agent/tool"
+	"github.com/kindredzhang/ami/internal/agent/toolexec"
+	"github.com/kindredzhang/ami/internal/models"
+	"github.com/kindredzhang/ami/internal/models/modelretry"
 )
 
 // SessionContext carries request-scoped identity and routing information.
@@ -46,6 +46,9 @@ type BotInfo struct {
 	Name        string `json:"name,omitempty"`
 	DisplayName string `json:"display_name,omitempty"`
 	Timezone    string `json:"timezone,omitempty"`
+	// OwnerUserID is the account that owns this expert. Used to load the
+	// account-level memory that applies across all of their experts.
+	OwnerUserID string `json:"-"`
 }
 
 // SkillEntry represents a skill loaded from the bot container.
@@ -107,7 +110,10 @@ type RunConfig struct {
 	// RunID is the stable identity allocated by durable admission for this
 	// invocation. Direct callers without admission receive one at the
 	// application creation boundary before the native runtime starts.
-	RunID                       string
+	RunID string
+	// UserMemory is the owner's account-level memory, applied to every
+	// conversation as standing background rather than expert conversation memory.
+	UserMemory                  string
 	Model                       *sdk.Model
 	CurrentModelUUID            string
 	CurrentModelID              string

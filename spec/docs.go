@@ -3166,7 +3166,7 @@ const docTemplate = `{
                 }
             },
             "patch": {
-                "description": "Disabled connectors are omitted when Memoh signs the bot's next aggregate MCP session.",
+                "description": "Disabled connectors are omitted when Ami signs the bot's next aggregate MCP session.",
                 "tags": [
                     "connectors"
                 ],
@@ -4658,7 +4658,7 @@ const docTemplate = `{
                 "tags": [
                     "containerd"
                 ],
-                "summary": "Upload skills into Memoh-managed directory",
+                "summary": "Upload skills into Ami-managed directory",
                 "parameters": [
                     {
                         "type": "string",
@@ -4720,7 +4720,7 @@ const docTemplate = `{
                 "tags": [
                     "containerd"
                 ],
-                "summary": "Delete Memoh-managed skills",
+                "summary": "Delete Ami-managed skills",
                 "parameters": [
                     {
                         "type": "string",
@@ -5897,7 +5897,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                            "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                         }
                     },
                     "400": {
@@ -6214,7 +6214,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                            "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                         }
                     },
                     "400": {
@@ -6278,7 +6278,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                            "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                         }
                     },
                     "400": {
@@ -13733,7 +13733,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Memoh client protocol",
+                        "description": "Ami client protocol",
                         "name": "client_type",
                         "in": "query",
                         "required": true
@@ -17299,6 +17299,10 @@ const docTemplate = `{
                 },
                 "onboarding_completed": {
                     "type": "boolean"
+                },
+                "user_memory": {
+                    "description": "UserMemory is the account-level memory prepended to every conversation\nas standing background. It is not expert memory: experts keep their own\nconversational memory, while this describes the person across all of\ntheir experts.",
+                    "type": "string"
                 }
             }
         },
@@ -21510,7 +21514,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_felinics_memoh_internal_mcp.Connection": {
+        "github_com_kindredzhang_ami_internal_mcp.Connection": {
             "type": "object",
             "properties": {
                 "auth_type": {
@@ -25726,7 +25730,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                        "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                     }
                 }
             }
@@ -28237,7 +28241,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Memoh API",
+	Title:            "Ami API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

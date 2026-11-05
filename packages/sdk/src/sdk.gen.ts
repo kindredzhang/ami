@@ -549,7 +549,7 @@ export const getBotsByBotIdConnectorsByConnectionId = <ThrowOnError extends bool
 /**
  * Enable or disable a connector
  *
- * Disabled connectors are omitted when Memoh signs the bot's next aggregate MCP session.
+ * Disabled connectors are omitted when Ami signs the bot's next aggregate MCP session.
  */
 export const patchBotsByBotIdConnectorsByConnectionId = <ThrowOnError extends boolean = false>(options: Options<PatchBotsByBotIdConnectorsByConnectionIdData, ThrowOnError>): RequestResult<PatchBotsByBotIdConnectorsByConnectionIdResponses, PatchBotsByBotIdConnectorsByConnectionIdErrors, ThrowOnError> => (options.client ?? client).patch<PatchBotsByBotIdConnectorsByConnectionIdResponses, PatchBotsByBotIdConnectorsByConnectionIdErrors, ThrowOnError>({
     url: '/bots/{bot_id}/connectors/{connection_id}',
@@ -806,7 +806,7 @@ export const putBotsByBotIdContainerMetrics = <ThrowOnError extends boolean = fa
 export const postBotsByBotIdContainerRemovalCancel = <ThrowOnError extends boolean = false>(options: Options<PostBotsByBotIdContainerRemovalCancelData, ThrowOnError>): RequestResult<PostBotsByBotIdContainerRemovalCancelResponses, PostBotsByBotIdContainerRemovalCancelErrors, ThrowOnError> => (options.client ?? client).post<PostBotsByBotIdContainerRemovalCancelResponses, PostBotsByBotIdContainerRemovalCancelErrors, ThrowOnError>({ url: '/bots/{bot_id}/container/removal/cancel', ...options });
 
 /**
- * Delete Memoh-managed skills
+ * Delete Ami-managed skills
  */
 export const deleteBotsByBotIdContainerSkills = <ThrowOnError extends boolean = false>(options: Options<DeleteBotsByBotIdContainerSkillsData, ThrowOnError>): RequestResult<DeleteBotsByBotIdContainerSkillsResponses, DeleteBotsByBotIdContainerSkillsErrors, ThrowOnError> => (options.client ?? client).delete<DeleteBotsByBotIdContainerSkillsResponses, DeleteBotsByBotIdContainerSkillsErrors, ThrowOnError>({
     url: '/bots/{bot_id}/container/skills',
@@ -823,7 +823,7 @@ export const deleteBotsByBotIdContainerSkills = <ThrowOnError extends boolean = 
 export const getBotsByBotIdContainerSkills = <ThrowOnError extends boolean = false>(options: Options<GetBotsByBotIdContainerSkillsData, ThrowOnError>): RequestResult<GetBotsByBotIdContainerSkillsResponses, GetBotsByBotIdContainerSkillsErrors, ThrowOnError> => (options.client ?? client).get<GetBotsByBotIdContainerSkillsResponses, GetBotsByBotIdContainerSkillsErrors, ThrowOnError>({ url: '/bots/{bot_id}/container/skills', ...options });
 
 /**
- * Upload skills into Memoh-managed directory
+ * Upload skills into Ami-managed directory
  */
 export const postBotsByBotIdContainerSkills = <ThrowOnError extends boolean = false>(options: Options<PostBotsByBotIdContainerSkillsData, ThrowOnError>): RequestResult<PostBotsByBotIdContainerSkillsResponses, PostBotsByBotIdContainerSkillsErrors, ThrowOnError> => (options.client ?? client).post<PostBotsByBotIdContainerSkillsResponses, PostBotsByBotIdContainerSkillsErrors, ThrowOnError>({
     url: '/bots/{bot_id}/container/skills',

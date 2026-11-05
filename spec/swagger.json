@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Memoh API",
+        "title": "Ami API",
         "contact": {},
         "version": "1.0.0"
     },
@@ -3157,7 +3157,7 @@
                 }
             },
             "patch": {
-                "description": "Disabled connectors are omitted when Memoh signs the bot's next aggregate MCP session.",
+                "description": "Disabled connectors are omitted when Ami signs the bot's next aggregate MCP session.",
                 "tags": [
                     "connectors"
                 ],
@@ -4649,7 +4649,7 @@
                 "tags": [
                     "containerd"
                 ],
-                "summary": "Upload skills into Memoh-managed directory",
+                "summary": "Upload skills into Ami-managed directory",
                 "parameters": [
                     {
                         "type": "string",
@@ -4711,7 +4711,7 @@
                 "tags": [
                     "containerd"
                 ],
-                "summary": "Delete Memoh-managed skills",
+                "summary": "Delete Ami-managed skills",
                 "parameters": [
                     {
                         "type": "string",
@@ -5888,7 +5888,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                            "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                         }
                     },
                     "400": {
@@ -6205,7 +6205,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                            "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                         }
                     },
                     "400": {
@@ -6269,7 +6269,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                            "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                         }
                     },
                     "400": {
@@ -13724,7 +13724,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "Memoh client protocol",
+                        "description": "Ami client protocol",
                         "name": "client_type",
                         "in": "query",
                         "required": true
@@ -17290,6 +17290,10 @@
                 },
                 "onboarding_completed": {
                     "type": "boolean"
+                },
+                "user_memory": {
+                    "description": "UserMemory is the account-level memory prepended to every conversation\nas standing background. It is not expert memory: experts keep their own\nconversational memory, while this describes the person across all of\ntheir experts.",
+                    "type": "string"
                 }
             }
         },
@@ -21501,7 +21505,7 @@
                 }
             }
         },
-        "github_com_felinics_memoh_internal_mcp.Connection": {
+        "github_com_kindredzhang_ami_internal_mcp.Connection": {
             "type": "object",
             "properties": {
                 "auth_type": {
@@ -25717,7 +25721,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_felinics_memoh_internal_mcp.Connection"
+                        "$ref": "#/definitions/github_com_kindredzhang_ami_internal_mcp.Connection"
                     }
                 }
             }

@@ -10,15 +10,30 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/felinics/memoh/internal/db"
-	dbstore "github.com/felinics/memoh/internal/db/store"
-	tzutil "github.com/felinics/memoh/internal/timezone"
+	"github.com/kindredzhang/ami/internal/db"
+	dbstore "github.com/kindredzhang/ami/internal/db/store"
+	tzutil "github.com/kindredzhang/ami/internal/timezone"
 )
 
 // Service provides account (credential) management for users.
 type Service struct {
 	store  dbstore.AccountStore
 	logger *slog.Logger
+	// defaultBot provisions the starter expert every new human account gets,
+	// so a fresh user lands in a working conversation instead of an empty list.
+	defaultBot DefaultBotProvisioner
+}
+
+// DefaultBotProvisioner creates the starter expert for a newly created user.
+// It is wired by the composition root because expert creation lives in another
+// package; accounts only decides when a human first exists.
+type DefaultBotProvisioner interface {
+	EnsureDefaultBot(ctx context.Context, ownerUserID string) error
+}
+
+// SetDefaultBotProvisioner registers the starter-expert provisioner.
+func (s *Service) SetDefaultBotProvisioner(p DefaultBotProvisioner) {
+	s.defaultBot = p
 }
 
 var (
@@ -224,8 +239,24 @@ func (s *Service) CreateHuman(ctx context.Context, userID string, req CreateAcco
 			return Account{}, errors.New("create user: invalid id")
 		}
 		userID = userRow.ID
+		// A brand-new human gets their starter expert. Best-effort: a failure
+		// here must not roll back an account that was already created, because
+		// the user can still make experts by hand.
+		s.ensureDefaultBot(ctx, userID)
 	}
 	return s.Create(ctx, userID, req)
+}
+
+// ensureDefaultBot provisions the starter expert, logging rather than failing.
+func (s *Service) ensureDefaultBot(ctx context.Context, userID string) {
+	if s.defaultBot == nil || strings.TrimSpace(userID) == "" {
+		return
+	}
+	if err := s.defaultBot.EnsureDefaultBot(ctx, userID); err != nil {
+		s.logger.ErrorContext(ctx, "failed to provision default expert",
+			slog.String("user_id", userID),
+			slog.Any("error", err))
+	}
 }
 
 // UpdateAdmin updates account fields as admin.
@@ -445,9 +476,29 @@ func (s *Service) mergeMetadata(existing string, incoming *UpdateProfileMetadata
 	if incoming.ChatExamplesSidebarEntryHidden != nil {
 		base["chat_examples_sidebar_entry_hidden"] = *incoming.ChatExamplesSidebarEntryHidden
 	}
+	if incoming.UserMemory != nil {
+		// Trim to a sane ceiling so a runaway client cannot bloat every prompt.
+		base["user_memory"] = truncateUserMemory(*incoming.UserMemory)
+	}
 	result, err := json.Marshal(base)
 	if err != nil {
 		return "{}"
 	}
 	return string(result)
+}
+
+// maxUserMemoryRunes bounds the account-level memory that is prepended to every
+// conversation. It is deliberately generous — this is standing context, not a
+// transcript — but bounded, because it is paid for on every turn.
+const maxUserMemoryRunes = 4000
+
+// truncateUserMemory clamps user memory to maxUserMemoryRunes on a rune
+// boundary so a multi-byte character is never split.
+func truncateUserMemory(value string) string {
+	trimmed := strings.TrimSpace(value)
+	runes := []rune(trimmed)
+	if len(runes) <= maxUserMemoryRunes {
+		return trimmed
+	}
+	return string(runes[:maxUserMemoryRunes])
 }

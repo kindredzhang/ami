@@ -61,6 +61,11 @@ type UpdateProfileMetadata struct {
 	// ChatExamplesSidebarEntryHidden hides the Web sidebar's usage-example
 	// entry for this account, on every device.
 	ChatExamplesSidebarEntryHidden *bool `json:"chat_examples_sidebar_entry_hidden,omitempty"`
+	// UserMemory is the account-level memory prepended to every conversation
+	// as standing background. It is not expert memory: experts keep their own
+	// conversational memory, while this describes the person across all of
+	// their experts.
+	UserMemory *string `json:"user_memory,omitempty"`
 }
 
 // UpdatePasswordRequest is the input for password change.
