@@ -132,10 +132,6 @@
         v-show="sidebarView === 'files'"
         class="h-full"
       />
-      <PanelSchedule
-        v-show="sidebarView === 'schedule'"
-        class="h-full"
-      />
       <PanelSupermarket
         v-if="supermarketMounted"
         v-show="sidebarView === 'supermarket'"
@@ -199,7 +195,7 @@
 import { computed, onBeforeUnmount, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { Files, MessageCircle, Search, Calendar, Blocks } from 'lucide-vue-next'
+import { Files, MessageCircle, Search, Blocks } from 'lucide-vue-next'
 import { BadgeCount, Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@felinic/ui'
 import { useSettingsStore } from '@/store/settings'
 import { useChatStore } from '@/store/chat-list'
@@ -212,7 +208,6 @@ import UserMenu from './user-menu.vue'
 import UpdateChip from './update-chip.vue'
 import PanelSessions from './panel-sessions.vue'
 import PanelFiles from './panel-files.vue'
-import PanelSchedule from './panel-schedule.vue'
 import PanelSupermarket from './panel-supermarket.vue'
 import SessionSearchDialog from './session-search-dialog.vue'
 
@@ -281,7 +276,6 @@ const availableViews = computed<ActivityView[]>(() => {
   if (canWorkspaceRead.value) {
     views.push({ id: 'files', label: t('chat.activityBar.files'), icon: Files })
   }
-  views.push({ id: 'schedule', label: t('chat.activityBar.schedule'), icon: Calendar })
   views.push({ id: 'supermarket', label: t('supermarket.title'), icon: Blocks })
   return views
 })

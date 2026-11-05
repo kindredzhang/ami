@@ -19,6 +19,18 @@
         />
         {{ t('chat.newSession') }}
       </SidebarNavButton>
+      <!-- 日程：原为侧栏 activity bar 的独立 Tab，现作为动作入口，
+           点击在中间工作区打开日程面板，不切换左侧 Tab。 -->
+      <SidebarNavButton
+        :disabled="!currentBotId || !canManage"
+        @click="handleOpenSchedule"
+      >
+        <Calendar
+          :stroke-width="1.75"
+          class="size-[18px]"
+        />
+        {{ t('chat.activityBar.schedule') }}
+      </SidebarNavButton>
       <SidebarNavButton
         :disabled="!currentBotId"
         @click="handleBotSettings"
@@ -105,7 +117,7 @@ import { computed, onMounted, provide, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { SquarePen, Settings2 } from 'lucide-vue-next'
+import { Calendar, SquarePen, Settings2 } from 'lucide-vue-next'
 import { ScrollArea } from '@felinic/ui'
 import { useChatStore } from '@/store/chat-list'
 import { useWorkspaceTabsStore } from '@/store/workspace-tabs'
@@ -115,6 +127,7 @@ import FoldersSection from './folders-section.vue'
 import NeedsYouInbox from './needs-you-inbox.vue'
 import Recents from './recents.vue'
 import SessionSelectionBar from './session-selection-bar.vue'
+import { hasBotPermission } from '@/utils/bot-permissions'
 import { createSessionSelection, SessionSelectionKey } from './session-selection'
 import { SessionBotAgentsKey } from './session-bot-agents'
 import { useBotAgentsQuery } from '@/composables/api/useBotAgents'
@@ -142,6 +155,11 @@ const currentBot = computed(() =>
   bots.value.find(bot => bot.id === currentBotId.value) ?? null,
 )
 
+// 日程面板需要 manage 权限，与 workspace-tabs 的 openSchedule 内部判断一致
+const canManage = computed(() =>
+  hasBotPermission(currentBot.value?.current_user_permissions, 'manage'),
+)
+
 // One selection for both Folders and Recents, so a batch can span them.
 const selection = createSessionSelection()
 provide(SessionSelectionKey, selection)
@@ -167,6 +185,12 @@ function handleNewSession() {
 }
 
 // Navigate to the current bot's settings overview.
+function handleOpenSchedule() {
+  if (!currentBotId.value) return
+  workspaceTabs.openSchedule()
+  workspaceTabs.closeMobileNav()
+}
+
 function handleBotSettings() {
   const botId = currentBotId.value
   if (!botId) return
