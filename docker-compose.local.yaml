@@ -17,3 +17,20 @@ services:
     entrypoint: ["/app/ami-channel", "serve"]
   web:
     image: ami/web:local
+  # 内部依赖源。数据从宿主机的 skillhub-data/ 挂进来，发布依赖就是往那个
+  # 目录放一个子目录再重启本容器，不需要重新构建镜像。
+  # 接入方式：config.toml 里设
+  #   [supermarket] catalog_base_url = "http://skillhub:8090"
+  skillhub:
+    image: ami/skillhub:local
+    restart: unless-stopped
+    # 必须和 server 在同一个网络，否则 server 解析不到 skillhub 这个主机名。
+    networks:
+      - ami-network
+    volumes:
+      - ./skillhub-data:/data:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8090/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

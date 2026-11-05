@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1
+
+# Internal workspace dependency registry. See cmd/skillhub for the protocol.
+#
+# The image ships only the binary: dependencies are mounted from the host so
+# publishing stays "drop a directory in and restart", with no rebuild.
+
+FROM golang:1.26.10-alpine AS build
+WORKDIR /build
+RUN apk add --no-cache git
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod go mod download
+COPY . .
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/skillhub ./cmd/skillhub
+
+FROM alpine:3.23
+RUN adduser -D -u 10001 skillhub
+COPY --from=build /out/skillhub /usr/local/bin/skillhub
+USER skillhub
+EXPOSE 8090
+# -check runs on every start: a half-published dependency stops the container
+# instead of being served. Failing loudly beats serving a broken catalog.
+ENTRYPOINT ["skillhub"]
+CMD ["-addr", ":8090", "-data", "/data"]

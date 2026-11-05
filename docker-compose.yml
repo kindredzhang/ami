@@ -74,10 +74,10 @@ services:
       #   HTTP_PROXY=http://host.docker.internal:7890 docker compose up -d
       HTTP_PROXY: "${HTTP_PROXY:-${http_proxy:-}}"
       HTTPS_PROXY: "${HTTPS_PROXY:-${https_proxy:-}}"
-      NO_PROXY: "${NO_PROXY:-127.0.0.1,localhost},postgres,pgvector,server,channel,web,migrate,webhook-tunnel,connect-it,ami-postgres,ami-pgvector,ami-server,ami-channel,ami-web,ami-migrate,ami-webhook-tunnel,ami-connect-it"
+      NO_PROXY: "${NO_PROXY:-127.0.0.1,localhost},postgres,pgvector,server,channel,web,migrate,webhook-tunnel,connect-it,ami-postgres,ami-pgvector,ami-server,ami-channel,ami-web,ami-migrate,ami-webhook-tunnel,ami-connect-it,skillhub,ami-skillhub"
       http_proxy: "${http_proxy:-${HTTP_PROXY:-}}"
       https_proxy: "${https_proxy:-${HTTPS_PROXY:-}}"
-      no_proxy: "${no_proxy:-${NO_PROXY:-127.0.0.1,localhost}},postgres,pgvector,server,channel,web,migrate,webhook-tunnel,connect-it,ami-postgres,ami-pgvector,ami-server,ami-channel,ami-web,ami-migrate,ami-webhook-tunnel,ami-connect-it"
+      no_proxy: "${no_proxy:-${NO_PROXY:-127.0.0.1,localhost}},postgres,pgvector,server,channel,web,migrate,webhook-tunnel,connect-it,ami-postgres,ami-pgvector,ami-server,ami-channel,ami-web,ami-migrate,ami-webhook-tunnel,ami-connect-it,skillhub,ami-skillhub"
       AMI_INTERNAL_RPC_SHARED_SECRET: "${AMI_INTERNAL_RPC_SHARED_SECRET:?AMI_INTERNAL_RPC_SHARED_SECRET is required}"
       AMI_AGENT_CREDENTIALS_ENCRYPTION_KEY: "${AMI_AGENT_CREDENTIALS_ENCRYPTION_KEY:-}"
       AMI_INTERNAL_RPC_SERVER_TARGET: "server:9090"
@@ -192,10 +192,10 @@ services:
       CONNECT_IT_BASE_URL: "${AMI_CONNECT_IT_PUBLIC_BASE_URL:-http://localhost:${AMI_CONNECT_IT_PORT:-8421}}"
       HTTP_PROXY: "${HTTP_PROXY:-${http_proxy:-}}"
       HTTPS_PROXY: "${HTTPS_PROXY:-${https_proxy:-}}"
-      NO_PROXY: "${NO_PROXY:-127.0.0.1,localhost},postgres,server,connect-it,ami-postgres,ami-server,ami-connect-it"
+      NO_PROXY: "${NO_PROXY:-127.0.0.1,localhost},postgres,server,connect-it,ami-postgres,ami-server,ami-connect-it,skillhub,ami-skillhub"
       http_proxy: "${http_proxy:-${HTTP_PROXY:-}}"
       https_proxy: "${https_proxy:-${HTTPS_PROXY:-}}"
-      no_proxy: "${no_proxy:-${NO_PROXY:-127.0.0.1,localhost}},postgres,server,connect-it,ami-postgres,ami-server,ami-connect-it"
+      no_proxy: "${no_proxy:-${NO_PROXY:-127.0.0.1,localhost}},postgres,server,connect-it,ami-postgres,ami-server,ami-connect-it,skillhub,ami-skillhub"
     ports:
       - "${AMI_CONNECT_IT_PORT:-8421}:8421"
     depends_on:

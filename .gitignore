@@ -131,3 +131,6 @@ Design*.md
 design*.md
 detail-design-2.0-docs/
 .gemini/settings.json
+tmpdbg/
+skillhub-data/*/artifact.tar.gz
+skillhub-data/dependencies/*/artifact.tar.gz
