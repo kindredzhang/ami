@@ -1,0 +1,40 @@
+schema_version: "1"
+id: playwright
+name: Playwright
+description: Automate Chromium and run browser tests with Playwright and its CLI.
+icon: icon.svg
+category: tool
+source: managed
+requires:
+  - python
+  - node
+provides:
+  - playwright
+  - playwright-cli
+platforms:
+  - os: linux
+    arch:
+      - amd64
+      - arm64
+    libc: glibc
+  - os: darwin
+    arch:
+      - arm64
+timeouts:
+  install: 3600
+  update: 3600
+  remove: 300
+  check_update: 300
+  version: 60
+scripts:
+  install: install.sh
+  update: install.sh
+  remove: remove.sh
+  check_update: check-update.sh
+translations:
+  en:
+    description: Automate Chromium and run browser tests with Playwright and its CLI.
+  zh:
+    description: 使用 Playwright 及其 CLI 自动操作 Chromium 并运行浏览器测试。
+  ja:
+    description: Playwright と CLI で Chromium を自動操作し、ブラウザーテストを実行します。

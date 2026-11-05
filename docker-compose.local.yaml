@@ -29,6 +29,9 @@ services:
       - ami-network
     volumes:
       - ./skillhub-data:/data:ro
+    ports:
+      # 只绑本机回环：宿主机排查用，不对外暴露。
+      - "127.0.0.1:8090:8090"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8090/healthz"]
       interval: 30s

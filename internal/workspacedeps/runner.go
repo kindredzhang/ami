@@ -303,7 +303,24 @@ func buildEnv(spec RunSpec, resultPath string, timeout time.Duration) []string {
 	return env
 }
 
-var mirrorEnvNames = []string{"NODEJS_MIRROR", "UV_RELEASES_URL", "NPM_MIRROR", "UV_PYTHON_INSTALL_MIRROR"}
+// mirrorEnvNames are passed into recipe scripts so an intranet deployment can
+// redirect downloads to an internal mirror. It is an allowlist: a recipe can
+// only see names listed here, so a config file cannot inject arbitrary variables
+// into a script that runs on a developer's machine.
+var mirrorEnvNames = []string{
+	// Node and uv read these names themselves.
+	"NODEJS_MIRROR",
+	"UV_RELEASES_URL",
+	"NPM_MIRROR",
+	"UV_PYTHON_INSTALL_MIRROR",
+	// Vendored recipes read these; see scripts/skillhub-vendor.
+	"GO_DL_BASE",
+	"RUSTUP_DIST_SERVER",
+	"CONDA_CHANNEL_BASE",
+	"LO_DL_BASE",
+	"GITHUB_API_BASE",
+	"GITHUB_BASE",
+}
 
 // exitStatus is what forwardOutput learns from the EXIT message.
 type exitStatus struct {

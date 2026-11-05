@@ -1,0 +1,39 @@
+schema_version: "1"
+id: qpdf
+name: qpdf
+description: Check, repair, split, merge and transform PDF files with qpdf.
+icon: icon.svg
+category: tool
+source: managed
+requires:
+  - python
+  - micromamba
+provides:
+  - qpdf
+platforms:
+  - os: linux
+    arch:
+      - amd64
+      - arm64
+    libc: glibc
+  - os: darwin
+    arch:
+      - arm64
+timeouts:
+  install: 3600
+  update: 3600
+  remove: 300
+  check_update: 300
+  version: 60
+scripts:
+  install: install.sh
+  update: install.sh
+  remove: remove.sh
+  check_update: check-update.sh
+translations:
+  en:
+    description: Check, repair, split, merge and transform PDF files with qpdf.
+  zh:
+    description: 使用 qpdf 检查、修复、拆分、合并和转换 PDF 文件。
+  ja:
+    description: qpdf で PDF ファイルの検査、修復、分割、結合、変換を行います。
