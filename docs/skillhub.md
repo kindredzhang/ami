@@ -137,3 +137,65 @@ go run ./cmd/skillhub -check -data ./skillhub-data
 走了一遍完整链路：拉索引 → 拉 release → 拉安装包 → 校验清单与归档一致性 → 取图标。
 全部通过。这一步是必要的：协议里有若干处「看起来对但不合法」的写法，
 只有真解码才算数。
+
+---
+
+## 已导入的依赖（18 个）
+
+| 类别 | 依赖 |
+|---|---|
+| 运行时 | `go` `rust` `node` `python` `uv` `bun` |
+| 工具 | `ffmpeg` `pandoc` `tesseract` `poppler` `qpdf` `libreoffice` |
+| 开发 | `github-cli` `micromamba` `native-build-tools` `playwright` `pnpm` |
+
+`node`、`python`、`uv` 的清单里标的是 `source: image` —— 镜像是基线。
+它们仍然出现在目录里，因为上游每个依赖都 `requires: python`，
+缺了这条链整个目录校验不过。
+
+## 换源：让依赖从内网镜像下载
+
+上游脚本把下载域名写死在代码里，没有环境变量入口。这里的版本在每个 URL
+位置插了 `_mirror(NAME, 默认值)`：**不配就是原地址，配了才走镜像。**
+
+```toml
+[workspace_dependencies.script_env]
+# Go
+GO_DL_BASE = "https://mirror.dfmc.com.cn/golang"
+# Rust
+RUSTUP_DIST_SERVER = "https://mirror.dfmc.com.cn/rustup"
+# conda（ffmpeg/pandoc/tesseract/poppler/qpdf/micromamba 都走这个）
+CONDA_CHANNEL_BASE = "https://mirror.dfmc.com.cn/anaconda"
+# LibreOffice
+LO_DL_BASE = "https://mirror.dfmc.com.cn/tdf"
+# GitHub CLI 等
+GITHUB_API_BASE = "https://mirror.dfmc.com.cn/github-api"
+GITHUB_BASE = "https://mirror.dfmc.com.cn/github"
+# npm（pnpm/playwright/bun）
+NPM_MIRROR = "https://registry.npmmirror.com"
+```
+
+镜像站只需按同样的路径结构托管文件，例如：
+
+```
+https://mirror.dfmc.com.cn/golang/dl/go1.26.10.linux-amd64.tar.gz
+https://mirror.dfmc.com.cn/rustup/dist/x86_64-unknown-linux-gnu/rustup-init
+https://mirror.dfmc.com.cn/anaconda/package/conda-forge/ffmpeg
+```
+
+## 重新打补丁 / 增删依赖
+
+```bash
+# 1. 下载上游包到某个目录（有外网时）
+# 2. 打补丁
+python3 scripts/skillhub-vendor/patch_recipes.py <上游包目录> <补丁输出目录>
+
+# 3. 铺进 skillhub（可只导指定 id）
+python3 scripts/skillhub-vendor/import_deps.py <补丁输出目录> ./skillhub-data go rust
+
+# 4. 校验 + 重启
+go run ./cmd/skillhub -check -data ./skillhub-data
+docker compose restart skillhub
+```
+
+`patch_recipes.py` 会自己检查打过补丁的脚本语法：打坏了当场报错，
+不会等到装机时才失败。
