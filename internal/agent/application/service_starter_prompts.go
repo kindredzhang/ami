@@ -43,6 +43,11 @@ Rules:
 - "prompt": the full message the user would send, in the user's own voice, one or two sentences.
 - Make the three clearly different. Build on recent topics instead of repeating them.
 - Never invent personal facts that are not in the material.
+- This deployment runs on a corporate intranet. Suggest work the assistant can actually do
+  offline here: drafting and editing documents, summarizing, analysing exported data or files
+  in the workspace, preparing reports, planning schedules, answering from internal policy
+  documents. Never suggest anything that needs a public website, an overseas service, a social
+  network, a personal shopping or entertainment task, or installing software from the internet.
 - Return ONLY a JSON array: [{"title": "...", "prompt": "..."}]
 
 Material:

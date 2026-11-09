@@ -129,11 +129,32 @@ type SpawnIdentity struct {
 	WorkdirPath         string
 	TimezoneLocation    *time.Location
 	IsSubagent          bool
+	// ExpertName/ExpertDisplayName identify the expert this run acts as.
+	ExpertName        string
+	ExpertDisplayName string
+	// SkillsScoped marks the run's skill set as already narrowed, so the skill
+	// tool provider must not replace it with the bot's full catalog.
+	SkillsScoped bool
 }
 
 // SpawnLoopConfig mirrors agent.LoopDetectionConfig.
 type SpawnLoopConfig struct {
 	Enabled bool
+}
+
+// SpawnExpert is a fully resolved expert a task runs as. Resolution is
+// deliberately done here, in the tool layer, and handed down complete: the
+// subagent's own runtime never re-reads the expert's files, so the skills a
+// run executes with are exactly the set the parent's tool call named.
+type SpawnExpert struct {
+	Name        string
+	DisplayName string
+	// Skills is nil when the expert inherits the bot's full set. A non-nil
+	// empty map is a legitimate outcome (the expert names skills the bot does
+	// not have); it means the run gets no skills, not that it inherits.
+	Skills        map[string]SkillDetail
+	SkillsScoped  bool
+	SystemSection string
 }
 
 // SpawnResult mirrors agent.GenerateResult.
@@ -282,6 +303,10 @@ type SpawnProvider struct {
 	sessionService agentSessionService
 	messageService messagepkg.Service
 	systemPromptFn func(sessionType string) string
+	// expertResolver reads an expert definition out of a bot workspace. It is
+	// injected rather than imported so this package stays independent of the
+	// workspace file plumbing, which the composition root already owns.
+	expertResolver ExpertResolver
 	bgManager      *background.Manager
 	hookService    *hooks.Service
 	admitter       SubagentAdmitter
@@ -326,6 +351,35 @@ func (p *SpawnProvider) SetSystemPromptFunc(fn func(sessionType string) string) 
 	p.systemPromptFn = fn
 }
 
+// ExpertResolver reads expert definitions for one bot. Implementations return
+// ErrExpertNotFound for an unknown name and, for any other failure, an error
+// the tool surfaces as-is — an expert that exists but cannot be read must not
+// be reported to the model as "no such expert", because the model would then
+// pick a different one instead of telling the user what is broken.
+type ExpertResolver interface {
+	// ListExperts returns the bot's experts in the model-facing projection.
+	ListExperts(ctx context.Context, botID string) ([]SpawnExpertSummary, error)
+	// ResolveExpert loads one expert, with its skills already narrowed against
+	// the bot's effective skill set.
+	ResolveExpert(ctx context.Context, botID, name string) (SpawnExpert, error)
+}
+
+// SpawnExpertSummary is one listing row.
+type SpawnExpertSummary struct {
+	Name        string   `json:"name"`
+	DisplayName string   `json:"display_name,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Skills      []string `json:"skills,omitempty"`
+	InheritsAll bool     `json:"inherits_all_skills,omitempty"`
+}
+
+// ErrExpertNotFound reports an unknown expert name.
+var ErrExpertNotFound = errors.New("expert not found")
+
+func (p *SpawnProvider) SetExpertResolver(r ExpertResolver) {
+	p.expertResolver = r
+}
+
 func (p *SpawnProvider) SetHookService(h *hooks.Service) {
 	p.hookService = h
 }
@@ -359,6 +413,12 @@ func (*SpawnProvider) Usage(_ context.Context, _ SessionContext, available Avail
 	}
 	if ref, ok := available.Ref(ToolListAgents()); ok {
 		parts = append(parts, "Use "+ref+" to see agents created in the current session.")
+	}
+	if ref, ok := available.Ref(ToolListExperts()); ok {
+		parts = append(parts,
+			"Use "+ref+" to see this bot's experts.",
+			"Pass an expert's name as `expert` on spawn_agent to have that agent run with the expert's persona and its own skill set, instead of the bot's full skills. Pick an expert when the task matches its description; omit it for general work.",
+		)
 	}
 	if ref, ok := available.Ref(ToolSearchMessages()); ok {
 		parts = append(parts, "Read a finished task's full transcript with "+ref+" using the session ID returned by get_background_status when the brief result is not enough.")
@@ -411,36 +471,70 @@ func (p *SpawnProvider) Tools(_ context.Context, session SessionContext) ([]tool
 				return toolexec.OutputPair(p.execListModels(ctx.Context, sess))
 			}),
 		},
+		{
+			Name:        ToolListExperts().String(),
+			Description: "List the experts available in this bot. Pass an expert's name as spawn_agent's `expert` to have that agent run with the expert's persona and skill set.",
+			Parameters:  toolexec.SchemaFor[listExpertsArgs](),
+			Execute: toolexec.Typed(func(ctx *toolexec.ToolExecContext, _ listExpertsArgs) (sdk.ToolOutput, error) {
+				return toolexec.OutputPair(p.execListExperts(ctx.Context, sess))
+			}),
+		},
 	}, nil
+}
+
+func (p *SpawnProvider) execListExperts(ctx context.Context, session SessionContext) (any, error) {
+	if err := validateParentSession(session); err != nil {
+		return nil, err
+	}
+	if p.expertResolver == nil {
+		return map[string]any{"experts": []SpawnExpertSummary{}, "count": 0}, nil
+	}
+	experts, err := p.expertResolver.ListExperts(ctx, session.BotID)
+	if err != nil {
+		return nil, err
+	}
+	if experts == nil {
+		experts = []SpawnExpertSummary{}
+	}
+	return map[string]any{"experts": experts, "count": len(experts)}, nil
 }
 
 type agentRecord struct {
 	AgentID   string
 	SessionID string
 	Title     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	// ExpertName is the expert this agent runs as, empty for a plain subagent.
+	// It is read back from the session metadata so a follow-up keeps the
+	// agent's capability scope instead of reverting to the bot's full set.
+	ExpertName string
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type agentRunResult struct {
-	AgentID          string                         `json:"agent_id"`
-	SessionID        string                         `json:"session_id,omitempty"`
-	TaskID           string                         `json:"task_id,omitempty"`
-	ModelID          string                         `json:"model_id,omitempty"`
-	Provider         string                         `json:"provider,omitempty"`
-	Fork             bool                           `json:"fork,omitempty"`
-	Status           string                         `json:"status"`
-	Message          string                         `json:"message,omitempty"`
-	Text             string                         `json:"text,omitempty"`
-	Code             string                         `json:"code,omitempty"`
-	Error            string                         `json:"error,omitempty"`
-	QueuePosition    int                            `json:"queue_position,omitempty"`
-	QueueRemaining   int                            `json:"queue_remaining,omitempty"`
-	TimedOut         bool                           `json:"timed_out,omitempty"`
-	ContextLifecycle *contextfrag.LifecycleSnapshot `json:"-"`
-	Cause            error                          `json:"-"`
-	AttemptResolved  bool                           `json:"-"`
-	AttemptOutcome   SpawnAttemptDisposition        `json:"-"`
+	AgentID        string `json:"agent_id"`
+	SessionID      string `json:"session_id,omitempty"`
+	TaskID         string `json:"task_id,omitempty"`
+	ModelID        string `json:"model_id,omitempty"`
+	Provider       string `json:"provider,omitempty"`
+	Fork           bool   `json:"fork,omitempty"`
+	Status         string `json:"status"`
+	Message        string `json:"message,omitempty"`
+	Text           string `json:"text,omitempty"`
+	Code           string `json:"code,omitempty"`
+	Error          string `json:"error,omitempty"`
+	QueuePosition  int    `json:"queue_position,omitempty"`
+	QueueRemaining int    `json:"queue_remaining,omitempty"`
+	// ExpertName/ExpertDisplayName identify the expert this agent runs as.
+	// They travel in the tool result so the web client can label the spawn
+	// block (and the session it opens) without resolving experts itself.
+	ExpertName        string                         `json:"expert_name,omitempty"`
+	ExpertDisplayName string                         `json:"expert_display_name,omitempty"`
+	TimedOut          bool                           `json:"timed_out,omitempty"`
+	ContextLifecycle  *contextfrag.LifecycleSnapshot `json:"-"`
+	Cause             error                          `json:"-"`
+	AttemptResolved   bool                           `json:"-"`
+	AttemptOutcome    SpawnAttemptDisposition        `json:"-"`
 }
 
 type agentRequest struct {
@@ -453,6 +547,11 @@ type agentRequest struct {
 	config           sessionpkg.SubagentConfig
 	runtime          resolvedSubagentModel
 	systemPrompt     string
+	// expert is the resolved expert this task runs as, or zero for a plain
+	// subagent. It carries the narrowed skill set and the persona prompt, and
+	// it is what lets a consumer tell "which expert answered" from the run's
+	// own metadata rather than re-resolving the name.
+	expert SpawnExpert
 	// admission is the run identity the durable gate allocated; persistence
 	// files this task's messages under admission.TurnID.
 	admission SubagentAdmission
@@ -534,6 +633,15 @@ func (p *SpawnProvider) execSpawnAgent(ctx context.Context, session SessionConte
 	if task == "" {
 		return nil, errors.New("task is required")
 	}
+	expertName := strings.TrimSpace(args.Expert)
+	if expertName != "" {
+		// Fail before a subagent session exists: a spawn that names an expert
+		// the bot does not have should cost the parent one clear error, not a
+		// session that then fails on its first turn.
+		if _, err := p.resolveExpert(ctx, session, expertName); err != nil {
+			return nil, err
+		}
+	}
 	agentID, err := p.resolveNewAgentID(ctx, session, args.ID)
 	if err != nil {
 		return nil, err
@@ -580,12 +688,12 @@ func (p *SpawnProvider) execSpawnAgent(ctx context.Context, session SessionConte
 			})
 		}
 	}
-	rec, config, err := p.createAgentSession(context.WithoutCancel(ctx), session, agentID, task, runtime, forked, forkContext)
+	rec, config, err := p.createAgentSession(context.WithoutCancel(ctx), session, agentID, task, runtime, forked, forkContext, expertName)
 	if err != nil {
 		return nil, err
 	}
 	runInBackground := args.RunInBackground
-	return p.submitAgentTask(ctx, session, rec, config, task, runInBackground)
+	return p.submitAgentTask(ctx, session, rec, config, task, runInBackground, expertName)
 }
 
 func (p *SpawnProvider) execSendMessage(ctx context.Context, session SessionContext, args sendMessageArgs) (any, error) {
@@ -609,7 +717,7 @@ func (p *SpawnProvider) execSendMessage(ctx context.Context, session SessionCont
 		return nil, err
 	}
 	runInBackground := args.RunInBackground
-	return p.submitAgentTask(ctx, session, rec, config, message, runInBackground)
+	return p.submitAgentTask(ctx, session, rec, config, message, runInBackground, rec.ExpertName)
 }
 
 func (p *SpawnProvider) execListModels(ctx context.Context, session SessionContext) (any, error) {
@@ -686,7 +794,13 @@ func (p *SpawnProvider) execListAgents(ctx context.Context, session SessionConte
 	return map[string]any{"agents": items, "count": len(items)}, nil
 }
 
-func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionContext, rec agentRecord, config sessionpkg.SubagentConfig, message string, runInBackground bool) (any, error) {
+// submitAgentTask queues or runs one task for an existing agent session.
+//
+// expertName is empty for a plain subagent. For a follow-up it is recovered
+// from the session's own metadata, so a follow-up keeps running as the expert
+// the agent was created as instead of quietly reverting to the bot's full
+// skill set on the second message.
+func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionContext, rec agentRecord, config sessionpkg.SubagentConfig, message string, runInBackground bool, expertName string) (any, error) {
 	if p.bgManager == nil {
 		return nil, errors.New("background task manager not available")
 	}
@@ -699,10 +813,15 @@ func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionCont
 	if err != nil {
 		return nil, fmt.Errorf("resolve model: %w", err)
 	}
+	expert, err := p.resolveExpert(ctx, session, expertName)
+	if err != nil {
+		return nil, err
+	}
 	systemPrompt := ""
 	if p.systemPromptFn != nil {
 		systemPrompt = p.systemPromptFn(sessionpkg.TypeSubagent)
 	}
+	systemPrompt = applyExpertToSystemPrompt(systemPrompt, expert)
 
 	req := &agentRequest{
 		agentID:        rec.AgentID,
@@ -712,6 +831,7 @@ func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionCont
 		config:         config,
 		runtime:        runtime,
 		systemPrompt:   systemPrompt,
+		expert:         expert,
 	}
 	description := truncateTitle(fmt.Sprintf("%s: %s", rec.AgentID, message), 120)
 
@@ -728,7 +848,7 @@ func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionCont
 		st.queue = append(st.queue, req)
 		queuePosition := len(st.queue)
 		p.coord.mu.Unlock()
-		return map[string]any{
+		return withExpertIdentity(map[string]any{
 			"agent_id":       rec.AgentID,
 			"session_id":     rec.SessionID,
 			"task_id":        taskID,
@@ -739,7 +859,7 @@ func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionCont
 			"description":    description,
 			"queue_position": queuePosition,
 			"message":        "Agent is currently running. Message queued. Use wait_until(task_id), then get_background_status(task_id) to inspect result.",
-		}, nil
+		}, expert), nil
 	}
 
 	taskID, taskCtx, err := p.bgManager.StartAgentTask(ctx, session.BotID, session.SessionID, rec.AgentID, rec.SessionID, message, description, false)
@@ -753,7 +873,7 @@ func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionCont
 
 	if runInBackground {
 		go p.runAgentRequest(taskCtx, key, req)
-		return map[string]any{
+		return withExpertIdentity(map[string]any{
 			"agent_id":    rec.AgentID,
 			"session_id":  rec.SessionID,
 			"task_id":     taskID,
@@ -763,7 +883,7 @@ func (p *SpawnProvider) submitAgentTask(ctx context.Context, session SessionCont
 			"status":      "background_started",
 			"description": description,
 			"message":     fmt.Sprintf("Agent %s started in background with task ID: %s. Use wait_until(task_id), then get_background_status(task_id) to inspect result.", rec.AgentID, taskID),
-		}, nil
+		}, expert), nil
 	}
 
 	progressCtx, progressCancel := context.WithCancel(ctx)
@@ -911,13 +1031,15 @@ func (p *SpawnProvider) finishAgentRequest(ctx context.Context, key string, resu
 
 func (p *SpawnProvider) runSubagentTask(ctx context.Context, req *agentRequest) agentRunResult {
 	res := agentRunResult{
-		AgentID:   req.agentID,
-		SessionID: req.agentSessionID,
-		TaskID:    req.taskID,
-		ModelID:   req.config.ModelID,
-		Provider:  req.config.ProviderName,
-		Fork:      req.config.Forked,
-		Message:   req.message,
+		AgentID:           req.agentID,
+		SessionID:         req.agentSessionID,
+		TaskID:            req.taskID,
+		ModelID:           req.config.ModelID,
+		Provider:          req.config.ProviderName,
+		Fork:              req.config.Forked,
+		Message:           req.message,
+		ExpertName:        req.expert.Name,
+		ExpertDisplayName: req.expert.DisplayName,
 	}
 	runtime, err := p.modelResolver(
 		context.WithoutCancel(ctx),
@@ -985,7 +1107,7 @@ func (p *SpawnProvider) runSubagentTask(ctx context.Context, req *agentRequest) 
 		SupportsFileInput:        req.runtime.SupportsFileInput,
 		SupportsToolCall:         req.runtime.SupportsToolCall,
 		Messages:                 history,
-		Skills:                   req.parentSession.Skills,
+		Skills:                   req.subagentSkills(),
 		BackgroundManager:        p.bgManager,
 		ContextBudgetMaxTokens:   contextBudgetMaxTokens,
 		ModelMaxOutputTokens:     req.runtime.ModelMaxOutputTokens,
@@ -1004,9 +1126,12 @@ func (p *SpawnProvider) runSubagentTask(ctx context.Context, req *agentRequest) 
 			WorkspaceTargetKind: req.parentSession.WorkspaceTargetKind,
 			WorkspaceTargetName: req.parentSession.WorkspaceTargetName,
 			// A subagent works in its parent's working directory.
-			WorkdirPath:      req.parentSession.WorkdirPath,
-			TimezoneLocation: req.parentSession.TimezoneLocation,
-			IsSubagent:       true,
+			WorkdirPath:       req.parentSession.WorkdirPath,
+			TimezoneLocation:  req.parentSession.TimezoneLocation,
+			IsSubagent:        true,
+			ExpertName:        req.expert.Name,
+			ExpertDisplayName: req.expert.DisplayName,
+			SkillsScoped:      req.expert.SkillsScoped,
 		},
 		LoopDetection: SpawnLoopConfig{Enabled: true},
 	}
@@ -1164,6 +1289,21 @@ func (p *SpawnProvider) runSubagentTask(ctx context.Context, req *agentRequest) 
 	return res
 }
 
+// subagentSkills is the skill set this task runs with.
+//
+// A plain subagent inherits the parent's set, as it always has. An expert's
+// set is authoritative: nil means the expert inherits the bot's skills (so the
+// parent's set is right), and a non-nil map — including an empty one — is what
+// the expert is scoped to. The distinction matters because an expert whose
+// named skills all went missing must run with no skills, not silently with all
+// of them.
+func (req *agentRequest) subagentSkills() map[string]SkillDetail {
+	if req.expert.SkillsScoped {
+		return req.expert.Skills
+	}
+	return req.parentSession.Skills
+}
+
 // fail records err as the task's failure. The parent model reads only the
 // catalog code and its fixed detail; err itself stays on the result for the
 // task's terminal record.
@@ -1266,6 +1406,92 @@ func (p *SpawnProvider) runSubagentHook(ctx context.Context, eventName string, r
 	return nil
 }
 
+// withExpertIdentity stamps an immediate tool result with the expert it runs
+// as. The early-return paths (queued, background) are what the user sees while
+// the agent is still working, so the expert has to be in them too — otherwise
+// the label only appears once the run finishes, which is exactly when it
+// matters least.
+func withExpertIdentity(payload map[string]any, expert SpawnExpert) map[string]any {
+	if expert.Name != "" {
+		payload["expert_name"] = expert.Name
+	}
+	if expert.DisplayName != "" {
+		payload["expert_display_name"] = expert.DisplayName
+	}
+	return payload
+}
+
+// applyExpertToSystemPrompt appends the expert's persona to the subagent's
+// system prompt.
+//
+// It appends rather than replaces on purpose. The subagent prompt carries the
+// standing rules a run must keep (tool-use discipline, safety, how to report
+// back to the parent); an expert refines *who* is doing the work, it does not
+// get to drop those. The expert section is fenced by its own heading, so the
+// model can tell the two apart.
+func applyExpertToSystemPrompt(systemPrompt string, expert SpawnExpert) string {
+	section := strings.TrimSpace(expert.SystemSection)
+	if section == "" {
+		return systemPrompt
+	}
+	base := strings.TrimSpace(systemPrompt)
+	if base == "" {
+		return section
+	}
+	return base + "\n\n" + section
+}
+
+// subagentMetadata is the thread metadata a spawned session is created with.
+//
+// expert_name is stored on the thread, not only on the in-memory request,
+// because a follow-up message arrives in a later turn with no request to read
+// it from — and because the web client needs to label the session with the
+// expert that owns it without resolving experts itself.
+func subagentMetadata(agentID string, runtime resolvedSubagentModel, expertName string) map[string]any {
+	meta := map[string]any{
+		"agent_id":              agentID,
+		"agent_control_version": agentControlVersion,
+		// The pinned runtime, mirrored where a reader of the session can see
+		// it: a client that lets a human talk to this subagent directly has to
+		// offer the model the agent was spawned on, otherwise the first direct
+		// message silently moves it onto the parent bot's default.
+		// subagent_configs stays authoritative.
+		"model_uuid":     runtime.UUID,
+		"model_id":       runtime.ModelID,
+		"model_provider": runtime.ProviderName,
+	}
+	if name := strings.TrimSpace(expertName); name != "" {
+		meta["expert_name"] = name
+	}
+	return meta
+}
+
+// resolveExpert loads the named expert for this bot.
+//
+// An empty name is not an error: it means "no expert", and the run keeps the
+// bot's own skills and prompt. That is the plain-subagent case, and it has to
+// stay cheap — most spawns do not name an expert.
+func (p *SpawnProvider) resolveExpert(ctx context.Context, session SessionContext, name string) (SpawnExpert, error) {
+	name = strings.TrimSpace(name)
+	if name == "" {
+		return SpawnExpert{}, nil
+	}
+	if p.expertResolver == nil {
+		return SpawnExpert{}, errors.New("experts are not available in this deployment")
+	}
+	expert, err := p.expertResolver.ResolveExpert(ctx, session.BotID, name)
+	if err != nil {
+		if errors.Is(err, ErrExpertNotFound) {
+			// Tell the model the name was wrong *and* what the real names are:
+			// a bare "not found" makes it guess again, and a guessed expert
+			// silently runs with the wrong skills.
+			return SpawnExpert{}, fmt.Errorf("expert %q not found; call list_experts to see the available experts", name)
+		}
+		return SpawnExpert{}, err
+	}
+	return expert, nil
+}
+
 func (p *SpawnProvider) createAgentSession(
 	ctx context.Context,
 	parent SessionContext,
@@ -1273,6 +1499,7 @@ func (p *SpawnProvider) createAgentSession(
 	runtime resolvedSubagentModel,
 	forked bool,
 	forkContext []sessionpkg.SubagentForkContextMessage,
+	expertName string,
 ) (agentRecord, sessionpkg.SubagentConfig, error) {
 	if p.sessionService == nil {
 		return agentRecord{}, sessionpkg.SubagentConfig{}, errors.New("session service not available")
@@ -1284,18 +1511,7 @@ func (p *SpawnProvider) createAgentSession(
 			Title:           truncateTitle(task, 100),
 			ParentThreadID:  parent.SessionID,
 			CreatedByUserID: strings.TrimSpace(parent.UserID),
-			Metadata: map[string]any{
-				"agent_id":              agentID,
-				"agent_control_version": agentControlVersion,
-				// The pinned runtime, mirrored where a reader of the session
-				// can see it: a client that lets a human talk to this subagent
-				// directly has to offer the model the agent was spawned on,
-				// otherwise the first direct message silently moves it onto the
-				// parent bot's default. subagent_configs stays authoritative.
-				"model_uuid":     runtime.UUID,
-				"model_id":       runtime.ModelID,
-				"model_provider": runtime.ProviderName,
-			},
+			Metadata:        subagentMetadata(agentID, runtime, expertName),
 		},
 		ModelUUID:    runtime.UUID,
 		ModelID:      runtime.ModelID,
@@ -1377,12 +1593,14 @@ func (p *SpawnProvider) listAgentRecords(ctx context.Context, session SessionCon
 		if agentID == "" {
 			continue
 		}
+		expertName, _ := sess.Metadata["expert_name"].(string)
 		records = append(records, agentRecord{
-			AgentID:   agentID,
-			SessionID: sess.ID,
-			Title:     sess.Title,
-			CreatedAt: sess.CreatedAt,
-			UpdatedAt: sess.UpdatedAt,
+			AgentID:    agentID,
+			SessionID:  sess.ID,
+			Title:      sess.Title,
+			ExpertName: strings.TrimSpace(expertName),
+			CreatedAt:  sess.CreatedAt,
+			UpdatedAt:  sess.UpdatedAt,
 		})
 	}
 	sort.Slice(records, func(i, j int) bool {
@@ -1532,6 +1750,12 @@ func agentResultMap(res agentRunResult) map[string]any {
 	}
 	if res.QueuePosition > 0 {
 		out["queue_position"] = res.QueuePosition
+	}
+	if res.ExpertName != "" {
+		out["expert_name"] = res.ExpertName
+	}
+	if res.ExpertDisplayName != "" {
+		out["expert_display_name"] = res.ExpertDisplayName
 	}
 	if res.QueueRemaining > 0 {
 		out["queue_remaining"] = res.QueueRemaining
@@ -1928,6 +2152,7 @@ func (p *SpawnProvider) resolveSubagentReasoning(
 }
 
 type spawnAgentArgs struct {
+	Expert          string `json:"expert,omitempty" jsonschema:"Optional expert name (from list_experts) this agent should run as. The agent then uses that expert's persona and skill set. Omit for a general-purpose agent with the bot's full skills."`
 	Fork            bool   `json:"fork,omitempty" jsonschema:"If true, inherit the parent model's current message context while keeping the subagent system prompt and tools."`
 	ID              string `json:"id,omitempty" jsonschema:"Optional memorable agent id. If omitted, an id like agent_1 is assigned. Must be lowercase letters, digits, underscore, or hyphen."`
 	ModelID         string `json:"model_id,omitempty" jsonschema:"Optional external model name from the current session's provider. Omit to use the current session model."`
@@ -1943,5 +2168,7 @@ type sendMessageArgs struct {
 }
 
 type listAgentsArgs struct{}
+
+type listExpertsArgs struct{}
 
 type listModelsArgs struct{}

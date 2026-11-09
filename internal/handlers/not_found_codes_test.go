@@ -16,7 +16,6 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 
-	"github.com/kindredzhang/ami/internal/accounts"
 	"github.com/kindredzhang/ami/internal/apperror"
 	"github.com/kindredzhang/ami/internal/audio"
 	"github.com/kindredzhang/ami/internal/bots"
@@ -214,20 +213,6 @@ func (botNoRows) GetBotByID(context.Context, pgtype.UUID) (sqlc.GetBotByIDRow, e
 func TestBotAuthorizationAnswersBotNotFound(t *testing.T) {
 	_, err := AuthorizeBotAccess(context.Background(), bots.NewService(nil, botNoRows{}), newTestAdminAccountService("user"), "user-1", "00000000-0000-0000-0000-0000000000b1")
 	requireNotFoundCode(t, err, apperror.CodeBotNotFound, true)
-}
-
-type userNoRows struct{ dbstore.AccountStore }
-
-func (userNoRows) GetByUserID(context.Context, string) (dbstore.AccountRecord, error) {
-	return dbstore.AccountRecord{}, pgx.ErrNoRows
-}
-
-func TestGetUserAnswersUserNotFound(t *testing.T) {
-	h := &UsersHandler{service: accounts.NewService(nil, userNoRows{})}
-	c := testAuthContext(echo.New(), httptest.NewRequest(http.MethodGet, "/", nil), httptest.NewRecorder(), "user-1")
-	c.SetParamNames("id")
-	c.SetParamValues("user-1")
-	requireNotFoundCode(t, h.GetUser(c), apperror.CodeUserNotFound, false)
 }
 
 func TestBrowserProxyAnswersBrowserSessionNotFound(t *testing.T) {

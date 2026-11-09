@@ -170,6 +170,7 @@ const (
 	CodeSessionResetUnavailable                  Code = "session_runtime.reset_unavailable"
 	CodeSessionResetConflict                     Code = "session_runtime.reset_conflict"
 	CodeHistoryDeleteFailed                      Code = "history.delete_failed"
+	CodeExpertNotFound                           Code = "expert.not_found"
 	CodeHookUserMessageFailed                    Code = "hook.user_message_failed"
 	CodeSessionPublishFailed                     Code = "session_runtime.publish_failed"
 	CodeSessionAbortFailed                       Code = "session_runtime.abort_failed"
@@ -928,13 +929,12 @@ var catalog = map[Code]Definition{
 	// the agent's own message is shown instead. They stay registered for the
 	// runs and history written with them.
 	//
-	// The external agent's own account has no usage left: a plan allowance
-	// that resets, a billing quota that does not, or a plan that does not
-	// include the agent. The agent reports them as one condition, so the copy
-	// covers both waiting and checking the plan.
+	// The external agent's own account has no usage left in its allowance
+	// window. The agent reports this as one condition no matter the cause, so
+	// the copy only tells the user to wait for the reset.
 	CodeExternalRuntimeUsageLimited: {
 		HTTPStatus: http.StatusTooManyRequests,
-		Detail:     "The external agent's account has no usage left. Try again after the limit resets, or check the account's plan and billing.",
+		Detail:     "The external agent's account has no usage left. Try again after the limit resets.",
 		Fault:      FaultDependency,
 	},
 	CodeExternalRuntimeRateLimited: {
@@ -1081,6 +1081,10 @@ var catalog = map[Code]Definition{
 		HTTPStatus: http.StatusNotFound,
 		Detail:     "The message was not found in this conversation. Refresh and try again.",
 	},
+	CodeExpertNotFound: {
+		HTTPStatus: http.StatusNotFound,
+		Detail:     "That expert no longer exists. Pick another expert and try again.",
+	},
 	CodeSessionTurnNotLatest: {
 		HTTPStatus: http.StatusConflict,
 		Detail:     "The conversation has newer messages. Refresh and try again.",
@@ -1174,7 +1178,7 @@ var catalog = map[Code]Definition{
 	},
 	CodeAgentProviderQuotaExhausted: {
 		HTTPStatus: http.StatusPaymentRequired,
-		Detail:     "The model provider account has no remaining balance or quota.",
+		Detail:     "The model provider account has no remaining quota.",
 		Fault:      FaultDependency,
 	},
 	// A provider's rejected key answers 502: a 401 would sign the Web client out.

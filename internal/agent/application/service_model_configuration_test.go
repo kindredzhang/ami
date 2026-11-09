@@ -26,6 +26,13 @@ func (*missingModelQueries) GetBotByID(context.Context, pgtype.UUID) (sqlc.GetBo
 	return sqlc.GetBotByIDRow{}, nil
 }
 
+// ListEnabledModelsByType answers "the deployment has no chat model", which is
+// what this test is about. Without it the embedded nil interface panics instead
+// of reaching the not-configured error under test.
+func (*missingModelQueries) ListEnabledModelsByType(context.Context, string) ([]sqlc.Model, error) {
+	return nil, nil
+}
+
 func TestBuildBaseRunConfigMissingModelPreservesPublicCode(t *testing.T) {
 	queries := &missingModelQueries{}
 	logger := slog.New(slog.DiscardHandler)

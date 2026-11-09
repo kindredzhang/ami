@@ -46,7 +46,19 @@ func (s *Service) selectChatModel(ctx context.Context, req ChatRequest, botSetti
 	}
 
 	if modelID == "" {
-		return models.GetResponse{}, sqlc.Provider{}, errChatModelNotConfigured
+		// Nothing pinned the model: no session preference, no agent default, and
+		// no prior round to continue from. As long as the deployment has a usable
+		// chat model on an enabled provider, use it rather than refusing to
+		// answer — a configured provider is the user's intent to "just work", and
+		// an empty agent setting should not read as "unconfigured" on screen.
+		auto, ok, err := s.pickDefaultChatModel(ctx, providerFilter)
+		if err != nil {
+			return models.GetResponse{}, sqlc.Provider{}, err
+		}
+		if !ok {
+			return models.GetResponse{}, sqlc.Provider{}, errChatModelNotConfigured
+		}
+		return auto.model, auto.provider, nil
 	}
 
 	if providerFilter == "" {
@@ -342,6 +354,48 @@ func matchesModelReference(model models.GetResponse, modelRef string) bool {
 		return false
 	}
 	return model.ID == ref || model.ModelID == ref
+}
+
+// defaultChatModel is a resolved (model, provider) pair chosen without any
+// explicit selection.
+type defaultChatModel struct {
+	model    models.GetResponse
+	provider sqlc.Provider
+}
+
+// pickDefaultChatModel chooses a chat model to use when nothing else pins one.
+// It walks the enabled chat models in the order the models service returns them
+// and takes the first that is actually usable: its provider must be enabled and
+// the model must not be image-only (an image-only chat model cannot answer a
+// text turn).
+//
+// ok is false when the deployment has no usable chat model at all — in that case
+// the caller keeps its original "not configured" error, because nothing would
+// work anyway.
+func (s *Service) pickDefaultChatModel(ctx context.Context, providerFilter string) (defaultChatModel, bool, error) {
+	candidates, err := s.listCandidates(ctx, providerFilter)
+	if err != nil {
+		return defaultChatModel{}, false, err
+	}
+	for _, m := range candidates {
+		prov, err := models.FetchProviderByID(ctx, s.queries, m.ProviderID)
+		if err != nil {
+			// A model whose provider row is gone is simply not a candidate; keep
+			// looking instead of failing the whole turn.
+			if errors.Is(err, pgx.ErrNoRows) {
+				continue
+			}
+			return defaultChatModel{}, false, err
+		}
+		if !prov.Enable {
+			continue
+		}
+		if isImageOnlyChatModel(m, prov) {
+			continue
+		}
+		return defaultChatModel{model: m, provider: prov}, true, nil
+	}
+	return defaultChatModel{}, false, nil
 }
 
 func (s *Service) listCandidates(ctx context.Context, providerFilter string) ([]models.GetResponse, error) {

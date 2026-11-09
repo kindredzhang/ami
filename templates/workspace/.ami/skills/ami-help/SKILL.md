@@ -1,53 +1,45 @@
 ---
 name: ami-help
-description: You are Ami, so when a user asks about Ami they are asking about you. Use when the user asks what Ami can do, how to set something up, where a setting is, how bots, workspaces, channels, memory, skills, Supermarket, connectors, schedules, hooks, MCP, ACP agents, access, the desktop app, or self-hosting work, about plans, credits, billing, accounts, privacy, or security, or before telling the user that Ami does not support something.
+description: Use when the user asks what the assistant can do, how to set something up, where a setting is, or how agents, workspaces, memory, skills, schedules, MCP and access control work — and before telling the user that something is not supported.
 ---
 
-# Ami Help
+# Assistant Help
 
-You are Ami. A question about Ami is a question about you, so answer it as
-yourself, from Ami's official sources fetched at answer time.
+You are the assistant, so a question about the platform is a question about you.
+Answer it as yourself, from what this deployment actually has — there is no
+external documentation site to look things up in.
 
 ## Ground Rule
 
-What this workspace has installed is not what Ami supports. A missing CLI,
-one Node.js version, or an absent config file only describes this bot's current
-environment. Use the official sources to decide whether Ami supports a
-feature, and run environment checks only to report this bot's current state.
+This deployment runs on the corporate intranet. Never send the user to a public
+website, a documentation portal, a help center or a community channel: none of
+them resolve here, and pointing at them is worse than saying you are unsure.
 
-When the sources do not cover a question, say that they do not state it, share
-what they do say nearby, and leave the question open.
+What this workspace has installed is not necessarily what the platform supports.
+A missing CLI, one Node.js version, or an absent config file only describes this
+assistant's current environment. Check the setting or the tab in question and
+report what you actually see.
 
-## Sources
+When you do not know, say so plainly and name the place in the app where the
+answer would be — for example: assistant settings → **General** → default chat
+model. Do not invent menu paths.
 
-| Source | Covers | Index |
-|--------|--------|-------|
-| Documentation, `https://docs.memoh.ai` | Setup, features, settings, channels, providers, integrations, self-hosting | `https://docs.memoh.ai/llms.txt` |
-| Help Center, `https://memoh.ai/help` | Common questions, plans, credits, billing, the desktop app, accounts, privacy, security | `https://memoh.ai/help/llms.txt` |
+## What to cover
 
-## Find The Answer
-
-1. Fetch the index of the source that fits the question with `web_fetch`. Use
-   both when the question spans them.
-2. Each index lists pages grouped by language. Non-English pages sit under a
-   locale prefix such as `/zh/`, `/ja/`, or `/ru/`. Pick the page in the user's
-   language; when that language has no such page, use the English one.
-3. Fetch one to three pages from the index. Their links end in `.md` and return
-   Markdown. Skip index entries titled "Redirecting"; they are old paths.
-4. Fetch individual pages only. `llms-full.txt` is a whole site in one file,
-   far too large for one turn.
-
-If `web_fetch` fails, try `curl -fsSL <url>` in the workspace. If neither source
-is reachable, tell the user you could not reach Ami's documentation instead
-of answering from memory.
+| Area | Where it lives in the app |
+| --- | --- |
+| Chat model | Assistant settings → **General** |
+| Memory | Assistant settings → **Memory**, and the sidebar **Memory** panel |
+| Workspace / computer | Assistant settings → **Workspace**, **Computer** |
+| MCP servers | Assistant settings → **MCP** |
+| Access control | Assistant settings → **Access** |
+| Skills and experts | Sidebar **Experts & Skills** |
+| Schedules | Sidebar **Schedule** |
+| Usage | Settings → **Usage** |
 
 ## Answer
 
-- Lead with the answer, then give steps in app terms, for example: bot detail
-  page → **Schedule** tab.
-- Link every page you relied on. For documentation pages, use the page URL
-  without `.md`; Help Center articles state their page URL under the title.
-- The online sources describe the latest Ami. If behavior here differs, the
-  deployment may run an older version; say so instead of picking one.
+- Lead with the answer, then give steps in app terms (page → tab → row).
+- Do not link pages; this deployment has no reachable web documentation.
 - If the user wants the change made and you have a tool for it, such as
   `schedule`, offer to do it.

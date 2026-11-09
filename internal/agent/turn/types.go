@@ -56,6 +56,18 @@ func (a Attachment) Bundle() attachment.Bundle {
 	}.Normalize()
 }
 
+// AssignedExpert is the expert a user pinned to one turn with @ in the
+// composer.
+//
+// It carries only what the main agent needs to hand the task over; the skill
+// scoping and persona still come from the expert definition the spawn tool
+// resolves. Name is the stable reference, DisplayName is for the instruction
+// text so the model sees what the user saw.
+type AssignedExpert struct {
+	Name        string `json:"name"`
+	DisplayName string `json:"display_name,omitempty"`
+}
+
 // RequestedSkillContext is the full skill material made available to one turn.
 // Its fields are internal execution context and are intentionally omitted from
 // JSON payloads.

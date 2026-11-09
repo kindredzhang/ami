@@ -340,8 +340,17 @@ type SessionContext struct {
 	WorkspaceTargetName string
 	// WorkdirPath is the session's immutable working directory. When set,
 	// relative tool paths resolve under it and exec defaults its cwd to it.
-	WorkdirPath            string
-	Skills                 map[string]SkillDetail
+	WorkdirPath string
+	Skills      map[string]SkillDetail
+	// SkillsScoped marks Skills as an authoritative, already-narrowed set that
+	// SkillProvider must not replace. Without it the provider reloads the bot's
+	// full skill catalog on every call, which silently undoes any upstream
+	// scoping — an expert's slice would come back as everything the bot has.
+	SkillsScoped bool
+	// ExpertName and ExpertDisplayName identify the expert this run is acting
+	// as, for tool usage text and for the stream metadata clients read.
+	ExpertName             string
+	ExpertDisplayName      string
 	TimezoneLocation       *time.Location
 	Emitter                StreamEmitter
 	LiveStream             bool

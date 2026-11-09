@@ -519,7 +519,7 @@
       "provider_auth_failed": "The model provider rejected the credentials. Check the provider API key.",
       "provider_overloaded": "The model provider is unavailable or overloaded right now. Please try again in a moment.",
       "provider_permission_denied": "The model provider denied access to this model or resource. Check that the provider account can use this model.",
-      "provider_quota_exhausted": "The model provider account has no remaining balance or quota.",
+      "provider_quota_exhausted": "The model provider account has no remaining quota.",
       "provider_rate_limited": "The model provider rate limit was reached. Please wait a moment before sending again.",
       "provider_request_rejected": "The model provider rejected the request. Check the model settings, or try another model.",
       "provider_unreachable": "Ami could not reach the model provider. Check the provider address and that the service is running.",
@@ -630,6 +630,9 @@
       "session_not_found": "This display session has ended. Open a new one."
     },
     "elicitation_declined": "A tool requested an interaction that could not be shown. The request was declined.",
+    "expert": {
+      "not_found": "That expert no longer exists. Pick another expert and try again."
+    },
     "external_agent": {
       "account_unbound": "Your IM account isn't linked to a Ami account yet, so you can't use this bot's workspace. If you're its owner, open Profile → Connected Accounts in Ami on the web, get a link code, and send {link} <code> here.",
       "container_workspace_required": "This agent runtime needs a container workspace. Switch the bot to its container workspace, then try again.",
@@ -646,7 +649,7 @@
       "session_resume_failed": "The session could not be resumed: {message}. Try again or start a new conversation.",
       "unavailable": "The external Agent runtime is unavailable. Check the Agent setup and workspace, then try again.",
       "upstream_unreachable": "The external Agent could not reach its model service, or the connection dropped. Check the network and the Agent's service address, then try again.",
-      "usage_limited": "The external Agent's account has no usage left. Try again after the limit resets, or check the account's plan and billing."
+      "usage_limited": "The external Agent's account has no usage left. Try again after the limit resets."
     },
     "fetch_provider": {
       "native_managed": "The built-in fetch provider is managed by Ami and cannot be changed this way.",

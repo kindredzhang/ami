@@ -19,21 +19,6 @@ import (
 type Service struct {
 	store  dbstore.AccountStore
 	logger *slog.Logger
-	// defaultBot provisions the starter expert every new human account gets,
-	// so a fresh user lands in a working conversation instead of an empty list.
-	defaultBot DefaultBotProvisioner
-}
-
-// DefaultBotProvisioner creates the starter expert for a newly created user.
-// It is wired by the composition root because expert creation lives in another
-// package; accounts only decides when a human first exists.
-type DefaultBotProvisioner interface {
-	EnsureDefaultBot(ctx context.Context, ownerUserID string) error
-}
-
-// SetDefaultBotProvisioner registers the starter-expert provisioner.
-func (s *Service) SetDefaultBotProvisioner(p DefaultBotProvisioner) {
-	s.defaultBot = p
 }
 
 var (
@@ -116,22 +101,6 @@ func (s *Service) Login(ctx context.Context, identity, password string) (Account
 		}
 	}
 	return toAccount(row), nil
-}
-
-// ListAccounts returns all accounts.
-func (s *Service) ListAccounts(ctx context.Context) ([]Account, error) {
-	if s.store == nil {
-		return nil, errors.New("account store not configured")
-	}
-	rows, err := s.store.List(ctx)
-	if err != nil {
-		return nil, err
-	}
-	items := make([]Account, 0, len(rows))
-	for _, row := range rows {
-		items = append(items, toAccount(row))
-	}
-	return items, nil
 }
 
 // SearchAccounts returns account candidates for UI search.
@@ -217,77 +186,6 @@ func (s *Service) Create(ctx context.Context, userID string, req CreateAccountRe
 	}
 	account := toAccount(row)
 	return account, nil
-}
-
-// CreateHuman keeps compatibility with older call sites.
-//
-// Deprecated: use Create directly.
-func (s *Service) CreateHuman(ctx context.Context, userID string, req CreateAccountRequest) (Account, error) {
-	userID = strings.TrimSpace(userID)
-	if userID == "" {
-		if s.store == nil {
-			return Account{}, errors.New("account store not configured")
-		}
-		userRow, err := s.store.CreateUser(ctx, dbstore.CreateUserInput{
-			IsActive: true,
-			Metadata: []byte("{}"),
-		})
-		if err != nil {
-			return Account{}, err
-		}
-		if strings.TrimSpace(userRow.ID) == "" {
-			return Account{}, errors.New("create user: invalid id")
-		}
-		userID = userRow.ID
-	}
-	account, err := s.Create(ctx, userID, req)
-	if err != nil {
-		return Account{}, err
-	}
-	// Provision the starter expert only after the account row exists — expert
-	// creation validates that the owner is a real account. Best-effort: a
-	// failure here must not fail a registration that already succeeded.
-	s.ensureDefaultBot(ctx, userID)
-	return account, nil
-}
-
-// ensureDefaultBot provisions the starter expert, logging rather than failing.
-func (s *Service) ensureDefaultBot(ctx context.Context, userID string) {
-	if s.defaultBot == nil || strings.TrimSpace(userID) == "" {
-		return
-	}
-	if err := s.defaultBot.EnsureDefaultBot(ctx, userID); err != nil {
-		s.logger.ErrorContext(ctx, "failed to provision default expert",
-			slog.String("user_id", userID),
-			slog.Any("error", err))
-	}
-}
-
-// UpdateAdmin updates account fields as admin.
-func (s *Service) UpdateAdmin(ctx context.Context, userID string, req UpdateAccountRequest) (Account, error) {
-	if s.store == nil {
-		return Account{}, errors.New("account store not configured")
-	}
-	existing, err := s.store.GetByUserID(ctx, userID)
-	if err != nil {
-		return Account{}, err
-	}
-	role := existing.Role
-	if req.Role != nil {
-		role, err = normalizeRole(*req.Role)
-		if err != nil {
-			return Account{}, err
-		}
-	}
-	row, err := s.store.UpdateAdmin(ctx, dbstore.UpdateAccountAdminInput{
-		UserID:   userID,
-		Role:     role,
-		IsActive: req.IsActive,
-	})
-	if err != nil {
-		return Account{}, err
-	}
-	return toAccount(row), nil
 }
 
 // UpdateProfile updates the user's profile.
@@ -382,16 +280,6 @@ func (s *Service) UpdatePassword(ctx context.Context, userID, currentPassword, n
 
 // RemoveMember deactivates the current workspace membership without changing
 // the global principal or credentials.
-func (s *Service) RemoveMember(ctx context.Context, userID string) error {
-	if s.store == nil {
-		return errors.New("account store not configured")
-	}
-	userID = strings.TrimSpace(userID)
-	if userID == "" {
-		return errors.New("user id is required")
-	}
-	return s.store.RemoveMember(ctx, userID)
-}
 
 func normalizeRole(raw string) (string, error) {
 	role := strings.ToLower(strings.TrimSpace(raw))

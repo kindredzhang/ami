@@ -312,6 +312,7 @@ func (h *ContainerdHandler) Register(e *echo.Echo) {
 	e.Pre(h.handleBrowserProxyPre)
 
 	e.GET("/bots/:bot_id/skills/catalog", h.ListSafeSkills)
+	e.GET("/bots/:bot_id/experts", h.ListExperts)
 
 	group := e.Group("/bots/:bot_id/container")
 	group.POST("", h.CreateContainer)

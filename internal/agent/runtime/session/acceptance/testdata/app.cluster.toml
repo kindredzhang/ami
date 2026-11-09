@@ -72,7 +72,7 @@ sslmode = "disable"
 providers_dir = "conf/providers"
 
 [supermarket]
-base_url = "https://supermarket.memoh.ai"
+base_url = "http://skillhub:8090"
 
 [oauth_clients]
 config_path = "conf/oauth-clients.toml"

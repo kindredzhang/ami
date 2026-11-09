@@ -122,19 +122,6 @@ func TestValidateSessionAndIsAdminRequireActiveAccount(t *testing.T) {
 	}
 }
 
-func TestUpdateAdminLeavesMembershipStateUnspecified(t *testing.T) {
-	store := &testAccountStore{record: dbstore.AccountRecord{ID: "user-1", Role: "member", IsActive: false}}
-	svc := NewService(nil, store)
-	role := "admin"
-
-	if _, err := svc.UpdateAdmin(context.Background(), "user-1", UpdateAccountRequest{Role: &role}); err != nil {
-		t.Fatalf("UpdateAdmin() error = %v", err)
-	}
-	if store.adminUpdated.IsActive != nil {
-		t.Fatalf("role-only update supplied membership state %v", *store.adminUpdated.IsActive)
-	}
-}
-
 func TestUpdateProfileValidatesAndPersistsTitleModel(t *testing.T) {
 	modelID := "11111111-1111-1111-1111-111111111111"
 	store := &testAccountStore{

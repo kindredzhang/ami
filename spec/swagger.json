@@ -5716,6 +5716,49 @@
                 }
             }
         },
+        "/bots/{bot_id}/experts": {
+            "get": {
+                "tags": [
+                    "experts"
+                ],
+                "summary": "List the experts this bot can run as",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bot ID",
+                        "name": "bot_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ExpertsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.Problem"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/server.Problem"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.Problem"
+                        }
+                    }
+                }
+            }
+        },
         "/bots/{bot_id}/hooks/events": {
             "get": {
                 "tags": [
@@ -16001,85 +16044,6 @@
                 }
             }
         },
-        "/users": {
-            "get": {
-                "description": "List users",
-                "tags": [
-                    "users"
-                ],
-                "summary": "List users (admin only)",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/accounts.ListAccountsResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Create a new human user account",
-                "tags": [
-                    "users"
-                ],
-                "summary": "Create human user (admin only)",
-                "parameters": [
-                    {
-                        "description": "User payload",
-                        "name": "payload",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/accounts.CreateAccountRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/accounts.Account"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    }
-                }
-            }
-        },
         "/users/me": {
             "get": {
                 "description": "Get current user profile",
@@ -16618,170 +16582,6 @@
                 }
             }
         },
-        "/users/{id}": {
-            "get": {
-                "description": "Get user details (self or admin only)",
-                "tags": [
-                    "users"
-                ],
-                "summary": "Get user by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/accounts.Account"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update the user's role or membership status in the current workspace",
-                "tags": [
-                    "users"
-                ],
-                "summary": "Update user (admin only)",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "User update payload",
-                        "name": "payload",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/accounts.UpdateAccountRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/accounts.Account"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Deactivate the member in the current workspace without changing global credentials",
-                "tags": [
-                    "users"
-                ],
-                "summary": "Deactivate member (admin only)",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.Problem"
-                        }
-                    }
-                }
-            }
-        },
         "/video-models": {
             "get": {
                 "produces": [
@@ -17218,54 +17018,6 @@
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "accounts.CreateAccountRequest": {
-            "type": "object",
-            "properties": {
-                "avatar_url": {
-                    "type": "string"
-                },
-                "display_name": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "accounts.ListAccountsResponse": {
-            "type": "object",
-            "properties": {
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/accounts.Account"
-                    }
-                }
-            }
-        },
-        "accounts.UpdateAccountRequest": {
-            "type": "object",
-            "properties": {
-                "is_active": {
-                    "type": "boolean"
-                },
-                "role": {
                     "type": "string"
                 }
             }
@@ -22582,6 +22334,40 @@
                 },
                 "reasoning_tokens": {
                     "type": "integer"
+                }
+            }
+        },
+        "handlers.ExpertListItem": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "display_name": {
+                    "type": "string"
+                },
+                "inherits_all_skills": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "handlers.ExpertsResponse": {
+            "type": "object",
+            "properties": {
+                "experts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handlers.ExpertListItem"
+                    }
                 }
             }
         },

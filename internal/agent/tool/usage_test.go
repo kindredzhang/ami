@@ -188,6 +188,7 @@ func TestBuiltInToolsHaveUsageGuidanceOrExplicitExemption(t *testing.T) {
 		ToolSendMessage(): "subagents",
 		ToolListAgents():  "subagents",
 		ToolListModels():  "subagents",
+		ToolListExperts(): "subagents",
 
 		ToolListSchedule():   "schedule",
 		ToolGetSchedule():    "schedule",

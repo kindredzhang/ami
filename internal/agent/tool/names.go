@@ -44,6 +44,7 @@ func ToolSpawnAgent() ToolName     { return toolname.ToolSpawnAgent() }
 func ToolSendMessage() ToolName    { return toolname.ToolSendMessage() }
 func ToolListAgents() ToolName     { return toolname.ToolListAgents() }
 func ToolListModels() ToolName     { return toolname.ToolListModels() }
+func ToolListExperts() ToolName    { return toolname.ToolListExperts() }
 
 func ToolListWorkdirs() ToolName  { return toolname.ToolListWorkdirs() }
 func ToolListACPAgents() ToolName { return toolname.ToolListACPAgents() }

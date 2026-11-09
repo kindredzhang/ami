@@ -3,6 +3,10 @@
     "properties": {},
     "type": "object"
   },
+  "list_experts": {
+    "properties": {},
+    "type": "object"
+  },
   "list_models": {
     "properties": {},
     "type": "object"
@@ -30,6 +34,10 @@
   },
   "spawn_agent": {
     "properties": {
+      "expert": {
+        "description": "Optional expert name (from list_experts) this agent should run as. The agent then uses that expert's persona and skill set. Omit for a general-purpose agent with the bot's full skills.",
+        "type": "string"
+      },
       "fork": {
         "description": "If true, inherit the parent model's current message context while keeping the subagent system prompt and tools.",
         "type": "boolean"

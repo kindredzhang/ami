@@ -123,6 +123,14 @@ type ChatRequest struct {
 	Messages          []turn.ModelMessage          `json:"messages,omitempty"`
 	Attachments       []turn.Attachment            `json:"attachments,omitempty"`
 	RequestedSkills   []turn.RequestedSkillContext `json:"-"`
+	// AssignedExpert is the expert the user named with @ in the composer.
+	//
+	// It is not a persona switch for this agent: the turn still runs on the
+	// main agent, which is told to hand the task to that expert through
+	// spawn_agent. Keeping delegation in the tool layer is what makes the
+	// expert's work visible as a subagent run instead of silently reshaping
+	// the main agent's identity for one message.
+	AssignedExpert *turn.AssignedExpert `json:"-"`
 }
 
 // WorkspaceTarget is the immutable execution-location snapshot resolved for
@@ -159,6 +167,7 @@ type (
 	ToolCall              = turn.ToolCall
 	ToolCallFunction      = turn.ToolCallFunction
 	RequestedSkillContext = turn.RequestedSkillContext
+	AssignedExpert        = turn.AssignedExpert
 	SkillActivation       = turn.SkillActivation
 	SkillActivationSkill  = turn.SkillActivationSkill
 	OutboundAssetRef      = turn.OutboundAssetRef

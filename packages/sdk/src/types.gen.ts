@@ -26,25 +26,6 @@ export type AccountsAccount = {
     username?: string;
 };
 
-export type AccountsCreateAccountRequest = {
-    avatar_url?: string;
-    display_name?: string;
-    email?: string;
-    is_active?: boolean;
-    password?: string;
-    role?: string;
-    username?: string;
-};
-
-export type AccountsListAccountsResponse = {
-    items?: Array<AccountsAccount>;
-};
-
-export type AccountsUpdateAccountRequest = {
-    is_active?: boolean;
-    role?: string;
-};
-
 export type AccountsUpdatePasswordRequest = {
     current_password?: string;
     new_password?: string;
@@ -2137,6 +2118,18 @@ export type HandlersDailyTokenUsage = {
     input_tokens?: number;
     output_tokens?: number;
     reasoning_tokens?: number;
+};
+
+export type HandlersExpertListItem = {
+    description?: string;
+    display_name?: string;
+    inherits_all_skills?: boolean;
+    name?: string;
+    skills?: Array<string>;
+};
+
+export type HandlersExpertsResponse = {
+    experts?: Array<HandlersExpertListItem>;
 };
 
 export type HandlersFsArchiveRequest = {
@@ -9115,6 +9108,44 @@ export type PostBotsByBotIdDependenciesByDepIdUpdateResponses = {
 };
 
 export type PostBotsByBotIdDependenciesByDepIdUpdateResponse = PostBotsByBotIdDependenciesByDepIdUpdateResponses[keyof PostBotsByBotIdDependenciesByDepIdUpdateResponses];
+
+export type GetBotsByBotIdExpertsData = {
+    body?: never;
+    path: {
+        /**
+         * Bot ID
+         */
+        bot_id: string;
+    };
+    query?: never;
+    url: '/bots/{bot_id}/experts';
+};
+
+export type GetBotsByBotIdExpertsErrors = {
+    /**
+     * Bad Request
+     */
+    400: ServerProblem;
+    /**
+     * Forbidden
+     */
+    403: ServerProblem;
+    /**
+     * Internal Server Error
+     */
+    500: ServerProblem;
+};
+
+export type GetBotsByBotIdExpertsError = GetBotsByBotIdExpertsErrors[keyof GetBotsByBotIdExpertsErrors];
+
+export type GetBotsByBotIdExpertsResponses = {
+    /**
+     * OK
+     */
+    200: HandlersExpertsResponse;
+};
+
+export type GetBotsByBotIdExpertsResponse = GetBotsByBotIdExpertsResponses[keyof GetBotsByBotIdExpertsResponses];
 
 export type GetBotsByBotIdHooksEventsData = {
     body?: never;
@@ -17271,75 +17302,6 @@ export type GetTranscriptionProvidersByIdModelsResponses = {
 
 export type GetTranscriptionProvidersByIdModelsResponse = GetTranscriptionProvidersByIdModelsResponses[keyof GetTranscriptionProvidersByIdModelsResponses];
 
-export type GetUsersData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/users';
-};
-
-export type GetUsersErrors = {
-    /**
-     * Bad Request
-     */
-    400: ServerProblem;
-    /**
-     * Forbidden
-     */
-    403: ServerProblem;
-    /**
-     * Internal Server Error
-     */
-    500: ServerProblem;
-};
-
-export type GetUsersError = GetUsersErrors[keyof GetUsersErrors];
-
-export type GetUsersResponses = {
-    /**
-     * OK
-     */
-    200: AccountsListAccountsResponse;
-};
-
-export type GetUsersResponse = GetUsersResponses[keyof GetUsersResponses];
-
-export type PostUsersData = {
-    /**
-     * User payload
-     */
-    body: AccountsCreateAccountRequest;
-    path?: never;
-    query?: never;
-    url: '/users';
-};
-
-export type PostUsersErrors = {
-    /**
-     * Bad Request
-     */
-    400: ServerProblem;
-    /**
-     * Forbidden
-     */
-    403: ServerProblem;
-    /**
-     * Internal Server Error
-     */
-    500: ServerProblem;
-};
-
-export type PostUsersError = PostUsersErrors[keyof PostUsersErrors];
-
-export type PostUsersResponses = {
-    /**
-     * Created
-     */
-    201: AccountsAccount;
-};
-
-export type PostUsersResponse = PostUsersResponses[keyof PostUsersResponses];
-
 export type GetUsersMeData = {
     body?: never;
     path?: never;
@@ -17802,141 +17764,6 @@ export type GetUsersMeUnreadResponses = {
 };
 
 export type GetUsersMeUnreadResponse = GetUsersMeUnreadResponses[keyof GetUsersMeUnreadResponses];
-
-export type DeleteUsersByIdData = {
-    body?: never;
-    path: {
-        /**
-         * User ID
-         */
-        id: string;
-    };
-    query?: never;
-    url: '/users/{id}';
-};
-
-export type DeleteUsersByIdErrors = {
-    /**
-     * Bad Request
-     */
-    400: ServerProblem;
-    /**
-     * Forbidden
-     */
-    403: ServerProblem;
-    /**
-     * Not Found
-     */
-    404: ServerProblem;
-    /**
-     * Conflict
-     */
-    409: ServerProblem;
-    /**
-     * Internal Server Error
-     */
-    500: ServerProblem;
-};
-
-export type DeleteUsersByIdError = DeleteUsersByIdErrors[keyof DeleteUsersByIdErrors];
-
-export type DeleteUsersByIdResponses = {
-    /**
-     * No Content
-     */
-    204: unknown;
-};
-
-export type GetUsersByIdData = {
-    body?: never;
-    path: {
-        /**
-         * User ID
-         */
-        id: string;
-    };
-    query?: never;
-    url: '/users/{id}';
-};
-
-export type GetUsersByIdErrors = {
-    /**
-     * Bad Request
-     */
-    400: ServerProblem;
-    /**
-     * Forbidden
-     */
-    403: ServerProblem;
-    /**
-     * Not Found
-     */
-    404: ServerProblem;
-    /**
-     * Internal Server Error
-     */
-    500: ServerProblem;
-};
-
-export type GetUsersByIdError = GetUsersByIdErrors[keyof GetUsersByIdErrors];
-
-export type GetUsersByIdResponses = {
-    /**
-     * OK
-     */
-    200: AccountsAccount;
-};
-
-export type GetUsersByIdResponse = GetUsersByIdResponses[keyof GetUsersByIdResponses];
-
-export type PutUsersByIdData = {
-    /**
-     * User update payload
-     */
-    body: AccountsUpdateAccountRequest;
-    path: {
-        /**
-         * User ID
-         */
-        id: string;
-    };
-    query?: never;
-    url: '/users/{id}';
-};
-
-export type PutUsersByIdErrors = {
-    /**
-     * Bad Request
-     */
-    400: ServerProblem;
-    /**
-     * Forbidden
-     */
-    403: ServerProblem;
-    /**
-     * Not Found
-     */
-    404: ServerProblem;
-    /**
-     * Conflict
-     */
-    409: ServerProblem;
-    /**
-     * Internal Server Error
-     */
-    500: ServerProblem;
-};
-
-export type PutUsersByIdError = PutUsersByIdErrors[keyof PutUsersByIdErrors];
-
-export type PutUsersByIdResponses = {
-    /**
-     * OK
-     */
-    200: AccountsAccount;
-};
-
-export type PutUsersByIdResponse = PutUsersByIdResponses[keyof PutUsersByIdResponses];
 
 export type GetVideoModelsData = {
     body?: never;

@@ -171,6 +171,9 @@ func runConfigFromSpawnRunConfig(cfg tools.SpawnRunConfig) RunConfig {
 		WorkdirPath:         cfg.Identity.WorkdirPath,
 		TimezoneLocation:    cfg.Identity.TimezoneLocation,
 		IsSubagent:          cfg.Identity.IsSubagent,
+		ExpertName:          cfg.Identity.ExpertName,
+		ExpertDisplayName:   cfg.Identity.ExpertDisplayName,
+		SkillsScoped:        cfg.Identity.SkillsScoped,
 	}
 	skills := make([]SkillEntry, 0, len(cfg.Skills))
 	for name, skill := range cfg.Skills {

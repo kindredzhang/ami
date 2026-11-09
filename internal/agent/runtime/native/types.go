@@ -38,6 +38,16 @@ type SessionContext struct {
 	// once per run from the session's workdir binding.
 	WorkdirPath string
 	IsSubagent  bool
+	// ExpertName/ExpertDisplayName identify the expert this run acts as, empty
+	// for a run that is not scoped to one. They are carried into the tool
+	// session so tools can attribute their output and so the skill provider
+	// knows whose skill set it is holding.
+	ExpertName        string
+	ExpertDisplayName string
+	// SkillsScoped marks RunConfig.Skills as authoritative and already
+	// narrowed. Without it the skill tool provider reloads the bot's full
+	// catalog, which is how an expert's slice would silently become everything.
+	SkillsScoped bool
 }
 
 // BotInfo is service-owned bot metadata injected into the system prompt.

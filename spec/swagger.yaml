@@ -37,37 +37,6 @@ definitions:
       username:
         type: string
     type: object
-  accounts.CreateAccountRequest:
-    properties:
-      avatar_url:
-        type: string
-      display_name:
-        type: string
-      email:
-        type: string
-      is_active:
-        type: boolean
-      password:
-        type: string
-      role:
-        type: string
-      username:
-        type: string
-    type: object
-  accounts.ListAccountsResponse:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/accounts.Account'
-        type: array
-    type: object
-  accounts.UpdateAccountRequest:
-    properties:
-      is_active:
-        type: boolean
-      role:
-        type: string
-    type: object
   accounts.UpdatePasswordRequest:
     properties:
       current_password:
@@ -3755,6 +3724,28 @@ definitions:
         type: integer
       reasoning_tokens:
         type: integer
+    type: object
+  handlers.ExpertListItem:
+    properties:
+      description:
+        type: string
+      display_name:
+        type: string
+      inherits_all_skills:
+        type: boolean
+      name:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+    type: object
+  handlers.ExpertsResponse:
+    properties:
+      experts:
+        items:
+          $ref: '#/definitions/handlers.ExpertListItem'
+        type: array
     type: object
   handlers.FSArchiveRequest:
     properties:
@@ -11443,6 +11434,34 @@ paths:
       summary: Check whether dependencies are ready
       tags:
       - containerd
+  /bots/{bot_id}/experts:
+    get:
+      parameters:
+      - description: Bot ID
+        in: path
+        name: bot_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ExpertsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.Problem'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/server.Problem'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.Problem'
+      summary: List the experts this bot can run as
+      tags:
+      - experts
   /bots/{bot_id}/hooks/events:
     get:
       parameters:
@@ -18497,168 +18516,6 @@ paths:
       summary: List transcription provider metadata
       tags:
       - transcription-providers
-  /users:
-    get:
-      description: List users
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/accounts.ListAccountsResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.Problem'
-      summary: List users (admin only)
-      tags:
-      - users
-    post:
-      description: Create a new human user account
-      parameters:
-      - description: User payload
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/accounts.CreateAccountRequest'
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/accounts.Account'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.Problem'
-      summary: Create human user (admin only)
-      tags:
-      - users
-  /users/{id}:
-    delete:
-      description: Deactivate the member in the current workspace without changing
-        global credentials
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "409":
-          description: Conflict
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.Problem'
-      summary: Deactivate member (admin only)
-      tags:
-      - users
-    get:
-      description: Get user details (self or admin only)
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/accounts.Account'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.Problem'
-      summary: Get user by ID
-      tags:
-      - users
-    put:
-      description: Update the user's role or membership status in the current workspace
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: User update payload
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/accounts.UpdateAccountRequest'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/accounts.Account'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "409":
-          description: Conflict
-          schema:
-            $ref: '#/definitions/server.Problem'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.Problem'
-      summary: Update user (admin only)
-      tags:
-      - users
   /users/me:
     get:
       description: Get current user profile

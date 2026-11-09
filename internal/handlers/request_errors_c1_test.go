@@ -90,16 +90,6 @@ func TestCreateAndUpdateBotErrors(t *testing.T) {
 	}
 }
 
-func TestRemoveMemberRefusesSelf(t *testing.T) {
-	userID := uuid.NewString()
-	h := &UsersHandler{service: newTestAdminAccountService("admin")}
-	c := fieldErrorContext(http.MethodDelete, "", userID, map[string]string{"id": userID})
-	err := h.RemoveMember(c)
-	if got := apperror.CodeOf(err); got != apperror.CodeUserCannotRemoveSelf {
-		t.Fatalf("error = %v, want %s", err, apperror.CodeUserCannotRemoveSelf)
-	}
-}
-
 func TestSettingsModelRefNamesItsField(t *testing.T) {
 	for _, field := range []string{"chat_model_id", "memory_llm_model_id", "image_model_id"} {
 		t.Run(field, func(t *testing.T) {

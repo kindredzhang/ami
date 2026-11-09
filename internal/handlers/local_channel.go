@@ -43,6 +43,7 @@ import (
 	"github.com/kindredzhang/ami/internal/command"
 	"github.com/kindredzhang/ami/internal/errlog"
 	"github.com/kindredzhang/ami/internal/errs"
+	"github.com/kindredzhang/ami/internal/experts"
 	"github.com/kindredzhang/ami/internal/httpx"
 	"github.com/kindredzhang/ami/internal/media"
 	"github.com/kindredzhang/ami/internal/runtimefence"
@@ -93,6 +94,15 @@ type LocalChannelHandler struct {
 type runtimeSkillResolver interface {
 	ListSafeSkillCatalog(ctx context.Context, botID string) ([]skillset.SafeCatalogItem, error)
 	ResolveTextRequestedSkills(ctx context.Context, botID string, names []string) ([]skillset.ResolvedSkill, error)
+}
+
+// expertStoreProvider is an optional capability of the resolver.
+//
+// It is separate from runtimeSkillResolver so a test double that only knows
+// about skills keeps compiling: an @ selection then simply skips the
+// pre-flight lookup and lets spawn_agent report the miss instead.
+type expertStoreProvider interface {
+	ExpertStore(ctx context.Context, botID string) (*experts.Store, error)
 }
 
 // runtimeControlReader reads the server-owned declarations for this actor/thread.
@@ -876,9 +886,13 @@ type wsClientMessage struct {
 	// its own cadence and does not update in lockstep with the server it
 	// connects to. The server resolves it to the round that contains it.
 	// Remove once the compatibility window closes.
-	MessageID         string                     `json:"message_id,omitempty"`
-	Attachments       []json.RawMessage          `json:"attachments,omitempty"`
-	RequestedSkills   []webRequestedSkill        `json:"requested_skills,omitempty"`
+	MessageID       string              `json:"message_id,omitempty"`
+	Attachments     []json.RawMessage   `json:"attachments,omitempty"`
+	RequestedSkills []webRequestedSkill `json:"requested_skills,omitempty"`
+	// Expert is the expert named with @ in the composer. It is a delegation
+	// request, not a persona switch: the turn runs on the main agent, which
+	// hands the task to this expert through spawn_agent.
+	Expert            *webAssignedExpert         `json:"expert,omitempty"`
 	ModelID           string                     `json:"model_id,omitempty"`
 	ReasoningEffort   string                     `json:"reasoning_effort,omitempty"`
 	WorkspaceTargetID string                     `json:"workspace_target_id,omitempty"`
@@ -907,6 +921,28 @@ type wsClientMessage struct {
 
 type webRequestedSkill struct {
 	Name string `json:"name"`
+}
+
+// webAssignedExpert is the composer's @ selection for one turn.
+type webAssignedExpert struct {
+	Name        string `json:"name"`
+	DisplayName string `json:"display_name,omitempty"`
+}
+
+// assignedExpert converts the wire value, keeping the display name the client
+// showed so the delegation instruction matches what the user saw.
+func (e *webAssignedExpert) assignedExpert() *application.AssignedExpert {
+	if e == nil {
+		return nil
+	}
+	name := strings.TrimSpace(e.Name)
+	if name == "" {
+		return nil
+	}
+	return &application.AssignedExpert{
+		Name:        name,
+		DisplayName: strings.TrimSpace(e.DisplayName),
+	}
 }
 
 type wsOutboundEvent struct {
@@ -2103,6 +2139,15 @@ func (h *LocalChannelHandler) HandleWebSocket(c echo.Context) error {
 				h.failWSCommand(streamBaseCtx, writer, botID, msg, apperror.New(slash.CodeInvalidSkillSlashSyntax, nil))
 				continue
 			}
+			// Fail before the turn starts when the named expert cannot be
+			// resolved. The alternative — letting the turn run and having the
+			// model decide what to do about a missing expert — spends a full
+			// round to arrive at either a silent persona impersonation or an
+			// apology.
+			if err := h.validateAssignedExpert(streamBaseCtx, botID, msg.Expert); err != nil {
+				h.failWSCommand(streamBaseCtx, writer, botID, msg, err)
+				continue
+			}
 			controlRequest := application.RuntimeControlRequest{BotID: botID, ThreadID: sessionID, ActorID: channelIdentityID, ToolHTTPURL: buildExternalAgentToolsURL(c, botID)}
 			decision := h.classifyWebSlashForSession(streamBaseCtx, text, len(msg.Attachments) > 0, controlRequest)
 			if command := decision.RuntimeCommand; command != nil {
@@ -2377,6 +2422,7 @@ func (h *LocalChannelHandler) HandleWebSocket(c echo.Context) error {
 					ReplyTarget:             botID,
 					Attachments:             ingestedActivationAttachments,
 					RequestedSkills:         requestedSkillContexts,
+					AssignedExpert:          msg.Expert.assignedExpert(),
 					WorkspaceTargetID:       workspaceTargetID,
 				}
 				preparedReq, persisted, persistErr := h.agentService.ApplyUserMessageHookAndPersistUserTurn(streamBaseCtx, userReq)
@@ -2450,6 +2496,7 @@ func (h *LocalChannelHandler) HandleWebSocket(c echo.Context) error {
 						Channels:                []string{h.channelType.String()},
 						Attachments:             messageAdmission.preparedAttachments(),
 						RequestedSkills:         requestedSkillContexts,
+						AssignedExpert:          msg.Expert.assignedExpert(),
 						SkipMemoryExtraction:    hasSkillActivation && userVisibleText == "",
 						SkipTitleGeneration:     hasSkillActivation && userVisibleText == "",
 						Model:                   strings.TrimSpace(msg.ModelID),
@@ -2723,6 +2770,41 @@ func (h *LocalChannelHandler) createWSChatSession(ctx context.Context, botID, ch
 		input.PreferredReasoningEffort = prefEffort
 	}
 	return h.sessionService.Create(ctx, input)
+}
+
+// validateAssignedExpert rejects an @ selection that names no expert in this
+// bot's workspace.
+//
+// The workspace read is the same one spawn_agent performs, so a selection that
+// passes here cannot fail later for "expert not found" — the only reasons left
+// for a later failure are real execution errors.
+func (h *LocalChannelHandler) validateAssignedExpert(ctx context.Context, botID string, expert *webAssignedExpert) error {
+	assigned := expert.assignedExpert()
+	if assigned == nil {
+		return nil
+	}
+	provider, ok := h.skillResolver.(expertStoreProvider)
+	if !ok {
+		return nil
+	}
+	store, err := provider.ExpertStore(ctx, botID)
+	if err != nil {
+		return errs.Wrap(err, "expert store")
+	}
+	def, err := store.Get(ctx, assigned.Name)
+	if err != nil {
+		if errors.Is(err, experts.ErrNotFound) {
+			return apperror.New(apperror.CodeExpertNotFound, map[string]string{"name": assigned.Name})
+		}
+		return errs.Wrap(err, "read expert")
+	}
+	// Fill in the display name from the stored definition, so the delegation
+	// instruction uses the expert's real label even when a client sends only
+	// the id.
+	if assigned.DisplayName == "" {
+		assigned.DisplayName = def.DisplayNameOrName()
+	}
+	return nil
 }
 
 func (h *LocalChannelHandler) wsSessionSupportsRequestedSkills(ctx context.Context, sessionID string) (bool, error) {

@@ -96,3 +96,35 @@ func escapeSkillAttribute(value string) string {
 	value = strings.ReplaceAll(value, ">", "&gt;")
 	return value
 }
+
+// buildAssignedExpertInstruction tells the main agent to hand this turn to a
+// named expert instead of doing the work itself.
+//
+// The instruction is directive, not advisory: the user picked an expert, so
+// silently answering in the main agent would be a different product behaviour
+// than what they asked for. It still routes through spawn_agent rather than
+// switching this agent's persona, because the expert's run has to stay a
+// separate, inspectable subagent with its own skills.
+func buildAssignedExpertInstruction(expert *AssignedExpert) *ModelMessage {
+	if expert == nil || strings.TrimSpace(expert.Name) == "" {
+		return nil
+	}
+	label := strings.TrimSpace(expert.DisplayName)
+	if label == "" {
+		label = expert.Name
+	}
+	var b strings.Builder
+	b.WriteString("The user addressed this turn to the expert \"")
+	b.WriteString(label)
+	b.WriteString("\" (skill id: ")
+	b.WriteString(expert.Name)
+	b.WriteString(").\n\n")
+	b.WriteString("Hand this task to that expert by calling spawn_agent with expert=\"")
+	b.WriteString(expert.Name)
+	b.WriteString("\" and the user's request as the task. Do not perform the task yourself in this conversation: the user chose an expert, and the work must run in that expert's subagent so its scoped skills and its own transcript apply.\n\n")
+	b.WriteString("After the subagent returns, reply to the user with its result. Mention the expert by name so it stays clear who did the work. If spawn_agent reports the expert does not exist, say so plainly and ask the user which expert they meant — do not fall back to answering as that expert.")
+	return &ModelMessage{
+		Role:    "user",
+		Content: newTextContent(b.String()),
+	}
+}

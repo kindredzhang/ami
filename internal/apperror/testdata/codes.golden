@@ -108,6 +108,7 @@ context_lifecycle.not_found	404
 context_lifecycle.request_invalid	400
 display.session_not_found	404
 elicitation_declined	422
+expert.not_found	404
 external_agent.account_unbound	403
 external_agent.container_workspace_required	409
 external_agent.turn_replacement_unsupported	400

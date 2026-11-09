@@ -555,6 +555,9 @@ func (s *Service) resolveWithHTTPClient(ctx context.Context, req ChatRequest, mo
 		messages = append(messages, *memoryMsg)
 		memoryMessageIndex = intPointer(len(messages) - 1)
 	}
+	if expertMsg := buildAssignedExpertInstruction(req.AssignedExpert); expertMsg != nil {
+		messages = append(messages, *expertMsg)
+	}
 	if requestedSkillMsg := buildRequestedSkillContextMessage(req.RequestedSkills); requestedSkillMsg != nil {
 		messages = append(messages, *requestedSkillMsg)
 	}

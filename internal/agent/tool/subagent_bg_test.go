@@ -468,7 +468,7 @@ func TestAgentControlToolsExposeSingleAgentSurface(t *testing.T) {
 		t.Fatalf("Tools failed: %v", err)
 	}
 	got := toolNames(tools)
-	want := []string{"spawn_agent", "send_message", "list_agents", "list_models"}
+	want := []string{"spawn_agent", "send_message", "list_agents", "list_models", "list_experts"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("unexpected tools: got %v want %v", got, want)
 	}

@@ -5,7 +5,6 @@ import (
 
 	"go.uber.org/fx"
 
-	"github.com/kindredzhang/ami/internal/accounts"
 	"github.com/kindredzhang/ami/internal/acl"
 	"github.com/kindredzhang/ami/internal/agent/context/compaction"
 	userinput "github.com/kindredzhang/ami/internal/agent/decision/input"
@@ -59,17 +58,7 @@ func FoundationModule() fx.Option {
 			provideMessageService,
 		),
 		fx.Invoke(setupTelemetry),
-		// A new human account gets a starter expert. Wired with Invoke because
-		// accounts must not import bots (bots depends on accounts' concepts,
-		// not the other way round).
-		fx.Invoke(wireDefaultBotProvisioner),
 	)
-}
-
-// wireDefaultBotProvisioner connects account creation to starter-expert
-// provisioning without making the accounts package depend on bots.
-func wireDefaultBotProvisioner(accountsService *accounts.Service, botsService *bots.Service) {
-	accountsService.SetDefaultBotProvisioner(botsService)
 }
 
 // ServerModule assembles the Server-owned Agent and workspace runtime. It

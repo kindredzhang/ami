@@ -44,7 +44,7 @@ func (*SkillProvider) Usage(_ context.Context, _ SessionContext, available Avail
 }
 
 func (p *SkillProvider) Tools(ctx context.Context, session SessionContext) ([]toolexec.Tool, error) {
-	if p.load != nil {
+	if p.load != nil && !session.SkillsScoped {
 		loaded, err := p.load(ctx, session.BotID)
 		if err != nil {
 			return nil, err

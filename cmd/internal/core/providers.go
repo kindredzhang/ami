@@ -72,6 +72,7 @@ import (
 	postgresstore "github.com/kindredzhang/ami/internal/db/postgres/store"
 	dbstore "github.com/kindredzhang/ami/internal/db/store"
 	displaypkg "github.com/kindredzhang/ami/internal/display"
+	"github.com/kindredzhang/ami/internal/experts"
 	"github.com/kindredzhang/ami/internal/fetchproviders"
 	"github.com/kindredzhang/ami/internal/handlers"
 	hookspkg "github.com/kindredzhang/ami/internal/hooks"
@@ -1121,7 +1122,7 @@ func provideToolProviders(log *slog.Logger, channelRuntime channel.Runtime, regi
 		agenttools.NewBackgroundProvider(log, bgManager),
 		agenttools.NewBrowserProvider(log, settingsService, nativeWorkspaceBridgeProvider{manager: manager}, displayService, config.DefaultDataMount),
 		agenttools.NewWebFetchProvider(log, settingsService, fetchProviderService),
-		agenttools.NewSpawnProvider(log, settingsService, modelsService, queries, sessionService, bgManager),
+		newSpawnProviderWithExperts(log, settingsService, modelsService, queries, sessionService, bgManager, containerdHandler),
 		agenttools.NewSkillProvider(log, func(ctx context.Context, botID string) (map[string]agenttools.SkillDetail, error) {
 			items, err := containerdHandler.LoadSkills(ctx, botID)
 			if err != nil {
@@ -1504,6 +1505,145 @@ func (a *skillLoaderAdapter) LoadSkills(ctx context.Context, botID string) ([]ap
 		}
 	}
 	return entries, nil
+}
+
+// newSpawnProviderWithExperts builds the subagent tool provider and wires its
+// expert resolver in one place, so a SpawnProvider in this binary can never be
+// created without one (which would make list_experts answer "none" on a bot
+// that has experts).
+func newSpawnProviderWithExperts(
+	log *slog.Logger,
+	settingsService *settings.Service,
+	modelsService *models.Service,
+	queries dbstore.Queries,
+	sessionService *sessionpkg.Service,
+	bgManager *background.Manager,
+	containerdHandler *handlers.ContainerdHandler,
+) *agenttools.SpawnProvider {
+	sp := agenttools.NewSpawnProvider(log, settingsService, modelsService, queries, sessionService, bgManager)
+	if containerdHandler != nil {
+		sp.SetExpertResolver(&expertResolverAdapter{handler: containerdHandler, logger: log})
+	}
+	return sp
+}
+
+// expertResolverAdapter resolves experts for subagent runs.
+//
+// Skill narrowing happens here, against the bot's own effective skill set, so
+// an expert can never name a skill the bot does not have and get it anyway.
+// The result distinguishes "inherit everything" (nil, not scoped) from "this
+// exact slice" (non-nil, scoped) because the two produce different runs: a
+// persona-only expert must keep the bot's skills, while an expert whose named
+// skills all disappeared must not silently regain them.
+type expertResolverAdapter struct {
+	handler *handlers.ContainerdHandler
+	logger  *slog.Logger
+}
+
+func (a *expertResolverAdapter) log() *slog.Logger {
+	if a.logger != nil {
+		return a.logger
+	}
+	return slog.Default()
+}
+
+func (a *expertResolverAdapter) ListExperts(ctx context.Context, botID string) ([]agenttools.SpawnExpertSummary, error) {
+	store, err := a.handler.ExpertStore(ctx, botID)
+	if err != nil {
+		return nil, err
+	}
+	defs, err := store.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]agenttools.SpawnExpertSummary, 0, len(defs))
+	for _, def := range defs {
+		summary := experts.Summarize(def)
+		out = append(out, agenttools.SpawnExpertSummary{
+			Name:        summary.Name,
+			DisplayName: summary.DisplayName,
+			Description: summary.Description,
+			Skills:      summary.Skills,
+			InheritsAll: summary.InheritsAll,
+		})
+	}
+	return out, nil
+}
+
+func (a *expertResolverAdapter) ResolveExpert(ctx context.Context, botID, name string) (agenttools.SpawnExpert, error) {
+	store, err := a.handler.ExpertStore(ctx, botID)
+	if err != nil {
+		return agenttools.SpawnExpert{}, err
+	}
+	def, err := store.Get(ctx, name)
+	if err != nil {
+		if errors.Is(err, experts.ErrNotFound) {
+			return agenttools.SpawnExpert{}, agenttools.ErrExpertNotFound
+		}
+		return agenttools.SpawnExpert{}, err
+	}
+
+	resolved := agenttools.SpawnExpert{
+		Name:          def.Name,
+		DisplayName:   def.DisplayNameOrName(),
+		SystemSection: def.PersonaPrompt(),
+	}
+	if def.InheritsSkills() {
+		// Leave Skills nil and SkillsScoped false: the run inherits the bot's
+		// full set, which is what a persona-only expert is asking for.
+		return resolved, nil
+	}
+
+	items, err := a.handler.LoadSkills(ctx, botID)
+	if err != nil {
+		return agenttools.SpawnExpert{}, fmt.Errorf("load skills for expert %q: %w", def.Name, err)
+	}
+	available := make(map[string]agenttools.SkillDetail, len(items))
+	for _, item := range items {
+		skillPath := ""
+		if item.SourcePath != "" {
+			skillPath = stdpath.Dir(item.SourcePath)
+		}
+		available[item.Name] = agenttools.SkillDetail{
+			Description: item.Description,
+			Content:     item.Content,
+			Path:        skillPath,
+		}
+	}
+	scoped, missing := narrowExpertSkills(available, def.Skills)
+	if len(missing) > 0 {
+		// Not an error: an expert may legitimately name a skill that has since
+		// been uninstalled, and failing the spawn would make the expert
+		// unusable for a reason the caller cannot act on. Logged because a
+		// silently shrunken expert is otherwise invisible.
+		a.log().WarnContext(ctx, "expert names skills the bot does not have",
+			slog.String("expert", def.Name),
+			slog.Any("missing", missing),
+		)
+	}
+	resolved.Skills = scoped
+	resolved.SkillsScoped = true
+	return resolved, nil
+}
+
+// narrowExpertSkills reduces the bot's skill set to the expert's named subset.
+//
+// The returned map is always non-nil: it is the signal that this set is
+// authoritative, and nil would mean "inherit the bot's full skills" downstream.
+// Names the bot does not have are dropped and reported, so one stale entry in a
+// manifest does not fail the run.
+func narrowExpertSkills(available map[string]agenttools.SkillDetail, names []string) (map[string]agenttools.SkillDetail, []string) {
+	scoped := make(map[string]agenttools.SkillDetail, len(names))
+	var missing []string
+	for _, name := range names {
+		detail, ok := available[name]
+		if !ok {
+			missing = append(missing, name)
+			continue
+		}
+		scoped[name] = detail
+	}
+	return scoped, missing
 }
 
 type mediaAssetResolverAdapter struct {

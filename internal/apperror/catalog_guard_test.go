@@ -390,10 +390,10 @@ func TestCatalogDeclaredFaults(t *testing.T) {
 				t.Errorf("catalog entry %q declares fault %q; add it to declaredFaults", code, definition.Fault)
 			}
 		}
-		// Exhausted provider balance needs payment or quota, not a retry, but
+		// An exhausted provider quota needs more quota, not a retry, but
 		// remains a dependency fault even though it answers 402.
-		quotaPaymentRequired := code == CodeAgentProviderQuotaExhausted && definition.HTTPStatus == http.StatusPaymentRequired
-		if definition.Fault == FaultDependency && definition.HTTPStatus < http.StatusInternalServerError && definition.HTTPStatus != http.StatusTooManyRequests && !quotaPaymentRequired {
+		quotaNotRetryable := code == CodeAgentProviderQuotaExhausted && definition.HTTPStatus == http.StatusPaymentRequired
+		if definition.Fault == FaultDependency && definition.HTTPStatus < http.StatusInternalServerError && definition.HTTPStatus != http.StatusTooManyRequests && !quotaNotRetryable {
 			t.Errorf("dependency code %q answers %d; a dependency's failure answers 5xx, 429 for backoff, or 402 for exhausted provider quota", code, definition.HTTPStatus)
 		}
 		for _, prefix := range providerCodePrefixes {

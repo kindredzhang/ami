@@ -429,6 +429,19 @@ func (f *modelSelectionFakeQueries) CompareAndSetSessionModelPreference(_ contex
 	return 1, nil
 }
 
+// ListEnabledModelsByType serves the deployment-wide chat-model fallback. The
+// fake reports the models it knows about so a bot with no configured model can
+// still resolve one; tests that want "nothing usable" leave models empty.
+func (f *modelSelectionFakeQueries) ListEnabledModelsByType(_ context.Context, type_ string) ([]sqlc.Model, error) {
+	out := make([]sqlc.Model, 0, len(f.models))
+	for _, m := range f.models {
+		if m.Type == type_ {
+			out = append(out, m)
+		}
+	}
+	return out, nil
+}
+
 func (f *modelSelectionFakeQueries) ListModelsByModelID(_ context.Context, modelID string) ([]sqlc.Model, error) {
 	model, ok := f.models[modelID]
 	if !ok {
