@@ -85,7 +85,7 @@ sslmode = "disable"
 providers_dir = "conf/providers"
 
 [supermarket]
-base_url = "https://supermarket.memoh.ai"
+base_url = "http://skillhub:8090"
 
 [connect_it]
 # The Connect-It dev service is available at http://localhost:18421.

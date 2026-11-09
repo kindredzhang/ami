@@ -1,0 +1,16 @@
+name: 擎天 AI 网关
+client_type: openai-completions
+base_url: https://qingtian.dfmc.com.cn:32280/api/v3
+
+models:
+  - model_id: db6q3lt3c1n5kh0kupjg
+    name: DeepSeek-V4.1-Flash
+    type: chat
+  - model_id: db63ooljgv3pk1cd76tg
+    name: GLM-5.3-Flash
+    type: chat
+  - model_id: daoahbsqd3s025dh1j90
+    name: Qwen3.8-Flash-Next
+    type: chat
+  - model_id: dblu421bi3otbfnstc9g
+    type: chat

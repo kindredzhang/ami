@@ -781,7 +781,10 @@ func (c RegistryConfig) ProvidersPath() string {
 }
 
 const (
-	DefaultSupermarketBaseURL     = "https://supermarket.memoh.ai"
+	// The market is the internal skill registry, not a public catalog: this
+	// deployment has no route to the internet, and an unreachable default only
+	// produces a failed request on every page load.
+	DefaultSupermarketBaseURL     = "http://skillhub:8090"
 	DefaultOAuthClientsConfigPath = "conf/oauth-clients.toml"
 )
 

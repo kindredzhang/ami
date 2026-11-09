@@ -1,0 +1,181 @@
+{
+  "bun": {
+    "version": "1.4.4",
+    "files": [
+      {
+        "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-baseline.zip",
+        "sha256": "e0446eb55995772eb9894bebae9a6be368d985a8b9271ee124486f9946eedd76",
+        "size": 51794559
+      }
+    ]
+  },
+  "ffmpeg": {
+    "version": "9.0.2",
+    "files": [
+      {
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/ffmpeg-9.0.2-gpl_h8b97b3f_502.conda",
+        "sha256": "9b60f40e151afed3b7d46778982675ec0195c4d58747e978b7d62260ad928ef9",
+        "size": 13795954,
+        "note": "conda-forge linux-64（该版本 48 个构建，此为最大的一个；conda 还会求解子依赖，建议镜像整个 conda-forge/linux-64）"
+      }
+    ]
+  },
+  "github-cli": {
+    "version": "2.103.3",
+    "files": [
+      {
+        "url": "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_linux_amd64.tar.gz",
+        "sha256": "4c806978ffce1cec70853302a56d70ac6da4f19bae7adca4e1a8ab00633dd91d",
+        "size": 15031972
+      }
+    ]
+  },
+  "go": {
+    "version": "1.27.3",
+    "files": [
+      {
+        "url": "https://go.dev/dl/go1.27.3.linux-amd64.tar.gz",
+        "sha256": "65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40",
+        "size": 70588678
+      }
+    ]
+  },
+  "libreoffice": {
+    "version": "",
+    "files": [
+      {
+        "url": "apt://libreoffice-core",
+        "sha256": "",
+        "size": 0,
+        "note": "Linux 走 apt-get，需要内网 Debian 源（或镜像源）里有 libreoffice-core （版本未能解析：FileNotFoundError） 校验和需人工确认"
+      }
+    ]
+  },
+  "micromamba": {
+    "version": "2.10.0-0",
+    "files": [
+      {
+        "url": "https://github.com/mamba-org/micromamba-releases/releases/download/2.10.0-0/micromamba-linux-64",
+        "sha256": "701f39c06f8e6a670a0e186c8479b9e5c0502a2f0cda6cef65d83bdd2875e8bd",
+        "size": 19028608,
+        "note": "解压后重命名为 micromamba"
+      }
+    ]
+  },
+  "native-build-tools": {
+    "version": "2.0.0",
+    "files": [
+      {
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/c-compiler-2.0.0-ha29393d_0.conda",
+        "sha256": "a54488d2b00380f542a2e1aa00dee3d878803a8c2c025dfce852a23685584dc6",
+        "size": 7017,
+        "note": "conda-forge linux-64（该版本 1 个构建，此为最大的一个；conda 还会求解子依赖，建议镜像整个 conda-forge/linux-64）"
+      }
+    ]
+  },
+  "node": {
+    "version": "",
+    "files": [],
+    "note": "shell recipe, 无 Python 解析入口"
+  },
+  "pandoc": {
+    "version": "3.13",
+    "files": [
+      {
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/pandoc-3.13-ha770c72_0.conda",
+        "sha256": "1aeedb498ad58c8f78176d5aaad11e32501d78dd6cdcd842e1a6d5c308e1830c",
+        "size": 23494830,
+        "note": "conda-forge linux-64（该版本 1 个构建，此为最大的一个；conda 还会求解子依赖，建议镜像整个 conda-forge/linux-64）"
+      }
+    ]
+  },
+  "playwright": {
+    "version": "0.0.0+41d68bbd7cd53410",
+    "files": [
+      {
+        "url": "https://registry.npmjs.org",
+        "sha256": "",
+        "size": 0,
+        "packages": {
+          "playwright": "1.65.0",
+          "@playwright/test": "1.65.0",
+          "@playwright/cli": "0.1.23"
+        },
+        "note": "npm 后端：镜像 registry 后按包名+版本拉取，不预先下载 tarball"
+      }
+    ]
+  },
+  "pnpm": {
+    "version": "12.18.0",
+    "files": [
+      {
+        "url": "https://registry.npmjs.org",
+        "sha256": "",
+        "size": 0,
+        "packages": {
+          "pnpm": "12.18.0"
+        },
+        "note": "npm 后端：镜像 registry 后按包名+版本拉取，不预先下载 tarball"
+      }
+    ]
+  },
+  "poppler": {
+    "version": "26.10.0",
+    "files": [
+      {
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/poppler-26.10.0-h7813f90_0.conda",
+        "sha256": "a36b80002c202621dd0e1cd7d6f388d11b7013b2dda7ce1f31d934669535f2c5",
+        "size": 2147699,
+        "note": "conda-forge linux-64（该版本 1 个构建，此为最大的一个；conda 还会求解子依赖，建议镜像整个 conda-forge/linux-64）"
+      }
+    ]
+  },
+  "python": {
+    "version": "",
+    "files": [],
+    "note": "shell recipe, 无 Python 解析入口"
+  },
+  "qpdf": {
+    "version": "12.4.2",
+    "files": [
+      {
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/qpdf-12.4.2-h7db8e16_1.conda",
+        "sha256": "172d9f44efb8dc42b8f8dc8725f2c1cbff976b28826b9a494446bdb38d3aa53d",
+        "size": 1542076,
+        "note": "conda-forge linux-64（该版本 2 个构建，此为最大的一个；conda 还会求解子依赖，建议镜像整个 conda-forge/linux-64）"
+      }
+    ]
+  },
+  "rust": {
+    "version": "1.99.1",
+    "files": [
+      {
+        "url": "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init",
+        "sha256": "b1c8cb14e30889e7e2999e6b69e62d9e9b9ffc0f4df8180564d306d9680e6c55",
+        "size": 0
+      },
+      {
+        "url": "https://static.rust-lang.org/dist/channel-rust-stable.toml",
+        "sha256": "",
+        "size": 0,
+        "note": "rustup 运行时会按此清单再拉组件，镜像站需整目录同步 dist/ 与 rustup/ 校验和需人工确认"
+      }
+    ]
+  },
+  "tesseract": {
+    "version": "",
+    "files": [
+      {
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/tesseract-5.5.3-h7618cdf_0.conda",
+        "sha256": "62ccb114986026a75329b3060f1a77327a699644c8fb5aed322c14fd949b5273",
+        "size": 181031586,
+        "note": "conda-forge linux-64（该版本 17 个构建，此为最大的一个；conda 还会求解子依赖，建议镜像整个 conda-forge/linux-64） （版本未能解析：TimeoutError）"
+      }
+    ]
+  },
+  "uv": {
+    "version": "",
+    "files": [],
+    "note": "shell recipe, 无 Python 解析入口"
+  }
+}

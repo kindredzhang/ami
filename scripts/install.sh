@@ -130,8 +130,8 @@ echo "${PURPLE}Ami One-Click Install${NC}"
 
 if [ "$(id -u 2>/dev/null || printf '1')" = "0" ] && [ "${AMI_ALLOW_ROOT_INSTALL:-false}" != "true" ]; then
   echo "${RED}Error: Do not run this installer as root.${NC}"
-  echo "Run it as your normal user instead:"
-  echo "  curl -fsSL https://memoh.sh | sh"
+  echo "Run it as your normal user instead, from the unpacked release:"
+  echo "  sh scripts/install.sh"
   echo ""
   echo "The installer will use sudo for Docker commands only when Docker requires it."
   echo "To override this guard, set AMI_ALLOW_ROOT_INSTALL=true."

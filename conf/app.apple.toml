@@ -82,7 +82,7 @@ providers_dir = "conf/providers"
 # Set disabled = true where the market is unreachable or not wanted: listings
 # then answer empty instead of failing on every page load.
 [supermarket]
-base_url = "https://supermarket.memoh.ai"
+base_url = "http://skillhub:8090"
 # catalog_base_url = "https://skillhub.internal"
 # disabled = false
 
