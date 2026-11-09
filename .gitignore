@@ -135,3 +135,5 @@ tmpdbg/
 skillhub-data/*/artifact.tar.gz
 skillhub-data/dependencies/*/artifact.tar.gz
 tmpverify/
+.alma/
+.alma-snapshots
