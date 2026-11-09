@@ -1,29 +1,22 @@
 # Ami Deployment Guide
 
-## One-Click Install
+## Install
+
+The deployment target is an intranet server with Docker installed. Source is distributed as a
+complete archive from the internal repository — clone or unpack it, then configure and start.
 
 ```bash
-curl -fsSL https://memoh.sh | sh
-```
-
-The script prompts for configuration, generates `config.toml`, and starts all services.
-Run it as your normal user. The script will use `sudo docker` internally only when Docker requires it.
-
-The one-click Docker Compose installer uses the `containerd` workspace backend. Docker and Apple workspace backends are available for manual deployments by editing `[container].backend` in `config.toml`.
-
-## Manual Install
-
-```bash
-git clone --recurse-submodules https://github.com/kindredzhang/ami.git
-cd Ami
+# from the internal repository
+git clone --recurse-submodules <internal-repo-url> ami
+cd ami
 cp conf/app.docker.toml config.toml
 nano config.toml   # Change passwords and JWT secret
 ```
 
-GitHub's automatic “Source code” archives omit submodule contents. Use a recursive clone or the
-complete `Ami-<version>-source.zip` / `.tar.gz` asset attached to each release. Existing setup
-checkouts can continue using `git pull`; run `mise run submodule-init` once only if the post-merge
-hook was never installed.
+The Docker Compose deployment uses the `containerd` workspace backend. Docker and Apple workspace
+backends are available for manual deployments by editing `[container].backend` in `config.toml`.
+
+If submodules are missing after unpacking an archive, run `mise run submodule-init` once.
 
 > On macOS or if your user is in the `docker` group, `sudo` is not required.
 

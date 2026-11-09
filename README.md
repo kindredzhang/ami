@@ -1,129 +1,60 @@
-<div align="right">
-  <span>[<a href="./README.md">English</a>]<span>
-  </span>[<a href="./README_CN.md">简体中文</a>]</span>
-  </span>[<a href="./README_JA.md">日本語</a>]</span>
-</div>  
-
 <div align="center">
   <img src="./assets/logo.png" alt="Ami" height="80">
   <h1>Ami</h1>
-  <p>Give every AI agent its own cloud computer. Open source.<br>
-  Desktop, browser, network, and long-term memory — always on, even when your laptop is closed.</p>
-  <div align="center">
-    <img src="https://img.shields.io/github/package-json/v/kindredzhang/ami" alt="Version" />
-    <img src="https://img.shields.io/github/stars/kindredzhang/ami?style=social" alt="Stars" />
-    <img src="https://img.shields.io/github/forks/kindredzhang/ami?style=social" alt="Forks" />
-    <a href="https://deepwiki.com/kindredzhang/ami">
-      <img src="https://deepwiki.com/badge.svg" alt="DeepWiki" />
-    </a>
-    <a href="https://t.me/memohai">
-      <img src="https://img.shields.io/badge/Telegram-Group-26A5E4?logo=telegram&logoColor=white" alt="Telegram" />
-    </a>
-  </div>
-  <h3>
-    <a href="https://app.memoh.net">Login</a> · <a href="#self-hosted">Self-hosted</a> · <a href="https://docs.memoh.ai">Docs</a> · <a href="https://memoh.ai">Website</a> · <a href="https://x.com/memoh_ai">X</a>
-  </h3>
-  <img src="./assets/hero.png" alt="Ami" width="1000">
+  <p>Dongfeng Group · AI Collaboration Platform<br>
+  One dedicated assistant per employee — isolated workspace, long-term memory and internal system access, fully self-hosted.</p>
 </div>
 
-## What is Ami?
+## What this is
 
-Ami is an open-source multi-agent platform. Each agent gets its own cloud computer — a dedicated workspace with a filesystem, desktop, browser, network, and long-term memory. Your agents stay online 24/7, even when your laptop is closed.
+Ami is the AI collaboration platform for Dongfeng Group. Every employee has exactly one
+assistant (东风助手) with its own workspace, filesystem, browser and long-term memory.
+Experts and skills are sub-roles serving that assistant, not separate entities to manage.
 
-Use your own API keys to run Ami's built-in agent, or host your existing Claude Code and Codex agents inside Ami workspaces.
+The platform is deployed entirely on the corporate intranet. It depends on no external
+SaaS service and sends no data outside the network.
 
-Talk to them through Telegram, Discord, Lark, WeChat, Web UI, and more. They remember context across sessions and platforms, drive a browser, call MCP tools, and run scheduled tasks. Run one for yourself, assign one to each team member, or spin up a fleet.
+## Capabilities
 
-## Get Started
+- **Isolated workspace**: each assistant has its own filesystem, network and browser
+- **Long-term memory**: preferences, habits and past decisions carry across sessions
+- **Experts and skills**: assign expert roles, then pick which skills each one may use
+- **Scheduled tasks**: routine work runs on a schedule and reports back in-app
+- **Internal model access**: all inference goes through the internal model gateway
 
-### Ami Cloud
+## Deployment
 
-You can now sign up or log in directly at [app.memoh.net](https://app.memoh.net).
-
-### Self-hosted
-
-Self-host the full stack on your own infrastructure.
-
-```bash
-curl -fsSL https://memoh.sh | sh
-```
-
-<details>
-<summary><strong>More deployment options</strong></summary>
-
-Manual deployment:
+Deployed with Docker Compose on an intranet server. See [DEPLOYMENT.md](DEPLOYMENT.md)
+for the full steps and environment variables.
 
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/kindredzhang/ami.git
-cd Ami
 cp conf/app.docker.toml config.toml
-# Edit config.toml
+# edit config.toml for your environment
 export AMI_INTERNAL_RPC_SHARED_SECRET="$(openssl rand -hex 32)"
 docker compose up -d
 ```
 
-The Compose stack runs Server and Channel as separate services. Keep the internal RPC secret private and use the same value whenever the stack is recreated.
+The Compose stack runs Server and Channel as separate services. Keep the internal RPC
+secret private and reuse the same value whenever the stack is recreated.
 
-In split deployments, Channel streams media through authenticated internal Storage RPC. Only Server needs access to the workspace and media storage. Upgrade Server before Channel so the Storage service is available.
+In split deployments, Channel streams media through authenticated internal Storage RPC.
+Only Server needs access to the workspace and media storage. Upgrade Server before Channel.
 
-Running without Docker (or upgrading an existing bare-metal install)? Leave `internal_rpc.shared_secret` empty in `config.toml`: the server then embeds the channel runtime and keeps running as a single all-in-one process — external channels, and webhook endpoints included — with no `ami-channel` process required. Setting the secret opts into the split two-process deployment.
+Running without Docker (or upgrading an existing bare-metal install)? Leave
+`internal_rpc.shared_secret` empty in `config.toml`: the server then embeds the channel
+runtime and keeps running as a single all-in-one process.
 
-Existing setup checkouts can keep using `git pull`: the post-merge hook initializes the new
-submodule, and setup enables recursive updates for future pulls. If that hook was never installed,
-run `mise run submodule-init` once after upgrading.
-GitHub's automatic “Source code” archives omit submodule contents. For a buildable release archive,
-use the attached `Ami-<version>-source.zip` or `.tar.gz` asset instead.
+## Layout
 
-> **Use CN mirror for slow image pulls:**
-> ```bash
-> curl -fsSL https://memoh.sh | USE_CN_MIRROR=true sh
-> ```
->
-> Do not run the whole installer with `sudo`. The installer will use `sudo docker`
-> internally if Docker requires it.
+| Path | Contents |
+| --- | --- |
+| `apps/web` | Web front end (Vue 3 + Vite) |
+| `apps/desktop` | Desktop client (Electron) |
+| `internal/` | Backend services (Go) |
+| `packages/ui` | Design system and component library |
+| `packages/icons` | Icon set |
+| `skillhub/` | Internal skill registry |
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for custom configuration and production setup.
+## License
 
-</details>
-
-## Why Ami?
-
-- **Every agent gets its own computer**: An isolated workspace with its own filesystem, network, desktop, and browser.
-- **Multi-user, multi-bot**: Run one for yourself, deploy one for each family member, run a fleet on a single machine.
-- **Lightweight**: Self-host the server on your own infrastructure, or connect through Ami Cloud.
-
-## Sub-projects
-
-- [**Twilight AI**](https://github.com/felinics/twilight) — A lightweight, idiomatic AI SDK for Go, inspired by [Vercel AI SDK](https://sdk.vercel.ai/). Provider-agnostic (OpenAI, Anthropic, Google), with first-class streaming, tool calling, MCP, and embeddings.
-- [**Connect It**](https://github.com/felinics/connect-it) — A self-hosted connector gateway that securely stores SaaS credentials and gives agents access to integrations through a single MCP endpoint.
-- [**UI**](https://github.com/felinics/ui) — A Vue 3 design system for AI agent management interfaces, including a component library, design tokens, and skills that teach agents how to use them.
-
-## Project Status
-
-![License](https://img.shields.io/github/license/kindredzhang/ami) ![Last Commit](https://img.shields.io/github/last-commit/kindredzhang/ami) ![Commit Activity](https://img.shields.io/github/commit-activity/m/kindredzhang/ami) ![Issues](https://img.shields.io/github/issues/kindredzhang/ami) ![Pull Requests](https://img.shields.io/github/issues-pr/kindredzhang/ami)
-
-## Star History
-
-[![Star History Chart](https://star-history.dera.page/svg?repos=kindredzhang/ami&type=date&legend=top-left)](https://star-history.dera.page/#kindredzhang/ami&type=date&legend=top-left)
-
-## Contributors
-
-<a href="https://github.com/kindredzhang/ami/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=kindredzhang/ami" />
-</a>
-
-## Community
-
-- 🌐 [**Website**](https://memoh.ai)
-- 📚 [**Documentation**](https://docs.memoh.ai)
-- 💬 [**Telegram Group**](https://t.me/memohai)
-- 🛒 [**Supermarket**](https://github.com/felinics/supermarket)
-- 🤝 [**Cooperation**](mailto:business@memoh.net) — business@memoh.net
-
----
-
-**LICENSE**: AGPLv3
-
-Made with ❤️ by MemohAI Team,
-
-Copyright (C) 2026 MemohAI (memoh.ai). All rights reserved.
+AGPLv3
