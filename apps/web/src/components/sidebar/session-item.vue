@@ -222,6 +222,7 @@
 
 <script setup lang="ts">
 import { externalAgentDisplayName, externalAgentIcon } from '@/utils/external-agent'
+import { externalAgentsEnabled } from '@/lib/features'
 import { computed, inject, ref } from 'vue'
 import { Clock, ListChecks, LoaderCircle, Mail, MailOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
@@ -335,7 +336,13 @@ const agentProvider = computed(() => sessionAgentProvider(
   props.session,
   botAgents?.value,
 ))
-const isAgentSession = computed(() => isAgentRuntimeType(normalizedRuntimeType(props.session)))
+// External-agent chats are not part of this deployment, so a row never carries
+// an agent badge or agent name — even for sessions created before the feature
+// was switched off. The session itself still opens; only its external-agent
+// identity is suppressed.
+const isAgentSession = computed(() =>
+  externalAgentsEnabled && isAgentRuntimeType(normalizedRuntimeType(props.session)),
+)
 const isScheduleSession = computed(() => normalizedSessionMode(props.session) === 'schedule')
 const agentLabel = computed(() => externalAgentDisplayName(agentProvider.value, t('chat.sessionTypeACPAgent')))
 

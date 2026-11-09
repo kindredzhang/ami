@@ -298,6 +298,7 @@ import { useBotStatusMeta } from '@/composables/useBotStatusMeta'
 import { resolveBotWorkspaceBackend, resolveRuntimeStatusKey, runtimeStatusLabelKey } from '@/utils/bot-workspace'
 import { buildRuntimeMetricCards } from '@/utils/format-bytes'
 import { formatDateTime } from '@/utils/date-time'
+import { channelsEnabled } from '@/lib/features'
 
 use([CanvasRenderer, BarChart, GridComponent, TooltipComponent, LegendComponent])
 
@@ -364,7 +365,12 @@ const configuredChannels = computed(() => (channels.value ?? []).filter((c) => c
 // Platforms is low-weight: only shown when nothing is connected yet (Connect
 // nudge) or the bot has a check issue (so a broken connection stays visible).
 // Connected + healthy hides it — the user knows what they connected.
-const showPlatforms = computed(() => configuredChannels.value.length === 0 || hasIssue.value)
+// 平台 (channel bindings) is switched off for this deployment, so the overview
+// must not advertise an empty platform section or a "connect a platform" CTA
+// that leads to a tab that no longer exists.
+const showPlatforms = computed(() =>
+  channelsEnabled && (configuredChannels.value.length === 0 || hasIssue.value),
+)
 
 function channelTitle(meta: HandlersChannelMeta) {
   return channelTypeDisplayName(t, meta.type, meta.display_name)
@@ -387,20 +393,12 @@ interface BotReminder {
   section?: string
 }
 
-const reminders = computed<BotReminder[]>(() => {
-  const list: BotReminder[] = []
-  if (settings.value && (settings.value.chat_runtime ?? 'model') === 'model' && !settings.value.chat_model_id) {
-    list.push({
-      key: 'model',
-      title: t('bots.overview.reminderModelTitle'),
-      hint: t('bots.overview.reminderModelHint'),
-      action: t('bots.overview.reminderAction'),
-      tab: 'general',
-      section: 'interaction',
-    })
-  }
-  return list
-})
+// No "choose a model" reminder: an empty chat_model_id is not a broken agent.
+// The turn resolver falls back to the first usable chat model on an enabled
+// provider (see pickDefaultChatModel in the agent application service), so a
+// fresh agent answers as soon as the deployment has a provider connection.
+// Asking the user to pick a default they never needed was pure ceremony.
+const reminders = computed<BotReminder[]>(() => [])
 
 const showMemorySection = computed(() => !!settings.value?.memory_enabled)
 

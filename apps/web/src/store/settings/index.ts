@@ -46,12 +46,17 @@ export const useSettingsStore = defineStore('settings', () => {
   const i18n = useI18n()
   const defaultUiFontFamily = computed(() => DEFAULT_UI_FONT_FAMILY)
   const defaultCodeFontFamily = computed(() => DEFAULT_CODE_FONT_FAMILY)
-  const language = useStorage<Locale>('language', 'en')
+  // Chinese first: see detectLocale() — i18n.ts writes the detected locale here
+  // on first run, so this is only the fallback when that write never happened.
+  const language = useStorage<Locale>('language', 'zh')
   // `theme` and `color-scheme` are also read by an inline script in
   // index.html (web and desktop renderer) before the app loads, so the first
   // frame already has the right background. Keep the keys and stored values
   // in step with it.
-  const theme = useStorage<ThemePreference>('theme', 'system')
+  // Default light, not 'system': this intranet deployment should not open in a
+  // dark app just because the user's OS is dark. 'system' remains selectable in
+  // 设置 → 外观. index.html's pre-paint script mirrors this default.
+  const theme = useStorage<ThemePreference>('theme', 'light')
   const colorScheme = useStorage<ColorSchemeId>('color-scheme', 'ami')
   const uiFontFamily = useStorage<string>('ui-font-family', '')
   const codeFontFamily = useStorage<string>('code-font-family', '')

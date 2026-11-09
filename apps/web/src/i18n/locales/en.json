@@ -93,7 +93,8 @@
     "unsaved": "Unsaved",
     "editJson": "Edit JSON",
     "actionRequired": "Action Required",
-    "preview": "Preview"
+    "preview": "Preview",
+    "usage": "Usage"
   },
   "computerAccess": {
     "emptyBots": "No bots yet.",
@@ -154,7 +155,7 @@
       "provider_auth_failed": "The model provider rejected the credentials. Check the provider API key.",
       "provider_overloaded": "The model provider is unavailable or overloaded right now. Please try again in a moment.",
       "provider_permission_denied": "The model provider denied access to this model or resource. Check that the provider account can use this model.",
-      "provider_quota_exhausted": "The model provider account has no remaining balance or quota.",
+      "provider_quota_exhausted": "The model provider account has no remaining quota.",
       "provider_rate_limited": "The model provider rate limit was reached. Please wait a moment before sending again.",
       "provider_request_rejected": "The model provider rejected the request. Check the model settings, or try another model.",
       "provider_unreachable": "Ami could not reach the model provider. Check the provider address and that the service is running.",
@@ -265,6 +266,9 @@
       "session_not_found": "This display session has ended. Open a new one."
     },
     "elicitation_declined": "A tool requested an interaction that could not be shown. The request was declined.",
+    "expert": {
+      "not_found": "That expert no longer exists. Pick another expert and try again."
+    },
     "external_agent": {
       "account_unbound": "Your IM account isn't linked to an Ami account yet, so you can't use this bot's workspace. If you're its owner, open Profile → Connected Accounts in Ami on the web, get a link code, and send {link} <code> here.",
       "container_workspace_required": "This agent runtime needs a container workspace. Switch the bot to its container workspace, then try again.",
@@ -281,7 +285,7 @@
       "session_resume_failed": "The session could not be resumed: {message}. Try again or start a new conversation.",
       "unavailable": "The external Agent runtime is unavailable. Check the Agent setup and workspace, then try again.",
       "upstream_unreachable": "The external Agent could not reach its model service, or the connection dropped. Check the network and the Agent's service address, then try again.",
-      "usage_limited": "The external Agent's account has no usage left. Try again after the limit resets, or check the account's plan and billing."
+      "usage_limited": "The external Agent's account has no usage left. Try again after the limit resets."
     },
     "fetch_provider": {
       "native_managed": "The built-in fetch provider is managed by Ami and cannot be changed this way.",
@@ -607,9 +611,7 @@
   "desktopConnection": {
     "title": "Connect to Ami",
     "subtitle": "Enter the address of your Ami server",
-    "fullInstallLead": "Want the full Ami experience?",
-    "fullInstallAction": "Install Ami with Docker.",
-    "fullInstallHint": "Desktop only connects to an existing server.",
+    "fullInstallHint": "Desktop only connects to an existing server. Ask your administrator for access.",
     "placeholder": "https://ami.example.com",
     "connect": "Connect",
     "failed": "Couldn’t connect",
@@ -624,6 +626,11 @@
     }
   },
   "sidebar": {
+    "brand": {
+      "logoAlt": "Dongfeng Group",
+      "organization": "Dongfeng Group",
+      "platform": "AI Collaboration Platform"
+    },
     "updateChip": {
       "updating": "Updating",
       "restart": "Restart",
@@ -631,7 +638,7 @@
     },
     "session": "Sessions",
     "chat": "Chat",
-    "bots": "Bots",
+    "bots": "Agents",
     "runtimes": "Computers",
     "providers": "Providers",
     "webSearch": "Web Search",
@@ -649,14 +656,14 @@
     "home": "Home",
     "mcp": "MCP",
     "usage": "Usage",
-    "people": "Members",
     "appearance": "Appearance",
     "keyboard": "Keyboard Shortcuts",
     "supermarket": "Supermarket",
     "about": "About",
     "userMenu": "Account menu",
     "switchBot": "Switch bot",
-    "manageBots": "Manage Bots"
+    "manageBots": "Manage Bots",
+    "catalog": "Experts-Skills"
   },
   "runtimes": {
     "title": "Computers",
@@ -793,7 +800,7 @@
       "interfaceDescription": "These settings are stored locally and apply immediately.",
       "colorScheme": "Color Scheme",
       "showExamplesEntry": "Examples in sidebar",
-      "showExamplesEntryDescription": "Show “See what Ami can do” at the bottom of the sidebar",
+      "showExamplesEntryDescription": "Show “See what your assistant can do” at the bottom of the sidebar",
       "colorSchemeDescription": "Select a palette for brand, status, and UI elements.",
       "typography": "Typography",
       "uiFontFamily": "UI Font Family",
@@ -915,52 +922,7 @@
     },
     "version": "Version",
     "versionTag": "v{version}",
-    "commitHash": "Commit",
-    "userMemory": {
-      "title": "Memory",
-      "description": "Background every expert reads. It is carried into every conversation as a standing premise.",
-      "placeholder": "e.g. I lead product on a private AI platform. Answer in Chinese, keep it short, lead with the conclusion.",
-      "appliesTo": "Applies to all of your experts",
-      "save": "Save",
-      "saving": "Saving…",
-      "saved": "Memory saved",
-      "saveFailed": "Could not save memory"
-    }
-  },
-  "people": {
-    "title": "Members",
-    "members": "Members",
-    "member": "Member",
-    "newMember": "New member",
-    "memberName": "Name",
-    "displayNamePlaceholder": "Optional display name",
-    "usernamePlaceholder": "Enter username",
-    "usernameRequired": "Username is required",
-    "email": "Email",
-    "emailPlaceholder": "name{'@'}example.com",
-    "role": "Role",
-    "roles": {
-      "admin": "Admin",
-      "member": "Member"
-    },
-    "activeOnCreate": "Active",
-    "activeOnCreateHint": "Allow sign in immediately",
-    "you": "You",
-    "lastLogin": "Last login",
-    "never": "Never",
-    "toggleStatus": "Toggle status for {name}",
-    "removeMember": "Remove member",
-    "removeMemberFor": "Remove {name}",
-    "removeConfirm": "Remove {name} from this workspace? Their credentials will be kept so access can be restored later.",
-    "removeSuccess": "Member removed",
-    "removeFailed": "Failed to remove member",
-    "createSuccess": "Member created",
-    "createFailed": "Failed to create member",
-    "enableSuccess": "Member enabled",
-    "disableSuccess": "Member disabled",
-    "statusUpdateFailed": "Failed to update status",
-    "loadFailed": "Failed to load people",
-    "empty": "No members"
+    "commitHash": "Commit"
   },
   "about": {
     "updatingVersion": "Updating to v{version}",
@@ -972,21 +934,17 @@
     "installingUpdate": "Restarting…",
     "autoUpdateDescription": "Download in the background and install when Ami quits.",
     "autoUpdate": "Automatic updates",
-    "tagline": "Open-source multi-agent platform",
     "description": "Multiple AI agents, each with its own computer and long-term memory.",
     "updatesSection": "Updates",
     "currentVersion": "Version v{version}",
-    "checkHint": "Check GitHub for the latest release.",
     "desktopCheckHint": "Check for a newer Desktop app version.",
     "checkForUpdates": "Check for updates",
     "checking": "Checking…",
     "upToDate": "You're on the latest version",
     "newVersionAvailable": "New Version Available: v{version}",
     "newVersionTitle": "Version v{version} is available",
-    "newVersionDesc": "A newer release is published on GitHub.",
     "whatsChanged": "What's changed",
     "releaseNotes": "Release Notes",
-    "viewOnGitHub": "View on GitHub",
     "checkFailed": "Check Failed",
     "desktopUpdatesUnavailable": "Automatic updates are unavailable",
     "desktopUpdatesUnavailableDesc": "This build does not have an update feed configured.",
@@ -995,15 +953,11 @@
     "restartToUpdate": "Restart to Update",
     "retryUpdate": "Retry update",
     "desktopUpdateFailed": "Desktop update failed",
-    "github": "GitHub",
-    "docs": "Documentation",
-    "feedback": "Feedback",
     "advanced": "Advanced",
     "advancedDescription": "Desktop connection and other rarely changed settings.",
     "serverConnection": "Server Connection",
     "serverConnectionDescription": "Connect this Desktop app to a different Ami server.",
-    "configureServer": "Configure",
-    "license": "AGPLv3 · © 2026 MemohAI"
+    "configureServer": "Configure"
   },
   "chat": {
     "workspaceLinkUnavailable": "This workspace link is unavailable here. Open the conversation in Ami with workspace access.",
@@ -1112,7 +1066,7 @@
       },
       "fragmentSeparator": ", "
     },
-    "currentBot": "Current Bot",
+    "currentBot": "Agent",
     "stopResponse": "Stop generating response",
     "composer": {
       "selectBot": "Select a Bot to send a message",
@@ -1471,7 +1425,12 @@
         "session": "Session",
         "cdpUrl": "CDP URL",
         "targets": "Targets"
-      }
+      },
+      "spawn_expert": "Spawn expert",
+      "spawn_expert_background": "Spawn expert in background",
+      "spawn_expert_fork": "Fork expert",
+      "spawn_expert_fork_background": "Fork expert in background",
+      "list_experts": "List experts"
     },
     "unknownUser": "{platform} User",
     "files": "Files",
@@ -1508,7 +1467,7 @@
     "recents": "Recents",
     "quickActions": "Quick Actions",
     "scheduledJobs": "Scheduled Jobs",
-    "botSettings": "Bot Settings",
+    "botSettings": "Agent Settings",
     "manageSchedule": "Manage",
     "noBotSelected": "No bot selected",
     "sessionTypeSchedule": "Scheduled Task",
@@ -1680,7 +1639,8 @@
     "tabClose": "Close tab",
     "tabs": {
       "browser": "Browser",
-      "schedule": "Schedule"
+      "schedule": "Schedule",
+      "memory": "Memory"
     },
     "unsaved": {
       "title": "Do you want to save the changes you made to {name}?",
@@ -1842,7 +1802,15 @@
         "usageLimited": "Usage limit reached",
         "budgetLimited": "Token budget reached",
         "complete": "Goal completed"
-      }
+      },
+      "elapsed": "{duration} elapsed"
+    },
+    "mention": {
+      "experts": "Experts",
+      "noResults": "No matching expert",
+      "skillCount": "{count} skills",
+      "inheritsAllSkills": "All skills inherited",
+      "clearExpert": "Stop assigning {name}"
     }
   },
   "chatExamples": {
@@ -1859,12 +1827,12 @@
       "schedule": "schedules",
       "channel": "a channel"
     },
-    "sidebarEntry": "See what Ami can do",
+    "sidebarEntry": "See what your assistant can do",
     "hideSidebarEntry": "Hide this entry",
     "sidebarEntryHidden": "Hidden. Restore it in Appearance settings.",
     "undoHideSidebarEntry": "Undo",
     "sidebarEntrySaveFailed": "Couldn’t save. Please try again later.",
-    "galleryTitle": "See what Ami can do",
+    "galleryTitle": "See what your assistant can do",
     "galleryDescription": "Pick an example to put it in the chat box. You can edit it before sending.",
     "refresh": "Refresh",
     "refreshFailed": "Couldn't get new suggestions. Try again later.",
@@ -1874,10 +1842,6 @@
       "title": "Replace your unsent message?",
       "description": "The chat box already has text you haven't sent. Replacing it with this prompt discards that text.",
       "confirm": "Replace"
-    },
-    "share": {
-      "prompt": "What have you built with Ami? Share your use case on X with #Ami.",
-      "action": "Share on X"
     }
   },
   "models": {
@@ -2032,10 +1996,10 @@
     "promptCache": {
       "label": "Prompt Cache",
       "option5m": "5 minutes (default)",
-      "option1h": "1 hour (higher cost)",
+      "option1h": "1 hour",
       "optionOff": "Off (not recommended)",
-      "description": "Enable prompt caching for the system prompt and tool list to cut input cost on repeat requests. Currently honored only by Anthropic models.",
-      "descriptionOff": "Disabling caching rebills the full system prompt and tool list on every request. Only use this for strict context isolation."
+      "description": "Enable prompt caching for the system prompt and tool list so repeat requests reuse the cached input. Currently honored only by Anthropic models.",
+      "descriptionOff": "Disabling caching resends the full system prompt and tool list on every request. Only use this for strict context isolation."
     },
     "oauth": {
       "openaiDeviceHint": "Enter this one-time code on OpenAI's verification page.",
@@ -2149,14 +2113,23 @@
     }
   },
   "memory": {
-    "builtinTitle": "Built-in Memory",
+    "title": "Memory",
+    "description": "Background every expert reads. It is carried into every conversation as a standing premise.",
+    "placeholder": "e.g. I lead product on a private AI platform. Answer in Chinese, keep it short, lead with the conclusion.",
+    "appliesTo": "Applies to your Dongfeng Assistant",
+    "save": "Save",
+    "counter": "{used} / {max}",
+    "saved": "Memory saved",
+    "saveFailed": "Could not save memory",
+    "loadFailed": "Could not load memory",
+    "builtinTitle": "Built-in memory",
     "saveSuccess": "Memory settings saved",
-    "graphTitle": "Memory Graph",
+    "graphTitle": "Memory graph",
     "graphNodes": "Memories",
     "graphEdges": "Links",
-    "semanticEmbeddingModel": "Embedding Model",
-    "semanticEmbeddingModelPlaceholder": "Select embedding model",
-    "graphEmpty": "No memories yet — add some to see the graph."
+    "semanticEmbeddingModel": "Embedding model",
+    "semanticEmbeddingModelPlaceholder": "Choose an embedding model",
+    "graphEmpty": "No memories yet — add some to see how they connect"
   },
   "network": {
     "title": "Network",
@@ -3069,7 +3042,7 @@
       "size": "Size",
       "modified": "Modified",
       "empty": "This directory is empty",
-      "panelTitle": "Files",
+      "panelTitle": "Workspace",
       "newFile": "New File",
       "upload": "Upload",
       "uploadFolder": "Upload Folder",
@@ -4049,7 +4022,6 @@
     "viewDetails": "View details",
     "appInstallTitle": "Install App",
     "loadError": "Failed to load from Supermarket",
-    "submit": "Submit",
     "information": "Information",
     "category": "Category",
     "registry": "Registry",
@@ -4544,5 +4516,46 @@
       "marked": "Marked unread"
     },
     "browserSettingsTitle": "Browser notifications"
+  },
+  "catalog": {
+    "title": "Experts & Skills",
+    "description": "Assign an expert role to Dongfeng Assistant and pick the skills it can use.",
+    "modelLabel": "Model",
+    "publishedAt": "Published {date}",
+    "experts": {
+      "title": "Experts",
+      "count": "{count} total",
+      "hint": "Pick one expert as the acting role",
+      "skillCount": "{count} skills"
+    },
+    "skills": {
+      "title": "Skills",
+      "hint": "Stackable — skills the expert already carries stay applied",
+      "groupLabel": "Group",
+      "empty": "No skills in this group",
+      "groups": {
+        "all": "All",
+        "personal": "Personal",
+        "builtin": "Built-in"
+      }
+    },
+    "selection": {
+      "label": "Selected",
+      "clearExpert": "Clear expert",
+      "clearSkill": "Remove skill",
+      "totalSkills": "{count} skills",
+      "preview": "Preview",
+      "clear": "Clear"
+    },
+    "preview": {
+      "title": "Configuration preview",
+      "description": "What the agent actually receives",
+      "expert": "Expert",
+      "noExpert": "No expert — skills only",
+      "skills": "Skills",
+      "systemPrompt": "System prompt",
+      "noPrompt": "This expert defines no system prompt",
+      "close": "Close"
+    }
   }
 }

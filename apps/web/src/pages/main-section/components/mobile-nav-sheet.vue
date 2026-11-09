@@ -18,11 +18,9 @@
         <SheetDescription>{{ t('chat.mobileNav.description') }}</SheetDescription>
       </SheetHeader>
       <div class="flex h-full w-full min-h-0 flex-col overflow-hidden">
-        <header class="flex h-11 shrink-0 items-center pl-3 pr-2">
-          <div class="min-w-0 flex-1">
-            <BotSwitcher full-width />
-          </div>
-        </header>
+        <BrandHeader compact />
+        <!-- No agent row, same reason as the desktop sidebar: one user has one
+             agent, so there is no identity to show and nothing to switch to. -->
 
         <!-- View switch rows reuse the rail's nav-button owner so the icon
              column and label x match the desktop sidebar geometry. -->
@@ -98,7 +96,7 @@ import { useChatSelectionStore } from '@/store/chat-selection'
 import { useWorkspaceTabsStore, type SidebarView } from '@/store/workspace-tabs'
 import { hasBotPermission } from '@/utils/bot-permissions'
 import { useChatExamplesUi } from '@/components/chat-examples/use-chat-examples-ui'
-import BotSwitcher from '@/components/sidebar/bot-switcher.vue'
+import BrandHeader from '@/components/sidebar/brand-header.vue'
 import SidebarExamplesEntry from '@/components/sidebar/examples-entry.vue'
 import SidebarNavButton from '@/components/sidebar/nav-button.vue'
 import PanelSessions from '@/components/sidebar/panel-sessions.vue'

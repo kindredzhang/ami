@@ -2,7 +2,10 @@
   <section class="mx-auto flex min-h-full max-w-3xl flex-col px-6 py-10">
     <!-- Import is a low-frequency secondary action, parked top-right so it never
          competes with the centered group below (create lives as a tile). -->
-    <div class="flex h-8 justify-end">
+    <div
+      v-if="expertManagementEnabled"
+      class="flex h-8 justify-end"
+    >
       <Button
         variant="outline"
         size="sm"
@@ -71,7 +74,7 @@
         <!-- Create tile: the add companion, so a single bot is never a lonely
              card. Hidden while filtering. -->
         <PersonaTile
-          v-if="!searchText"
+          v-if="!searchText && expertManagementEnabled"
           variant="add"
           :name="$t('bots.createBot')"
           @click="router.push({ name: 'bot-new' })"
@@ -103,10 +106,11 @@ import {
   SurfaceCard,
 } from '@felinic/ui'
 import { Search, Plus, Upload } from 'lucide-vue-next'
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { PersonaTile } from '@felinic/ui'
 import BotCard from './components/bot-card.vue'
+import { expertManagementEnabled } from '@/lib/features'
 import { useQuery } from '@pinia/colada'
 import { getBotsQuery } from '@ami/sdk/colada'
 import { usePendingBotsRefresh } from '@/composables/usePendingBotsRefresh'
@@ -127,6 +131,21 @@ const { data: botData, status } = useQuery(getBotsQuery())
 const isLoading = computed(() => status.value === 'pending')
 
 const realBots = computed(() => botData.value?.items ?? [])
+
+// This deployment gives every user exactly one agent, so the expert list has
+// nothing to list. Rather than show a one-tile page (whose empty state invites
+// creation), land straight on that agent's settings. `replace` keeps the list
+// out of history. If a deployment ever holds more than one, the list stays as
+// it is — this only collapses the degenerate case.
+watch(realBots, (list) => {
+  if (!expertManagementEnabled && list.length === 1) {
+    const only = list[0]!
+    void router.replace({
+      name: 'bot-detail',
+      params: { botName: only.name || only.id },
+    })
+  }
+}, { immediate: true })
 
 // --- dev-only layout preview ---------------------------------------------
 // Eyeball how the grid lays out at any bot count without touching real data.

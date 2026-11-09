@@ -110,22 +110,19 @@
 import { ComputerIcon, ShortcutIcon } from '@ami/icon/ui'
 import { computed, inject, onBeforeUnmount, ref, type Component } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { expertManagementEnabled } from '@/lib/features'
 import {
-  Blocks,
   Box,
   ChevronLeft,
   CircleUserRound,
   Gauge,
   MousePointer2,
-  UsersRound,
 } from 'lucide-vue-next'
 import AppearanceIcon from './appearance-icon.vue'
 import { NavItem } from '@felinic/ui'
 import { useBackToChatRoute } from '@/composables/useBackToChat'
-import { useUserStore } from '@/store/user'
 import {
   ScrollArea,
   Sidebar,
@@ -208,8 +205,6 @@ onBeforeUnmount(() => {
 const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
-const userStore = useUserStore()
-const { userInfo } = storeToRefs(userStore)
 
 const backToChatRoute = useBackToChatRoute()
 
@@ -248,14 +243,13 @@ function isItemVisuallyActive(name: string): boolean {
   return isItemActive(name)
 }
 
-type NavItem = { title: string; name: string; icon: Component; flipX?: boolean; adminOnly?: boolean }
+type NavItem = { title: string; name: string; icon: Component; flipX?: boolean }
 type NavGroup = { key: string; label?: string; items: NavItem[] }
 
 function filterItems(items: NavItem[]): NavItem[] {
-  return items.filter((item) => {
-    if (item.adminOnly && userInfo.value.role !== 'admin') return false
-    return props.excludeItems.length === 0 || !props.excludeItems.includes(item.name)
-  })
+  return items.filter(item =>
+    props.excludeItems.length === 0 || !props.excludeItems.includes(item.name),
+  )
 }
 
 // Bots lead, followed by what they run on (providers, computers) and app
@@ -266,17 +260,24 @@ const navGroups = computed<NavGroup[]>(() => [
   {
     key: 'workspace',
     items: [
-      { title: t('sidebar.bots'), name: 'bots', icon: MousePointer2, flipX: true },
+      // 专家 management is gone: this deployment gives each user exactly one
+      // agent, reached through 智能体设置 on the main sidebar.
+      ...(expertManagementEnabled
+        ? [{ title: t('sidebar.bots'), name: 'bots', icon: MousePointer2, flipX: true }]
+        : []),
       { title: t('sidebar.providers'), name: 'providers', icon: Box },
       { title: t('sidebar.runtimes'), name: 'runtimes', icon: ComputerIcon },
-      { title: t('sidebar.supermarket'), name: 'supermarket', icon: Blocks },
+      // 应用市场 is hidden alongside the sidebar entry (see MARKET_ENABLED in
+      // components/sidebar/index.vue): this local deployment ships the curated
+      // 专家-技能 lineup instead of an upstream market browse.
     ],
   },
+  // Accounts are provisioned outside this app, so the former "Members" entry
+  // is gone; what remains of the team group is usage reporting.
   {
     key: 'team',
     label: t('sidebar.group.team'),
     items: [
-      { title: t('sidebar.people'), name: 'people', icon: UsersRound, adminOnly: true },
       { title: t('sidebar.usage'), name: 'usage', icon: Gauge },
     ],
   },

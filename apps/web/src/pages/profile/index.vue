@@ -74,33 +74,9 @@
         <!-- Connected IM Accounts -->
         <ConnectedAccountsSection />
 
-        <!-- 记忆：账号级背景，作用于该用户名下所有专家，而不是某个专家的对话记忆。 -->
-        <SettingsSection :title="$t('settings.userMemory.title')">
-          <div class="space-y-3 px-4 py-4">
-            <p class="text-label text-muted-foreground">
-              {{ $t('settings.userMemory.description') }}
-            </p>
-            <Textarea
-              v-model="profileForm.user_memory"
-              :placeholder="$t('settings.userMemory.placeholder')"
-              :rows="6"
-              maxlength="4000"
-              class="resize-y"
-            />
-            <div class="flex items-center justify-between gap-3">
-              <span class="text-label text-muted-foreground">
-                {{ $t('settings.userMemory.appliesTo') }}
-              </span>
-              <Button
-                size="sm"
-                :disabled="!memoryDirty || memorySaving"
-                @click="saveMemory"
-              >
-                {{ memorySaving ? $t('settings.userMemory.saving') : $t('settings.userMemory.save') }}
-              </Button>
-            </div>
-          </div>
-        </SettingsSection>
+        <!-- Memory moved out of Settings into a workspace tab of its own
+             (sidebar › Memory). It is long-form writing, and it belongs next to
+             the conversations it shapes, not buried in an account form. -->
 
         <!-- Card 3 · Session: user id + sign out (low-frequency, kept at the bottom). -->
         <SettingsSection :title="$t('settings.sessionSection')">
@@ -155,7 +131,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useQuery } from '@pinia/colada'
 import { useRouter } from 'vue-router'
-import { ConfirmPopover, PageShell, SettingsRow, SettingsSection, Textarea, toast, useClipboard } from '@felinic/ui'
+import { ConfirmPopover, PageShell, SettingsRow, SettingsSection, toast, useClipboard } from '@felinic/ui'
 import { useI18n } from 'vue-i18n'
 import { Button, Skeleton } from '@felinic/ui'
 import { Check, Copy } from 'lucide-vue-next'
@@ -212,7 +188,6 @@ const originalProfile = reactive({
   avatar_url: '',
   timezone: '',
   title_model_id: '',
-  user_memory: '',
 })
 
 const profileForm = reactive({
@@ -220,32 +195,7 @@ const profileForm = reactive({
   avatar_url: '',
   timezone: '',
   title_model_id: '',
-  user_memory: '',
 })
-
-// 记忆保存与资料保存分开：记忆是长文本，不适合每次按键就存。
-const memorySaving = ref(false)
-const memoryDirty = computed(() => profileForm.user_memory !== originalProfile.user_memory)
-
-async function saveMemory() {
-  if (memorySaving.value) return
-  memorySaving.value = true
-  try {
-    const { data } = await putUsersMe({
-      body: { metadata: { user_memory: profileForm.user_memory } },
-      throwOnError: true,
-    })
-    account.value = data
-    const saved = String(data.metadata?.user_memory ?? '')
-    profileForm.user_memory = saved
-    originalProfile.user_memory = saved
-    toast.success(t('settings.userMemory.saved'))
-  } catch {
-    toast.error(t('settings.userMemory.saveFailed'))
-  } finally {
-    memorySaving.value = false
-  }
-}
 
 const passwordDialogOpen = ref(false)
 const copiedId = ref(false)
@@ -290,21 +240,18 @@ async function loadMyAccount() {
   const aUrl = data.avatar_url || ''
   const tZone = data.timezone || 'UTC'
   const titleModelID = data.title_model_id || ''
-  const userMemory = String(data.metadata?.user_memory ?? '')
 
   // Set forms
   profileForm.display_name = dName
   profileForm.avatar_url = aUrl
   profileForm.timezone = tZone
   profileForm.title_model_id = titleModelID
-  profileForm.user_memory = userMemory
   
   // Set originals
   originalProfile.display_name = dName
   originalProfile.avatar_url = aUrl
   originalProfile.timezone = tZone
   originalProfile.title_model_id = titleModelID
-  originalProfile.user_memory = userMemory
 
   patchUserInfo({
     id: data.id,

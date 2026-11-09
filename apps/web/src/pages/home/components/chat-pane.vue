@@ -463,6 +463,59 @@
                 </CommandKeyBridge>
               </Command>
             </Transition>
+            <!-- The @ picker. It sits beside the slash picker rather than in a
+                 dropdown of its own so both open in the same place above the
+                 composer; only one can be open, because one needs a leading
+                 "/" and the other a trailing "@". -->
+            <Transition
+              enter-active-class="transition-opacity duration-150 ease-out"
+              enter-from-class="opacity-0"
+              enter-to-class="opacity-100"
+              leave-active-class="transition-opacity duration-100 ease-in"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <Command
+                v-if="mentionPanelOpen"
+                class="absolute inset-x-4 bottom-full z-(--z-panel) mb-2 h-auto w-auto"
+              >
+                <CommandKeyBridge ref="mentionPickerBridge">
+                  <CommandList class="max-h-[min(20rem,45dvh)] overscroll-contain [scrollbar-gutter:stable]">
+                    <CommandGroup
+                      v-if="visibleMentionExperts.length"
+                      :heading="$t('chat.mention.experts')"
+                    >
+                      <CommandItem
+                        v-for="expert in visibleMentionExperts"
+                        :key="expert.name"
+                        :value="expert.name"
+                        @select="selectMentionExpert(expert)"
+                      >
+                        <UserRoundCheck class="size-4 shrink-0 text-muted-foreground" />
+                        <span class="min-w-0 flex-1">
+                          <span class="block truncate text-control">{{ expert.display_name || expert.name }}</span>
+                          <span
+                            v-if="expert.description"
+                            class="block truncate text-caption text-muted-foreground"
+                          >{{ expert.description }}</span>
+                          <span class="block truncate text-caption text-muted-foreground">
+                            {{ expert.inherits_all_skills
+                              ? $t('chat.mention.inheritsAllSkills')
+                              : $t('chat.mention.skillCount', { count: expert.skills.length }) }}
+                          </span>
+                        </span>
+                      </CommandItem>
+                    </CommandGroup>
+                    <div
+                      v-if="!visibleMentionExperts.length"
+                      class="py-6 text-center text-body text-muted-foreground"
+                    >
+                      {{ $t('chat.mention.noResults') }}
+                    </div>
+                  </CommandList>
+                </CommandKeyBridge>
+              </Command>
+            </Transition>
             <ComposerDock
               ref="dockEl"
               :approvals="pendingApprovals"
@@ -564,6 +617,35 @@
                           @preview="preview.isPasted ? (pastedViewerText = preview.pastedText) : openComposerPreview(preview.url)"
                         />
                       </div>
+                    </div>
+                  </div>
+                </Transition>
+
+                <Transition
+                  enter-active-class="transition-opacity duration-150 ease-out"
+                  enter-from-class="opacity-0"
+                  enter-to-class="opacity-100"
+                  leave-active-class="transition-opacity duration-100 ease-in"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0"
+                >
+                  <div
+                    v-if="assignedExpert"
+                    class="order-first flex w-full basis-full flex-wrap gap-1.5 pb-1.5"
+                  >
+                    <div class="flex min-h-8 max-w-full items-center gap-1.5 rounded-full bg-accent-red-soft py-0.5 pl-2.5 pr-0.5 text-label text-foreground">
+                      <UserRoundCheck class="size-3.5 shrink-0 text-muted-foreground" />
+                      <span class="min-w-0 truncate">{{ assignedExpert.display_name || assignedExpert.name }}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        :aria-label="$t('chat.mention.clearExpert', { name: assignedExpert.display_name || assignedExpert.name })"
+                        class="shrink-0"
+                        @click="clearAssignedExpert"
+                      >
+                        <X class="size-3.5" />
+                      </Button>
                     </div>
                   </div>
                 </Transition>
@@ -1024,93 +1106,6 @@
                     @clear="clearWorkingFolder"
                   />
 
-                  <DropdownMenu
-                    v-if="!hasRenderedSession && (enabledBotAgents.length || canAddAgent) && voiceInputState === 'idle'"
-                    v-model:open="agentPopoverOpen"
-                  >
-                    <DropdownMenuTrigger as-child>
-                      <Button
-                        type="button"
-                        variant="quiet"
-                        size="sm"
-                        :disabled="!canChangeAgent"
-                        :class="runtimeModeChanging ? 'disabled:opacity-100' : undefined"
-                        :title="composerAgentName"
-                        :aria-label="$t('chat.agent') + ': ' + composerAgentName"
-                        class="min-w-14 shrink max-w-60 gap-1.5 px-1.5 font-normal max-md:h-11"
-                      >
-                        <component
-                          :is="composerAgentIcon"
-                          class="size-3.5 shrink-0"
-                          aria-hidden="true"
-                        />
-                        <span class="truncate text-label">{{ composerAgentName }}</span>
-                        <ChevronDown class="size-3 shrink-0 opacity-70" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      align="start"
-                      side="bottom"
-                      :side-offset="0"
-                      class="w-56"
-                    >
-                      <DropdownMenuLabel>{{ $t('chat.agent') }}</DropdownMenuLabel>
-                      <DropdownMenuItem
-                        @mouseenter="hoveredAgentChoice = 'ami'"
-                        @mouseleave="hoveredAgentChoice = ''"
-                        @select="selectAmiAgent"
-                      >
-                        <component
-                          :is="!activeUsesExternalAgentComposer || hoveredAgentChoice === 'ami' ? AmiColor : AmiIcon"
-                          class="size-4 shrink-0 text-muted-foreground"
-                          aria-hidden="true"
-                        />
-                        <span class="min-w-0 flex-1 truncate">{{ $t('chat.agentAmi') }}</span>
-                        <Check
-                          v-if="!activeUsesExternalAgentComposer"
-                          class="ml-auto"
-                        />
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        v-for="agent in enabledBotAgents"
-                        :key="agent.id"
-                        @mouseenter="hoveredAgentChoice = agent.id || ''"
-                        @mouseleave="hoveredAgentChoice = ''"
-                        @select="selectBotAgent(agent)"
-                      >
-                        <component
-                          :is="botAgentIcon(agent, activeBotAgentID === agent.id || hoveredAgentChoice === agent.id)"
-                          class="size-4 shrink-0 text-muted-foreground"
-                        />
-                        <span class="min-w-0 flex-1 truncate">{{ botAgentName(agent) }}</span>
-                        <Check
-                          v-if="activeBotAgentID === agent.id"
-                          class="ml-auto"
-                        />
-                      </DropdownMenuItem>
-                      <template v-if="canAddAgent">
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem @select="openAgentSettings(true)">
-                          <AddIcon />
-                          {{ $t('bots.agent.add') }}
-                        </DropdownMenuItem>
-                      </template>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <span
-                    v-else-if="hasRenderedSession && voiceInputState === 'idle'"
-                    class="inline-flex h-8 min-w-0 max-w-60 items-center gap-1.5 px-1.5 text-label font-normal text-muted-foreground max-md:h-11"
-                    :title="composerAgentName"
-                    :aria-label="$t('chat.agent') + ': ' + composerAgentName"
-                  >
-                    <component
-                      :is="composerAgentIcon"
-                      class="size-3.5 shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span class="truncate">{{ composerAgentName }}</span>
-                  </span>
-
                   <DropdownMenu v-if="runtimeModes.length && voiceInputState === 'idle'">
                     <DropdownMenuTrigger as-child>
                       <Button
@@ -1270,7 +1265,6 @@
 </template>
 
 <script setup lang="ts">
-import { Ami as AmiIcon, AmiColor } from '@ami/icon'
 import { AddIcon, UploadIcon } from '@ami/icon/ui'
 
 import { EXTERNAL_AGENT_DEFAULT_PROJECT_PATH, normalizeAgentID } from '@/utils/external-agent'
@@ -1289,6 +1283,7 @@ import {
   ShieldCheck,
   Lightbulb,
   Target,
+  UserRoundCheck,
 } from 'lucide-vue-next'
 import { Button, CalloutBanner, Command, CommandGroup, CommandItem, CommandKeyBridge, CommandList, CommandSeparator, ConfirmDeleteDialog, Dialog, DialogContent, DialogHeader, DialogTitle, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, PanePlaceholder, ScrollArea, Skeleton, Spinner, toast } from '@felinic/ui'
 import { useChatStore, type ExternalAgentSessionInput, type ChatMessage, type ChatWorkspaceTargetSnapshot, type SendMessageResult } from '@/store/chat-list'
@@ -1351,9 +1346,10 @@ import { useComposerPair } from '../composables/useComposerPair'
 import { COMPOSER_MASK_BELOW_PX, useComposerLayout } from '../composables/useComposerLayout'
 import { provideChatViewTarget } from '../composables/useChatViewContext'
 import { provideConnectorLogos } from '../composables/useConnectorLogos'
-import { enqueueSteerQueue, enqueueFollowUpQueue, fetchSafeSkillCatalog, fetchSession, type ChatAttachment, type CommandActionListItem, type CommandEventResponse, type RequestedSkillSelection, type UIUserInput } from '@/composables/api/useChat'
+import { enqueueSteerQueue, enqueueFollowUpQueue, fetchExpertCatalog, fetchSafeSkillCatalog, fetchSession, type ChatAttachment, type CommandActionListItem, type CommandEventResponse, type ComposerExpert, type RequestedSkillSelection, type UIUserInput } from '@/composables/api/useChat'
 import { parseSessionQueueCommand, SessionQueueSubmissionGate } from './session-queue-submission'
 import { composerActionPresentation, dispatchComposerAction, resolveComposerAction, type ComposerAction, type ComposerActionSource } from './composer-action'
+import { findMentionQuery, matchesMentionQuery, removeMentionToken } from './composer-mention'
 import { localizeRuntimeControls, localizeRuntimeCommandResult } from '@/utils/runtime-control-presentation'
 import { commandResultPresentation, isCommandResultItemVisible, resolveCommandResultSelection } from './slash-command-result'
 import SendMorphIcon from './send-morph-icon.vue'
@@ -1362,7 +1358,7 @@ import { onAuthSessionCleared } from '@/lib/auth-session'
 import { useACPRuntime } from '@/composables/useACPRuntime'
 import { useAgentModelCatalog } from '@/composables/useAgentModelCatalog'
 import { isACPAgentConfigured } from '@/utils/acp'
-import { BOT_AGENT_RUNTIME_ACP, BOT_AGENT_RUNTIME_CODEX, botAgentIcon, botAgentName, botAgentProvider, isDirectBotAgentConfigured, isDirectBotAgentRuntime, normalizeBotAgentRuntime, sessionAgentProvider } from '@/utils/bot-agent'
+import { BOT_AGENT_RUNTIME_ACP, BOT_AGENT_RUNTIME_CODEX, botAgentProvider, isDirectBotAgentConfigured, isDirectBotAgentRuntime, normalizeBotAgentRuntime, sessionAgentProvider } from '@/utils/bot-agent'
 import { useBotAgentsQuery } from '@/composables/api/useBotAgents'
 import { UserFacingError, isApiErrorCode, parseAmiError, resolveApiErrorMessage } from '@/utils/api-error'
 import { hasBotPermission } from '@/utils/bot-permissions'
@@ -1788,7 +1784,6 @@ interface ForkSourceMeta {
 
 const acpProfiles = computed<AcpprofilePublicProfile[]>(() => acpProfileData.value?.items ?? [])
 const botAgents = computed<BotagentsBotAgent[]>(() => botAgentData.value?.items ?? [])
-const enabledBotAgents = computed(() => botAgents.value.filter(agent => agent.enabled !== false && !!agent.id))
 
 const activeSessionMetadata = computed<Record<string, unknown>>(() => activeChatTarget.value.metadata)
 const forkSource = computed<ForkSourceMeta | null>(() => {
@@ -2019,17 +2014,6 @@ const activeACPAgentId = computed(() => {
   if (target.session) return sessionAgentProvider(target.runtimeType, target.session, botAgents.value)
   return normalizeAgentID(chatStore.pendingExternalAgentStateFor(paneTarget.value)?.input.agentId)
 })
-const composerAgent = computed(() => {
-  if (!activeUsesExternalAgentComposer.value) return null
-  return botAgents.value.find(agent => agent.id === activeBotAgentID.value) ?? {
-    runtime: activeDirectRuntime.value || BOT_AGENT_RUNTIME_ACP,
-    metadata: { provider: activeDirectRuntime.value || activeACPAgentId.value },
-  }
-})
-const composerAgentIcon = computed(() => composerAgent.value ? botAgentIcon(composerAgent.value) : AmiIcon)
-const composerAgentName = computed(() => composerAgent.value
-  ? botAgentName(composerAgent.value)
-  : t('chat.agentAmi'))
 const activeACPProjectPath = computed(() => String(activeSessionMetadata.value.project_path ?? '').trim())
 const acpOperationScope = computed(() => JSON.stringify([
   paneTarget.value.botId,
@@ -2095,6 +2079,51 @@ const { data: safeSkillCatalog, isLoading: safeSkillCatalogLoading } = useQuery(
   refetchOnWindowFocus: false,
 })
 const safeSkills = computed(() => skillSlashEnabled.value ? safeSkillCatalog.value ?? [] : [])
+
+// The expert pinned with @ in the composer for the next message. Selecting one
+// is a per-turn delegation, not a standing mode: it is consumed when the
+// message is sent, so the following message goes back to the plain agent.
+const assignedExpert = ref<ComposerExpert | null>(null)
+const { data: expertCatalog } = useQuery({
+  key: () => ['bot-experts', currentBotId.value ?? ''],
+  query: () => fetchExpertCatalog(currentBotId.value!),
+  enabled: () => !!currentBotId.value && skillSlashEnabled.value,
+  refetchOnWindowFocus: false,
+})
+const experts = computed(() => skillSlashEnabled.value ? expertCatalog.value ?? [] : [])
+// The @ token must sit at the start of the draft (or after whitespace) so an
+// email address in the middle of a sentence does not open the picker. The
+// boundary rules live in composer-mention.ts so they can be tested directly.
+const mentionQuery = computed(() => findMentionQuery(inputText.value))
+const mentionPanelOpen = computed(() =>
+  isActive.value
+  && !!currentBotId.value
+  && !activeChatReadOnly.value
+  && !loadingMessages.value
+  && mentionQuery.value !== null
+  && !composerQueueCommand.value?.text,
+)
+const visibleMentionExperts = computed(() => {
+  const query = mentionQuery.value?.query ?? ''
+  return experts.value.filter(expert => matchesMentionQuery(expert, query))
+})
+
+function selectMentionExpert(expert: ComposerExpert) {
+  assignedExpert.value = expert
+  // Drop the typed token: the selection is shown as a chip, and leaving "@op"
+  // in the text would send both the chip and a stray token.
+  const mention = mentionQuery.value
+  if (mention) {
+    inputText.value = removeMentionToken(inputText.value, mention.start)
+    saveInputDraft(inputDraftKey.value, inputText.value)
+  }
+  void nextTick(focusTextarea)
+}
+
+function clearAssignedExpert() {
+  assignedExpert.value = null
+  void nextTick(focusTextarea)
+}
 
 function requestedSkillKey(skill: Pick<RequestedSkillSelection, 'name'>): string {
   return skill.name.trim()
@@ -2661,16 +2690,6 @@ const composerAgentConfigPending = computed(() => activeUsesExternalAgentCompose
 // or model/Agent preparation spinner.
 const composerConfigPending = computed(() => composerAgentConfigPending.value || runtimeModeChanging.value)
 const canAddAgent = computed(() => !!currentBotId.value && hasBotPermission(currentBot.value?.current_user_permissions, 'manage'))
-const canChangeAgent = computed(() => !!currentBotId.value
-  && !hasRenderedSession.value
-  && !activeChatReadOnly.value
-  && !loadingMessages.value
-  && voiceInputState.value === 'idle'
-  && !streaming.value
-  && !creatingSession.value
-  && !composerConfigPending.value
-  && messages.value.length === 0)
-
 const composerModels = computed(() => composerModelCatalog.value.models)
 const unavailableRuntimeModes = computed(() => composerModelCatalog.value.unavailablePermissionModes ?? [])
 const runtimeModeUnavailableReason = computed(() => unavailableRuntimeModes.value.includes(currentRuntimeModeId.value)
@@ -3155,63 +3174,6 @@ watch([slashPanelOpen, activeUsesACPRuntime, acpOperationScope], ([open, usesExt
 // no server-side deadline, so a wedged agent would leave the composer spinning
 // indefinitely — the user's only escape was a full page reload. Bound the switch
 // on the client so the controls re-enable and a retry hint surfaces instead.
-const AGENT_SWITCH_TIMEOUT_MS = 30_000
-
-class AgentSwitchTimeout extends Error {}
-
-function withAgentSwitchTimeout<T>(work: Promise<T>): Promise<T> {
-  // Keep a detached handler so a late settle (after the race is decided) never
-  // bubbles up as an unhandled rejection.
-  void work.catch(() => {})
-  return new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(() => reject(new AgentSwitchTimeout()), AGENT_SWITCH_TIMEOUT_MS)
-    work.then(
-      (value) => { clearTimeout(timer); resolve(value) },
-      (error) => { clearTimeout(timer); reject(error) },
-    )
-  })
-}
-
-function agentSwitchErrorMessage(error: unknown): string {
-  return error instanceof AgentSwitchTimeout
-    ? t('chat.agentSwitchTimeout')
-    : resolveApiErrorMessage(error, t('chat.agentSwitchFailed'))
-}
-
-async function selectBotAgent(agent: BotagentsBotAgent) {
-  const botAgentId = agent.id?.trim() ?? ''
-  const agentId = botAgentProvider(agent)
-  const runtime = normalizeBotAgentRuntime(agent.runtime) || BOT_AGENT_RUNTIME_ACP
-  if (!botAgentId || !agentId || agentChanging.value || !canChangeAgent.value) return
-  agentPopoverOpen.value = false
-  if (activeUsesExternalAgentComposer.value && botAgentId === activeBotAgentID.value) return
-  agentChanging.value = true
-  composerError.value = ''
-  try {
-    chatStore.stageExternalAgentSession({
-      botAgentId,
-      runtime,
-      agentId,
-    }, {}, paneTarget.value)
-    if (runtime === BOT_AGENT_RUNTIME_ACP) {
-      await withAgentSwitchTimeout(chatStore.ensurePendingACPRuntime(paneTarget.value))
-    }
-  } catch (error) {
-    composerError.value = agentSwitchErrorMessage(error)
-  } finally {
-    agentChanging.value = false
-  }
-}
-
-function selectAmiAgent() {
-  if (agentChanging.value || !canChangeAgent.value) return
-  agentPopoverOpen.value = false
-  chatStore.resetToEmptyComposer({ explicitSelection: true }, paneTarget.value)
-  clearDefaultExternalAgentComposerError()
-  composerError.value = ''
-  pendingFiles.value = []
-}
-
 function onModelSelected() {
   // Switching models replaces the WHOLE pair (spec v2 P6′): the effort lands
   // on the new model's default selection, which honours the model's declared
@@ -4092,9 +4054,11 @@ function handleForkMessage(turnId: string) {
 // reka's ListboxFilter, the bridge runs the listbox in virtual-highlight mode
 // and the textarea forwards navigation keys to whichever surface is showing.
 const slashPickerBridge = ref<InstanceType<typeof CommandKeyBridge> | null>(null)
+const mentionPickerBridge = ref<InstanceType<typeof CommandKeyBridge> | null>(null)
 
 function activeComposerListBridge() {
   if (slashPanelOpen.value && slashPanelHasResults.value) return slashPickerBridge.value
+  if (mentionPanelOpen.value && visibleMentionExperts.value.length) return mentionPickerBridge.value
   if (commandPanelEvent.value && commandResultItems.value.length) return dockEl.value?.commandBridge ?? null
   return null
 }
@@ -4117,8 +4081,9 @@ function handleComposerKeydown(e: KeyboardEvent) {
   if (e.isComposing || e.keyCode === 229) return
   if (e.key === 'Escape') {
     // Dismiss the command result panel; the slash picker is input-driven and
-    // closes by editing the text, so Escape only targets the panel.
-    if (!slashPanelOpen.value && commandPanelEvent.value) {
+    // closes by editing the text, so Escape only targets the panel. The @
+    // picker is input-driven the same way.
+    if (!slashPanelOpen.value && !mentionPanelOpen.value && commandPanelEvent.value) {
       e.preventDefault()
       clearCurrentCommandEvent()
     }
@@ -4321,6 +4286,9 @@ async function executeComposerSend(action: Extract<ComposerAction, { kind: 'send
   const text = action.text
   const files = [...pendingFiles.value]
   const skills = [...requestedSkills.value]
+  // Read the expert before awaiting anything: the send clears the chip, and a
+  // retry path that reread it later would send the turn without a delegate.
+  const expert = assignedExpert.value
   const sentGoalScope = goalDraftScope.value
   const goalSend = action.goal
   const sendText = goalSend ? `/goal ${text}` : text
@@ -4344,6 +4312,9 @@ async function executeComposerSend(action: Extract<ComposerAction, { kind: 'send
     inputText.value = ''
     pendingFiles.value = []
     requestedSkills.value = []
+    // The @ selection is per message: the next message is the ordinary agent
+    // again unless the user names an expert on it too.
+    assignedExpert.value = null
   }
   if (holdsInput) draftSendStarting.value = true
   else clearSentInput()
@@ -4364,6 +4335,7 @@ async function executeComposerSend(action: Extract<ComposerAction, { kind: 'send
     inputText.value = text
     pendingFiles.value = files
     requestedSkills.value = skills
+    assignedExpert.value = expert
     composerError.value = resolveApiErrorMessage(error, t('chat.sendFailed'))
     return
   }
@@ -4379,6 +4351,7 @@ async function executeComposerSend(action: Extract<ComposerAction, { kind: 'send
     reasoningEffort: sentReasoningEffort,
     workspaceTargetId: sentWorkspaceTargetId,
     requestedSkills: skills,
+    assignedExpert: expert,
     composerScope: sentContext.composerScope,
     onBeforeMessageSend: () => pairSend.begin(),
     onModelPreferenceSettled: () => pairSend.finish(false),
@@ -4425,6 +4398,7 @@ async function executeComposerSend(action: Extract<ComposerAction, { kind: 'send
     saveInputDraft(sentDraftKey, restore.input)
     pendingFiles.value = files
     requestedSkills.value = skills
+    assignedExpert.value = expert
     if (commandPanelEvent.value?.type !== 'command_error') {
       composerError.value = restore.error
     }

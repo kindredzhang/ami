@@ -136,16 +136,6 @@
            three single-row concerns was three titles saying less than the rows
            under them. -->
       <SettingsSection :title="$t('bots.steps.settings')">
-        <SettingsRow
-          :label="$t('bots.steps.agent')"
-          stack="sm"
-        >
-          <AgentTypePill
-            v-model="agentType"
-            :profiles="[]"
-          />
-        </SettingsRow>
-
         <AgentAuthorization
           v-if="selectedDirectRuntime"
           :key="selectedDirectRuntime"
@@ -340,7 +330,6 @@ import { useUserStore } from '@/store/user'
 import { BOT_PERMISSION_ORDER } from '@/utils/bot-permissions'
 import type { BotsUserGrant } from '@ami/sdk'
 import ModelSelect from './components/model-select.vue'
-import AgentTypePill from './components/agent-type-pill.vue'
 import AgentAuthorization from './components/agent-authorization.vue'
 import { readAgentAuthorizationDraft } from '@/composables/useAgentAuthorization'
 import { AMI_AGENT_VALUE } from './components/agent-type'

@@ -34,6 +34,9 @@ export type WSClientMessage =
       text?: string
       attachments?: ChatAttachment[]
       requested_skills?: RequestedSkillRequest[]
+      /** The expert named with @ for this message. The turn is delegated to
+       *  it rather than answered by the main agent. */
+      expert?: { name: string, display_name?: string }
     } & WSTurnOptions)
   | ({
       type: 'retry_message'

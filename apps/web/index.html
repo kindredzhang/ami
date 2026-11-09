@@ -13,17 +13,17 @@
          the color scheme on <html> only once the app script has run; until then
          the page paints the default light background, a bright flash before a
          dark theme. This reads the same saved preferences (store/settings:
-         `theme`, `color-scheme`; no saved theme means follow the system) so the
-         first frame already has the right background. The store takes over once
-         the app starts. -->
+         `theme`, `color-scheme`; no saved theme means light) so the first frame
+         already has the right background. The store takes over once the app
+         starts. This deployment defaults to light rather than following the OS:
+         a dark desktop should not drop an intranet user into a dark app on their
+         first visit. -->
     <script>
       (function () {
         try {
           var root = document.documentElement
           var theme = localStorage.getItem('theme')
-          if (theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)) {
-            root.classList.add('dark')
-          }
+          if (theme === 'dark') root.classList.add('dark')
           var colorScheme = localStorage.getItem('color-scheme')
           if (colorScheme) root.dataset.colorScheme = colorScheme
         } catch (e) {}

@@ -19,6 +19,15 @@
         />
         {{ t('chat.newSession') }}
       </SidebarNavButton>
+      <!-- 专家-技能：产品线展示（有哪些专家、各带什么技能）。纯前端渲染的
+           参考页，不改数据也不装东西，所以不跟随 bot、不判权限。 -->
+      <SidebarNavButton @click="handleOpenCatalog">
+        <LayoutGrid
+          :stroke-width="1.75"
+          class="size-[18px]"
+        />
+        {{ t('sidebar.catalog') }}
+      </SidebarNavButton>
       <!-- 日程：原为侧栏 activity bar 的独立 Tab，现作为动作入口，
            点击在中间工作区打开日程面板，不切换左侧 Tab。 -->
       <SidebarNavButton
@@ -30,6 +39,17 @@
           class="size-[18px]"
         />
         {{ t('chat.activityBar.schedule') }}
+      </SidebarNavButton>
+      <!-- Memory sits with the actions rather than inside a settings form: it is
+           the standing background for every conversation, so it is written
+           while working, not during account setup. Not gated on a bot — it is
+           the signed-in user's own data. -->
+      <SidebarNavButton @click="handleOpenMemory">
+        <Brain
+          :stroke-width="1.75"
+          class="size-[18px]"
+        />
+        {{ t('memory.title') }}
       </SidebarNavButton>
       <SidebarNavButton
         :disabled="!currentBotId"
@@ -117,7 +137,7 @@ import { computed, onMounted, provide, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { Calendar, SquarePen, Settings2 } from 'lucide-vue-next'
+import { Brain, Calendar, LayoutGrid, Settings2, SquarePen } from 'lucide-vue-next'
 import { ScrollArea } from '@felinic/ui'
 import { useChatStore } from '@/store/chat-list'
 import { useWorkspaceTabsStore } from '@/store/workspace-tabs'
@@ -189,6 +209,15 @@ function handleOpenSchedule() {
   if (!currentBotId.value) return
   workspaceTabs.openSchedule()
   workspaceTabs.closeMobileNav()
+}
+
+function handleOpenMemory() {
+  workspaceTabs.openMemory()
+  workspaceTabs.closeMobileNav()
+}
+
+function handleOpenCatalog() {
+  workspaceTabs.openCatalog()
 }
 
 function handleBotSettings() {

@@ -151,12 +151,13 @@ const isBotDetail = computed(() => route.name === 'bot-detail')
 // The mobile list lives AT bare /settings; anything deeper is content.
 const isListView = computed(() => route.path === '/settings')
 
-// Desktop keeps the historical default page: bare /settings means "the bots
-// page" there (the router carries no redirect so mobile can render its list
-// at the same path).
+// Desktop lands on 服务商. Bare /settings means "the settings home" there (the
+// router carries no redirect so mobile can render its list at the same path).
+// It used to be the expert list; with one agent per user a page that only
+// lists/creates experts is not a sensible front door.
 watch([isMobile, () => route.path], ([mobile, path]) => {
   if (!mobile && path === '/settings') {
-    void router.replace('/settings/bots').catch(() => {})
+    void router.replace('/settings/providers').catch(() => {})
   }
 }, { immediate: true })
 

@@ -38,7 +38,6 @@ import { directBotAgentMetadata, isDirectBotAgentRuntime } from '@/utils/bot-age
 import { useBotCreateProgressStore } from '@/store/bot-create-progress'
 import AvatarEditDialog from '@/pages/bots/components/avatar-edit-dialog.vue'
 import ModelSelect from '@/pages/bots/components/model-select.vue'
-import AgentTypePill from '@/pages/bots/components/agent-type-pill.vue'
 import AgentAuthorization from '@/pages/bots/components/agent-authorization.vue'
 import { readAgentAuthorizationDraft } from '@/composables/useAgentAuthorization'
 import { AMI_AGENT_VALUE } from '@/pages/bots/components/agent-type'
@@ -351,11 +350,6 @@ async function handleSubmit() {
               class="transition-all duration-[350ms] ease-out delay-[120ms]"
               :class="visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'"
             >
-              <AgentTypePill
-                v-model="agentType"
-                :profiles="[]"
-                class="mb-3"
-              />
               <SettingsSection v-if="selectedDirectRuntime">
                 <AgentAuthorization
                   :key="selectedDirectRuntime"

@@ -49,15 +49,6 @@
     </section>
 
     <div class="absolute bottom-24 left-1/2 w-full max-w-2xl -translate-x-1/2 space-y-1 px-8 text-center text-xs text-muted-foreground">
-      <p>
-        {{ t('desktopConnection.fullInstallLead') }}
-        <a
-          href="https://github.com/kindredzhang/ami#deploy-to-server"
-          target="_blank"
-          rel="noreferrer"
-          class="underline underline-offset-2 hover:text-foreground"
-        >{{ t('desktopConnection.fullInstallAction') }}</a>
-      </p>
       <p>{{ t('desktopConnection.fullInstallHint') }}</p>
     </div>
   </main>

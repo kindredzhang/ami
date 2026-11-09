@@ -93,7 +93,8 @@
     "unsaved": "未保存",
     "editJson": "编辑 JSON",
     "actionRequired": "需要操作",
-    "preview": "预览"
+    "preview": "预览",
+    "usage": "用量"
   },
   "computerAccess": {
     "emptyBots": "还没有专家",
@@ -150,7 +151,7 @@
     "acp_runtime_owner_missing": "这个外部 Agent 会话没有运行时所有者。请重新开始一个会话。",
     "acp_runtime_start_failed": "外部 Agent 运行时启动失败",
     "agent": {
-      "chat_model_not_configured": "尚未选择对话模型。请在专家设置 → 通用中设置默认对话模型，然后重试。",
+      "chat_model_not_configured": "尚未选择对话模型。请在智能体设置 → 通用中设置默认对话模型，然后重试。",
       "provider_auth_failed": "模型服务拒绝了当前凭据，请检查该服务商的 API Key",
       "provider_overloaded": "模型服务暂时不可用或过载，请稍后重试",
       "provider_permission_denied": "模型服务商拒绝访问该模型或资源，请确认该账号有权使用此模型",
@@ -265,6 +266,9 @@
       "session_not_found": "这个显示会话已结束，请重新打开一个"
     },
     "elicitation_declined": "工具请求的交互未能展示，此次请求已拒绝",
+    "expert": {
+      "not_found": "该专家已不存在，请重新选择后再试。"
+    },
     "external_agent": {
       "account_unbound": "你的 IM 账号还没关联到 Ami 账号，暂时无法使用该专家的工作区。如果你是它的所有者，请在 Ami 网页端「个人资料 → 关联账号」获取关联码，再在这里发送 {link} <关联码>。",
       "container_workspace_required": "该 Agent 运行时需要容器工作区。请先把专家切换到容器工作区，再重试。",
@@ -607,9 +611,7 @@
   "desktopConnection": {
     "title": "连接到 Ami",
     "subtitle": "输入你的 Ami 服务器地址",
-    "fullInstallLead": "想运行完整的 Ami？",
-    "fullInstallAction": "使用 Docker 安装 Ami",
-    "fullInstallHint": "Desktop 仅用于连接已有的 Ami Server",
+    "fullInstallHint": "Desktop 仅用于连接已有的平台服务端，请联系管理员开通",
     "placeholder": "https://ami.example.com",
     "connect": "连接",
     "failed": "无法连接",
@@ -631,7 +633,7 @@
     },
     "session": "会话列表",
     "chat": "对话",
-    "bots": "专家",
+    "bots": "智能体",
     "runtimes": "电脑",
     "providers": "服务商",
     "settings": "设置",
@@ -656,7 +658,13 @@
     "about": "关于",
     "userMenu": "账号菜单",
     "switchBot": "切换专家",
-    "manageBots": "管理专家"
+    "manageBots": "管理专家",
+    "catalog": "专家-技能",
+    "brand": {
+      "logoAlt": "东风集团",
+      "organization": "东风集团",
+      "platform": "AI 协作平台"
+    }
   },
   "runtimes": {
     "title": "电脑",
@@ -789,7 +797,7 @@
       "interfaceDescription": "这些设置将立即生效并保存在本地设备上",
       "colorScheme": "配色方案",
       "showExamplesEntry": "侧边栏示例入口",
-      "showExamplesEntryDescription": "在侧边栏左下角显示「看看 Ami 能做什么」",
+      "showExamplesEntryDescription": "在侧边栏左下角显示「东风助手能做什么」",
       "colorSchemeDescription": "为品牌、状态和 UI 元素选择一套调色盘",
       "typography": "字体与字号",
       "uiFontFamily": "界面字体",
@@ -972,21 +980,17 @@
     "installingUpdate": "正在重启…",
     "autoUpdateDescription": "后台下载，退出 Ami 时自动安装",
     "autoUpdate": "自动更新",
-    "tagline": "开源多智能体平台",
     "description": "多个 AI Agent，各自拥有独立的电脑与长期记忆",
     "updatesSection": "更新",
     "currentVersion": "当前版本 v{version}",
-    "checkHint": "前往 GitHub 检查最新版本",
     "desktopCheckHint": "检查是否有新的 Desktop 版本",
     "checkForUpdates": "检查更新",
     "checking": "检查中…",
     "upToDate": "已是最新版本",
     "newVersionAvailable": "发现新版本: v{version}",
     "newVersionTitle": "新版本 v{version} 已发布",
-    "newVersionDesc": "GitHub 上已有更新版本",
     "whatsChanged": "更新内容",
     "releaseNotes": "更新日志",
-    "viewOnGitHub": "在 GitHub 上查看",
     "checkFailed": "检查更新失败",
     "desktopUpdatesUnavailable": "自动更新不可用",
     "desktopUpdatesUnavailableDesc": "当前构建未配置更新源",
@@ -995,15 +999,11 @@
     "restartToUpdate": "重启并更新",
     "retryUpdate": "重试更新",
     "desktopUpdateFailed": "Desktop 更新失败",
-    "github": "GitHub",
-    "docs": "技术文档",
-    "feedback": "问题反馈",
     "advanced": "高级设置",
     "advancedDescription": "Desktop 连接及其他不常修改的设置",
     "serverConnection": "服务器连接",
     "serverConnectionDescription": "将 Desktop 连接到另一台 Ami 服务器",
-    "configureServer": "设置",
-    "license": "AGPLv3 · © 2026 MemohAI"
+    "configureServer": "设置"
   },
   "chat": {
     "workspaceLinkUnavailable": "此处无法打开工作区链接，请在有工作区访问权限的 Ami 对话中打开",
@@ -1112,7 +1112,7 @@
       },
       "fragmentSeparator": "、"
     },
-    "currentBot": "当前专家",
+    "currentBot": "智能体",
     "stopResponse": "停止生成回复",
     "composer": {
       "selectBot": "请选择专家后发送消息",
@@ -1520,7 +1520,7 @@
     "recents": "最近",
     "quickActions": "快捷操作",
     "scheduledJobs": "定时任务",
-    "botSettings": "专家设置",
+    "botSettings": "智能体设置",
     "manageSchedule": "管理",
     "noBotSelected": "未选择专家",
     "sessionTypeSchedule": "定时任务",
@@ -1528,7 +1528,7 @@
     "sessionTypeDiscuss": "讨论",
     "sessionTypeChat": "对话",
     "sessionTypeACPAgent": "Agent",
-    "agentAmi": "Ami",
+    "agentAmi": "东风助手",
     "agentCodex": "Codex",
     "agentSwitchFailed": "切换 Agent 失败",
     "modelSwitchFailed": "切换模型失败",
@@ -1573,7 +1573,7 @@
       "dependencyMissing": "{dep_id} 尚未安装在此工作区，正在后台安装。完成后请重发这条消息。",
       "dependencyMissingProgress": "正在后台安装…",
       "dependencyMissingDone": "安装完成，可以重发消息了",
-      "dependencyMissingFailed": "后台安装失败，请到专家设置的「依赖」中重试",
+      "dependencyMissingFailed": "后台安装失败，请到智能体设置的「依赖」中重试",
       "dependencyOpen": "查看依赖",
       "resetSession": "新开 Agent 会话",
       "resetSessionDone": "下一条消息会开始新的 Agent 会话，它不会记得上面的对话",
@@ -1692,7 +1692,8 @@
     "tabClose": "关闭标签页",
     "tabs": {
       "browser": "浏览器",
-      "schedule": "日程"
+      "schedule": "日程",
+      "memory": "记忆"
     },
     "unsaved": {
       "title": "是否保存对 {name} 的更改？",
@@ -1842,7 +1843,15 @@
         "usageLimited": "已达到用量上限",
         "budgetLimited": "已达到 Token 预算",
         "complete": "目标已完成"
-      }
+      },
+      "elapsed": "已用时 {duration}"
+    },
+    "mention": {
+      "experts": "专家",
+      "noResults": "没有匹配的专家",
+      "skillCount": "{count} 个技能",
+      "inheritsAllSkills": "继承全部技能",
+      "clearExpert": "取消指派 {name}"
     }
   },
   "chatExamples": {
@@ -1859,12 +1868,12 @@
       "schedule": "定时任务",
       "channel": "渠道"
     },
-    "sidebarEntry": "看看 Ami 能做什么",
+    "sidebarEntry": "东风助手能做什么",
     "hideSidebarEntry": "隐藏此入口",
     "sidebarEntryHidden": "已隐藏，可在外观设置中恢复",
     "undoHideSidebarEntry": "撤销",
     "sidebarEntrySaveFailed": "没能保存，请稍后再试",
-    "galleryTitle": "看看 Ami 能做什么",
+    "galleryTitle": "东风助手能做什么",
     "galleryDescription": "选一个示例填进输入框，发送前可以修改",
     "refresh": "换一批",
     "refreshFailed": "没能换一批，请稍后再试",
@@ -1874,10 +1883,6 @@
       "title": "替换输入框里的内容？",
       "description": "输入框里有还没发送的内容，替换成这条提示词后，原内容会被丢弃",
       "confirm": "替换"
-    },
-    "share": {
-      "prompt": "你用 Ami 做过什么？带上 #Ami，把你的使用案例分享到 X。",
-      "action": "分享到 X"
     }
   },
   "models": {
@@ -2156,7 +2161,16 @@
     "graphEdges": "关联",
     "semanticEmbeddingModel": "Embedding 模型",
     "semanticEmbeddingModelPlaceholder": "选择 Embedding 模型",
-    "graphEmpty": "暂无记忆，添加后可在此查看关联图谱"
+    "graphEmpty": "暂无记忆，添加后可在此查看关联图谱",
+    "title": "记忆",
+    "description": "东风助手随时会读到的背景。这里写的内容会作为固定前提带进每一段对话。",
+    "placeholder": "例如：我在东风集团负责一个私有化 AI 平台的产品。请用中文回答，简洁，先说结论。",
+    "appliesTo": "对你的东风助手生效",
+    "save": "保存",
+    "counter": "{used} / {max}",
+    "saved": "记忆已保存",
+    "saveFailed": "无法保存记忆",
+    "loadFailed": "无法读取记忆"
   },
   "network": {
     "title": "网络",
@@ -3069,7 +3083,7 @@
       "size": "大小",
       "modified": "修改时间",
       "empty": "此目录为空",
-      "panelTitle": "文件",
+      "panelTitle": "工作区",
       "newFile": "新建文件",
       "upload": "上传",
       "uploadFolder": "上传文件夹",
@@ -4544,5 +4558,46 @@
       "marked": "标记为未读"
     },
     "browserSettingsTitle": "浏览器通知"
+  },
+  "catalog": {
+    "title": "专家与技能",
+    "description": "为东风助手指派专家角色，并挑选它可用的技能。",
+    "modelLabel": "模型",
+    "publishedAt": "发布于 {date}",
+    "experts": {
+      "title": "专家",
+      "count": "共 {count} 位",
+      "hint": "选择一位专家作为执行角色",
+      "skillCount": "{count} 个技能"
+    },
+    "skills": {
+      "title": "技能",
+      "hint": "可叠加，专家自带的技能会一并生效",
+      "groupLabel": "分组",
+      "empty": "该分组暂无技能",
+      "groups": {
+        "all": "全部",
+        "personal": "个人",
+        "builtin": "内置"
+      }
+    },
+    "selection": {
+      "label": "已选",
+      "clearExpert": "清除专家",
+      "clearSkill": "移除技能",
+      "totalSkills": "共 {count} 个技能",
+      "preview": "预览配置",
+      "clear": "清空"
+    },
+    "preview": {
+      "title": "配置预览",
+      "description": "这是智能体实际会收到的内容",
+      "expert": "专家",
+      "noExpert": "未选择专家，仅使用技能",
+      "skills": "技能",
+      "systemPrompt": "系统提示词",
+      "noPrompt": "该专家未定义系统提示词",
+      "close": "关闭"
+    }
   }
 }

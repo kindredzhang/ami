@@ -1,18 +1,5 @@
 <template>
   <PageShell :title="$t('supermarket.title')">
-    <template #actions>
-      <Button
-        variant="outline"
-        as="a"
-        href="https://github.com/felinics/supermarket"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Github class="size-4" />
-        {{ $t('supermarket.submit') }}
-      </Button>
-    </template>
-
     <div class="space-y-8">
       <div class="relative">
         <Search class="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
@@ -131,7 +118,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ChevronLeft, ChevronRight, Github, Search } from 'lucide-vue-next'
+import { ChevronLeft, ChevronRight, Search } from 'lucide-vue-next'
 import {
   Button,
   InlineLoadingRow,

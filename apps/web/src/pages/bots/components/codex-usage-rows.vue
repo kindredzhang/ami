@@ -1,5 +1,5 @@
 <template>
-  <!-- Two placeholder rows: accounts on paid plans report a short and a weekly
+  <!-- Two placeholder rows: these accounts report a short and a weekly
        window, so the loaded rows land in the same frame. -->
   <template v-if="usage.isLoading.value && !usage.data.value">
     <SettingsRow

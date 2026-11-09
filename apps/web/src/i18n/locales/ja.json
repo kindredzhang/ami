@@ -90,7 +90,8 @@
     "preview": "プレビュー",
     "hide": "非表示",
     "show": "表示",
-    "saveChanges": "変更を保存"
+    "saveChanges": "変更を保存",
+    "usage": "使用量"
   },
   "computerAccess": {
     "emptyBots": "Bot がまだありません。",
@@ -151,7 +152,7 @@
       "provider_auth_failed": "モデルプロバイダーが認証情報を拒否しました。プロバイダーの API キーを確認してください。",
       "provider_overloaded": "モデルプロバイダーは現在利用できないか、過負荷の状態です。しばらくしてからもう一度お試しください。",
       "provider_permission_denied": "モデルプロバイダーがこのモデルまたはリソースへのアクセスを拒否しました。プロバイダーのアカウントがこのモデルを利用できるか確認してください。",
-      "provider_quota_exhausted": "モデルプロバイダーのアカウントに残高またはクォータが残っていません。",
+      "provider_quota_exhausted": "モデルプロバイダーのアカウントにクォータが残っていません。",
       "provider_rate_limited": "モデルプロバイダーのレート制限に達しました。少し待ってから送信してください。",
       "provider_request_rejected": "モデルプロバイダーがリクエストを拒否しました。モデル設定を確認するか、別のモデルをお試しください。",
       "provider_unreachable": "Ami からモデルプロバイダーに接続できませんでした。プロバイダーのアドレスとサービスが稼働中か確認してください。",
@@ -262,6 +263,9 @@
       "session_not_found": "この画面セッションは終了しました。新しく開いてください。"
     },
     "elicitation_declined": "ツールが要求した対話を表示できなかったため、その要求は拒否されました。",
+    "expert": {
+      "not_found": "そのエキスパートは存在しません。別のエキスパートを選んで再試行してください。"
+    },
     "external_agent": {
       "account_unbound": "この IM アカウントはまだ Ami アカウントと連携されていないため、この Bot のワークスペースを利用できません。あなたが所有者の場合は、Ami の Web 画面で「プロフィール → 連携済みアカウント」からリンクコードを取得し、ここで {link} <コード> を送信してください。",
       "container_workspace_required": "この Agent ランタイムにはコンテナワークスペースが必要です。Bot をコンテナワークスペースに切り替えてから、もう一度お試しください。",
@@ -278,7 +282,7 @@
       "session_resume_failed": "セッションを再開できませんでした：{message}。もう一度お試しいただくか、新しい会話を開始してください。",
       "unavailable": "External Agent の Runtime を利用できません。Agent の設定と Workspace を確認して、もう一度お試しください。",
       "upstream_unreachable": "外部 Agent がモデルサービスに接続できないか、接続が途中で切断されました。ネットワークと Agent のサービスアドレスを確認して、もう一度お試しください。",
-      "usage_limited": "外部 Agent のアカウントの利用枠を使い切りました。上限がリセットされてからもう一度お試しいただくか、アカウントのプランと請求情報をご確認ください。"
+      "usage_limited": "外部 Agent のアカウントの利用枠を使い切りました。上限がリセットされてからもう一度お試しください。"
     },
     "fetch_provider": {
       "native_managed": "組み込みの取得プロバイダーは Ami が管理しており、この方法では変更できません。",
@@ -604,9 +608,7 @@
   "desktopConnection": {
     "title": "Ami に接続",
     "subtitle": "Ami Server のアドレスを入力してください",
-    "fullInstallLead": "完全な Ami を利用するには、",
-    "fullInstallAction": "Docker でインストールしてください。",
-    "fullInstallHint": "Desktop は既存の Ami Server に接続するクライアントです。",
+    "fullInstallHint": "Desktop は既存のサーバーに接続するクライアントです。管理者にご確認ください。",
     "placeholder": "https://ami.example.com",
     "connect": "接続",
     "failed": "接続できませんでした",
@@ -621,6 +623,11 @@
     }
   },
   "sidebar": {
+    "brand": {
+      "logoAlt": "東風集団",
+      "organization": "東風集団",
+      "platform": "AI コラボレーション基盤"
+    },
     "updateChip": {
       "updating": "更新中",
       "restart": "再起動",
@@ -628,7 +635,7 @@
     },
     "session": "セッション",
     "chat": "チャット",
-    "bots": "Bot",
+    "bots": "エージェント",
     "runtimes": "コンピューター",
     "providers": "プロバイダー",
     "webSearch": "ウェブ検索",
@@ -646,14 +653,14 @@
     "home": "ホーム",
     "mcp": "MCP",
     "usage": "使用状況",
-    "people": "メンバー",
     "appearance": "外観",
     "keyboard": "キーボードショートカット",
     "supermarket": "マーケットプレイス",
     "about": "Ami について",
     "userMenu": "アカウントメニュー",
     "switchBot": "Botを切り替え",
-    "manageBots": "Botを管理"
+    "manageBots": "Botを管理",
+    "catalog": "専門家-スキル"
   },
   "runtimes": {
     "title": "コンピューター",
@@ -790,7 +797,7 @@
       "interfaceDescription": "これらの設定はローカルに保存され、すぐに適用されます。",
       "colorScheme": "配色",
       "showExamplesEntry": "サイドバーの使用例",
-      "showExamplesEntryDescription": "サイドバー左下に「Ami でできること」を表示します",
+      "showExamplesEntryDescription": "サイドバー左下に「アシスタントにできること」を表示します",
       "colorSchemeDescription": "ブランド、ステータス、UI 要素に使うパレットを選択します。",
       "typography": "タイポグラフィ",
       "uiFontFamily": "UI フォント",
@@ -914,41 +921,6 @@
     "versionTag": "v{version}",
     "commitHash": "コミット"
   },
-  "people": {
-    "title": "メンバー",
-    "members": "メンバー",
-    "member": "メンバー",
-    "newMember": "新メンバー",
-    "memberName": "名前",
-    "displayNamePlaceholder": "オプションの表示名",
-    "usernamePlaceholder": "ユーザー名",
-    "usernameRequired": "ユーザー名は必須です",
-    "email": "メール",
-    "emailPlaceholder": "名前{'@'}example.com",
-    "role": "役割",
-    "roles": {
-      "admin": "管理者",
-      "member": "メンバー"
-    },
-    "activeOnCreate": "アクティブ",
-    "activeOnCreateHint": "すぐにサインインを許可する",
-    "you": "あなた",
-    "lastLogin": "最終ログイン",
-    "never": "一度もない",
-    "toggleStatus": "{name} のステータスを切り替えます",
-    "removeMember": "メンバーを削除",
-    "removeMemberFor": "{name} を削除",
-    "removeConfirm": "{name} をこのワークスペースから削除しますか？認証情報は保持されるため、後でアクセスを復元できます。",
-    "removeSuccess": "メンバーを削除しました",
-    "removeFailed": "メンバーの削除に失敗しました",
-    "createSuccess": "メンバーが作成されました",
-    "createFailed": "メンバーの作成に失敗しました",
-    "enableSuccess": "メンバーを有効にしました",
-    "disableSuccess": "メンバーを無効にしました",
-    "statusUpdateFailed": "ステータスの更新に失敗しました",
-    "loadFailed": "メンバーの読み込みに失敗しました",
-    "empty": "メンバーがいません"
-  },
   "about": {
     "updatingVersion": "v{version} に更新中",
     "readyToRestart": "再起動の準備ができました",
@@ -959,21 +931,17 @@
     "installingUpdate": "再起動中…",
     "autoUpdateDescription": "バックグラウンドでダウンロードし、Ami の終了時にインストールします。",
     "autoUpdate": "自動更新",
-    "tagline": "オープンソースのマルチエージェント プラットフォーム",
     "description": "複数の AI エージェントが、それぞれ専用のコンピューターと長期記憶を持ちます。",
     "updatesSection": "アップデート",
     "currentVersion": "バージョン v{version}",
-    "checkHint": "最新リリースについては GitHub を確認してください。",
     "desktopCheckHint": "新しい Desktop バージョンを確認します。",
     "checkForUpdates": "アップデートをチェックする",
     "checking": "チェック中…",
     "upToDate": "最新バージョンを使用しています",
     "newVersionAvailable": "新しいバージョンがあります: v{version}",
     "newVersionTitle": "バージョン v{version} が利用可能です",
-    "newVersionDesc": "新しいリリースは GitHub で公開されています。",
     "whatsChanged": "変更内容",
     "releaseNotes": "リリースノート",
-    "viewOnGitHub": "GitHub で見る",
     "checkFailed": "チェックに失敗しました",
     "desktopUpdatesUnavailable": "自動アップデートを利用できません",
     "desktopUpdatesUnavailableDesc": "このビルドにはアップデート配信元が設定されていません。",
@@ -982,15 +950,11 @@
     "restartToUpdate": "再起動して更新",
     "retryUpdate": "更新を再試行",
     "desktopUpdateFailed": "Desktop のアップデートに失敗しました",
-    "github": "GitHub",
-    "docs": "ドキュメント",
-    "feedback": "フィードバック",
     "advanced": "詳細設定",
     "advancedDescription": "Desktop 接続など、通常は変更しない設定です。",
     "serverConnection": "Server 接続",
     "serverConnectionDescription": "Desktop を別の Ami Server に接続します。",
-    "configureServer": "設定",
-    "license": "AGPLv3 · © 2026 MemohAI"
+    "configureServer": "設定"
   },
   "chat": {
     "workspaceLinkUnavailable": "ここではワークスペースのリンクを開けません。ワークスペースへのアクセス権がある Ami の会話で開いてください。",
@@ -1086,7 +1050,7 @@
       },
       "fragmentSeparator": "、"
     },
-    "currentBot": "現在のBot",
+    "currentBot": "エージェント",
     "stopResponse": "応答の生成を停止",
     "composer": {
       "selectBot": "Botを選択してから送信してください",
@@ -1442,7 +1406,12 @@
         "session": "セッション",
         "cdpUrl": "CDP URL",
         "targets": "ターゲット"
-      }
+      },
+      "spawn_expert": "エキスパートを派遣",
+      "spawn_expert_background": "バックグラウンドでエキスパートを派遣",
+      "spawn_expert_fork": "エキスパートを分岐",
+      "spawn_expert_fork_background": "バックグラウンドでエキスパートを分岐",
+      "list_experts": "エキスパート一覧"
     },
     "unknownUser": "{platform}ユーザー",
     "files": "ファイル",
@@ -1479,7 +1448,7 @@
     "recents": "最近",
     "quickActions": "クイックアクション",
     "scheduledJobs": "スケジュールされたジョブ",
-    "botSettings": "Botの設定",
+    "botSettings": "エージェント設定",
     "manageSchedule": "管理",
     "noBotSelected": "Botが選択されていません",
     "sessionTypeSchedule": "スケジュールされたタスク",
@@ -1648,7 +1617,8 @@
     "tabClose": "タブを閉じる",
     "tabs": {
       "browser": "ブラウザ",
-      "schedule": "スケジュール"
+      "schedule": "スケジュール",
+      "memory": "メモリ"
     },
     "unsaved": {
       "title": "{name} に加えた変更を保存しますか?",
@@ -1801,7 +1771,15 @@
         "usageLimited": "利用上限に到達",
         "budgetLimited": "Token 予算に到達",
         "complete": "目標を達成"
-      }
+      },
+      "elapsed": "{duration} 経過"
+    },
+    "mention": {
+      "experts": "エキスパート",
+      "noResults": "一致するエキスパートがありません",
+      "skillCount": "スキル {count} 件",
+      "inheritsAllSkills": "すべてのスキルを継承",
+      "clearExpert": "{name} の割り当てを解除"
     }
   },
   "chatExamples": {
@@ -1818,12 +1796,12 @@
       "schedule": "スケジュール",
       "channel": "チャンネル"
     },
-    "sidebarEntry": "Ami でできること",
+    "sidebarEntry": "アシスタントにできること",
     "hideSidebarEntry": "この入口を非表示",
     "sidebarEntryHidden": "非表示にしました。外観設定で戻せます",
     "undoHideSidebarEntry": "元に戻す",
     "sidebarEntrySaveFailed": "保存できませんでした。しばらくしてからもう一度お試しください。",
-    "galleryTitle": "Ami でできること",
+    "galleryTitle": "アシスタントにできること",
     "galleryDescription": "例を選ぶと入力欄に入ります。送信前に編集できます。",
     "refresh": "他の候補",
     "refreshFailed": "新しい候補を取得できませんでした。しばらくしてからもう一度お試しください。",
@@ -1833,10 +1811,6 @@
       "title": "未送信のメッセージを置き換えますか？",
       "description": "入力欄にまだ送信していないテキストがあります。このプロンプトに置き換えると、そのテキストは破棄されます。",
       "confirm": "置き換える"
-    },
-    "share": {
-      "prompt": "Ami で何を作りましたか？ #Ami を付けて、活用事例を X でシェアしましょう。",
-      "action": "X でシェア"
     }
   },
   "models": {
@@ -1991,10 +1965,10 @@
     "promptCache": {
       "label": "プロンプトキャッシュ",
       "option5m": "5分(デフォルト)",
-      "option1h": "1時間（料金は高くなります）",
+      "option1h": "1時間",
       "optionOff": "オフ (推奨されません)",
-      "description": "システムプロンプトとツール一覧をキャッシュして、繰り返しリクエストの入力コストを削減します。現在は Anthropic モデルでのみ有効です。",
-      "descriptionOff": "キャッシュを無効にすると、リクエストごとに完全なシステムプロンプトとツール一覧が再課金されます。厳密なコンテキスト分離が必要な場合にのみ使用してください。"
+      "description": "システムプロンプトとツール一覧のプロンプトキャッシュを有効にし、繰り返しリクエストでキャッシュ済みの入力を再利用します。現在は Anthropic モデルでのみ有効です。",
+      "descriptionOff": "キャッシュを無効にすると、リクエストごとに完全なシステムプロンプトとツール一覧を再送信します。厳密なコンテキスト分離が必要な場合にのみ使用してください。"
     },
     "oauth": {
       "openaiDeviceHint": "OpenAI の確認ページでこのワンタイムコードを入力してください。",
@@ -2108,14 +2082,15 @@
     }
   },
   "memory": {
-    "builtinTitle": "Built-in Memory",
-    "saveSuccess": "Memory設定を保存しました",
-    "graphTitle": "メモリグラフ",
-    "graphNodes": "記憶",
-    "graphEdges": "リンク",
-    "semanticEmbeddingModel": "Embedding Model",
-    "semanticEmbeddingModelPlaceholder": "Embedding Modelを選択",
-    "graphEmpty": "記憶がまだありません — 追加するとグラフが表示されます。"
+    "title": "メモリー",
+    "description": "すべての専門家が読む背景です。ここに書いた内容は、どの専門家との会話にも前提として引き継がれます。",
+    "placeholder": "例：私はプライベート AI プラットフォームのプロダクト責任者です。日本語で簡潔に、結論から答えてください。",
+    "appliesTo": "東風アシスタントに適用されます",
+    "save": "保存",
+    "counter": "{used} / {max}",
+    "saved": "メモリーを保存しました",
+    "saveFailed": "メモリーを保存できませんでした",
+    "loadFailed": "メモリーを読み込めませんでした"
   },
   "network": {
     "title": "ネットワーク",
@@ -3092,7 +3067,7 @@
       "size": "サイズ",
       "modified": "修正済み",
       "empty": "このディレクトリは空です",
-      "panelTitle": "ファイル",
+      "panelTitle": "ワークスペース",
       "newFile": "新しいファイル",
       "upload": "アップロード",
       "uploadFolder": "アップロードフォルダー",
@@ -4035,7 +4010,6 @@
     "viewDetails": "詳細を見る",
     "appInstallTitle": "App をインストール",
     "loadError": "スーパーマーケットからの読み込みに失敗しました",
-    "submit": "送信",
     "information": "情報",
     "category": "カテゴリ",
     "registry": "Registry",
@@ -4530,5 +4504,46 @@
       "marked": "未読にしました"
     },
     "browserSettingsTitle": "ブラウザ通知"
+  },
+  "catalog": {
+    "title": "専門家とスキル",
+    "description": "東風アシスタントに専門家ロールを割り当て、使えるスキルを選びます。",
+    "modelLabel": "モデル",
+    "publishedAt": "{date} 公開",
+    "experts": {
+      "title": "専門家",
+      "count": "全 {count} 名",
+      "hint": "実行ロールとして 1 名を選択",
+      "skillCount": "{count} スキル"
+    },
+    "skills": {
+      "title": "スキル",
+      "hint": "積み重ね可能。専門家固有のスキルも有効なまま",
+      "groupLabel": "グループ",
+      "empty": "このグループにスキルはありません",
+      "groups": {
+        "all": "すべて",
+        "personal": "個人",
+        "builtin": "ビルトイン"
+      }
+    },
+    "selection": {
+      "label": "選択中",
+      "clearExpert": "専門家を解除",
+      "clearSkill": "スキルを外す",
+      "totalSkills": "{count} スキル",
+      "preview": "プレビュー",
+      "clear": "クリア"
+    },
+    "preview": {
+      "title": "設定プレビュー",
+      "description": "エージェントが実際に受け取る内容",
+      "expert": "専門家",
+      "noExpert": "専門家なし — スキルのみ",
+      "skills": "スキル",
+      "systemPrompt": "システムプロンプト",
+      "noPrompt": "この専門家はシステムプロンプトを定義していません",
+      "close": "閉じる"
+    }
   }
 }

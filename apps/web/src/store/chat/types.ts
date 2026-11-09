@@ -17,6 +17,7 @@ import type {
   UIToolMessage,
   UIUserInput,
 } from '@/composables/api/useChat.types'
+import type { ComposerExpert } from '@/composables/api/useChat.message-api'
 import type { BotAgentRuntime, DirectBotAgentRuntime } from '@/utils/bot-agent'
 
 /**
@@ -242,6 +243,8 @@ export interface SendMessageOptions {
   reasoningEffort?: string
   workspaceTargetId?: string
   requestedSkills?: RequestedSkillSelection[]
+  /** The expert pinned with @ for this message; the turn is delegated to it. */
+  assignedExpert?: ComposerExpert | null
   composerScope?: string
   /** Defaults to true. Actions that do not consume a composer draft opt out. */
   restoreDraftOnFailure?: boolean

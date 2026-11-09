@@ -204,9 +204,7 @@ const dialogName = ref('')
         <div class="w-full max-w-sm">
           <ActionCard
             as="a"
-            href="https://memoh.ai"
-            target="_blank"
-            rel="noopener"
+            href="#"
             title="Open documentation"
           >
             <template #icon>

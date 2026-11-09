@@ -301,7 +301,7 @@ import {
 import {
   SquarePen, LoaderCircle, Check, Search, X, LayoutDashboard, MessageSquare,
   ShieldAlert, Database, Link, Server, SlidersHorizontal,
-  Bot as BotIcon, ChevronLeft, Laptop, Package as App,
+  ChevronLeft, Laptop, Package as App,
 } from 'lucide-vue-next'
 import { SettingsIcon as Settings } from '@ami/icon/ui'
 import { computed, ref, watch, onMounted, toValue, nextTick, type Ref } from 'vue'
@@ -332,8 +332,8 @@ import BotOverview from './components/bot-overview.vue'
 import BotContainer from './components/bot-container.vue'
 import BotRemoteRuntime from './components/bot-remote-runtime.vue'
 import BotAccess from './components/bot-access.vue'
-import BotAgents from './components/bot-agents.vue'
 import BotApps from './components/bot-apps.vue'
+import { agentAppsEnabled, channelsEnabled } from '@/lib/features'
 import AvatarEditDialog from './components/avatar-edit-dialog.vue'
 import { resolveApiErrorMessage } from '@/utils/api-error'
 import { useAvatarInitials } from '@/composables/useAvatarInitials'
@@ -434,12 +434,18 @@ const tabList = computed(() => {
     { value: 'remote-runtime', label: 'bots.tabs.remoteRuntime', icon: Laptop, component: BotRemoteRuntime, params: { 'bot-id': bot_id } },
     { value: 'container', label: 'bots.tabs.container', icon: Server, component: BotContainer, params: {}, containerWorkspaceOnly: true },
     { value: 'memory', label: 'bots.tabs.memory', icon: Database, component: BotMemory, params: { 'bot-id': bot_id } },
-    { value: 'channels', label: 'bots.tabs.channels', icon: MessageSquare, component: BotChannels, params: { 'bot-id': bot_id } },
+    // 平台 (channel bindings) and 应用 (per-agent app installs) are switched off
+    // for this deployment: no Feishu/WeChat delivery yet, and the default app
+    // market is replaced by toolchains baked into the agent's VM image.
+    ...(channelsEnabled
+      ? [{ value: 'channels', label: 'bots.tabs.channels', icon: MessageSquare, component: BotChannels, params: { 'bot-id': bot_id } }]
+      : []),
     { value: 'advanced', label: 'bots.tabs.advanced', icon: SlidersHorizontal, component: BotAdvanced, params: { 'bot-id': bot_id, 'workspace-backend': botWorkspaceBackend.value } },
     { value: 'access', label: 'bots.tabs.access', icon: ShieldAlert, component: BotAccess, params: { 'bot-id': bot_id } },
-    { value: 'agents', label: 'bots.tabs.agents', icon: BotIcon, component: BotAgents, params: { 'bot-id': bot_id } },
     { value: 'mcp', label: 'bots.tabs.mcp', icon: Link, component: BotMcp, params: { 'bot-id': bot_id } },
-    { value: 'apps', label: 'bots.tabs.apps', icon: App, component: BotApps, params: { 'bot-id': bot_id } },
+    ...(agentAppsEnabled
+      ? [{ value: 'apps', label: 'bots.tabs.apps', icon: App, component: BotApps, params: { 'bot-id': bot_id } }]
+      : []),
   ] satisfies Array<BotDetailsTabRule & {
     label: string
     icon: unknown

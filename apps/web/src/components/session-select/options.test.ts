@@ -89,11 +89,15 @@ describe('sessionMark', () => {
     expect(mark).toEqual({ kind: 'schedule', agentId: 'codex', label: 'Scheduled Task' })
   })
 
-  it('reads the ACP agent from the session\'s Agent instance', () => {
+  // External agents are switched off in this deployment (lib/features), so a
+  // session that was created by an ACP agent must read as an ordinary chat —
+  // no agent mark, no agent name. This is the behaviour that keeps the concept
+  // out of the UI even for pre-existing data.
+  it('does not mark ACP sessions while external agents are disabled', () => {
     const agents = [{ id: 'agent-1', runtime: 'acp', metadata: { provider: 'gemini' } }]
     const mark = sessionMark(session('a', { runtime_type: 'acp_agent', bot_agent_id: 'agent-1' }), labels, agents)
 
-    expect(mark).toMatchObject({ kind: 'acp', agentId: 'gemini' })
+    expect(mark.kind).toBe('chat')
   })
 
   it('leaves plain model chats unmarked', () => {

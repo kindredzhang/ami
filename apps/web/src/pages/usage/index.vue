@@ -2,18 +2,7 @@
   <PageShell :title="$t('usage.title')">
     <div class="space-y-8">
       <SettingsSection :title="$t('usage.filters')">
-        <div class="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2">
-          <div class="space-y-1.5">
-            <p class="text-xs text-muted-foreground">
-              {{ $t('usage.selectBot') }}
-            </p>
-            <BotSelect
-              v-model="selectedBotId"
-              trigger-class="w-full"
-              :placeholder="$t('usage.selectBotPlaceholder')"
-            />
-          </div>
-
+        <div class="grid grid-cols-1 gap-4 p-4 sm:grid-cols-3">
           <div class="space-y-1.5">
             <p class="text-xs text-muted-foreground">
               {{ $t('usage.timeRange') }}
@@ -43,9 +32,6 @@
                 </SelectItem>
                 <SelectItem value="discuss">
                   {{ $t('usage.discuss') }}
-                </SelectItem>
-                <SelectItem value="acp_agent">
-                  {{ $t('usage.acpAgent') }}
                 </SelectItem>
                 <SelectItem value="schedule">
                   {{ $t('usage.schedule') }}
@@ -354,7 +340,6 @@ import {
 import { getBotsQuery } from '@ami/sdk/colada'
 import { getBotsByBotIdTokenUsage, getBotsByBotIdTokenUsageRecords } from '@ami/sdk'
 import { MetricReadout, PageShell, SectionGroup, SettingsSection } from '@felinic/ui'
-import BotSelect from '@/components/bot-select/index.vue'
 import { useChatSelectionStore } from '@/store/chat-selection'
 import type { HandlersDailyTokenUsage, HandlersModelTokenUsage, HandlersTokenUsageRecord } from '@ami/sdk'
 import { useSyncedQueryParam } from '@/composables/useSyncedQueryParam'
@@ -365,7 +350,9 @@ use([CanvasRenderer, LineChart, BarChart, PieChart, GridComponent, TooltipCompon
 
 const { t, locale } = useI18n()
 
-const selectedBotId = useSyncedQueryParam('bot', '')
+// Not a query param: with one agent per user there is nothing to choose, so the
+// id is resolved from the registry and never surfaces in the URL.
+const selectedBotId = ref('')
 const selectedModelId = useSyncedQueryParam('model', 'all')
 const selectedSessionType = useSyncedQueryParam('type', 'all')
 const recordsPage = useSyncedQueryParam('rpage', '1')

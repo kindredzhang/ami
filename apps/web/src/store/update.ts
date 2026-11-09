@@ -1,66 +1,34 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { toast } from '@felinic/ui'
-import i18n from '@/i18n'
-import { useCapabilitiesStore } from './capabilities'
 
-const GITHUB_REPO = 'kindredzhang/ami'
-const RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases/latest`
-
-function normalizeVersion(version?: string | null): string {
-  return (version ?? '').replace(/^v/i, '')
-}
-
-// Update detection is intentionally lightweight (a single GitHub release lookup,
-// not a real auto-updater — that's a separate, larger effort). It lives in a
-// shared store so detection can happen once at app launch and the About page
-// merely reads the result instead of re-checking (and toasting) on every visit.
+// Update detection for the web build is disabled in this deployment: the
+// platform is self-hosted on an intranet, where the upstream release feed is
+// neither reachable nor a place we point users at. The desktop build has its
+// own updater (main/updates.ts, fed by AMI_DESKTOP_UPDATE_BASE_URL).
+//
+// The store is kept — with its original shape — so the About page and the
+// desktop renderer's ambient types keep working; nothing ever sets hasUpdate
+// here, so no update affordance is ever drawn.
 export const useUpdateStore = defineStore('update', () => {
   const checking = ref(false)
   const checked = ref(false)
   const hasUpdate = ref(false)
   const latestVersion = ref('')
   const releaseBody = ref('')
-  const releaseUrl = ref(RELEASES_URL)
+  const releaseUrl = ref('')
 
-  // Fetch the latest GitHub release and compare against the running server
-  // version. Throws on network / API failure so explicit callers can surface it.
   async function check(): Promise<boolean> {
-    if (checking.value) return hasUpdate.value
     checking.value = true
     try {
-      const capabilities = useCapabilitiesStore()
-      await capabilities.load()
-
-      const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-
-      const latest = normalizeVersion(data.tag_name ?? '')
-      const current = normalizeVersion(capabilities.serverVersion)
-
-      latestVersion.value = latest
-      releaseBody.value = data.body ?? ''
-      releaseUrl.value = data.html_url ?? RELEASES_URL
-      hasUpdate.value = Boolean(latest) && Boolean(current) && latest !== current
       checked.value = true
-      return hasUpdate.value
+      return false
     } finally {
       checking.value = false
     }
   }
 
-  // Startup entry point: check quietly and only surface a toast when a newer
-  // release exists, so detection no longer depends on opening the About page.
   async function checkAtStartup(): Promise<void> {
-    try {
-      const updated = await check()
-      if (updated) {
-        toast.success(i18n.global.t('about.newVersionAvailable', { version: latestVersion.value }))
-      }
-    } catch {
-      // Silent at startup — a failed background check should never nag.
-    }
+    // No-op: nothing to check against in a private deployment.
   }
 
   return { checking, checked, hasUpdate, latestVersion, releaseBody, releaseUrl, check, checkAtStartup }

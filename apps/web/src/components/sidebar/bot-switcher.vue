@@ -1,6 +1,21 @@
 <template>
-  <DropdownMenu v-model:open="menuOpen">
-    <DropdownMenuTrigger as-child>
+  <!-- One agent per user, so there is nothing to switch between. The picker is
+       disabled rather than deleted: the trigger keeps showing the agent's avatar
+       and name (a plain, non-interactive row), while the dropdown — and with it
+       新建专家 / 管理专家 — stays unmounted. The switcher implementation is kept
+       whole and gated on expertManagementEnabled: if multi-agent ever returns,
+       flipping that flag restores the menu with no other change. Do not remove
+       it as dead code — that is the documented re-enable path. -->
+  <DropdownMenu
+    v-model:open="menuOpen"
+  >
+    <!-- `disabled` lives on the TRIGGER, not the root: reka's DropdownMenuRoot
+         has no disabled prop and ignores unknown ones, so putting it there
+         type-checks but does nothing. The trigger's disabled does block opening. -->
+    <DropdownMenuTrigger
+      as-child
+      :disabled="!expertManagementEnabled"
+    >
       <!-- Workspace switcher. Two shapes by platform:
            · mac desktop (chip): hugs avatar + name, never full-width — leaves the
              traffic-light gutter to its left uncluttered; chevron always shown.
@@ -13,11 +28,20 @@
            hover fill. No color transition: the fill snaps on hover/open. -->
       <button
         type="button"
-        class="group flex h-8 items-center translate-y-[-2px] text-xs text-foreground outline-none hover:bg-[color:var(--sidebar-hover)] focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-[color:var(--sidebar-hover)] [-webkit-app-region:no-drag]"
-        :class="fullWidth
-          ? 'w-[calc(100%+3px)] -ml-[3px] gap-1.5 rounded-full pl-2 pr-2.5'
-          : 'max-w-full gap-2 rounded-md px-1.5'"
-        :aria-label="t('sidebar.switchBot')"
+        :disabled="!expertManagementEnabled"
+        class="group flex h-8 items-center translate-y-[-2px] text-xs text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring [-webkit-app-region:no-drag]"
+        :class="[
+          fullWidth
+            ? 'w-[calc(100%+3px)] -ml-[3px] gap-1.5 rounded-full pl-2 pr-2.5'
+            : 'max-w-full gap-2 rounded-md px-1.5',
+          // The hover/open fill is a menu affordance. With nothing to switch to
+          // it must not appear at all — the row is a label, not a control — so
+          // the class is applied conditionally instead of overridden.
+          expertManagementEnabled
+            ? 'hover:bg-[color:var(--sidebar-hover)] data-[state=open]:bg-[color:var(--sidebar-hover)]'
+            : 'cursor-default',
+        ]"
+        :aria-label="expertManagementEnabled ? t('sidebar.switchBot') : currentLabel"
       >
         <span class="relative shrink-0">
           <Avatar
@@ -33,8 +57,9 @@
               {{ avatarFallback }}
             </AvatarFallback>
           </Avatar>
+          <!-- Other-bot attention only exists when there are other bots. -->
           <span
-            v-if="otherBotKind"
+            v-if="expertManagementEnabled && otherBotKind"
             class="absolute -right-0.5 -top-0.5 flex"
             role="img"
             :aria-label="t('notifications.otherBots')"
@@ -53,7 +78,10 @@
         >
           {{ currentLabel }}
         </span>
+        <!-- No chevron without a menu: the affordance only means something when
+             there is somewhere to go. -->
         <ChevronsUpDown
+          v-if="expertManagementEnabled"
           class="size-3 shrink-0 text-muted-foreground"
           :class="fullWidth && 'ml-auto opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-data-[state=open]:opacity-100'"
         />
@@ -194,6 +222,7 @@ import { firstAvatarCharacter } from '@/composables/useAvatarInitials'
 import { usePinnedBots } from '@/composables/usePinnedBots'
 import { usePendingBotsRefresh } from '@/composables/usePendingBotsRefresh'
 import { switcherBots } from './bot-switcher-list'
+import { expertManagementEnabled } from '@/lib/features'
 
 const router = useRouter()
 const { t } = useI18n()

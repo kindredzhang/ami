@@ -13,21 +13,18 @@
     :style="asideStyle"
     :inert="!workbenchOpen || undefined"
   >
-    <!-- Workspace / bot switcher (no bottom divider — header blends into the
-         panel below). Taller than the nav row and with its own vertical padding so
-         the switcher chip/bar floats clear of the window's top edge instead of its
-         hover fill kissing it. mac reserves the traffic-light gutter;
-         web/Windows start at the normal pl-3 indent and the switcher goes
-         full-width (right edge aligns with the search row below). -->
-    <header
-      class="flex h-11 shrink-0 items-center bg-sidebar pr-2 [-webkit-app-region:drag]"
-      data-native-sidebar-surface
-      :class="macTrafficReserve ? 'pl-22' : 'pl-3'"
-    >
-      <div class="min-w-0 flex-1">
-        <BotSwitcher :full-width="!macTrafficReserve" />
-      </div>
-    </header>
+    <!-- Workspace / bot switcher. The corporate brand owns the masthead above;
+         this quieter labelled control makes the current bot a working context,
+         not the product name. Keep it full-width and aligned with the nav row. -->
+    <!-- Local product identity is separate from the current bot: the platform
+         belongs to Dongfeng Group; the bot remains the user's working context. -->
+    <BrandHeader />
+
+    <!-- No agent row. One user has exactly one agent, so showing its name here
+         would only re-introduce the bot concept the product removed: there is
+         nothing to identify and nothing to switch to. The switcher component is
+         kept on disk (gated on expertManagementEnabled) for the multi-agent
+         re-enable path, but this sidebar renders no agent identity at all. -->
 
     <!-- Horizontal nav + search: the active tab is a pill with
          icon + label, the others collapse to icon-only. These tabs are plain
@@ -65,7 +62,7 @@
           <TooltipTrigger as-child>
             <button
               type="button"
-              class="inline-flex h-8 min-w-0 shrink-0 cursor-pointer items-center justify-start rounded-full px-2 text-muted-foreground outline-none transition-[margin,padding,color,background-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[color:var(--sidebar-hover)] hover:text-foreground dark:hover:text-[color:oklch(0.96_0_0)] focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:-ml-[3px] data-[active=true]:bg-sidebar-accent data-[active=true]:pl-2.5 data-[active=true]:pr-3.5 data-[active=true]:text-foreground/90 dark:data-[active=true]:text-[color:oklch(0.96_0_0)]"
+              class="inline-flex h-8 min-w-0 shrink-0 cursor-pointer items-center justify-start rounded-full border border-transparent px-2 text-muted-foreground outline-none transition-[margin,padding,color,background-color,border-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[color:var(--sidebar-hover)] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:-ml-[3px] data-[active=true]:border-accent-red-border data-[active=true]:bg-accent-red-soft data-[active=true]:pl-2.5 data-[active=true]:pr-3.5 data-[active=true]:text-accent-red-deep"
               :data-active="sidebarView === view.id"
               :aria-label="view.label"
               :aria-pressed="sidebarView === view.id"
@@ -133,7 +130,7 @@
         class="h-full"
       />
       <PanelSupermarket
-        v-if="supermarketMounted"
+        v-if="MARKET_ENABLED && supermarketMounted"
         v-show="sidebarView === 'supermarket'"
         :bot-id="currentBotId || ''"
         :can-manage="hasBotPermission(currentBot?.current_user_permissions, 'manage')"
@@ -202,7 +199,7 @@ import { useChatStore } from '@/store/chat-list'
 import { useWorkspaceTabsStore, type SidebarView } from '@/store/workspace-tabs'
 import { hasBotPermission } from '@/utils/bot-permissions'
 import { useChatExamplesUi } from '@/components/chat-examples/use-chat-examples-ui'
-import BotSwitcher from './bot-switcher.vue'
+import BrandHeader from './brand-header.vue'
 import SidebarExamplesEntry from './examples-entry.vue'
 import UserMenu from './user-menu.vue'
 import UpdateChip from './update-chip.vue'
@@ -212,6 +209,7 @@ import PanelSupermarket from './panel-supermarket.vue'
 import SessionSearchDialog from './session-search-dialog.vue'
 
 defineProps<{
+  /** Kept for call-site compatibility; the sidebar shell this used to pad is gone. */
   macTrafficReserve?: boolean
 }>()
 
@@ -269,6 +267,16 @@ const canWorkspaceRead = computed(() =>
   hasBotPermission(currentBot.value?.current_user_permissions, 'workspace_read'),
 )
 
+/**
+ * 应用市场 is hidden in this local build: the Dongfeng deployment ships a
+ * curated expert + skill lineup (the 专家-技能 page) instead of letting people
+ * browse the upstream public market, whose catalog is not reachable from the
+ * intranet anyway. Everything else stays wired — the panel, the store view and
+ * the /settings/supermarket routes — so bringing the market back is flipping
+ * this to true, not re-implementing the entry.
+ */
+const MARKET_ENABLED = false
+
 const availableViews = computed<ActivityView[]>(() => {
   const views: ActivityView[] = [
     { id: 'sessions', label: t('chat.activityBar.sessions'), icon: MessageCircle },
@@ -276,7 +284,9 @@ const availableViews = computed<ActivityView[]>(() => {
   if (canWorkspaceRead.value) {
     views.push({ id: 'files', label: t('chat.activityBar.files'), icon: Files })
   }
-  views.push({ id: 'supermarket', label: t('supermarket.title'), icon: Blocks })
+  if (MARKET_ENABLED) {
+    views.push({ id: 'supermarket', label: t('supermarket.title'), icon: Blocks })
+  }
   return views
 })
 

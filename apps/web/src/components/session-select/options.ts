@@ -1,4 +1,5 @@
 import { externalAgentDisplayName } from '@/utils/external-agent'
+import { externalAgentsEnabled } from '@/lib/features'
 import type { BotagentsBotAgent, SessionSession } from '@ami/sdk'
 import type { SearchableSelectOption } from '@/components/searchable-select-popover/index.vue'
 import type { BotWorkdir } from '@/composables/api/useWorkdirs'
@@ -38,7 +39,9 @@ export function sessionMark(session: SessionSession, labels: SessionSelectLabels
   if (normalizedSessionMode(session) === 'schedule') {
     return { kind: 'schedule', agentId, label: labels.schedule }
   }
-  if (isAgentRuntimeType(runtimeType)) {
+  // No external agents in this deployment, so no ACP mark either — a session
+  // started before the feature was switched off reads as an ordinary chat.
+  if (externalAgentsEnabled && isAgentRuntimeType(runtimeType)) {
     return { kind: 'acp', agentId, label: externalAgentDisplayName(agentId, labels.agent) }
   }
   return NO_MARK

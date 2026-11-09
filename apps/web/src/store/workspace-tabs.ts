@@ -37,6 +37,20 @@ export const CHAT_PANEL_ID = 'chat'
 /** One desktop WebRTC viewer per bot; reconnect reuses this panel instead of display:2, display:3, … */
 export const DISPLAY_PANEL_ID = 'display:1'
 
+/**
+ * The memory editor is a singleton per user, not per bot: what it edits is the
+ * account-level background every expert inherits, so opening it twice must
+ * focus the same tab instead of stacking copies that can overwrite each other.
+ */
+export const MEMORY_PANEL_ID = 'memory:me'
+
+/**
+ * The 专家-技能 catalog is a single read-only reference page, not a working
+ * surface: it describes what the deployment ships, so there is nothing per-bot
+ * or per-session to scope it by. One id keeps it from being opened repeatedly.
+ */
+export const CATALOG_PANEL_ID = 'catalog:main'
+
 const DEFAULT_BROWSER_ADDRESS = 'localhost:5173/'
 const DEFAULT_CHAT_TITLE = 'New Session'
 const DEFAULT_TERMINAL_TITLE = 'Terminal'
@@ -44,7 +58,7 @@ const DEFAULT_TERMINAL_TITLE = 'Terminal'
 // It is only recognized for migration; it is never used as a new title.
 const LEGACY_TERMINAL_TITLE = 'zsh'
 
-export type WorkspacePanelComponent = 'chat' | 'file' | 'preview' | 'asset' | 'terminal' | 'browser' | 'display' | 'schedule'
+export type WorkspacePanelComponent = 'chat' | 'file' | 'preview' | 'asset' | 'terminal' | 'browser' | 'display' | 'schedule' | 'memory' | 'catalog'
 
 interface BotLayoutState {
   layout: SerializedDockview | null
@@ -91,6 +105,8 @@ function panelComponentOf(id: string): WorkspacePanelComponent | null {
   if (id.startsWith('browser:')) return 'browser'
   if (id.startsWith('display:')) return 'display'
   if (id.startsWith('schedule:')) return 'schedule'
+  if (id === MEMORY_PANEL_ID) return 'memory'
+  if (id === CATALOG_PANEL_ID) return 'catalog'
   return null
 }
 
@@ -315,6 +331,14 @@ export const useWorkspaceTabsStore = defineStore('workspace-tabs', () => {
     return i18n.global.t('chat.tabs.schedule').trim() || 'Schedule'
   }
 
+  function memoryTabTitle(): string {
+    return i18n.global.t('chat.tabs.memory').trim() || 'Memory'
+  }
+
+  function catalogTabTitle(): string {
+    return i18n.global.t('sidebar.catalog').trim() || 'Experts & Skills'
+  }
+
   // Per-session chat title fallback (syncChatTitles overlays the server title
   // once known). Draft tabs (no session) are system-titled, and so is a first
   // send's tab until the server confirms the send (see isSessionTentative).
@@ -351,6 +375,10 @@ export const useWorkspaceTabsStore = defineStore('workspace-tabs', () => {
         return i18n.global.t('chat.display.title')
       case 'schedule':
         return scheduleTabTitle()
+      case 'memory':
+        return memoryTabTitle()
+      case 'catalog':
+        return catalogTabTitle()
       default:
         return panel.id
     }
@@ -1745,6 +1773,35 @@ export const useWorkspaceTabsStore = defineStore('workspace-tabs', () => {
     })
   }
 
+  /**
+   * Opens the account-level memory editor (the background every expert
+   * inherits). Deliberately NOT gated on bot permissions or the per-bot
+   * layout: it is the signed-in user's own data, editable even before a bot is
+   * selected, and its tab must not be cloned per bot.
+   */
+  function openMemory(groupId?: string) {
+    focusOrAdd({
+      id: MEMORY_PANEL_ID,
+      component: 'memory',
+      title: memoryTabTitle(),
+      groupId,
+    })
+    closeMobileNav()
+  }
+
+  /**
+   * Opens the 专家-技能 catalog. Read-only reference content, so it is one
+   * shared tab: reopened entries focus it instead of stacking duplicates.
+   */
+  function openCatalog() {
+    focusOrAdd({
+      id: CATALOG_PANEL_ID,
+      component: 'catalog',
+      title: catalogTabTitle(),
+    })
+    closeMobileNav()
+  }
+
   // Don't let the sole remaining tab close if it's an empty draft chat — there is
   // nothing to gain by closing then respawning a draft. A real-session chat tab
   // CAN close (the dock then respawns a draft via ensureDraftChatPanel).
@@ -2235,6 +2292,8 @@ export const useWorkspaceTabsStore = defineStore('workspace-tabs', () => {
     openDisplay,
     splitGroup,
     openSchedule,
+    openMemory,
+    openCatalog,
     closeTab,
     requestCloseTab,
     requestCloseTabs,

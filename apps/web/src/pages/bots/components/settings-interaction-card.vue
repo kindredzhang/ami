@@ -6,61 +6,9 @@
     id="settings-section-interaction"
     :title="$t('bots.settings.blocks.interaction')"
   >
-    <SettingsRow
-      :label="$t('bots.settings.defaultAgent')"
-      :description="defaultAgentDescription"
-      stack="sm"
-    >
-      <Select
-        :model-value="defaultAgentValue"
-        @update:model-value="(value) => setDefaultAgent(String(value))"
-      >
-        <SelectTrigger class="w-full sm:w-56">
-          <SelectValue>
-            <div class="flex min-w-0 items-center gap-2">
-              <img
-                v-if="defaultAgentValue === AMI_AGENT_VALUE"
-                src="/logo.svg"
-                alt=""
-                class="size-4 shrink-0"
-              >
-              <component
-                :is="botAgentIcon(selectedAgent, true)"
-                v-else-if="selectedAgent"
-                class="size-4 shrink-0"
-              />
-              <span class="truncate">{{ selectedAgentLabel }}</span>
-            </div>
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent align="end">
-          <SelectItem :value="AMI_AGENT_VALUE">
-            <div class="flex min-w-0 items-center gap-2">
-              <img
-                src="/logo.svg"
-                alt=""
-                class="size-4 shrink-0"
-              >
-              <span class="truncate">{{ $t('chat.agentAmi') }}</span>
-            </div>
-          </SelectItem>
-          <SelectItem
-            v-for="agent in selectableAgents"
-            :key="agent.id"
-            :value="agentOptionValue(agent.id)"
-          >
-            <div class="flex min-w-0 items-center gap-2">
-              <component
-                :is="botAgentIcon(agent, true)"
-                class="size-4 shrink-0"
-              />
-              <span class="truncate">{{ botAgentName(agent) }}</span>
-            </div>
-          </SelectItem>
-        </SelectContent>
-      </Select>
-    </SettingsRow>
-
+    <!-- The default-agent picker is gone: this deployment has no external
+         agents (ACP), so Ami is the only runtime and an empty
+         default_bot_agent_id already means "Ami". Nothing to choose. -->
     <SettingsRow
       :label="$t('bots.settings.chatModel')"
       stack="sm"
@@ -90,15 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { EXTERNAL_AGENT_DEFAULT_PROJECT_MODE, EXTERNAL_AGENT_DEFAULT_PROJECT_PATH, normalizeAgentID } from '@/utils/external-agent'
 import { computed, watch } from 'vue'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SettingsRow, SettingsSection, Switch } from '@felinic/ui'
-import { useI18n } from 'vue-i18n'
+import { SettingsRow, SettingsSection, Switch } from '@felinic/ui'
 import ModelSelect from './model-select.vue'
 import { reconcileStoredEffort } from './reasoning-effort'
 import type { AcpprofilePublicProfile, BotagentsBotAgent, SettingsSettings, ModelsGetResponse, ProvidersGetResponse } from '@ami/sdk'
-import { isACPAgentConfigured } from '@/utils/acp'
-import { botAgentIcon, botAgentName, botAgentProvider, isDirectBotAgentConfigured, isDirectBotAgentRuntime, normalizeBotAgentRuntime } from '@/utils/bot-agent'
 
 type InteractionSettingsForm = SettingsSettings & {
   chat_runtime: string
@@ -115,91 +59,6 @@ const props = defineProps<{
   botAgents: BotagentsBotAgent[]
   acpProfiles: AcpprofilePublicProfile[]
 }>()
-
-const { t } = useI18n()
-
-const AMI_AGENT_VALUE = 'ami'
-const BOT_AGENT_VALUE_PREFIX = 'agent:'
-
-function isAgentConfigured(agent: BotagentsBotAgent): boolean {
-  const directConfigured = isDirectBotAgentConfigured(agent)
-  if (directConfigured !== null) return directConfigured
-  const provider = botAgentProvider(agent)
-  const profile = props.acpProfiles.find(item => normalizeAgentID(item.id) === provider)
-  return isACPAgentConfigured(agent, profile)
-}
-
-const selectableAgents = computed(() => props.botAgents.filter(agent =>
-  agent.enabled !== false && !!agent.id && isAgentConfigured(agent),
-))
-
-const defaultBotAgentID = computed(() => props.form.default_bot_agent_id?.trim() ?? '')
-const selectedAgent = computed(() => props.botAgents.find(agent => agent.id === defaultBotAgentID.value))
-const defaultAgentValue = computed(() =>
-  defaultBotAgentID.value
-    ? agentOptionValue(defaultBotAgentID.value)
-    : AMI_AGENT_VALUE,
-)
-const selectedAgentUnavailable = computed(() =>
-  !!defaultBotAgentID.value && (!selectedAgent.value || selectedAgent.value.enabled === false || !isAgentConfigured(selectedAgent.value)),
-)
-const defaultAgentDescription = computed(() =>
-  selectedAgentUnavailable.value
-    ? t('bots.settings.defaultAgentUnavailableDescription')
-    : t('bots.settings.defaultAgentDescription'),
-)
-const selectedAgentLabel = computed(() => {
-  if (!defaultBotAgentID.value) return t('chat.agentAmi')
-  if (selectedAgent.value) return botAgentName(selectedAgent.value)
-  return t('bots.settings.defaultAgentUnavailable')
-})
-
-function agentOptionValue(agentID: unknown): string {
-  return `${BOT_AGENT_VALUE_PREFIX}${typeof agentID === 'string' ? agentID.trim() : ''}`
-}
-
-function ensureDefaultACPProject() {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.form.chat_acp_project_path = props.form.chat_acp_project_path || EXTERNAL_AGENT_DEFAULT_PROJECT_PATH
-  // eslint-disable-next-line vue/no-mutating-props
-  props.form.chat_acp_project_mode = props.form.chat_acp_project_mode || EXTERNAL_AGENT_DEFAULT_PROJECT_MODE
-}
-
-function setDefaultBotAgent(agent: BotagentsBotAgent) {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.form.default_bot_agent_id = agent.id?.trim() ?? ''
-  // eslint-disable-next-line vue/no-mutating-props
-  props.form.chat_acp_agent_id = botAgentProvider(agent)
-  ensureDefaultACPProject()
-}
-
-function setDefaultAgent(value: string) {
-  if (value === AMI_AGENT_VALUE) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.form.default_bot_agent_id = ''
-    // eslint-disable-next-line vue/no-mutating-props
-    props.form.chat_runtime = 'model'
-    // eslint-disable-next-line vue/no-mutating-props
-    props.form.chat_acp_agent_id = ''
-    return
-  }
-
-  if (!value.startsWith(BOT_AGENT_VALUE_PREFIX)) return
-  const agentID = value.slice(BOT_AGENT_VALUE_PREFIX.length).trim()
-  const agent = selectableAgents.value.find(item => item.id === agentID)
-  if (!agent) return
-
-  setDefaultBotAgent(agent)
-  const runtime = normalizeBotAgentRuntime(agent.runtime)
-  const direct = isDirectBotAgentRuntime(runtime)
-  // eslint-disable-next-line vue/no-mutating-props
-  props.form.chat_runtime = direct ? runtime : 'acp_agent'
-  if (direct) {
-    // A direct default is fully described by its runtime.
-    // eslint-disable-next-line vue/no-mutating-props
-    props.form.chat_acp_agent_id = ''
-  }
-}
 
 const chatModelReasoning = computed(() => {
   if (!props.form.chat_model_id) return undefined

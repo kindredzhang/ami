@@ -42,6 +42,6 @@ describe('subjectAccent', () => {
   })
 
   it('is stable for the same subject', () => {
-    expect(subjectAccent('billing', theme)).toEqual(subjectAccent('billing', theme))
+    expect(subjectAccent('deploy', theme)).toEqual(subjectAccent('deploy', theme))
   })
 })

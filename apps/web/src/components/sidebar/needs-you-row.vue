@@ -35,9 +35,10 @@
           :datetime="entry.attentionAt"
         >{{ ago }}</time>
       </span>
+      <!-- Only the state. The agent's name is deliberately absent: one user has
+           one agent, so repeating its name on every row is noise, and showing it
+           is exactly the bot concept this product removed. -->
       <span class="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
-        <span class="min-w-0 truncate">{{ botName }}</span>
-        <span aria-hidden="true">·</span>
         <span
           class="shrink-0"
           :class="kindClass[entry.kind]"
@@ -89,7 +90,7 @@ const kindClass: Record<AttentionKind, string> = {
 }
 
 const title = computed(() => props.entry.title || t('chat.untitledSession'))
-const label = computed(() => `${title.value}, ${props.botName}, ${t(`notifications.kind.${props.entry.kind}`)}`)
+const label = computed(() => `${title.value}, ${t(`notifications.kind.${props.entry.kind}`)}`)
 
 function flashIfFresh() {
   if (flash.value && unread.isFresh(props.entry.sessionId, props.entry.attentionAt)) flashRow(flash.value)

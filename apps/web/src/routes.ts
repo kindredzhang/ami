@@ -14,7 +14,6 @@ const pageBotDetail = () => import('@/pages/bots/detail.vue')
 const pageProviders = () => import('@/pages/providers/index.vue')
 const pageRuntimes = () => import('@/pages/runtimes/index.vue')
 const pageUsage = () => import('@/pages/usage/index.vue')
-const pagePeople = () => import('@/pages/people/index.vue')
 const pageAppearance = () => import('@/pages/appearance/index.vue')
 const pageKeyboard = () => import('@/pages/keyboard-shortcuts/index.vue')
 const pageProfile = () => import('@/pages/profile/index.vue')
@@ -32,7 +31,7 @@ const pageSupermarketAppDetail = () => import('@/pages/supermarket/app-detail.vu
 export const settingsPageLoaders = [
   pageSettings,
   pageBots, pageProviders, pageRuntimes,
-  pageUsage, pagePeople, pageAppearance, pageKeyboard,
+  pageUsage, pageAppearance, pageKeyboard,
   pageProfile, pageSupermarket,
   pageBotNew, pageBotCreateProgress, pageBotDetail,
   pageSupermarketCategory, pageSupermarketAppDetail,
@@ -127,7 +126,10 @@ export function createAppRoutes(platform: 'web' | 'desktop'): RouteRecordRaw[] {
       path: '/settings',
       component: pageSettings,
       // Web needs bare /settings for the mobile navigation list.
-      ...(desktop ? { redirect: '/settings/bots' } : {}),
+      // Desktop lands on 服务商, not the expert list: this deployment has one
+      // agent per user, so a page whose only job is listing/creating experts is
+      // not a sensible front door (and its empty state invites creation).
+      ...(desktop ? { redirect: '/settings/providers' } : {}),
       children: [
         {
           path: 'bots',
@@ -225,14 +227,11 @@ export function createAppRoutes(platform: 'web' | 'desktop'): RouteRecordRaw[] {
             breadcrumb: i18nRef('sidebar.usage'),
           },
         },
+        // The Members page was removed. Accounts are provisioned by the admin
+        // console; this app only ever manages the signed-in user's own profile.
         {
-          name: 'people',
           path: 'people',
-          component: pagePeople,
-          meta: {
-            breadcrumb: i18nRef('sidebar.people'),
-            adminOnly: true,
-          },
+          redirect: { name: 'usage' },
         },
         {
           name: 'appearance',

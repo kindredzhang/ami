@@ -65,6 +65,7 @@ import {
   Timer,
   Unplug,
   Upload,
+  UserRoundCheck,
   Users,
   Volume2,
   Workflow,
@@ -172,7 +173,7 @@ const BUCKETS: Array<[ToolBucket, Set<string>]> = [
   ['message', new Set(['send', 'react', 'speak'])],
   ['schedule', new Set(['create_schedule', 'update_schedule', 'delete_schedule'])],
   ['media', new Set(['generate_image', 'generate_video', 'transcribe_audio'])],
-  ['agent', new Set(['spawn_agent', 'send_message', 'list_agents'])],
+  ['agent', new Set(['spawn_agent', 'send_message', 'list_agents', 'list_experts'])],
 ]
 
 export const SUMMARY_BUCKET_ORDER: ToolBucket[] = BUCKETS.map(([bucket]) => bucket)
@@ -200,7 +201,7 @@ const FRAGMENT_TOOLS: Array<[SummaryFragment, Set<string>]> = [
   ['messages', new Set(['send', 'react', 'speak'])],
   ['schedules', new Set(['create_schedule', 'update_schedule', 'delete_schedule'])],
   ['media', new Set(['generate_image', 'generate_video', 'transcribe_audio'])],
-  ['agents', new Set(['spawn_agent', 'send_message', 'list_agents'])],
+  ['agents', new Set(['spawn_agent', 'send_message', 'list_agents', 'list_experts'])],
 ]
 
 export const SUMMARY_FRAGMENT_ORDER: SummaryFragment[] = [
@@ -491,12 +492,16 @@ function isBackgroundInput(input: Record<string, unknown>): boolean {
 }
 
 // Forking inherits the parent's context and backgrounding detaches the run:
-// two independent switches, four genuinely different outcomes.
-function spawnAgentActionKey(fork: boolean, background: boolean): string {
-  if (fork && background) return 'spawn_agent_fork_background'
-  if (fork) return 'spawn_agent_fork'
-  if (background) return 'spawn_agent_background'
-  return 'spawn_agent'
+// two independent switches, four genuinely different outcomes. Naming an
+// expert is a third switch, and it changes what the user is watching for —
+// "an agent is working" versus "this particular expert is working" — so it
+// gets its own keys rather than being folded into the target text.
+function spawnAgentActionKey(fork: boolean, background: boolean, expert: boolean): string {
+  const stem = expert ? 'spawn_expert' : 'spawn_agent'
+  if (fork && background) return `${stem}_fork_background`
+  if (fork) return `${stem}_fork`
+  if (background) return `${stem}_background`
+  return stem
 }
 
 // For a keystroke the key itself is the subject; a selector would say nothing.
@@ -1090,14 +1095,25 @@ export function getToolDisplay(block: ToolCallBlock): ToolDisplay {
       const task = pickString(input, 'task')
       const fork = input.fork === true
       const background = isBackgroundInput(input)
+      const expert = pickString(input, 'expert')
       return {
-        icon: fork ? Split : Workflow,
-        actionKey: spawnAgentActionKey(fork, background),
-        target: pickString(input, 'id') || truncate(task, 60),
+        icon: expert ? UserRoundCheck : fork ? Split : Workflow,
+        actionKey: spawnAgentActionKey(fork, background, expert !== ''),
+        // With an expert the reader's question is "who", not "what task": the
+        // expert name is the stable, repeatable half of the call, while the
+        // task text is the part that varies every time.
+        target: expert || pickString(input, 'id') || truncate(task, 60),
         fullTarget: task,
         detail: ToolCallDetailSpawn,
       }
     }
+    case 'list_experts':
+      return {
+        icon: UserRoundCheck,
+        actionKey: 'list_experts',
+        target: '',
+        detail: ToolCallDetailSpawn,
+      }
     case 'send_message': {
       const message = pickString(input, 'message')
       return {

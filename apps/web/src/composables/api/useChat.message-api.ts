@@ -1,4 +1,5 @@
 import {
+  getBotsByBotIdExperts,
   getBotsByBotIdMessages,
   getBotsByBotIdMessagesLocate,
   getBotsByBotIdSessionsEvents,
@@ -95,6 +96,37 @@ export async function fetchSafeSkillCatalog(botId: string): Promise<RequestedSki
       description: item.description?.trim() || undefined,
       source_kind: item.source_kind?.trim() || undefined,
       state: item.state?.trim() || undefined,
+    }]
+  })
+}
+
+export interface ComposerExpert {
+  name: string
+  display_name?: string
+  description?: string
+  skills: string[]
+  inherits_all_skills: boolean
+}
+
+// fetchExpertCatalog backs the composer's @ picker. It reads the same workspace
+// spawn_agent resolves against, so anything listed here can actually be
+// handed a task.
+export async function fetchExpertCatalog(botId: string): Promise<ComposerExpert[]> {
+  const bid = botId.trim()
+  if (!bid) return []
+  const { data } = await getBotsByBotIdExperts({
+    path: { bot_id: bid },
+    throwOnError: true,
+  })
+  return (data?.experts ?? []).flatMap((item): ComposerExpert[] => {
+    const name = item.name?.trim()
+    if (!name) return []
+    return [{
+      name,
+      display_name: item.display_name?.trim() || undefined,
+      description: item.description?.trim() || undefined,
+      skills: (item.skills ?? []).map(skill => skill.trim()).filter(Boolean),
+      inherits_all_skills: item.inherits_all_skills === true,
     }]
   })
 }

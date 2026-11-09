@@ -204,6 +204,13 @@ export const providerPresets: ProviderPreset[] = [
     requiresApiKey: false,
   },
   {
+    id: 'qingtian',
+    name: '擎天 AI 网关',
+    clientType: 'openai-completions',
+    baseUrl: 'https://qingtian.dfmc.com.cn:32280/api/v3',
+    source: 'qingtian.yaml',
+  },
+  {
     id: 'openrouter-video',
     name: 'OpenRouter',
     clientType: 'openrouter-video',

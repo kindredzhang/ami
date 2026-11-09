@@ -188,6 +188,7 @@ export function createChatSend(deps: ChatSendDeps) {
   ): Promise<SendMessageResult> {
     const trimmed = text.trim()
     const requestedSkills = normalizeRequestedSkills(options.requestedSkills)
+    const assignedExpert = options.assignedExpert ?? null
     let viewTarget = deps.normalizeTarget(options.target)
     const composerScope = options.composerScope?.trim()
       || (options.target ? `${viewTarget.botId}:${viewTarget.viewId}` : 'chat')
@@ -372,6 +373,9 @@ export function createChatSend(deps: ChatSendDeps) {
         attachments,
         requested_skills: requestedSkills.length
           ? requestedSkillRequestsForWire(requestedSkills)
+          : undefined,
+        expert: assignedExpert
+          ? { name: assignedExpert.name, display_name: assignedExpert.display_name }
           : undefined,
         model_id: modelId,
         reasoning_effort: reasoningEffort,

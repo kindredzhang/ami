@@ -58,7 +58,10 @@ describe.each(['web', 'desktop'] as const)('%s shared routes', (platform) => {
 
   it('preserves settings metadata and redirects legacy voice links', async () => {
     const router = makeRouter(platform)
-    expect(router.resolve({ name: 'people' }).meta.adminOnly).toBe(true)
+    // The Members page is gone; its old path must land somewhere real instead
+    // of dead-ending, so bookmarks keep working.
+    await router.push('/settings/people')
+    expect(router.currentRoute.value.name).toBe('usage')
     await router.push('/settings/speech')
     expect(router.currentRoute.value.name).toBe('providers')
     expect(router.currentRoute.value.query.tab).toBe('voice')

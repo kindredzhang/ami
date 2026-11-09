@@ -18,10 +18,10 @@ import { variantSpecs } from '../lib/variant-specs'
 
 const connectCommand = 'npm install -g @ami/runtime@latest && ami-runtime enroll --server https://ami.example.com/api --key mrk_0123456789abcdef0123456789abcdef0123456789abcdef && ami-runtime service start'
 
-const invoices = [
-  { id: 'INV-001', status: 'Paid', total: '$250.00' },
-  { id: 'INV-002', status: 'Pending', total: '$150.00' },
-  { id: 'INV-003', status: 'Unpaid', total: '$350.00' },
+const reports = [
+  { id: 'RPT-001', status: 'Ready', total: '1,240' },
+  { id: 'RPT-002', status: 'Running', total: '860' },
+  { id: 'RPT-003', status: 'Queued', total: '430' },
 ]
 </script>
 
@@ -107,15 +107,15 @@ const invoices = [
         <ItemGroup class="w-full max-w-sm rounded-lg border">
           <Item>
             <ItemContent>
-              <ItemTitle>Pro plan</ItemTitle>
-              <ItemDescription>Unlimited workspaces & priority models</ItemDescription>
+              <ItemTitle>Workspace</ItemTitle>
+              <ItemDescription>4 GB memory & 2 vCPU</ItemDescription>
             </ItemContent>
             <ItemActions>
               <Button
                 variant="primary"
                 size="sm"
               >
-                Upgrade
+                Resize
               </Button>
             </ItemActions>
           </Item>
@@ -123,7 +123,7 @@ const invoices = [
           <Item>
             <ItemContent>
               <ItemTitle>Team members</ItemTitle>
-              <ItemDescription>3 of 5 seats used</ItemDescription>
+              <ItemDescription>3 members</ItemDescription>
             </ItemContent>
             <ItemActions>
               <Button
@@ -183,28 +183,28 @@ const invoices = [
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Invoice</TableHead>
+                  <TableHead>Report</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead class="text-right">
-                    Total
+                    Rows
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow
-                  v-for="inv in invoices"
-                  :key="inv.id"
+                  v-for="report in reports"
+                  :key="report.id"
                 >
                   <TableCell class="font-medium">
-                    {{ inv.id }}
+                    {{ report.id }}
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary">
-                      {{ inv.status }}
+                      {{ report.status }}
                     </Badge>
                   </TableCell>
                   <TableCell class="text-right">
-                    {{ inv.total }}
+                    {{ report.total }}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -214,7 +214,7 @@ const invoices = [
                     Total
                   </TableCell>
                   <TableCell class="text-right">
-                    $750.00
+                    2,530
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -223,13 +223,13 @@ const invoices = [
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Invoice</TableHead>
+                  <TableHead>Report</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableEmpty :colspan="2">
-                  No invoices yet.
+                  No reports yet.
                 </TableEmpty>
               </TableBody>
             </Table>

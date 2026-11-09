@@ -50,6 +50,8 @@ import PanelTerminal from './dockview/panel-terminal.vue'
 import PanelBrowser from './dockview/panel-browser.vue'
 import PanelDisplay from './dockview/panel-display.vue'
 import PanelSchedule from './dockview/panel-schedule.vue'
+import PanelMemory from './dockview/panel-memory.vue'
+import PanelCatalog from '@/pages/catalog/index.vue'
 import WorkspaceWatermark from './dockview/workspace-watermark.vue'
 import WorkspaceTab from './dockview/workspace-tab.vue'
 import GroupActions from './dockview/group-actions.vue'
@@ -148,6 +150,8 @@ const panelComponents: Record<string, VueComponent> = {
   browser: PanelBrowser as unknown as VueComponent,
   display: PanelDisplay as unknown as VueComponent,
   schedule: PanelSchedule as unknown as VueComponent,
+  memory: PanelMemory as unknown as VueComponent,
+  catalog: PanelCatalog as unknown as VueComponent,
 }
 
 const watermarkComponent = WorkspaceWatermark as unknown as VueComponent
