@@ -40,7 +40,7 @@ func TestWorkspaceFSHasNoUnexpectedRoots(t *testing.T) {
 		"AGENTS.md":   false,
 		"MEMORY.md":   false,
 		"PROFILES.md": false,
-		".ami":      true,
+		".ami":        true,
 	}
 	for _, entry := range entries {
 		isDir, ok := want[entry.Name()]
