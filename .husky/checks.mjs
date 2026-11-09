@@ -48,8 +48,11 @@ export function planChecks(changed, tracked, full = false) {
   }
 }
 
+// The index listing exceeds Node's 1 MiB spawnSync default in a large checkout.
+const gitMaxBuffer = 256 * 1024 * 1024
+
 function git(args) {
-  const result = spawnSync('git', args, { encoding: 'utf8' })
+  const result = spawnSync('git', args, { encoding: 'utf8', maxBuffer: gitMaxBuffer })
   if (result.status !== 0) throw new Error(result.stderr || `git ${args[0]} failed`)
   return result.stdout
 }
